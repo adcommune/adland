@@ -6,7 +6,7 @@ import AdSpaces from './AdSpaces/LandingAdSpaces'
 export function Hero() {
   return (
     <Container className="flex min-h-[89vh] flex-col items-center justify-center gap-8 pb-16 pt-12 text-center">
-      <h1 className="mx-auto font-display text-5xl text-white">
+      <h1 className="mx-auto font-display text-3xl text-white 2xl:text-5xl">
         Revenue for your community
       </h1>
       <p className="font-body mx-auto max-w-2xl text-lg text-gray-200">
@@ -16,7 +16,7 @@ export function Hero() {
       <div className="flex w-full flex-col">
         <AdSpaces />
       </div>
-      <div className="flex flex-row items-center gap-8">
+      <div className="flex flex-col items-center gap-8 sm:flex-row">
         <p className="font-body text-base text-white">
           The following ads already stream revenue to this project
         </p>
