@@ -12,7 +12,7 @@ interface ICommonAdSpaces {
 
     event AdSpaceURIUpdated(uint256 adId, string uri);
 
-    event AdSpaceStrategyUpdate(uint256 adId, IAdStrategy strategy);
+    event AdSpaceStrategyUpdated(uint256 adId, IAdStrategy strategy);
 
     function createAdGroup(
         address recipient

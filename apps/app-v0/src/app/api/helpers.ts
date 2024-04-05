@@ -1,12 +1,16 @@
 import { ipfsGateway } from "@/lib/constants";
 import { Ad } from "@/lib/types";
 
-export const formatAd = ({ uri }: Ad) => {
+export const getGatwayUri = (uri: string) => {
   const hash = uri.split("//")[1];
 
+  return hash ? ipfsGateway + "/" + hash : null;
+};
+
+export const formatAd = ({ uri }: Ad) => {
   return {
     uri,
-    gatewayUri: hash ? ipfsGateway + "/" + hash : null,
+    gatewayUri: getGatwayUri(uri),
   };
 };
 

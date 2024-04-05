@@ -1,0 +1,15 @@
+{
+  "name": "@adland/contracts",
+  "version": "0.1.0",
+  "description": "Adland contracts, ABIs & types",
+  "type": "module",
+  "scripts": {
+    "codegen": "wagmi generate"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.4",
+    "@wagmi/cli": "^2.1.4",
+    "typescript": "^5.4.4",
+    "viem": "^2.9.9"
+  }
+}
