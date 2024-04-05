@@ -29,11 +29,11 @@ jobs:
         run: |
           forge --version
           forge build --sizes
-        working-directory: foundry
+        working-directory: apps/foundry
         id: build
 
       - name: Run Forge tests
         run: |
           forge test -vvvv
-        working-directory: foundry
+        working-directory: apps/foundry
         id: test
