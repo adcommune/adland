@@ -1,1 +1,23 @@
+import { Callout } from 'vocs/components'
+
 # Web Ads
+
+<img src="/usecases-webads.png" className=""/>
+
+## As the advertiser
+
+Once an advertiser owns an AdSpace, they can set the ad data they want to display on the web by calling
+the `updateAdURI` method on the CommonAdSpaces contract.
+
+As of writing the AdLand app uses the
+standard ERC721 Metadata JSON Schema for you to insert your ad, though anything can be used.
+
+<Callout type="note">
+Stronger ad data typings coming soon
+</Callout>
+
+## As the client
+
+Simple web ads can be displayed by clients in any format by simply calling the `getAdUri` onchain
+or by calling the appropriate API endpoint provided. Here no AdStrategy is implemented, and the ad lives
+directly at the ad uri.
