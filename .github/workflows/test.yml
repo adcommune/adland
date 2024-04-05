@@ -1,6 +1,7 @@
 name: test
 
-on: workflow_dispatch
+on:
+  pull_request:
 
 env:
   FOUNDRY_PROFILE: ci
@@ -30,7 +31,6 @@ jobs:
           forge build --sizes
         working-directory: foundry
         id: build
-
 
       - name: Run Forge tests
         run: |
