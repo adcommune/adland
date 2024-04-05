@@ -3,7 +3,6 @@ import "@rainbow-me/rainbowkit/styles.css";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
-import Providers from "./providers";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -28,7 +27,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Providers>{children}</Providers>
+        <h1>AdLand Endpoints</h1>
       </body>
     </html>
   );
