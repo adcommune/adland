@@ -123,7 +123,7 @@ contract CommonAdSpaces is ERC721Royalty, ICommonAdSpaces, Ownable {
     ) external onlyAdGroupAdmin(ads[adId].adGroupId) {
         ads[adId].strategy = strategy;
 
-        emit AdSpaceStrategyUpdate(adId, strategy);
+        emit AdSpaceStrategyUpdated(adId, strategy);
     }
 
     function getAdUri(
