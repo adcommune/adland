@@ -4,6 +4,7 @@ pragma solidity ^0.8.19;
 import {IDirectListings} from "contracts/prebuilts/marketplace/IMarketplace.sol";
 import {CurrencyTransferLib} from "contracts/lib/CurrencyTransferLib.sol";
 import {ERC721Royalty, ERC721} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 // Local imports
 import {AccountCreatorConfig} from "./lib/ERC6551AccountCreator.sol";
 import {CommonAdGroupAdminFactory} from "./CommonAdGroupAdminFactory.sol";
@@ -11,7 +12,7 @@ import {ICommonAdSpaces} from "./interfaces/ICommonAdSpaces.sol";
 import {IAdStrategy} from "./interfaces/IAdStrategy.sol";
 import {AdGroup, AdSpace, AdSpaceConfig} from "./lib/Structs.sol";
 
-contract CommonAdSpaces is ERC721Royalty, ICommonAdSpaces {
+contract CommonAdSpaces is ERC721Royalty, ICommonAdSpaces, Ownable {
     uint256 constant MAX_BPS = 10_000;
     uint256 constant MAX_GROUP_SIZE = 20;
     string public placeholderURI;
@@ -239,6 +240,10 @@ contract CommonAdSpaces is ERC721Royalty, ICommonAdSpaces {
         );
 
         _resetAd(adId);
+    }
+
+    function setTokenURI(string memory uri) external onlyOwner {
+        placeholderURI = uri;
     }
 
     function tokenURI(uint256) public view override returns (string memory) {
