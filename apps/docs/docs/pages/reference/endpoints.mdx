@@ -1,0 +1,70 @@
+import { Callout } from 'vocs/components'
+
+# API Enpoints
+
+## Available endpoints
+
+## Definitions
+
+```ts filename="types.ts"
+type Address = string;
+
+type Ad = {
+    adGroupId: string;
+    uri: string;
+    strategy: Address;
+}
+
+type Metadata = {
+  name: string;
+  image: string;
+  description: string;
+  animation_url?: string;
+  external_url?: string;
+  aspect_ratio?: string;
+};
+
+type GetAdReturnType = Ad & {
+  gatewayUri: string | null;
+  metadata: Metadata | null;
+};
+```
+
+## GET - /api/ad/:id:
+
+Returns the ad with the given id.
+
+### Request
+
+```http
+GET /api/ad/:id
+```
+
+### Response
+
+```json
+{
+  "adGroupId": "string",
+  "uri": "string",
+  "strategy": "string",
+  "gatewayUri": "string",
+  "metadata": {
+    "name": "string",
+    "image": "string",
+    "description": "string",
+    "animation_url": "string",
+    "external_url": "string",
+    "aspect_ratio": "string"
+  }
+}
+```
+
+## GET - /api/ad/:id/image
+
+Returns the image of the ad with the given id. Returns placeholder image if the ad space does not have an image set.
+
+### Request
+
+```http
+GET /api/ad/:id/image
+```

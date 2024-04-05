@@ -45,5 +45,15 @@ export default defineConfig({
         },
       ],
     },
+    {
+      text: "Reference",
+      collapsed: true,
+      items: [
+        {
+          text: "Endpoints",
+          link: "/reference/endpoints",
+        },
+      ],
+    },
   ],
 });
