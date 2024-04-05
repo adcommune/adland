@@ -1,6 +1,6 @@
 "use client";
 
-import { PublishAdsFarcasterRequestBody } from "@/app/api/publish/farcaster/route";
+import { PublishAdsFarcasterRequestBody } from "@/app/api/publish/farcaster/deprecated_route";
 import { Button } from "@/components/ui/button";
 import {
   Card,
