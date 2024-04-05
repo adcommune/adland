@@ -7,7 +7,11 @@ import { fetchJSON, formatAd } from "../../helpers";
 
 type GetAdsRouteParams = { params: { groupId: string } };
 
-export async function GET(_: NextRequest, { params }: GetAdsRouteParams) {
+// TODO: Fix this endpoint with new all space ids possible
+export async function DEPRECATED_GET(
+  _: NextRequest,
+  { params }: GetAdsRouteParams
+) {
   const { groupId: groupIdString } = params;
 
   const groupId = BigInt(groupIdString);
