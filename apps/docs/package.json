@@ -8,6 +8,7 @@
     "preview": "vocs preview"
   },
   "dependencies": {
+    "@repo/tailwind-config": "*",
     "react": "latest",
     "react-dom": "latest",
     "vocs": "latest"
