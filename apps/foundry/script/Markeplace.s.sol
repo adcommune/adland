@@ -111,8 +111,11 @@ contract MarketplaceScript is BaseScript, IExtension {
         _saveDeployment(address(ethx), "ETHx");
         _saveDeployment(address(daix), "DAIx");
 
-        marketplace.setTokenX(CurrencyTransferLib.NATIVE_TOKEN, address(ethx));
-        marketplace.setTokenX(address(dai), address(daix));
+        commonAdSpaces.setTokenX(
+            CurrencyTransferLib.NATIVE_TOKEN,
+            address(ethx)
+        );
+        commonAdSpaces.setTokenX(address(dai), address(daix));
 
         MarketplaceV3(payable(address(marketplace))).revokeRole(
             keccak256("LISTER_ROLE"),
@@ -187,7 +190,7 @@ contract MarketplaceScript is BaseScript, IExtension {
             implementation: directListings
         });
 
-        extensionDirectListings.functions = new ExtensionFunction[](14);
+        extensionDirectListings.functions = new ExtensionFunction[](13);
         extensionDirectListings.functions[0] = ExtensionFunction(
             DirectListingsLogic.totalListings.selector,
             "totalListings()"
@@ -239,11 +242,6 @@ contract MarketplaceScript is BaseScript, IExtension {
         extensionDirectListings.functions[12] = ExtensionFunction(
             DirectListingsLogic.getListing.selector,
             "getListing(uint256)"
-        );
-
-        extensionDirectListings.functions[13] = ExtensionFunction(
-            DirectListingsLogic.setTokenX.selector,
-            "setTokenX(address,address)"
         );
 
         extensions[0] = extensionDirectListings;

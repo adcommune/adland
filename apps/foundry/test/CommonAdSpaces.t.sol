@@ -457,7 +457,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
 
     function testSetTokenXToDirectListingForTax() public {
         vm.prank(deployer);
-        marketplace.setTokenX(address(dai), address(daix));
+        commonAds.setTokenX(address(dai), address(daix));
     }
 
     function testCancelListing() public {
