@@ -43,6 +43,10 @@ export default defineConfig({
           text: "Social Media Ads",
           link: "/use-cases/social-media-ads",
         },
+        {
+          text: "Sponsored content",
+          link: "/use-cases/sponsored-content",
+        },
       ],
     },
     {

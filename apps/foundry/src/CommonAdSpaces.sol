@@ -23,6 +23,8 @@ contract CommonAdSpaces is ERC721Royalty, ICommonAdSpaces, Ownable {
 
     mapping(uint256 => AdSpace) ads;
 
+    mapping(address => address) public tokenXs;
+
     constructor(
         address _marketplace,
         AccountCreatorConfig memory _accountConfig,
@@ -136,6 +138,20 @@ contract CommonAdSpaces is ERC721Royalty, ICommonAdSpaces, Ownable {
         } else {
             return tokenURI(adId);
         }
+    }
+
+    function getTokenX(address underlying) external view returns (address) {
+        return tokenXs[underlying];
+    }
+
+    /// @notice Set the tokenX address for a currency
+    function setTokenX(
+        address underlyingToken,
+        address superToken
+    ) external onlyOwner {
+        tokenXs[underlyingToken] = superToken;
+
+        emit TokenXSet(underlyingToken, superToken);
     }
 
     /**

@@ -14,6 +14,11 @@ interface ICommonAdSpaces {
 
     event AdSpaceStrategyUpdated(uint256 adId, IAdStrategy strategy);
 
+    event TokenXSet(
+        address indexed underlyingToken,
+        address indexed superToken
+    );
+
     function createAdGroup(
         address recipient
     ) external returns (address adGroupAdmin, uint256 adGroupId);

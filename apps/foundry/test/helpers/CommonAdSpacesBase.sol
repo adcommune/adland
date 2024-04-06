@@ -94,8 +94,8 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
 
         _grantTaxManagerRole(deployer);
 
-        marketplace.setTokenX(CurrencyTransferLib.NATIVE_TOKEN, address(ethx));
-        marketplace.setTokenX(address(dai), address(daix));
+        commonAds.setTokenX(CurrencyTransferLib.NATIVE_TOKEN, address(ethx));
+        commonAds.setTokenX(address(dai), address(daix));
 
         MarketplaceV3(payable(address(marketplace))).revokeRole(
             keccak256("LISTER_ROLE"),
@@ -208,7 +208,7 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
             implementation: directListings
         });
 
-        extensionDirectListings.functions = new ExtensionFunction[](15);
+        extensionDirectListings.functions = new ExtensionFunction[](14);
         extensionDirectListings.functions[0] = ExtensionFunction(
             DirectListingsLogic.totalListings.selector,
             "totalListings()"
@@ -237,10 +237,6 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
             DirectListingsLogic.cancelListing.selector,
             "cancelListing(uint256)"
         );
-        extensionDirectListings.functions[14] = ExtensionFunction(
-            DirectListingsLogic.forecloseListing.selector,
-            "forecloseListing(uint256)"
-        );
         extensionDirectListings.functions[7] = ExtensionFunction(
             DirectListingsLogic.approveBuyerForListing.selector,
             "approveBuyerForListing(uint256,address,bool)"
@@ -265,10 +261,9 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
             DirectListingsLogic.getListing.selector,
             "getListing(uint256)"
         );
-
         extensionDirectListings.functions[13] = ExtensionFunction(
-            DirectListingsLogic.setTokenX.selector,
-            "setTokenX(address,address)"
+            DirectListingsLogic.forecloseListing.selector,
+            "forecloseListing(uint256)"
         );
 
         extensions[0] = extensionDirectListings;
