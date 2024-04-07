@@ -1,16 +1,22 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
-import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import {ERC6551AccountCreator, AccountCreatorConfig} from "./lib/ERC6551AccountCreator.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {ERC721Upgradeable} from "@openzeppelin-upgradeable/contracts/token/ERC721/ERC721Upgradeable.sol";
+import {UUPSUpgradeable} from "@openzeppelin-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
+import {OwnableUpgradeable} from "@openzeppelin-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import {ICommonAdGroupAdminFactory} from "./interfaces/ICommonAdGroupAdminFactory.sol";
+import {ERC6551AccountCreatorUpgradeable, AccountCreatorConfig} from "./lib/ERC6551AccountCreator.sol";
 
 /**
  * @title CommonAdGroupAdminFactory
  * @dev A contract that creates and manages group admins for ad groups.
  */
-contract CommonAdGroupAdminFactory is ERC6551AccountCreator, ERC721, Ownable {
+contract CommonAdGroupAdminFactory is
+    ERC6551AccountCreatorUpgradeable,
+    ERC721Upgradeable,
+    OwnableUpgradeable,
+    UUPSUpgradeable
+{
     /// @dev incrementing groupIds
     uint256 internal _groupIds;
 
@@ -18,12 +24,13 @@ contract CommonAdGroupAdminFactory is ERC6551AccountCreator, ERC721, Ownable {
      * @dev Constructor function.
      * @param accountConfig The configuration for the account creator.
      */
-    constructor(
+    function initialize(
         AccountCreatorConfig memory accountConfig
-    )
-        ERC721("CommonAdGroupAdminFactory", "CAGAF")
-        ERC6551AccountCreator(accountConfig)
-    {
+    ) public initializer {
+        __ERC6551AccountCreator__init(accountConfig);
+        __ERC721_init("CommonAdGroupAdminFactory", "CAGAF");
+        __Ownable_init();
+        __UUPSUpgradeable_init();
         _groupIds = 1;
     }
 
@@ -58,4 +65,8 @@ contract CommonAdGroupAdminFactory is ERC6551AccountCreator, ERC721, Ownable {
     ) external view returns (address adGroupAdmin) {
         adGroupAdmin = _getAccount(block.chainid, address(this), adGroupId);
     }
+
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 }

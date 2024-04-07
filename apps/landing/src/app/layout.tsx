@@ -35,14 +35,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html
       lang="en"
       className={clsx(
-        'h-full bg-neutral antialiased',
+        'h-full antialiased',
         montserrat.variable,
         antiqueOlive.variable,
       )}
     >
-      <body className="relative">
+      <body className="relative z-[2]">
         <div className="overflow-hidden">
-          <GradientBackground />
           <Header />
           {children}
         </div>

@@ -3,6 +3,7 @@ pragma solidity ^0.8.19;
 
 import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
 import {AccountProxy} from "tokenbound/AccountProxy.sol";
+import {Initializable} from "@openzeppelin-upgradeable/contracts/proxy/utils/Initializable.sol";
 
 struct AccountCreatorConfig {
     ERC6551Registry registry;
@@ -10,12 +11,16 @@ struct AccountCreatorConfig {
     address accountProxy;
 }
 
-contract ERC6551AccountCreator {
+contract ERC6551AccountCreatorUpgradeable is Initializable {
     AccountCreatorConfig internal _config;
-    bytes32 internal constant _SALT = bytes32("");
+    bytes32 internal _SALT;
 
-    constructor(AccountCreatorConfig memory config) {
+    // solhint-disable-next-line func-name-mixedcase
+    function __ERC6551AccountCreator__init(
+        AccountCreatorConfig memory config
+    ) internal onlyInitializing {
         _config = config;
+        _SALT = bytes32("");
     }
 
     function _createAccount(
@@ -45,4 +50,7 @@ contract ERC6551AccountCreator {
             tokenId
         );
     }
+
+    // Reserved storage space to allow for layout changes in the future.
+    uint256[50] private __gap;
 }

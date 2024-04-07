@@ -23,8 +23,10 @@ import {AccountProxy} from "tokenbound/AccountProxy.sol";
 import {AccountGuardian} from "tokenbound/AccountGuardian.sol";
 import {Multicall3} from "multicall-authenticated/Multicall3.sol";
 import {AccountCreatorConfig} from "../../src/lib/ERC6551AccountCreator.sol";
+import {UUPSProxy} from "../../src/lib/UUPSProxy.sol";
 
 import {CommonAdSpaces} from "../../src/CommonAdSpaces.sol";
+import {CommonAdGroupAdminFactory} from "../../src/CommonAdGroupAdminFactory.sol";
 
 contract CommonAdSpacesBase is DSTestFull, IExtension {
     address wethSepolia = 0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9;
@@ -51,28 +53,14 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
     Multicall3 forwarder;
     AccountV3 implementation;
 
-    constructor() {
-        registry = new ERC6551Registry();
-        forwarder = new Multicall3();
-        guardian = new AccountGuardian(address(this));
-        implementation = new AccountV3(
-            address(1),
-            address(forwarder),
-            address(registry),
-            address(guardian)
-        );
+    constructor() {}
 
-        accountProxy = new AccountProxy(
-            address(guardian),
-            address(implementation)
-        );
-    }
-
-    function setUp() public {
+    function setUp() public virtual {
         vm.etch(ERC1820RegistryCompiled.at, ERC1820RegistryCompiled.bin);
 
         // vm.createSelectFork("sepolia");
 
+        _deployERC6551();
         _deployWETH();
         _deployStreamingUtils();
 
@@ -82,15 +70,37 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
 
         vm.label(address(marketplace), "marketplace");
 
-        commonAds = new CommonAdSpaces(
-            address(marketplace),
-            AccountCreatorConfig(
-                registry,
-                address(implementation),
-                address(accountProxy)
-            ),
-            ""
+        CommonAdGroupAdminFactory commonAdGroupFactory = CommonAdGroupAdminFactory(
+                address(
+                    new UUPSProxy(
+                        address(new CommonAdGroupAdminFactory()),
+                        abi.encodeWithSelector(
+                            CommonAdGroupAdminFactory.initialize.selector,
+                            AccountCreatorConfig({
+                                registry: registry,
+                                implementation: address(implementation),
+                                accountProxy: address(accountProxy)
+                            })
+                        )
+                    )
+                )
+            );
+
+        commonAds = CommonAdSpaces(
+            address(
+                new UUPSProxy(
+                    address(new CommonAdSpaces()),
+                    abi.encodeWithSelector(
+                        CommonAdSpaces.initialize.selector,
+                        address(marketplace),
+                        address(commonAdGroupFactory),
+                        ""
+                    )
+                )
+            )
         );
+
+        commonAdGroupFactory.transferOwnership(address(commonAds));
 
         _grantTaxManagerRole(deployer);
 
@@ -267,6 +277,23 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
         );
 
         extensions[0] = extensionDirectListings;
+    }
+
+    function _deployERC6551() internal {
+        registry = new ERC6551Registry();
+        forwarder = new Multicall3();
+        guardian = new AccountGuardian(address(this));
+        implementation = new AccountV3(
+            address(1),
+            address(forwarder),
+            address(registry),
+            address(guardian)
+        );
+
+        accountProxy = new AccountProxy(
+            address(guardian),
+            address(implementation)
+        );
     }
 
     function _grantTaxManagerRole(address to) internal {
