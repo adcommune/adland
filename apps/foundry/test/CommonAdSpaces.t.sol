@@ -13,7 +13,6 @@ import {SuperTokenV1Library} from "@superfluid-finance/ethereum-contracts/contra
 import {ISETH} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/tokens/ISETH.sol";
 import {StreamCreator} from "./mocks/StreamCreator.sol";
 import {TestToken} from "@superfluid-finance/ethereum-contracts/contracts/utils/TestToken.sol";
-import {AdBeneficiary} from "../src/AdBeneficiary.sol";
 import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
 
 import {AdSpaceConfig} from "../src/CommonAdSpaces.sol";

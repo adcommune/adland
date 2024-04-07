@@ -15,7 +15,7 @@ import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
 import {AccountV3Upgradable, AccountV3} from "tokenbound/AccountV3Upgradable.sol";
 import {AccountProxy} from "tokenbound/AccountProxy.sol";
 import {AccountCreatorConfig} from "../src/lib/ERC6551AccountCreator.sol";
-
+import {UUPSProxy} from "../src/lib/UUPSProxy.sol";
 import {CommonAdSpaces} from "../src/CommonAdSpaces.sol";
 import {AdSpaceConfig} from "../src/lib/Structs.sol";
 
@@ -91,14 +91,24 @@ contract MarketplaceScript is BaseScript, IExtension {
 
         _saveDeployment(address(marketplace), "DirectListingsLogic");
 
-        CommonAdSpaces commonAdSpaces = new CommonAdSpaces(
-            address(marketplace),
-            AccountCreatorConfig(
-                registry,
-                address(implementation),
-                address(accountProxy)
-            ),
-            "ipfs://QmVg1sVvrWJ78cEmuxKpnHDKCWcCM8y8VaAJ8gpfe55ut6"
+        address commonAdsImplementation = address(new CommonAdSpaces());
+
+        CommonAdSpaces commonAdSpaces = CommonAdSpaces(
+            address(
+                new UUPSProxy(
+                    commonAdsImplementation,
+                    abi.encodeWithSelector(
+                        CommonAdSpaces.initialize.selector,
+                        address(marketplace),
+                        AccountCreatorConfig(
+                            registry,
+                            address(implementation),
+                            address(accountProxy)
+                        ),
+                        "ipfs://QmVg1sVvrWJ78cEmuxKpnHDKCWcCM8y8VaAJ8gpfe55ut6"
+                    )
+                )
+            )
         );
 
         _saveDeployment(address(commonAdSpaces), "CommonAdSpaces");

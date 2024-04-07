@@ -3,18 +3,22 @@ pragma solidity ^0.8.19;
 
 import {IDirectListings} from "contracts/prebuilts/marketplace/IMarketplace.sol";
 import {CurrencyTransferLib} from "contracts/lib/CurrencyTransferLib.sol";
-import {ERC721Royalty, ERC721} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {ERC721RoyaltyUpgradeable, ERC721Upgradeable} from "@openzeppelin-upgradeable/contracts/token/ERC721/extensions/ERC721RoyaltyUpgradeable.sol";
+import {UUPSUpgradeable} from "@openzeppelin-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
+import {OwnableUpgradeable} from "@openzeppelin-upgradeable/contracts/access/OwnableUpgradeable.sol";
 // Local imports
-import {AccountCreatorConfig} from "./lib/ERC6551AccountCreator.sol";
 import {CommonAdGroupAdminFactory} from "./CommonAdGroupAdminFactory.sol";
 import {ICommonAdSpaces} from "./interfaces/ICommonAdSpaces.sol";
 import {IAdStrategy} from "./interfaces/IAdStrategy.sol";
 import {AdGroup, AdSpace, AdSpaceConfig} from "./lib/Structs.sol";
 
-contract CommonAdSpaces is ERC721Royalty, ICommonAdSpaces, Ownable {
-    uint256 constant MAX_BPS = 10_000;
-    uint256 constant MAX_GROUP_SIZE = 20;
+contract CommonAdSpaces is
+    ERC721RoyaltyUpgradeable,
+    ICommonAdSpaces,
+    OwnableUpgradeable,
+    UUPSUpgradeable
+{
+    uint256 internal MAX_BPS;
     string public placeholderURI;
     IDirectListings marketplace;
     CommonAdGroupAdminFactory public adGroupAdminFactory;
@@ -25,14 +29,22 @@ contract CommonAdSpaces is ERC721Royalty, ICommonAdSpaces, Ownable {
 
     mapping(address => address) public tokenXs;
 
-    constructor(
+    constructor() {}
+
+    function initialize(
         address _marketplace,
-        AccountCreatorConfig memory _accountConfig,
+        address _adGroupAdminFactory,
         string memory _placeholderURI
-    ) ERC721("AdCommonOwnership", "ACO") {
+    ) public initializer {
+        __ERC721Royalty_init();
+        __ERC721_init("CommonAdSpaces", "CAS");
+        __Ownable_init();
+        __UUPSUpgradeable_init();
+
         marketplace = IDirectListings(_marketplace);
-        adGroupAdminFactory = new CommonAdGroupAdminFactory(_accountConfig);
+        adGroupAdminFactory = CommonAdGroupAdminFactory(_adGroupAdminFactory);
         placeholderURI = _placeholderURI;
+        MAX_BPS = 10_000;
     }
 
     modifier onlyAdGroupAdmin(uint256 adGroupId) {
@@ -270,4 +282,8 @@ contract CommonAdSpaces is ERC721Royalty, ICommonAdSpaces, Ownable {
         ads[adId].uri = "";
         ads[adId].strategy = IAdStrategy(address(0));
     }
+
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 }
