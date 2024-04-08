@@ -12,7 +12,10 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@headlessui/tailwindcss": "^0.2.0",
+    "@privy-io/react-auth": "^1.60.1",
+    "@privy-io/wagmi": "^0.2.2",
     "@tailwindcss/forms": "^0.5.3",
+    "@tanstack/react-query": "^5.29.0",
     "@types/node": "^20.10.8",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -23,7 +26,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "viem": "^2.9.13",
+    "wagmi": "^2.5.19"
   },
   "devDependencies": {
     "eslint": "^8.56.0",

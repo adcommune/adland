@@ -1,13 +1,5 @@
-import Navbar from '@/components/Navbar'
-
 const AppPage = () => {
-  return (
-    <div>
-      <Navbar>
-        <></>
-      </Navbar>
-    </div>
-  )
+  return <div></div>
 }
 
 export default AppPage
