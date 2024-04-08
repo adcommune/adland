@@ -1,6 +1,8 @@
 'use client'
 
 import { Container } from '@/components/Container'
+import { Button } from './ui/button'
+import Link from 'next/link'
 
 export function Hero() {
   return (
@@ -33,6 +35,9 @@ export function Hero() {
             />
           </svg>
         </span> */}
+        {/* <Button asChild>
+          <Link href="/app">Launch App</Link>
+        </Button> */}
       </div>
     </Container>
   )

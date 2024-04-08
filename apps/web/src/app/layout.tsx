@@ -3,7 +3,6 @@ import { type Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import localFont from 'next/font/local'
 import clsx from 'clsx'
-import { Header } from '@/components/Header'
 
 export const metadata: Metadata = {
   title: {
@@ -29,7 +28,7 @@ type RootLayoutProps = {
   children: React.ReactNode
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children, ...rest }: RootLayoutProps) {
   return (
     <html
       lang="en"

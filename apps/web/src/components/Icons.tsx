@@ -7,7 +7,7 @@ const AdLandBrand = ({ className }: React.SVGProps<SVGSVGElement>) => {
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       xmlSpace="preserve"
-      className={classNames('h-6 fill-white', className)}
+      className={classNames('h-full fill-white', className)}
       style={{
         fillRule: 'evenodd',
         clipRule: 'evenodd',
