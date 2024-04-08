@@ -4,7 +4,6 @@ import { Montserrat } from 'next/font/google'
 import localFont from 'next/font/local'
 import clsx from 'clsx'
 import { Header } from '@/components/Header'
-import GradientBackground from '@/components/GradientBackground'
 
 export const metadata: Metadata = {
   title: {
@@ -41,10 +40,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       )}
     >
       <body className="relative z-[2]">
-        <div className="overflow-hidden">
-          <Header />
-          {children}
-        </div>
+        <div className="overflow-hidden">{children}</div>
       </body>
     </html>
   )
