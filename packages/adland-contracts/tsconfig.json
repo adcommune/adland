@@ -6,8 +6,9 @@
     "sourceMap": true,
     "outDir": "dist",
     "moduleResolution": "bundler",
-    "module": "Preserve"
-
+    "baseUrl": ".",
+    "module": "Preserve",
+    "declaration": true,
   },
   "include": ["src/index.ts"],
 }

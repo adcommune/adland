@@ -12,6 +12,7 @@
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
     "@wagmi/cli": "^2.1.4",
+    "wagmi": "^2.5.17",
     "typescript": "^5.4.4",
     "viem": "^2.9.13"
   }
