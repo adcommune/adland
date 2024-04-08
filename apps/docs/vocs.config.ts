@@ -5,7 +5,7 @@ export default defineConfig({
   font: {
     google: "Montserrat",
   },
-  logoUrl: "https://i.imgur.com/JUyaIUO.png",
+  logoUrl: "https://i.imgur.com/LYRIycZ.png",
   theme: {
     accentColor: {
       backgroundAccent: { light: "#00429d", dark: "#77ae74" },
