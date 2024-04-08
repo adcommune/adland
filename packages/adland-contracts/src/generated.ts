@@ -580,6 +580,20 @@ export const cfAv1ForwarderAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CommonAdSpaceAsset
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const commonAdSpaceAssetAbi = [
+  {
+    type: 'function',
+    inputs: [{ name: 'underlying', internalType: 'address', type: 'address' }],
+    name: 'getTokenX',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // DirectListingsLogic
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -840,23 +854,6 @@ export const directListingsLogicAbi = [
   },
   {
     type: 'function',
-    inputs: [
-      { name: 'underlyingToken', internalType: 'address', type: 'address' },
-      { name: 'superToken', internalType: 'address', type: 'address' },
-    ],
-    name: 'setTokenX',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: '', internalType: 'address', type: 'address' }],
-    name: 'tokenXs',
-    outputs: [{ name: '', internalType: 'address', type: 'address' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
     inputs: [],
     name: 'totalListings',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
@@ -1056,25 +1053,6 @@ export const directListingsLogicAbi = [
       },
     ],
     name: 'NewSale',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'underlyingToken',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'superToken',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-    ],
-    name: 'TokenXSet',
   },
   {
     type: 'event',
@@ -4507,6 +4485,22 @@ export const useSimulateCfAv1ForwarderUpdateFlowOperatorPermissions =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpaceAssetAbi}__
+ */
+export const useReadCommonAdSpaceAsset = /*#__PURE__*/ createUseReadContract({
+  abi: commonAdSpaceAssetAbi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpaceAssetAbi}__ and `functionName` set to `"getTokenX"`
+ */
+export const useReadCommonAdSpaceAssetGetTokenX =
+  /*#__PURE__*/ createUseReadContract({
+    abi: commonAdSpaceAssetAbi,
+    functionName: 'getTokenX',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link directListingsLogicAbi}__
  *
  * -
@@ -4631,20 +4625,6 @@ export const useReadDirectListingsLogicIsCurrencyApprovedForListing =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link directListingsLogicAbi}__ and `functionName` set to `"tokenXs"`
- *
- * -
- * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0xcCFF64eEff05Bb1F7e80Fe965A5E57ed588FBF94)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xeaF1ed9d91483338d5C8D29179De5F16a337EdE9)
- */
-export const useReadDirectListingsLogicTokenXs =
-  /*#__PURE__*/ createUseReadContract({
-    abi: directListingsLogicAbi,
-    address: directListingsLogicAddress,
-    functionName: 'tokenXs',
-  })
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link directListingsLogicAbi}__ and `functionName` set to `"totalListings"`
  *
  * -
@@ -4751,20 +4731,6 @@ export const useWriteDirectListingsLogicForecloseListing =
     abi: directListingsLogicAbi,
     address: directListingsLogicAddress,
     functionName: 'forecloseListing',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link directListingsLogicAbi}__ and `functionName` set to `"setTokenX"`
- *
- * -
- * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0xcCFF64eEff05Bb1F7e80Fe965A5E57ed588FBF94)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xeaF1ed9d91483338d5C8D29179De5F16a337EdE9)
- */
-export const useWriteDirectListingsLogicSetTokenX =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: directListingsLogicAbi,
-    address: directListingsLogicAddress,
-    functionName: 'setTokenX',
   })
 
 /**
@@ -4879,20 +4845,6 @@ export const useSimulateDirectListingsLogicForecloseListing =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link directListingsLogicAbi}__ and `functionName` set to `"setTokenX"`
- *
- * -
- * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0xcCFF64eEff05Bb1F7e80Fe965A5E57ed588FBF94)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xeaF1ed9d91483338d5C8D29179De5F16a337EdE9)
- */
-export const useSimulateDirectListingsLogicSetTokenX =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: directListingsLogicAbi,
-    address: directListingsLogicAddress,
-    functionName: 'setTokenX',
-  })
-
-/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link directListingsLogicAbi}__ and `functionName` set to `"updateListing"`
  *
  * -
@@ -4987,20 +4939,6 @@ export const useWatchDirectListingsLogicNewSaleEvent =
     abi: directListingsLogicAbi,
     address: directListingsLogicAddress,
     eventName: 'NewSale',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link directListingsLogicAbi}__ and `eventName` set to `"TokenXSet"`
- *
- * -
- * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0xcCFF64eEff05Bb1F7e80Fe965A5E57ed588FBF94)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xeaF1ed9d91483338d5C8D29179De5F16a337EdE9)
- */
-export const useWatchDirectListingsLogicTokenXSetEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: directListingsLogicAbi,
-    address: directListingsLogicAddress,
-    eventName: 'TokenXSet',
   })
 
 /**
