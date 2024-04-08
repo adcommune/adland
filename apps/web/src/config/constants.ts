@@ -54,3 +54,5 @@ export const baseURL = (() => {
 
   return `${protocol}://${url}`
 })()
+
+export const adPlaceholderURL = `https://i.imgur.com/gE8pP8q.png`
