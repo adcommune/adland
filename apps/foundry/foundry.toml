@@ -9,7 +9,7 @@ fs_permissions = [
 
 [etherscan]
 sepolia = { key = "${API_KEY_ETHERSCAN}" }
-optsepolia = { key = "${API_KEY_ETHERSCAN}", chain = 11155420 }
+optsepolia = { key = "${API_KEY_OPTSCAN}", chain = 11155420 }
 
 [rpc_endpoints]
 local = "http://localhost:8545"
