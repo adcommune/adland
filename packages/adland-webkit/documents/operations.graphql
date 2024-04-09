@@ -1,0 +1,326 @@
+query adGroupCreated($id: ID!, $block: Block_height) {
+  adGroupCreated(id: $id, block: $block) {
+    id
+    groupId
+    beneficiary
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adGroupCreateds($skip: Int, $first: Int, $orderBy: AdGroupCreated_orderBy, $orderDirection: OrderDirection, $where: AdGroupCreated_filter, $block: Block_height) {
+  adGroupCreateds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    groupId
+    beneficiary
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceCreated($id: ID!, $block: Block_height) {
+  adSpaceCreated(id: $id, block: $block) {
+    id
+    groupId
+    adId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceCreateds($skip: Int, $first: Int, $orderBy: AdSpaceCreated_orderBy, $orderDirection: OrderDirection, $where: AdSpaceCreated_filter, $block: Block_height) {
+  adSpaceCreateds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    groupId
+    adId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceStrategyUpdated($id: ID!, $block: Block_height) {
+  adSpaceStrategyUpdated(id: $id, block: $block) {
+    id
+    adId
+    strategy
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceStrategyUpdateds($skip: Int, $first: Int, $orderBy: AdSpaceStrategyUpdated_orderBy, $orderDirection: OrderDirection, $where: AdSpaceStrategyUpdated_filter, $block: Block_height) {
+  adSpaceStrategyUpdateds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    adId
+    strategy
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceURIUpdated($id: ID!, $block: Block_height) {
+  adSpaceURIUpdated(id: $id, block: $block) {
+    id
+    adId
+    uri
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceURIUpdateds($skip: Int, $first: Int, $orderBy: AdSpaceURIUpdated_orderBy, $orderDirection: OrderDirection, $where: AdSpaceURIUpdated_filter, $block: Block_height) {
+  adSpaceURIUpdateds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    adId
+    uri
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adminChanged($id: ID!, $block: Block_height) {
+  adminChanged(id: $id, block: $block) {
+    id
+    previousAdmin
+    newAdmin
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adminChangeds($skip: Int, $first: Int, $orderBy: AdminChanged_orderBy, $orderDirection: OrderDirection, $where: AdminChanged_filter, $block: Block_height) {
+  adminChangeds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    previousAdmin
+    newAdmin
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query approval($id: ID!, $block: Block_height) {
+  approval(id: $id, block: $block) {
+    id
+    owner
+    approved
+    tokenId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query approvals($skip: Int, $first: Int, $orderBy: Approval_orderBy, $orderDirection: OrderDirection, $where: Approval_filter, $block: Block_height) {
+  approvals(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    owner
+    approved
+    tokenId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query approvalForAll($id: ID!, $block: Block_height) {
+  approvalForAll(id: $id, block: $block) {
+    id
+    owner
+    operator
+    approved
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query approvalForAlls($skip: Int, $first: Int, $orderBy: ApprovalForAll_orderBy, $orderDirection: OrderDirection, $where: ApprovalForAll_filter, $block: Block_height) {
+  approvalForAlls(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    owner
+    operator
+    approved
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query beaconUpgraded($id: ID!, $block: Block_height) {
+  beaconUpgraded(id: $id, block: $block) {
+    id
+    beacon
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query beaconUpgradeds($skip: Int, $first: Int, $orderBy: BeaconUpgraded_orderBy, $orderDirection: OrderDirection, $where: BeaconUpgraded_filter, $block: Block_height) {
+  beaconUpgradeds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    beacon
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query initialized($id: ID!, $block: Block_height) {
+  initialized(id: $id, block: $block) {
+    id
+    version
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query initializeds($skip: Int, $first: Int, $orderBy: Initialized_orderBy, $orderDirection: OrderDirection, $where: Initialized_filter, $block: Block_height) {
+  initializeds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    version
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query ownershipTransferred($id: ID!, $block: Block_height) {
+  ownershipTransferred(id: $id, block: $block) {
+    id
+    previousOwner
+    newOwner
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query ownershipTransferreds($skip: Int, $first: Int, $orderBy: OwnershipTransferred_orderBy, $orderDirection: OrderDirection, $where: OwnershipTransferred_filter, $block: Block_height) {
+  ownershipTransferreds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    previousOwner
+    newOwner
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query tokenXSet($id: ID!, $block: Block_height) {
+  tokenXSet(id: $id, block: $block) {
+    id
+    underlyingToken
+    superToken
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query tokenXSets($skip: Int, $first: Int, $orderBy: TokenXSet_orderBy, $orderDirection: OrderDirection, $where: TokenXSet_filter, $block: Block_height) {
+  tokenXSets(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    underlyingToken
+    superToken
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query transfer($id: ID!, $block: Block_height) {
+  transfer(id: $id, block: $block) {
+    id
+    from
+    to
+    tokenId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query transfers($skip: Int, $first: Int, $orderBy: Transfer_orderBy, $orderDirection: OrderDirection, $where: Transfer_filter, $block: Block_height) {
+  transfers(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    from
+    to
+    tokenId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query upgraded($id: ID!, $block: Block_height) {
+  upgraded(id: $id, block: $block) {
+    id
+    implementation
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query upgradeds($skip: Int, $first: Int, $orderBy: Upgraded_orderBy, $orderDirection: OrderDirection, $where: Upgraded_filter, $block: Block_height) {
+  upgradeds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    implementation
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}
