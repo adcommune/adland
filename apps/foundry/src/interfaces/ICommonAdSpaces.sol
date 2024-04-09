@@ -6,13 +6,20 @@ import {IAdStrategy} from "./IAdStrategy.sol";
 
 /// @title ICommonAds
 interface ICommonAdSpaces {
-    event AdGroupCreated(uint256 group, address beneficiary);
+    event AdGroupCreated(uint256 indexed groupId, address indexed beneficiary);
 
-    event AdSpaceCreated(uint256 adGroupId, uint256 adId, AdSpace adSpace);
+    event AdSpaceCreated(
+        uint256 indexed groupId,
+        uint256 indexed adId,
+        AdSpace indexed adSpace
+    );
 
-    event AdSpaceURIUpdated(uint256 adId, string uri);
+    event AdSpaceURIUpdated(uint256 indexed adId, string uri);
 
-    event AdSpaceStrategyUpdated(uint256 adId, IAdStrategy strategy);
+    event AdSpaceStrategyUpdated(
+        uint256 indexed adId,
+        IAdStrategy indexed strategy
+    );
 
     event TokenXSet(
         address indexed underlyingToken,
