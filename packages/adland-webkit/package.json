@@ -1,5 +1,8 @@
 {
-  "name": "adland-webkit",
+  "name": "@adland/webkit",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
     "build": "node helpers/ops.cjs https://api.thegraph.com/subgraphs/name/nezz0746/adland-optsepolia",
     "introspect": "npx get-graphql-schema https://api.thegraph.com/subgraphs/name/nezz0746/adland-optsepolia > schema.graphql",
