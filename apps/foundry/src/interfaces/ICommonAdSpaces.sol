@@ -8,11 +8,7 @@ import {IAdStrategy} from "./IAdStrategy.sol";
 interface ICommonAdSpaces {
     event AdGroupCreated(uint256 indexed groupId, address indexed beneficiary);
 
-    event AdSpaceCreated(
-        uint256 indexed groupId,
-        uint256 indexed adId,
-        AdSpace indexed adSpace
-    );
+    event AdSpaceCreated(uint256 indexed groupId, uint256 indexed adId);
 
     event AdSpaceURIUpdated(uint256 indexed adId, string uri);
 
