@@ -64,12 +64,6 @@ contract MarketplaceScript is BaseScript, IExtension {
         }
     }
 
-    function deposit() public broadcastOn(DeployementChain.OptimismSepolia) {
-        IPaymaster(0xe3dc822D77f8cA7ac74c30B0dfFEA9FcDCAAA321).deposit{
-            value: 0.2 ether
-        }();
-    }
-
     function deployLocal() public broadcastOn(DeployementChain.Anvil) {
         weth = new WETH9();
 
@@ -80,17 +74,25 @@ contract MarketplaceScript is BaseScript, IExtension {
         _saveDeployment(address(marketplace), "DirectListingsLogic");
     }
 
-    function deployTestnet()
+    function deployMarketplaceTestnet()
         public
         broadcastOn(DeployementChain.OptimismSepolia)
     {
-        _initialize();
-
         (, address deployer, ) = vm.readCallers();
 
         DirectListingsLogic marketplace = _deployMarketplace(deployer);
 
         _saveDeployment(address(marketplace), "DirectListingsLogic");
+    }
+
+    function deployAdLandTestnet(
+        address marketplace
+    ) public broadcastOn(DeployementChain.OptimismSepolia) {
+        (, address deployer, ) = vm.readCallers();
+
+        console.log("Deploying AdLand", deployer, marketplace);
+
+        _initialize();
 
         CommonAdGroupAdminFactory commonAdGroupFactory = CommonAdGroupAdminFactory(
                 address(
@@ -124,9 +126,6 @@ contract MarketplaceScript is BaseScript, IExtension {
 
         commonAdGroupFactory.transferOwnership(address(commonAds));
         _saveDeployment(address(commonAds), "CommonAdSpaces");
-
-        console.log("Sender:grantRoleTo: ", deployer);
-        _grantTaxManagerRole(address(marketplace), deployer);
 
         TestToken dai = TestToken(daix.getUnderlyingToken());
 
@@ -264,12 +263,5 @@ contract MarketplaceScript is BaseScript, IExtension {
         );
 
         extensions[0] = extensionDirectListings;
-    }
-
-    function _grantTaxManagerRole(address marketplace, address to) internal {
-        MarketplaceV3(payable(marketplace)).grantRole(
-            keccak256("TAX_MANAGER_ROLE"),
-            to
-        );
     }
 }
