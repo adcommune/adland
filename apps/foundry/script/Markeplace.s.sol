@@ -17,6 +17,7 @@ import {AccountProxy} from "tokenbound/AccountProxy.sol";
 import {AccountCreatorConfig} from "../src/lib/ERC6551AccountCreator.sol";
 import {UUPSProxy} from "../src/lib/UUPSProxy.sol";
 import {CommonAdSpaces} from "../src/CommonAdSpaces.sol";
+import {CommonAdGroupAdminFactory} from "../src/CommonAdGroupAdminFactory.sol";
 import {AdSpaceConfig} from "../src/lib/Structs.sol";
 
 interface IPaymaster {
@@ -91,27 +92,38 @@ contract MarketplaceScript is BaseScript, IExtension {
 
         _saveDeployment(address(marketplace), "DirectListingsLogic");
 
-        address commonAdsImplementation = address(new CommonAdSpaces());
+        CommonAdGroupAdminFactory commonAdGroupFactory = CommonAdGroupAdminFactory(
+                address(
+                    new UUPSProxy(
+                        address(new CommonAdGroupAdminFactory()),
+                        abi.encodeWithSelector(
+                            CommonAdGroupAdminFactory.initialize.selector,
+                            AccountCreatorConfig({
+                                registry: registry,
+                                implementation: address(implementation),
+                                accountProxy: address(accountProxy)
+                            })
+                        )
+                    )
+                )
+            );
 
-        CommonAdSpaces commonAdSpaces = CommonAdSpaces(
+        CommonAdSpaces commonAds = CommonAdSpaces(
             address(
                 new UUPSProxy(
-                    commonAdsImplementation,
+                    address(new CommonAdSpaces()),
                     abi.encodeWithSelector(
                         CommonAdSpaces.initialize.selector,
                         address(marketplace),
-                        AccountCreatorConfig(
-                            registry,
-                            address(implementation),
-                            address(accountProxy)
-                        ),
-                        "ipfs://QmVg1sVvrWJ78cEmuxKpnHDKCWcCM8y8VaAJ8gpfe55ut6"
+                        address(commonAdGroupFactory),
+                        ""
                     )
                 )
             )
         );
 
-        _saveDeployment(address(commonAdSpaces), "CommonAdSpaces");
+        commonAdGroupFactory.transferOwnership(address(commonAds));
+        _saveDeployment(address(commonAds), "CommonAdSpaces");
 
         console.log("Sender:grantRoleTo: ", deployer);
         _grantTaxManagerRole(address(marketplace), deployer);
@@ -121,11 +133,8 @@ contract MarketplaceScript is BaseScript, IExtension {
         _saveDeployment(address(ethx), "ETHx");
         _saveDeployment(address(daix), "DAIx");
 
-        commonAdSpaces.setTokenX(
-            CurrencyTransferLib.NATIVE_TOKEN,
-            address(ethx)
-        );
-        commonAdSpaces.setTokenX(address(dai), address(daix));
+        commonAds.setTokenX(CurrencyTransferLib.NATIVE_TOKEN, address(ethx));
+        commonAds.setTokenX(address(dai), address(daix));
 
         MarketplaceV3(payable(address(marketplace))).revokeRole(
             keccak256("LISTER_ROLE"),
@@ -133,7 +142,7 @@ contract MarketplaceScript is BaseScript, IExtension {
         );
         MarketplaceV3(payable(address(marketplace))).grantRole(
             keccak256("LISTER_ROLE"),
-            address(commonAdSpaces)
+            address(commonAds)
         );
 
         MarketplaceV3(payable(address(marketplace))).revokeRole(
@@ -142,11 +151,11 @@ contract MarketplaceScript is BaseScript, IExtension {
         );
         MarketplaceV3(payable(address(marketplace))).grantRole(
             keccak256("ASSET_ROLE"),
-            address(commonAdSpaces)
+            address(commonAds)
         );
 
         // Open sample ad group of 5 ads for deployer
-        commonAdSpaces.createAdGroup(
+        commonAds.createAdGroup(
             deployer,
             AdSpaceConfig(CurrencyTransferLib.NATIVE_TOKEN, 0.001 ether, 120),
             5
