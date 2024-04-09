@@ -397,21 +397,6 @@
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
-      },
-      {
-        "name": "adSpace",
-        "type": "tuple",
-        "indexed": true,
-        "internalType": "struct AdSpace",
-        "components": [
-          { "name": "adGroupId", "type": "uint256", "internalType": "uint256" },
-          { "name": "uri", "type": "string", "internalType": "string" },
-          {
-            "name": "strategy",
-            "type": "address",
-            "internalType": "contract IAdStrategy"
-          }
-        ]
       }
     ],
     "anonymous": false

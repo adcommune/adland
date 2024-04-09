@@ -11,9 +11,6 @@ type AdSpaceCreated @entity(immutable: true) {
   id: Bytes!
   groupId: BigInt! # uint256
   adId: BigInt! # uint256
-  adSpace_adGroupId: BigInt! # uint256
-  adSpace_uri: String! # string
-  adSpace_strategy: Bytes! # address
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
