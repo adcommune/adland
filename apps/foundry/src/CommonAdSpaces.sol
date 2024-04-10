@@ -220,15 +220,7 @@ contract CommonAdSpaces is
 
         _transfer(address(this), admin, adId);
 
-        emit AdSpaceCreated(
-            adGroupId,
-            adId,
-            AdSpace({
-                uri: "",
-                adGroupId: adGroupId,
-                strategy: IAdStrategy(address(0))
-            })
-        );
+        emit AdSpaceCreated(adGroupId, adId);
     }
 
     function _isEmptyString(string memory str) internal pure returns (bool) {

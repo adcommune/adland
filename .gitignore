@@ -36,3 +36,5 @@ yarn-error.log*
 dist/
 
 packages/app-v0
+
+.env

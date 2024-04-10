@@ -17,7 +17,10 @@ import {AccountProxy} from "tokenbound/AccountProxy.sol";
 import {AccountCreatorConfig} from "../src/lib/ERC6551AccountCreator.sol";
 import {UUPSProxy} from "../src/lib/UUPSProxy.sol";
 import {CommonAdSpaces} from "../src/CommonAdSpaces.sol";
+import {CommonAdGroupAdminFactory} from "../src/CommonAdGroupAdminFactory.sol";
 import {AdSpaceConfig} from "../src/lib/Structs.sol";
+import {ISETH} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/tokens/ISETH.sol";
+import {CFAv1Forwarder} from "@superfluid-finance/ethereum-contracts/contracts/utils/CFAv1Forwarder.sol";
 
 interface IPaymaster {
     function deposit() external payable;
@@ -29,6 +32,7 @@ contract MarketplaceScript is BaseScript, IExtension {
     ISuperToken daix;
     ISuperToken ethx;
     address cfav1;
+    address cfav1Fowarder;
 
     address wethSepolia = 0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9;
     address daixSepolia = 0x9Ce2062b085A2268E8d769fFC040f6692315fd2c;
@@ -39,6 +43,8 @@ contract MarketplaceScript is BaseScript, IExtension {
     address daixOptimismSepolia = 0xD6FAF98BeFA647403cc56bDB598690660D5257d2;
     address ethXOptimismSepolia = 0x0043d7c85C8b96a49A72A92C0B48CdC4720437d7;
     address cfav1OptimismSepolia = 0x8a3170AdbC67233196371226141736E4151e7C26;
+    address cfav1FowarderOptimismSepolia =
+        0xcfA132E353cB4E398080B9700609bb008eceB125;
 
     ERC6551Registry public registry =
         ERC6551Registry(0x000000006551c19487814612e58FE06813775758);
@@ -55,18 +61,14 @@ contract MarketplaceScript is BaseScript, IExtension {
             daix = ISuperToken(daixSepolia);
             ethx = ISuperToken(ethXSepolia);
             cfav1 = cfav1Sepolia;
+            cfav1Fowarder = address(0);
         } else if (currentChain == DeployementChain.OptimismSepolia) {
             weth = WETH9(payable(wethOptimismSepolia));
             daix = ISuperToken(daixOptimismSepolia);
             ethx = ISuperToken(ethXOptimismSepolia);
             cfav1 = cfav1OptimismSepolia;
+            cfav1Fowarder = cfav1FowarderOptimismSepolia;
         }
-    }
-
-    function deposit() public broadcastOn(DeployementChain.OptimismSepolia) {
-        IPaymaster(0xe3dc822D77f8cA7ac74c30B0dfFEA9FcDCAAA321).deposit{
-            value: 0.2 ether
-        }();
     }
 
     function deployLocal() public broadcastOn(DeployementChain.Anvil) {
@@ -79,53 +81,92 @@ contract MarketplaceScript is BaseScript, IExtension {
         _saveDeployment(address(marketplace), "DirectListingsLogic");
     }
 
-    function deployTestnet()
-        public
-        broadcastOn(DeployementChain.OptimismSepolia)
-    {
+    function buyFromListing(
+        address marketplace,
+        address commonAds
+    ) public broadcastOn(DeployementChain.OptimismSepolia) {
         _initialize();
 
+        (, address caller, ) = vm.readCallers();
+
+        address tokenX = CommonAdSpaces(commonAds).tokenXs(
+            DirectListingsLogic(marketplace).getListing(1).currency
+        );
+
+        CFAv1Forwarder(cfav1Fowarder).grantPermissions(
+            ISETH(tokenX),
+            marketplace
+        );
+
+        ISETH(address(tokenX)).upgradeByETH{value: 0.001 ether}();
+
+        DirectListingsLogic(marketplace).buyFromListing{value: 0.001 ether}(
+            1,
+            caller,
+            1,
+            CurrencyTransferLib.NATIVE_TOKEN,
+            0.001 ether
+        );
+    }
+
+    function updateURI(
+        address commonAds
+    ) public broadcastOn(DeployementChain.OptimismSepolia) {
+        CommonAdSpaces(commonAds).updateAdURI(
+            1,
+            "ipfs://QmTeEin9GaRkCd5TawveoTunaHFG2zodGaeHNQjMWu3bBn"
+        );
+    }
+
+    function deployAdLandTestnet(
+        address marketplace
+    ) public broadcastOn(DeployementChain.OptimismSepolia) {
         (, address deployer, ) = vm.readCallers();
 
-        DirectListingsLogic marketplace = _deployMarketplace(deployer);
+        console.log("Deploying AdLand", deployer, marketplace);
 
-        _saveDeployment(address(marketplace), "DirectListingsLogic");
+        _initialize();
 
-        address commonAdsImplementation = address(new CommonAdSpaces());
+        CommonAdGroupAdminFactory commonAdGroupFactory = CommonAdGroupAdminFactory(
+                address(
+                    new UUPSProxy(
+                        address(new CommonAdGroupAdminFactory()),
+                        abi.encodeWithSelector(
+                            CommonAdGroupAdminFactory.initialize.selector,
+                            AccountCreatorConfig({
+                                registry: registry,
+                                implementation: address(implementation),
+                                accountProxy: address(accountProxy)
+                            })
+                        )
+                    )
+                )
+            );
 
-        CommonAdSpaces commonAdSpaces = CommonAdSpaces(
+        CommonAdSpaces commonAds = CommonAdSpaces(
             address(
                 new UUPSProxy(
-                    commonAdsImplementation,
+                    address(new CommonAdSpaces()),
                     abi.encodeWithSelector(
                         CommonAdSpaces.initialize.selector,
                         address(marketplace),
-                        AccountCreatorConfig(
-                            registry,
-                            address(implementation),
-                            address(accountProxy)
-                        ),
-                        "ipfs://QmVg1sVvrWJ78cEmuxKpnHDKCWcCM8y8VaAJ8gpfe55ut6"
+                        address(commonAdGroupFactory),
+                        ""
                     )
                 )
             )
         );
 
-        _saveDeployment(address(commonAdSpaces), "CommonAdSpaces");
-
-        console.log("Sender:grantRoleTo: ", deployer);
-        _grantTaxManagerRole(address(marketplace), deployer);
+        commonAdGroupFactory.transferOwnership(address(commonAds));
+        _saveDeployment(address(commonAds), "CommonAdSpaces");
 
         TestToken dai = TestToken(daix.getUnderlyingToken());
 
         _saveDeployment(address(ethx), "ETHx");
         _saveDeployment(address(daix), "DAIx");
 
-        commonAdSpaces.setTokenX(
-            CurrencyTransferLib.NATIVE_TOKEN,
-            address(ethx)
-        );
-        commonAdSpaces.setTokenX(address(dai), address(daix));
+        commonAds.setTokenX(CurrencyTransferLib.NATIVE_TOKEN, address(ethx));
+        commonAds.setTokenX(address(dai), address(daix));
 
         MarketplaceV3(payable(address(marketplace))).revokeRole(
             keccak256("LISTER_ROLE"),
@@ -133,7 +174,7 @@ contract MarketplaceScript is BaseScript, IExtension {
         );
         MarketplaceV3(payable(address(marketplace))).grantRole(
             keccak256("LISTER_ROLE"),
-            address(commonAdSpaces)
+            address(commonAds)
         );
 
         MarketplaceV3(payable(address(marketplace))).revokeRole(
@@ -142,11 +183,11 @@ contract MarketplaceScript is BaseScript, IExtension {
         );
         MarketplaceV3(payable(address(marketplace))).grantRole(
             keccak256("ASSET_ROLE"),
-            address(commonAdSpaces)
+            address(commonAds)
         );
 
         // Open sample ad group of 5 ads for deployer
-        commonAdSpaces.createAdGroup(
+        commonAds.createAdGroup(
             deployer,
             AdSpaceConfig(CurrencyTransferLib.NATIVE_TOKEN, 0.001 ether, 120),
             5
@@ -255,12 +296,5 @@ contract MarketplaceScript is BaseScript, IExtension {
         );
 
         extensions[0] = extensionDirectListings;
-    }
-
-    function _grantTaxManagerRole(address marketplace, address to) internal {
-        MarketplaceV3(payable(marketplace)).grantRole(
-            keccak256("TAX_MANAGER_ROLE"),
-            to
-        );
     }
 }

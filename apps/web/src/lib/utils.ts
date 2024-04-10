@@ -23,3 +23,9 @@ export const getExplorerLink = (
 export const getGatewayUri = (ipfsURI: string) => {
   return `${ipfsGateway}/${ipfsURI.split('ipfs://')[1]}`
 }
+
+export const fetchJSON = async (url: string) => {
+  return fetch(url).then((res) => {
+    return res.json()
+  })
+}

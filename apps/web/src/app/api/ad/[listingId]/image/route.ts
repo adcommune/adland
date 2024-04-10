@@ -1,17 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getGatewayUri } from '@/lib/utils'
-import { fetchAd } from '@/lib/ad'
 import { adPlaceholderURL } from '@/config/constants'
+import { adland } from '@/lib/services'
+import { resolveAdSpaceWithMetadata } from '@/lib/helpers'
 
 export const dynamic = 'force-dynamic'
 
 type GetAdsRouteParams = { params: { listingId: string } }
 
 export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
-  const data = await fetchAd(params.listingId)
+  const ad = await adland
+    .adSpace({
+      id: params.listingId,
+    })
+    .then((response) => {
+      return response.adSpace
+    })
 
-  if (Boolean(data.metadata) && data.metadata?.image) {
-    return NextResponse.redirect(getGatewayUri(data.metadata?.image))
+  const { metadata } = await resolveAdSpaceWithMetadata(ad)
+
+  if (metadata) {
+    if (metadata.imageGatewayURI) {
+      return NextResponse.redirect(metadata.imageGatewayURI)
+    }
   }
 
   return NextResponse.redirect(adPlaceholderURL)
