@@ -19,6 +19,8 @@ import {UUPSProxy} from "../src/lib/UUPSProxy.sol";
 import {CommonAdSpaces} from "../src/CommonAdSpaces.sol";
 import {CommonAdGroupAdminFactory} from "../src/CommonAdGroupAdminFactory.sol";
 import {AdSpaceConfig} from "../src/lib/Structs.sol";
+import {ISETH} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/tokens/ISETH.sol";
+import {CFAv1Forwarder} from "@superfluid-finance/ethereum-contracts/contracts/utils/CFAv1Forwarder.sol";
 
 interface IPaymaster {
     function deposit() external payable;
@@ -30,6 +32,7 @@ contract MarketplaceScript is BaseScript, IExtension {
     ISuperToken daix;
     ISuperToken ethx;
     address cfav1;
+    address cfav1Fowarder;
 
     address wethSepolia = 0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9;
     address daixSepolia = 0x9Ce2062b085A2268E8d769fFC040f6692315fd2c;
@@ -40,6 +43,8 @@ contract MarketplaceScript is BaseScript, IExtension {
     address daixOptimismSepolia = 0xD6FAF98BeFA647403cc56bDB598690660D5257d2;
     address ethXOptimismSepolia = 0x0043d7c85C8b96a49A72A92C0B48CdC4720437d7;
     address cfav1OptimismSepolia = 0x8a3170AdbC67233196371226141736E4151e7C26;
+    address cfav1FowarderOptimismSepolia =
+        0xcfA132E353cB4E398080B9700609bb008eceB125;
 
     ERC6551Registry public registry =
         ERC6551Registry(0x000000006551c19487814612e58FE06813775758);
@@ -56,11 +61,13 @@ contract MarketplaceScript is BaseScript, IExtension {
             daix = ISuperToken(daixSepolia);
             ethx = ISuperToken(ethXSepolia);
             cfav1 = cfav1Sepolia;
+            cfav1Fowarder = address(0);
         } else if (currentChain == DeployementChain.OptimismSepolia) {
             weth = WETH9(payable(wethOptimismSepolia));
             daix = ISuperToken(daixOptimismSepolia);
             ethx = ISuperToken(ethXOptimismSepolia);
             cfav1 = cfav1OptimismSepolia;
+            cfav1Fowarder = cfav1FowarderOptimismSepolia;
         }
     }
 
@@ -74,15 +81,41 @@ contract MarketplaceScript is BaseScript, IExtension {
         _saveDeployment(address(marketplace), "DirectListingsLogic");
     }
 
-    function deployMarketplaceTestnet()
-        public
-        broadcastOn(DeployementChain.OptimismSepolia)
-    {
-        (, address deployer, ) = vm.readCallers();
+    function buyFromListing(
+        address marketplace,
+        address commonAds
+    ) public broadcastOn(DeployementChain.OptimismSepolia) {
+        _initialize();
 
-        DirectListingsLogic marketplace = _deployMarketplace(deployer);
+        (, address caller, ) = vm.readCallers();
 
-        _saveDeployment(address(marketplace), "DirectListingsLogic");
+        address tokenX = CommonAdSpaces(commonAds).tokenXs(
+            DirectListingsLogic(marketplace).getListing(1).currency
+        );
+
+        CFAv1Forwarder(cfav1Fowarder).grantPermissions(
+            ISETH(tokenX),
+            marketplace
+        );
+
+        ISETH(address(tokenX)).upgradeByETH{value: 0.001 ether}();
+
+        DirectListingsLogic(marketplace).buyFromListing{value: 0.001 ether}(
+            1,
+            caller,
+            1,
+            CurrencyTransferLib.NATIVE_TOKEN,
+            0.001 ether
+        );
+    }
+
+    function updateURI(
+        address commonAds
+    ) public broadcastOn(DeployementChain.OptimismSepolia) {
+        CommonAdSpaces(commonAds).updateAdURI(
+            1,
+            "ipfs://QmTeEin9GaRkCd5TawveoTunaHFG2zodGaeHNQjMWu3bBn"
+        );
     }
 
     function deployAdLandTestnet(
