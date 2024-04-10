@@ -20,7 +20,7 @@ export default defineConfig(async () => {
         deployments,
         include: [
           "DirectListingsLogic.sol/*.json",
-          "AdCommonOwnership.sol/*.json",
+          "CommonAdSpaces.sol/*.json",
           "SuperToken.sol/*.json",
           "ISETH.sol/*.json",
           "CFAv1Forwarder.sol/*.json",

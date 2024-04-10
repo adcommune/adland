@@ -14,6 +14,20 @@ const config: CodegenConfig = {
       ],
       config: {},
     },
+    "./src/hooks.ts": {
+      plugins: [
+        "typescript",
+        "typescript-operations",
+        "typescript-react-query",
+      ],
+      config: {
+        reactQueryVersion: 5,
+        fetcher: {
+          endpoint: constants.subgraphUrl,
+          fetchParams: {},
+        },
+      },
+    },
   },
 };
 
