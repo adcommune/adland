@@ -14,7 +14,9 @@ import {
   Upgraded as UpgradedEvent,
 } from "../generated/CommonAdSpaces/CommonAdSpaces";
 import {
+  AdGroup,
   AdGroupCreated,
+  AdSpace,
   AdSpaceCreated,
   AdSpaceStrategyUpdated,
   AdSpaceURIUpdated,
@@ -41,6 +43,14 @@ export function handleAdGroupCreated(event: AdGroupCreatedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let adGroup = new AdGroup(event.params.groupId.toString());
+
+  adGroup.beneficiary = event.params.beneficiary;
+  adGroup.blockTimestamp = event.block.timestamp;
+  adGroup.transactionHash = event.transaction.hash;
+
+  adGroup.save();
 }
 
 export function handleAdSpaceCreated(event: AdSpaceCreatedEvent): void {
@@ -55,6 +65,14 @@ export function handleAdSpaceCreated(event: AdSpaceCreatedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let adSpace = new AdSpace(event.params.adId.toString());
+
+  adSpace.adGroup = event.params.groupId.toString();
+  adSpace.blockTimestamp = event.block.timestamp;
+  adSpace.transactionHash = event.transaction.hash;
+
+  adSpace.save();
 }
 
 export function handleAdSpaceStrategyUpdated(
@@ -85,6 +103,13 @@ export function handleAdSpaceURIUpdated(event: AdSpaceURIUpdatedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let adSpace = AdSpace.load(event.params.adId.toString());
+
+  if (adSpace) {
+    adSpace.uri = event.params.uri;
+    adSpace.save();
+  }
 }
 
 export function handleAdminChanged(event: AdminChangedEvent): void {

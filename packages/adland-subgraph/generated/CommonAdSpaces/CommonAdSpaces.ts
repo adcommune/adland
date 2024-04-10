@@ -52,10 +52,6 @@ export class AdSpaceCreated__Params {
   get adId(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
-
-  get adSpace(): Bytes {
-    return this._event.parameters[2].value.toBytes();
-  }
 }
 
 export class AdSpaceStrategyUpdated extends ethereum.Event {

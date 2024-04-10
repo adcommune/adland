@@ -1,3 +1,19 @@
+type AdGroup @entity(immutable: false) {
+  id: String!
+  beneficiary: Bytes!
+  adSpaces: [AdSpace!]! @derivedFrom(field: "adGroup")
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type AdSpace @entity(immutable: false) {
+  id: String!
+  adGroup: AdGroup!
+  uri: String
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
 type AdGroupCreated @entity(immutable: true) {
   id: Bytes!
   groupId: BigInt! # uint256
