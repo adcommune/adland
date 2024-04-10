@@ -1,10 +1,9 @@
 import { CodegenConfig } from "@graphql-codegen/cli";
+import { constants } from "@adland/common";
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: [
-    "https://api.thegraph.com/subgraphs/name/nezz0746/adland-optsepolia",
-  ],
+  schema: [constants.subgraphUrl],
   documents: "./documents/**/*.graphql",
   generates: {
     "./src/generated.ts": {

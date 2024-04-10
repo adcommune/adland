@@ -3,6 +3,7 @@
   "scripts": {
     "build": "dotenv -- turbo build",
     "dev": "dotenv -- turbo dev",
+    "codegen": "dotenv -- turbo codegen",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "clean": "turbo clean",
