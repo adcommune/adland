@@ -153,6 +153,9 @@ importers:
 
   packages/adland-common:
     dependencies:
+      typescript:
+        specifier: ^5.4.4
+        version: 5.4.4
       viem:
         specifier: ^2.9.13
         version: 2.9.13(typescript@5.4.4)(zod@3.22.4)
@@ -160,9 +163,6 @@ importers:
       '@types/node':
         specifier: ^20.10.8
         version: 20.12.5
-      typescript:
-        specifier: ^5.4.4
-        version: 5.4.4
 
   packages/adland-contracts:
     devDependencies:
