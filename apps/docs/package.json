@@ -10,6 +10,7 @@
     "@repo/tailwind-config": "*",
     "react": "latest",
     "react-dom": "latest",
-    "vocs": "latest"
+    "vocs": "latest",
+    "yaml": "^2.4.1"
   }
 }

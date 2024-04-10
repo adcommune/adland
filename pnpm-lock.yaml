@@ -41,6 +41,9 @@ importers:
       vocs:
         specifier: latest
         version: 1.0.0-alpha.45(@types/react@18.2.74)(react-dom@18.2.0)(react@18.2.0)(rollup@4.14.1)(typescript@5.4.4)
+      yaml:
+        specifier: ^2.4.1
+        version: 2.4.1
 
   apps/web:
     dependencies:
