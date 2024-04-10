@@ -212,12 +212,18 @@ importers:
       '@graphql-codegen/typescript-operations':
         specifier: ^4.2.0
         version: 4.2.0(graphql@16.8.1)
+      '@graphql-codegen/typescript-react-query':
+        specifier: ^6.1.0
+        version: 6.1.0(graphql@16.8.1)
       '@graphql-codegen/typescript-resolvers':
         specifier: ^4.0.6
         version: 4.0.6(graphql@16.8.1)
       '@graphql-tools/utils':
         specifier: ^10.1.2
         version: 10.1.2(graphql@16.8.1)
+      '@tanstack/react-query':
+        specifier: ^5.29.0
+        version: 5.29.0(react@18.2.0)
       axios:
         specifier: ^1.6.8
         version: 1.6.8
@@ -2855,6 +2861,23 @@ packages:
       '@graphql-codegen/typescript': 4.0.6(graphql@16.8.1)
       '@graphql-codegen/visitor-plugin-common': 5.1.0(graphql@16.8.1)
       auto-bind: 4.0.0
+      graphql: 16.8.1
+      tslib: 2.6.2
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: true
+
+  /@graphql-codegen/typescript-react-query@6.1.0(graphql@16.8.1):
+    resolution: {integrity: sha512-SpaQ13fOZmog/xjgKnb7/G1CZSK54wopEbPBSav0IHN99iHaA4lJi6xJJoWrlDutOPgB26KAfGEXTD+lTm9esg==}
+    engines: {node: '>= 16.0.0'}
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.8.1)
+      '@graphql-codegen/visitor-plugin-common': 2.13.1(graphql@16.8.1)
+      auto-bind: 4.0.0
+      change-case-all: 1.0.15
       graphql: 16.8.1
       tslib: 2.6.2
     transitivePeerDependencies:

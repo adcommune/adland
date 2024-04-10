@@ -8,8 +8,9 @@
     "preserveWatchOutput": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "strict": true
+    "strict": true,
+    "lib": ["ESNext", "ES2015"],
   },
-  "include": ["src/index.ts"],
+  "include": ["src/index.ts", "src/hooks.ts"],
   "exclude": ["node_modules"]
 }
