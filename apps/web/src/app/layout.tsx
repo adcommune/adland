@@ -9,6 +9,10 @@ export const metadata: Metadata = {
     template: '%s - AdLand',
     default: 'AdLand - Revenue for your community',
   },
+  openGraph: {
+    title: 'AdLand - Revenue for your community',
+    images: ['https://i.imgur.com/Jjz6HxX.jpg'],
+  },
   description:
     'AdLand is a protocol to generate revenue for your community through collective advertising ownershup.',
 }
