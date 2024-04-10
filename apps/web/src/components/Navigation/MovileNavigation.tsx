@@ -40,7 +40,7 @@ function MobileNavigation() {
           >
             {nav_links.map((link) => {
               return (
-                <MobileNavLink href={link.href}>
+                <MobileNavLink href={link.href} key={link.href}>
                   <div className="flex flex-row items-center justify-between fill-black">
                     {link.name}
                     {link.icon}
