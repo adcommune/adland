@@ -1,4 +1,82 @@
-query adGroupCreated($id: ID!, $block: Block_height) {
+query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGroup_adSpaces_first: Int, $adGroup_adSpaces_orderBy: AdSpace_orderBy, $adGroup_adSpaces_orderDirection: OrderDirection, $adGroup_adSpaces_where: AdSpace_filter) {
+  adGroup(id: $id, block: $block) {
+    id
+    beneficiary
+    adSpaces(
+      skip: $adGroup_adSpaces_skip
+      first: $adGroup_adSpaces_first
+      orderBy: $adGroup_adSpaces_orderBy
+      orderDirection: $adGroup_adSpaces_orderDirection
+      where: $adGroup_adSpaces_where
+    ) {
+      id
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    blockTimestamp
+    transactionHash
+  }
+}query adGroups($skip: Int, $first: Int, $orderBy: AdGroup_orderBy, $orderDirection: OrderDirection, $where: AdGroup_filter, $block: Block_height, $adGroups_adSpaces_skip: Int, $adGroups_adSpaces_first: Int, $adGroups_adSpaces_orderBy: AdSpace_orderBy, $adGroups_adSpaces_orderDirection: OrderDirection, $adGroups_adSpaces_where: AdSpace_filter) {
+  adGroups(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    beneficiary
+    adSpaces(
+      skip: $adGroups_adSpaces_skip
+      first: $adGroups_adSpaces_first
+      orderBy: $adGroups_adSpaces_orderBy
+      orderDirection: $adGroups_adSpaces_orderDirection
+      where: $adGroups_adSpaces_where
+    ) {
+      id
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    blockTimestamp
+    transactionHash
+  }
+}query adSpace($id: ID!, $block: Block_height) {
+  adSpace(id: $id, block: $block) {
+    id
+    adGroup {
+      id
+      beneficiary
+      blockTimestamp
+      transactionHash
+    }
+    uri
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaces($skip: Int, $first: Int, $orderBy: AdSpace_orderBy, $orderDirection: OrderDirection, $where: AdSpace_filter, $block: Block_height) {
+  adSpaces(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    adGroup {
+      id
+      beneficiary
+      blockTimestamp
+      transactionHash
+    }
+    uri
+    blockTimestamp
+    transactionHash
+  }
+}query adGroupCreated($id: ID!, $block: Block_height) {
   adGroupCreated(id: $id, block: $block) {
     id
     groupId
