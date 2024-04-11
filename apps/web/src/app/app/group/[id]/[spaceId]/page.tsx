@@ -1,14 +1,15 @@
 'use client'
 
+import { Container } from '@/components/Container'
 import { useParams } from 'next/navigation'
 
 const AdSpacePage = () => {
   const { spaceId } = useParams()
 
   return (
-    <div>
+    <Container>
       <h1>AdSpacePage: {spaceId}</h1>
-    </div>
+    </Container>
   )
 }
 
