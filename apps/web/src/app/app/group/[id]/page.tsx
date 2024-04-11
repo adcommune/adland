@@ -1,8 +1,8 @@
 import { Container } from '@/components/Container'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { AdLand } from '@/lib/services'
 import Link from 'next/link'
 import Image from 'next/image'
+import { AdLand } from '@/lib/adland'
 
 const GroupPage = async ({ params: { id } }: { params: { id: string } }) => {
   const { adSpaces } = await new AdLand().getGroup(id)
