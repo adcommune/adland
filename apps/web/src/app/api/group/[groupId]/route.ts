@@ -1,5 +1,5 @@
+import { AdLand } from '@/lib/adland'
 import { NextResponse, NextRequest } from 'next/server'
-import { AdLand } from '@/lib/services'
 
 type GetAdsRouteParams = { params: { groupId: string } }
 
