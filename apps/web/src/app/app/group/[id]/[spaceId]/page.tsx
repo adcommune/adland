@@ -1,4 +1,6 @@
-import { Copy, ShoppingCart } from 'lucide-react'
+'use client'
+
+import { Copy } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -15,18 +17,25 @@ import Image from 'next/image'
 import { format } from 'date-fns'
 import { formatEther } from 'viem'
 import { truncateAddress } from '@/lib/utils'
+import AcquireLeaseActions from './components/AcquireLeaseButton'
+import { useQuery } from '@tanstack/react-query'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
 }
 
-const AdSpacePage = async ({ params: { spaceId } }: AdSpacePageProps) => {
-  const adSpace = await new AdLand().getAdSpace(spaceId)
+const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
+  const { data: adSpace } = useQuery({
+    queryFn: () => new AdLand().getAdSpace(spaceId),
+    queryKey: ['adSpace', spaceId],
+  })
+
+  if (!adSpace) return null
 
   const { listing } = adSpace
 
   return (
-    <Container className="relative flex min-h-[80vh] flex-row gap-4 py-4">
+    <Container className="relative flex min-h-[80vh] flex-row items-start gap-4 py-4">
       <Card className="overflow-hidden font-body">
         <CardHeader className="flex flex-row items-start gap-8 bg-muted/50">
           <div className="grid gap-0.5">
@@ -47,26 +56,7 @@ const AdSpacePage = async ({ params: { spaceId } }: AdSpacePageProps) => {
             </CardDescription>
           </div>
           <div className="ml-auto flex items-center gap-1">
-            <Button size="sm" variant="default" className="h-8 gap-1">
-              <ShoppingCart className="h-3.5 w-3.5" />
-              <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                Acquire space
-              </span>
-            </Button>
-            {/* <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="icon" variant="outline" className="h-8 w-8">
-                  <MoreVertical className="h-3.5 w-3.5" />
-                  <span className="sr-only">More</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem>Export</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Trash</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu> */}
+            <AcquireLeaseActions listing={listing} />
           </div>
         </CardHeader>
         <CardContent className="p-6 text-sm">
