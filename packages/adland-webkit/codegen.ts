@@ -12,7 +12,9 @@ const config: CodegenConfig = {
         "typescript-operations",
         "typescript-graphql-request",
       ],
-      config: {},
+      config: {
+        typesSuffix: "_subgraph",
+      },
     },
     "./src/hooks.ts": {
       plugins: [
