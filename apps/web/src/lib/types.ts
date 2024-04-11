@@ -2,6 +2,12 @@ import { directListingsLogicAbi } from '@adland/contracts'
 import { AdSpace_subgraph } from '@adland/webkit'
 import { ContractFunctionReturnType } from 'viem'
 
+export type Listing = ContractFunctionReturnType<
+  typeof directListingsLogicAbi,
+  'view',
+  'getListing'
+>
+
 /**
  * AdSpace is a stitched together object
  * - Listing returned from the marketplace contract
@@ -29,11 +35,7 @@ import { ContractFunctionReturnType } from 'viem'
 export type AdSpace = {
   // Omits adGroup from AdSpace_subgraph, query directly the adGroup if needed
   adSpace_subgraph: Omit<AdSpace_subgraph, 'adGroup'>
-  listing: ContractFunctionReturnType<
-    typeof directListingsLogicAbi,
-    'view',
-    'getListing'
-  >
+  listing: Listing
   // undefined if adSpace_subgraph.uri undefined
   metadata?: {
     name: string
