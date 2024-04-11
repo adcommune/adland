@@ -1,12 +1,13 @@
 import { Chain, optimismSepolia, sepolia } from 'wagmi/chains'
-import { alchemyKey, pinataCloudGateway } from './variables'
+import { alchemyKey } from './variables'
 import { Address } from 'viem'
+import { constants } from '@adland/common'
 
 export const defaultChain: Chain = optimismSepolia
 
 export const NATIVE_CURRENCY = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 
-export const ipfsGateway = `https://${pinataCloudGateway}/ipfs`
+export const ipfsGateway = `https://${constants.pinataPublicGateway}/ipfs`
 
 export const alchemyUrlByChain: Record<number, string> = {
   [sepolia.id]: `https://eth-sepolia.g.alchemy.com/v2/${alchemyKey}`,
@@ -56,3 +57,5 @@ export const baseURL = (() => {
 })()
 
 export const adPlaceholderURL = `https://i.imgur.com/gE8pP8q.png`
+
+export const MAX_BPS = 10000

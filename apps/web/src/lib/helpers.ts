@@ -1,8 +1,8 @@
-import { AdSpaceQuery } from '@adland/webkit'
+import { AdSpaceQuery_subgraph } from '@adland/webkit'
 import { fetchJSON, getGatewayUri } from './utils'
 
 export const resolveAdSpaceWithMetadata = async (
-  ad: AdSpaceQuery['adSpace'],
+  ad: AdSpaceQuery_subgraph['adSpace'],
 ) => {
   const uri = ad?.uri
   const gatewayURI = uri ? getGatewayUri(uri) : null

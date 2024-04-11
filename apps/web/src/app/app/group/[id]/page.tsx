@@ -1,14 +1,27 @@
 import { Container } from '@/components/Container'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { AdLand } from '@/lib/services'
 import Link from 'next/link'
 import Image from 'next/image'
+import { AdLand } from '@/lib/adland'
 
 const GroupPage = async ({ params: { id } }: { params: { id: string } }) => {
   const { adSpaces } = await new AdLand().getGroup(id)
 
   return (
-    <Container className="p-4">
+    <Container className="flex flex-col gap-2 p-4">
+      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+        <Card x-chunk="dashboard-01-chunk-0">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">--,--- ETH</div>
+            <p className="text-xs text-muted-foreground">
+              +--.-% from last month
+            </p>
+          </CardContent>
+        </Card>
+      </div>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
         {adSpaces?.map((adSpace, index) => {
           return (
