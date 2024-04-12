@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import useAppContracts from '@/hooks/useAppContracts'
 import { getWeeklyTaxDue } from '@/lib/utils'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { formatEther } from 'viem'
 import {
   useAccount,
@@ -13,22 +13,25 @@ import {
   useWriteContract,
 } from 'wagmi'
 import { format, addWeeks } from 'date-fns'
-import { Listing } from '@/lib/types'
+import { AdSpace, Listing } from '@/lib/types'
 import {
   useReadSuperTokenBalanceOf,
   useSimulateDirectListingsLogicBuyFromListing,
   useWriteIsethUpgradeByEth,
 } from '@adland/contracts'
 import { NATIVE_CURRENCY } from '@/config/constants'
-import { ShoppingCart } from 'lucide-react'
 import Modal from '@/components/Modal'
+import { useParams } from 'next/navigation'
+import { queryClient } from '@/app/app/providers'
+import { ModalContext } from '@/context/ModalContext'
 
 const AcquireLeaseActions = ({ listing }: { listing: Listing }) => {
-  const { listingId, taxRate, pricePerToken, assetContract, tokenId } = listing
+  const { spaceId } = useParams()
+  const { listingId, taxRate, pricePerToken } = listing
   const { address } = useAccount()
   const { ethx } = useAppContracts()
   const [numberOfWeeks, setNumberOfWeeks] = useState<number>(1)
-  const [showModal, setShowModal] = useState(false)
+  const { acquireLeaseModal } = useContext(ModalContext)
 
   const { data: ethXBalane } = useReadSuperTokenBalanceOf({
     address: ethx,
@@ -59,14 +62,62 @@ const AcquireLeaseActions = ({ listing }: { listing: Listing }) => {
     query: { enabled: true },
   })
 
-  const { data: hash, writeContract, isPending } = useWriteContract()
+  const {
+    data: hash,
+    writeContract,
+    isPending,
+  } = useWriteContract({
+    mutation: {
+      onMutate: async () => {
+        const previousAdSpace = queryClient.getQueryData(['adSpace-', spaceId])
 
-  const { isLoading } = useWaitForTransactionReceipt({
+        if (!address) return { previousAdSpace }
+
+        queryClient.setQueryData(
+          ['adSpace-', spaceId],
+          (old: AdSpace): AdSpace => {
+            return {
+              ...old,
+              listing: {
+                ...old.listing,
+                listingOwner: address,
+              },
+            }
+          },
+        )
+
+        return { previousAdSpace }
+      },
+      onError: async (error, request, context) => {
+        queryClient.setQueryData(['adSpace', spaceId], context?.previousAdSpace)
+      },
+      onSettled: (data, error) => {
+        if (error)
+          queryClient.invalidateQueries({
+            queryKey: ['adSpace-', spaceId],
+          })
+      },
+    },
+  })
+
+  const {
+    data: txSuccess,
+    isLoading,
+    isStale,
+    status,
+  } = useWaitForTransactionReceipt({
     hash,
     query: {
       enabled: Boolean(hash),
+      select: (receipt) => receipt.status === 'success',
     },
   })
+
+  useEffect(() => {
+    if (txSuccess) {
+      acquireLeaseModal.set(false)
+    }
+  }, [txSuccess])
 
   const takoverLoading = isPending || isLoading
 
@@ -76,25 +127,13 @@ const AcquireLeaseActions = ({ listing }: { listing: Listing }) => {
 
   return (
     <>
-      <Button
-        size="sm"
-        variant="default"
-        className="h-8 gap-1"
-        onClick={() => {
-          setShowModal(true)
-        }}
-      >
-        <ShoppingCart className="h-3.5 w-3.5" />
-        <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-          Acquire space
-        </span>
-      </Button>
       <Modal
         title="Acquire Lease"
         description="Acquire lease for this space."
-        isOpen={showModal}
+        isOpen={acquireLeaseModal.show}
         closeModal={() => {
-          setShowModal(false)
+          console.log('close')
+          acquireLeaseModal.set(false)
         }}
         renderConfirm={() => {
           return (
