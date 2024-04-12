@@ -62,50 +62,9 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
     query: { enabled: true },
   })
 
-  const {
-    data: hash,
-    writeContract,
-    isPending,
-  } = useWriteContract({
-    mutation: {
-      onMutate: async () => {
-        const previousAdSpace = queryClient.getQueryData(['adSpace-', spaceId])
+  const { data: hash, writeContract, isPending } = useWriteContract({})
 
-        if (!address) return { previousAdSpace }
-
-        queryClient.setQueryData(
-          ['adSpace-', spaceId],
-          (old: AdSpace): AdSpace => {
-            return {
-              ...old,
-              listing: {
-                ...old.listing,
-                listingOwner: address,
-              },
-            }
-          },
-        )
-
-        return { previousAdSpace }
-      },
-      onError: async (error, request, context) => {
-        queryClient.setQueryData(['adSpace', spaceId], context?.previousAdSpace)
-      },
-      onSettled: (data, error) => {
-        if (error)
-          queryClient.invalidateQueries({
-            queryKey: ['adSpace-', spaceId],
-          })
-      },
-    },
-  })
-
-  const {
-    data: txSuccess,
-    isLoading,
-    isStale,
-    status,
-  } = useWaitForTransactionReceipt({
+  const { data: txSuccess, isLoading } = useWaitForTransactionReceipt({
     hash,
     query: {
       enabled: Boolean(hash),
@@ -116,6 +75,23 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
   useEffect(() => {
     if (txSuccess) {
       acquireLeaseModal.set(false)
+
+      const previousAdSpace = queryClient.getQueryData(['adSpace-', spaceId])
+
+      if (!address) return { previousAdSpace }
+
+      queryClient.setQueryData(
+        ['adSpace-', spaceId],
+        (old: AdSpace): AdSpace => {
+          return {
+            ...old,
+            listing: {
+              ...old.listing,
+              listingOwner: address,
+            },
+          }
+        },
+      )
     }
   }, [txSuccess])
 
