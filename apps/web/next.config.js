@@ -7,7 +7,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*',
+        hostname: constants.pinataPublicGateway,
+        pathname: '/ipfs/**',
       },
     ],
   },

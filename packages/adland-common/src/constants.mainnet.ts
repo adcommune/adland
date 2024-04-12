@@ -3,6 +3,6 @@ import { Constants } from "./types";
 
 export const constants: Constants = {
   subgraphUrl: "",
-  pinataPublicGateway: "amethyst-representative-mandrill-369.mypinata.cloud	",
+  pinataPublicGateway: "amethyst-representative-mandrill-369.mypinata.cloud",
   chain: optimism,
 };
