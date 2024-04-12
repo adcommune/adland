@@ -1,6 +1,6 @@
 'use client'
 
-import { Copy, ImageIcon, ShoppingCart } from 'lucide-react'
+import { Copy, ImageIcon, MoreVertical, ShoppingCart } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -25,6 +25,14 @@ import AcquireLeaseModal from '@/components/AcquireLeaseModal'
 import UpdateAdDataDialog from '@/components/UpdateAdDataModal'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
@@ -32,7 +40,9 @@ type AdSpacePageProps = {
 
 const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
   const { address } = useAccount()
-  const { acquireLeaseModal, updateAdDataModal } = useContext(ModalContext)
+  const { acquireLeaseModal, updateAdDataModal, selfAssessmentModal } =
+    useContext(ModalContext)
+
   const { data: adSpace, isLoading } = useQuery({
     queryFn: () => new AdLand().getAdSpace(spaceId),
     queryKey: ['adSpace-', spaceId],
@@ -46,7 +56,7 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
 
   return (
     <Container className="relative flex min-h-[80vh] flex-row items-start gap-4 py-4">
-      <Card className="overflow-hidden font-body">
+      <Card className="w-[400px] overflow-hidden font-body">
         <CardHeader className="flex flex-row items-start gap-8 bg-muted/50">
           <div className="grid gap-0.5">
             <CardTitle className="group flex items-center gap-2 text-lg">
@@ -97,8 +107,33 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
                 </Button>
               </>
             )}
+            {isOwner && (
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="icon" variant="outline" className="h-8 w-8">
+                      <MoreVertical className="h-3.5 w-3.5" />
+                      <span className="sr-only">More</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        selfAssessmentModal.set(true)
+                      }}
+                    >
+                      Self Assess
+                    </DropdownMenuItem>
+                    {/* <DropdownMenuItem>Give up</DropdownMenuItem> */}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem disabled>Give up</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <SelfPriceAssementModal adSpace={adSpace} />
+                <UpdateAdDataDialog adSpace={adSpace} />
+              </>
+            )}
             <AcquireLeaseModal listing={listing} />
-            <UpdateAdDataDialog adSpace={adSpace} />
           </div>
         </CardHeader>
         <CardContent className="p-6 text-sm">

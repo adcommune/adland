@@ -152,7 +152,7 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
         },
       )
     }
-  }, [isSuccess, data])
+  }, [isSuccess])
 
   const contentUpdating = isPending || uploadingData || txPending
 
