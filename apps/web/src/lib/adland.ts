@@ -1,9 +1,8 @@
 import { GraphQLClient } from 'graphql-request'
-import { AdSpaceQuery_subgraph, getSdk as getAdLand } from '@adland/webkit'
+import { getSdk as getAdLand } from '@adland/webkit'
 import { constants } from '@adland/common'
-import { resolveAdSpaceWithMetadata } from './helpers'
 import { Market } from './market'
-import { AdSpace } from './types'
+import { AdGroup, AdSpace, Metadata } from './types'
 import { fetchJSON, getGatewayUri } from './utils'
 
 export class AdLand {
@@ -13,7 +12,7 @@ export class AdLand {
     this.adland = getAdLand(new GraphQLClient(constants.subgraphUrl))
   }
 
-  async getGroup(id: string) {
+  async getGroup(id: string): Promise<AdGroup> {
     const group = await this.adland
       .adGroup({
         id,
@@ -25,17 +24,15 @@ export class AdLand {
     if (!group) {
       throw new Error('Group not found')
     } else {
-      const group_response = {
-        ...group,
+      return {
+        adGroup_subgraph: group,
         adSpaces: await Promise.all(
-          group.adSpaces.map(async (adSpace) =>
-            resolveAdSpaceWithMetadata(
-              adSpace as AdSpaceQuery_subgraph['adSpace'],
-            ),
-          ),
+          group.adSpaces.map(async (adSpace) => ({
+            adSpace_subgraph: adSpace,
+            metadata: await this._getAdSpaceMetadata(adSpace.uri),
+          })),
         ),
       }
-      return group_response
     }
   }
 
@@ -48,7 +45,18 @@ export class AdLand {
       throw new Error('AdSpace not found')
     }
 
-    const uri = adSpace?.uri
+    const metadata = await this._getAdSpaceMetadata(adSpace.uri)
+
+    return {
+      adSpace_subgraph: adSpace,
+      listing,
+      metadata,
+    }
+  }
+
+  private async _getAdSpaceMetadata(
+    uri: string | undefined | null,
+  ): Promise<Metadata> {
     const gatewayURI = uri ? getGatewayUri(uri) : null
 
     const metadata = gatewayURI ? await fetchJSON(gatewayURI) : null
@@ -59,10 +67,6 @@ export class AdLand {
         : null
     }
 
-    return {
-      adSpace_subgraph: adSpace,
-      listing,
-      metadata,
-    }
+    return metadata
   }
 }

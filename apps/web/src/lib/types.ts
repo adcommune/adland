@@ -1,5 +1,5 @@
 import { directListingsLogicAbi } from '@adland/contracts'
-import { AdSpace_subgraph } from '@adland/webkit'
+import { AdGroup_subgraph, AdSpace_subgraph } from '@adland/webkit'
 import { ContractFunctionReturnType } from 'viem'
 
 export type Listing = ContractFunctionReturnType<
@@ -48,4 +48,9 @@ export type AdSpace = {
   listing: Listing
   // undefined if adSpace_subgraph.uri undefined
   metadata?: Metadata
+}
+
+export type AdGroup = {
+  adGroup_subgraph: Omit<AdGroup_subgraph, 'adSpaces'>
+  adSpaces: Omit<AdSpace, 'listing'>[]
 }
