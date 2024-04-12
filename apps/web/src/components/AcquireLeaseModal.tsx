@@ -25,7 +25,7 @@ import { useParams } from 'next/navigation'
 import { queryClient } from '@/app/app/providers'
 import { ModalContext } from '@/context/ModalContext'
 
-const AcquireLeaseActions = ({ listing }: { listing: Listing }) => {
+const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
   const { spaceId } = useParams()
   const { listingId, taxRate, pricePerToken } = listing
   const { address } = useAccount()
@@ -213,4 +213,4 @@ const AcquireLeaseActions = ({ listing }: { listing: Listing }) => {
   )
 }
 
-export default AcquireLeaseActions
+export default AcquireLeaseModal

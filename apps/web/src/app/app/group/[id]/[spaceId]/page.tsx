@@ -17,11 +17,11 @@ import Image from 'next/image'
 import { format } from 'date-fns'
 import { formatEther } from 'viem'
 import { truncateAddress } from '@/lib/utils'
-import AcquireLeaseActions from '../../../../../components/AcquireLeaseButton'
 import { useQuery } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
 import { useContext } from 'react'
 import { ModalContext } from '@/context/ModalContext'
+import AcquireLeaseModal from '@/components/AcquireLeaseModal'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
@@ -92,7 +92,7 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
                 </Button>
               </>
             )}
-            <AcquireLeaseActions listing={listing} />
+            <AcquireLeaseModal listing={listing} />
           </div>
         </CardHeader>
         <CardContent className="p-6 text-sm">
