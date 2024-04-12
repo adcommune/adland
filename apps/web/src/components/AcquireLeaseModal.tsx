@@ -73,13 +73,8 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
   })
 
   useEffect(() => {
-    if (txSuccess) {
+    if (txSuccess && address) {
       acquireLeaseModal.set(false)
-
-      const previousAdSpace = queryClient.getQueryData(['adSpace-', spaceId])
-
-      if (!address) return { previousAdSpace }
-
       queryClient.setQueryData(
         ['adSpace-', spaceId],
         (old: AdSpace): AdSpace => {
