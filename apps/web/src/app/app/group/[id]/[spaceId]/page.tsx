@@ -23,6 +23,8 @@ import { useContext } from 'react'
 import { ModalContext } from '@/context/ModalContext'
 import AcquireLeaseModal from '@/components/AcquireLeaseModal'
 import UpdateAdDataDialog from '@/components/UpdateAdDataModal'
+import { Badge } from '@/components/ui/badge'
+import Link from 'next/link'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
@@ -129,16 +131,39 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
           </div>
         </CardFooter>
       </Card>{' '}
-      <div className="flex flex-grow flex-row justify-center rounded-md border bg-white bg-opacity-20 p-2">
+      <div className="flex flex-grow flex-col justify-center gap-4 rounded-md">
         {adSpace.metadata?.imageGatewayURI && (
-          <div className="w-1/2">
-            <Image
-              src={adSpace.metadata?.imageGatewayURI}
-              alt="AdSpace Image"
-              className="w-full"
-              width={500}
-              height={500}
-            />
+          <div className="relative flex w-full flex-row justify-center rounded-md border bg-white bg-opacity-20">
+            <Badge className="absolute right-2 top-2">image</Badge>
+            <div className="w-1/2">
+              <Image
+                src={adSpace.metadata?.imageGatewayURI}
+                alt="AdSpace Image"
+                className="w-full"
+                width={500}
+                height={500}
+              />
+            </div>
+          </div>
+        )}
+        {adSpace.metadata?.description && (
+          <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
+            <Badge className="absolute right-2 top-2">description</Badge>
+            <div className="w-1/2">
+              <p className="text-white">{adSpace.metadata?.description}</p>
+            </div>
+          </div>
+        )}
+        {adSpace.metadata?.external_url && (
+          <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
+            <Badge className="absolute right-2 top-2">external_url</Badge>
+            <div className="w-1/2">
+              <Link href={adSpace.metadata?.external_url}>
+                <p className="text-white underline">
+                  {adSpace.metadata?.external_url}
+                </p>
+              </Link>
+            </div>
           </div>
         )}
       </div>

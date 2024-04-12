@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AdLand } from '@/lib/adland'
+import { Separator } from '@/components/ui/separator'
 
 const GroupPage = async ({ params: { id } }: { params: { id: string } }) => {
   const { adSpaces } = await new AdLand().getGroup(id)
@@ -29,28 +30,35 @@ const GroupPage = async ({ params: { id } }: { params: { id: string } }) => {
               key={adSpace?.transactionHash + adSpace?.id}
               href={'/app/group/' + id + '/' + adSpace?.id}
             >
-              <Card className="flex h-[400px] flex-col overflow-hidden">
+              <Card className="flex flex-col overflow-hidden">
                 <CardHeader>
                   <CardTitle className="font-body font-normal text-gray-500">
                     AdSpace #{index}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="relative flex w-full flex-grow flex-col items-center justify-center gap-2 bg-gray-100 py-4">
-                  {adSpace?.metadata?.description && (
-                    <p className="text-left text-sm">
-                      {adSpace?.metadata?.description}
-                    </p>
-                  )}
+                <CardContent className="relative flex h-[400px] w-full flex-grow flex-col gap-2 bg-gray-100 py-4">
                   {adSpace?.metadata?.imageGatewayURI && (
-                    <div className="flex w-full flex-grow bg-gray-400">
+                    <div className="flex h-2/3 flex-grow bg-gray-200">
                       <Image
                         width={500}
                         height={500}
                         alt="AdSpace Image"
-                        className="h-full w-full object-contain"
+                        className=" w-full object-contain"
                         src={adSpace?.metadata?.imageGatewayURI}
                       />
                     </div>
+                  )}
+                  <Separator />
+                  {adSpace?.metadata?.description && (
+                    <p className="text-left font-body text-sm font-semibold">
+                      {adSpace?.metadata?.description}
+                    </p>
+                  )}
+                  <Separator />
+                  {adSpace?.metadata?.external_url && (
+                    <p className="text-left text-sm font-light">
+                      {adSpace?.metadata?.external_url}
+                    </p>
                   )}
                 </CardContent>
               </Card>
