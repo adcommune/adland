@@ -22,6 +22,7 @@ import { useAccount } from 'wagmi'
 import { useContext } from 'react'
 import { ModalContext } from '@/context/ModalContext'
 import AcquireLeaseModal from '@/components/AcquireLeaseModal'
+import UpdateAdDataDialog from '@/components/UpdateAdDataModal'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
@@ -29,7 +30,7 @@ type AdSpacePageProps = {
 
 const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
   const { address } = useAccount()
-  const { acquireLeaseModal } = useContext(ModalContext)
+  const { acquireLeaseModal, updateAdDataModal } = useContext(ModalContext)
   const { data: adSpace, isLoading } = useQuery({
     queryFn: () => new AdLand().getAdSpace(spaceId),
     queryKey: ['adSpace-', spaceId],
@@ -68,7 +69,9 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
                 size="sm"
                 variant="default"
                 className="h-8 gap-1"
-                onClick={() => {}}
+                onClick={() => {
+                  updateAdDataModal.set(true)
+                }}
               >
                 <ImageIcon className="h-3.5 w-3.5" />
                 <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
@@ -93,6 +96,7 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
               </>
             )}
             <AcquireLeaseModal listing={listing} />
+            <UpdateAdDataDialog adSpace={adSpace} />
           </div>
         </CardHeader>
         <CardContent className="p-6 text-sm">

@@ -8,6 +8,16 @@ export type Listing = ContractFunctionReturnType<
   'getListing'
 >
 
+export type Metadata = {
+  name: string
+  image: string
+  imageGatewayURI?: string
+  description: string
+  animation_url?: string
+  external_url?: string
+  aspect_ratio?: string
+}
+
 /**
  * AdSpace is a stitched together object
  * - Listing returned from the marketplace contract
@@ -37,13 +47,5 @@ export type AdSpace = {
   adSpace_subgraph: Omit<AdSpace_subgraph, 'adGroup'>
   listing: Listing
   // undefined if adSpace_subgraph.uri undefined
-  metadata?: {
-    name: string
-    image: string
-    imageGatewayURI?: string
-    description: string
-    animation_url?: string
-    external_url?: string
-    aspect_ratio?: string
-  }
+  metadata?: Metadata
 }
