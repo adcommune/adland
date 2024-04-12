@@ -104,6 +104,9 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.2.24
+      '@vercel/analytics':
+        specifier: ^1.2.2
+        version: 1.2.2(next@14.1.4)(react@18.2.0)
       autoprefixer:
         specifier: ^10.4.12
         version: 10.4.19(postcss@8.4.38)
@@ -6939,6 +6942,22 @@ packages:
       - supports-color
       - terser
       - ts-node
+    dev: false
+
+  /@vercel/analytics@1.2.2(next@14.1.4)(react@18.2.0):
+    resolution: {integrity: sha512-X0rctVWkQV1e5Y300ehVNqpOfSOufo7ieA5PIdna8yX/U7Vjz0GFsGf4qvAhxV02uQ2CVt7GYcrFfddXXK2Y4A==}
+    peerDependencies:
+      next: '>= 13'
+      react: ^18 || ^19
+    peerDependenciesMeta:
+      next:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      next: 14.1.4(@babel/core@7.24.4)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      server-only: 0.0.1
     dev: false
 
   /@vercel/style-guide@5.2.0(eslint@8.57.0)(prettier@3.2.5)(typescript@5.4.4):
@@ -16388,6 +16407,10 @@ packages:
       send: 0.18.0
     transitivePeerDependencies:
       - supports-color
+
+  /server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
+    dev: false
 
   /set-blocking@2.0.0:
     resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}
