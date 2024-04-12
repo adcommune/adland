@@ -4,8 +4,7 @@ import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { useContext, useEffect, useState } from 'react'
 import useAppContracts from '@/hooks/useAppContracts'
-import { getAR, getGatewayUri, getSimulationArgs } from '@/lib/utils'
-import { ContractFunctionArgs } from 'viem'
+import { getAR, getGatewayUri } from '@/lib/utils'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import {
   Select,
@@ -17,10 +16,7 @@ import {
 } from './ui/select'
 import classNames from 'classnames'
 import { FrameAspectRatio, ipfsGateway } from '@/config/constants'
-import {
-  commonAdSpacesAbi,
-  useSimulateCommonAdSpacesUpdateAdUri,
-} from '@adland/contracts'
+import { commonAdSpacesAbi } from '@adland/contracts'
 import { AdSpace, Metadata } from '@/lib/types'
 import { uploadFile } from '@/lib/file'
 import { ModalContext } from '@/context/ModalContext'
@@ -30,12 +26,6 @@ import { queryClient } from '@/app/app/providers'
 type UpdateAdDataDialogProps = {
   adSpace: AdSpace
 }
-
-type SetAdURIArgs = ContractFunctionArgs<
-  typeof commonAdSpacesAbi,
-  'nonpayable',
-  'updateAdURI'
->
 
 const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
   const { listing, metadata, adSpace_subgraph } = adSpace
@@ -72,7 +62,10 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
 
   const [newMetadata, setNewMetadata] = useState<Metadata | null>(null)
 
+  const [uploadingImage, setUploadingImage] = useState(false)
+
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploadingImage(true)
     const file = e.target.files?.[0]
     if (file) {
       try {
@@ -86,14 +79,8 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
         console.error(error)
       }
     }
+    setUploadingImage(false)
   }
-
-  const { data: setAdUriRequest } = useSimulateCommonAdSpacesUpdateAdUri({
-    args: getSimulationArgs<SetAdURIArgs>([listing?.listingId, image?.url]),
-    query: {
-      enabled: image !== null,
-    },
-  })
 
   const { data, writeContractAsync, isPending } = useWriteContract({})
 
@@ -169,6 +156,8 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
 
   const contentUpdating = isPending || uploadingData || txPending
 
+  const contentUpdateDisabled = uploadingImage || contentUpdating
+
   return (
     <Modal
       title="Update Ad Data"
@@ -180,7 +169,7 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
       renderConfirm={() => {
         return (
           <Button
-            disabled={!Boolean(setAdUriRequest?.request) || contentUpdating}
+            disabled={contentUpdateDisabled}
             onClick={submitAdData}
             loading={contentUpdating}
           >

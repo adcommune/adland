@@ -2,8 +2,8 @@
 # DEPLOYMENT SCRIPTS
 forge script MarketplaceScript -s "deployMarketplaceTestnet()" --broadcast
 
-forge script MarketplaceScript -s "deployAdLandTestnet(address)" $ADLAND_MARKETPLACE --broadcast --verify
+forge script MarketplaceScript -s "deployAdLandTestnet(address)" $MARKETPLACE --broadcast --verify
 
 # VERIFICATION SCRIPTS
 
-forge verify-contract --watch $MARKETPLACE src/CommonAdSpaces.sol:CommonAdSpaces --chain-id 11155420                
+forge verify-contract --watch $MARKETPLACE src/CommonAdSpaces.sol:CommonAdSpaces --chain-id 11155420

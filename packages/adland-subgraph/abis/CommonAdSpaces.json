@@ -39,7 +39,11 @@
       { "name": "recipient", "type": "address", "internalType": "address" }
     ],
     "outputs": [
-      { "name": "adGroupAdmin", "type": "address", "internalType": "address" },
+      {
+        "name": "adGroupAdmin",
+        "type": "address",
+        "internalType": "address"
+      },
       { "name": "adGroupId", "type": "uint256", "internalType": "uint256" }
     ],
     "stateMutability": "nonpayable"
@@ -54,7 +58,11 @@
         "type": "tuple",
         "internalType": "struct AdSpaceConfig",
         "components": [
-          { "name": "currency", "type": "address", "internalType": "address" },
+          {
+            "name": "currency",
+            "type": "address",
+            "internalType": "address"
+          },
           {
             "name": "initialPrice",
             "type": "uint256",
@@ -66,7 +74,11 @@
       { "name": "size", "type": "uint256", "internalType": "uint256" }
     ],
     "outputs": [
-      { "name": "adGroupAdmin", "type": "address", "internalType": "address" },
+      {
+        "name": "adGroupAdmin",
+        "type": "address",
+        "internalType": "address"
+      },
       { "name": "adGroupId", "type": "uint256", "internalType": "uint256" }
     ],
     "stateMutability": "nonpayable"
@@ -102,13 +114,21 @@
     "type": "function",
     "name": "initialize",
     "inputs": [
-      { "name": "_marketplace", "type": "address", "internalType": "address" },
+      {
+        "name": "_marketplace",
+        "type": "address",
+        "internalType": "address"
+      },
       {
         "name": "_adGroupAdminFactory",
         "type": "address",
         "internalType": "address"
       },
-      { "name": "_placeholderURI", "type": "string", "internalType": "string" }
+      {
+        "name": "_placeholderURI",
+        "type": "string",
+        "internalType": "string"
+      }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
@@ -140,7 +160,11 @@
         "type": "tuple",
         "internalType": "struct AdSpaceConfig",
         "components": [
-          { "name": "currency", "type": "address", "internalType": "address" },
+          {
+            "name": "currency",
+            "type": "address",
+            "internalType": "address"
+          },
           {
             "name": "initialPrice",
             "type": "uint256",
