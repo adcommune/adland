@@ -3,6 +3,7 @@ import { type Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import localFont from 'next/font/local'
 import clsx from 'clsx'
+import { Analytics } from '@vercel/analytics/react'
 
 export const metadata: Metadata = {
   title: {
@@ -43,7 +44,10 @@ export default function RootLayout({ children, ...rest }: RootLayoutProps) {
       )}
     >
       <body className="relative z-[2]">
-        <div className="overflow-hidden">{children}</div>
+        <div className="overflow-hidden">
+          {children}
+          <Analytics />
+        </div>
       </body>
     </html>
   )
