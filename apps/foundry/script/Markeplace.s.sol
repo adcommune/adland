@@ -168,21 +168,8 @@ contract MarketplaceScript is BaseScript, IExtension {
         commonAds.setTokenX(CurrencyTransferLib.NATIVE_TOKEN, address(ethx));
         commonAds.setTokenX(address(dai), address(daix));
 
-        MarketplaceV3(payable(address(marketplace))).revokeRole(
-            keccak256("LISTER_ROLE"),
-            address(0)
-        );
-        MarketplaceV3(payable(address(marketplace))).grantRole(
-            keccak256("LISTER_ROLE"),
-            address(commonAds)
-        );
-
-        MarketplaceV3(payable(address(marketplace))).revokeRole(
-            keccak256("ASSET_ROLE"),
-            address(0)
-        );
-        MarketplaceV3(payable(address(marketplace))).grantRole(
-            keccak256("ASSET_ROLE"),
+        _grandCommonAdsAccessToMarketplace(
+            address(marketplace),
             address(commonAds)
         );
 
@@ -217,6 +204,15 @@ contract MarketplaceScript is BaseScript, IExtension {
                     (deployer, "", new address[](0), deployer, 0)
                 )
             )
+        );
+
+        MarketplaceV3(payable(address(marketplace))).revokeRole(
+            keccak256("LISTER_ROLE"),
+            address(0)
+        );
+        MarketplaceV3(payable(address(marketplace))).revokeRole(
+            keccak256("ASSET_ROLE"),
+            address(0)
         );
 
         return DirectListingsLogic(marketplace);
@@ -296,5 +292,19 @@ contract MarketplaceScript is BaseScript, IExtension {
         );
 
         extensions[0] = extensionDirectListings;
+    }
+
+    function _grandCommonAdsAccessToMarketplace(
+        address marketplace,
+        address commonAds
+    ) internal {
+        MarketplaceV3(payable(address(marketplace))).grantRole(
+            keccak256("LISTER_ROLE"),
+            address(commonAds)
+        );
+        MarketplaceV3(payable(address(marketplace))).grantRole(
+            keccak256("ASSET_ROLE"),
+            address(commonAds)
+        );
     }
 }

@@ -6,7 +6,7 @@ dataSources:
     name: CommonAdSpaces
     network: optimism-sepolia
     source:
-      address: "0x8eE2370CE8A1CE0139bdF868acC4F0F59D7C8EA3"
+      address: "0x5d529F94c4c391cF7453e50c50a8874Bbd40De58"
       abi: CommonAdSpaces
       startBlock: 10424612
     mapping:
