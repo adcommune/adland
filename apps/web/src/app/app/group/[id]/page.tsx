@@ -3,54 +3,55 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AdLand } from '@/lib/adland'
+import { Separator } from '@/components/ui/separator'
+import AdGroupHeader from '@/components/AdGroup/AdGroupHeader'
 
-const GroupPage = async ({ params: { id } }: { params: { id: string } }) => {
-  const { adSpaces } = await new AdLand().getGroup(id)
+type GroupPageProps = { params: { id: string } }
+
+const GroupPage = async ({ params: { id } }: GroupPageProps) => {
+  const adGroup = await new AdLand().getGroup(id)
+
+  const { adSpaces } = adGroup
 
   return (
     <Container className="flex flex-col gap-2 p-4">
-      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-        <Card x-chunk="dashboard-01-chunk-0">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">--,--- ETH</div>
-            <p className="text-xs text-muted-foreground">
-              +--.-% from last month
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <AdGroupHeader adGroup={adGroup} />
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-        {adSpaces?.map((adSpace, index) => {
+        {adSpaces?.map(({ adSpace_subgraph: adSpace, metadata }, index) => {
           return (
             <Link
               key={adSpace?.transactionHash + adSpace?.id}
               href={'/app/group/' + id + '/' + adSpace?.id}
             >
-              <Card className="flex h-[400px] flex-col overflow-hidden">
+              <Card className="flex flex-col overflow-hidden">
                 <CardHeader>
                   <CardTitle className="font-body font-normal text-gray-500">
                     AdSpace #{index}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="relative flex w-full flex-grow flex-col items-center justify-center gap-2 bg-gray-100 py-4">
-                  {adSpace?.metadata?.description && (
-                    <p className="text-left text-sm">
-                      {adSpace?.metadata?.description}
-                    </p>
-                  )}
-                  {adSpace?.metadata?.imageGatewayURI && (
-                    <div className="flex w-full flex-grow bg-gray-400">
+                <CardContent className="relative flex h-[400px] w-full flex-grow flex-col gap-2 bg-gray-100 py-4">
+                  {metadata?.imageGatewayURI && (
+                    <div className="flex h-2/3 flex-grow bg-gray-200">
                       <Image
                         width={500}
                         height={500}
                         alt="AdSpace Image"
-                        className="h-full w-full object-contain"
-                        src={adSpace?.metadata?.imageGatewayURI}
+                        className=" w-full object-contain"
+                        src={metadata?.imageGatewayURI}
                       />
                     </div>
+                  )}
+                  <Separator />
+                  {metadata?.description && (
+                    <p className="text-left font-body text-sm font-semibold">
+                      {metadata?.description}
+                    </p>
+                  )}
+                  <Separator />
+                  {metadata?.external_url && (
+                    <p className="text-left text-sm font-light">
+                      {metadata?.external_url}
+                    </p>
                   )}
                 </CardContent>
               </Card>

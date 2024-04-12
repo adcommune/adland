@@ -1,6 +1,6 @@
 'use client'
 
-import { Copy } from 'lucide-react'
+import { Copy, ImageIcon, ShoppingCart } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -17,22 +17,32 @@ import Image from 'next/image'
 import { format } from 'date-fns'
 import { formatEther } from 'viem'
 import { truncateAddress } from '@/lib/utils'
-import AcquireLeaseActions from './components/AcquireLeaseButton'
 import { useQuery } from '@tanstack/react-query'
+import { useAccount } from 'wagmi'
+import { useContext } from 'react'
+import { ModalContext } from '@/context/ModalContext'
+import AcquireLeaseModal from '@/components/AcquireLeaseModal'
+import UpdateAdDataDialog from '@/components/UpdateAdDataModal'
+import { Badge } from '@/components/ui/badge'
+import Link from 'next/link'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
 }
 
 const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
-  const { data: adSpace } = useQuery({
+  const { address } = useAccount()
+  const { acquireLeaseModal, updateAdDataModal } = useContext(ModalContext)
+  const { data: adSpace, isLoading } = useQuery({
     queryFn: () => new AdLand().getAdSpace(spaceId),
-    queryKey: ['adSpace', spaceId],
+    queryKey: ['adSpace-', spaceId],
   })
 
-  if (!adSpace) return null
+  if (!adSpace || isLoading) return null
 
   const { listing } = adSpace
+
+  const isOwner = listing?.listingOwner === address
 
   return (
     <Container className="relative flex min-h-[80vh] flex-row items-start gap-4 py-4">
@@ -56,7 +66,39 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
             </CardDescription>
           </div>
           <div className="ml-auto flex items-center gap-1">
-            <AcquireLeaseActions listing={listing} />
+            {isOwner ? (
+              <Button
+                size="sm"
+                variant="default"
+                className="h-8 gap-1"
+                onClick={() => {
+                  updateAdDataModal.set(true)
+                }}
+              >
+                <ImageIcon className="h-3.5 w-3.5" />
+                <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
+                  Edit Ad
+                </span>
+              </Button>
+            ) : (
+              <>
+                <Button
+                  size="sm"
+                  variant="default"
+                  className="h-8 gap-1"
+                  onClick={() => {
+                    acquireLeaseModal.set(true)
+                  }}
+                >
+                  <ShoppingCart className="h-3.5 w-3.5" />
+                  <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
+                    Acquire space
+                  </span>
+                </Button>
+              </>
+            )}
+            <AcquireLeaseModal listing={listing} />
+            <UpdateAdDataDialog adSpace={adSpace} />
           </div>
         </CardHeader>
         <CardContent className="p-6 text-sm">
@@ -77,34 +119,52 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
               </li>
             </ul>
           </div>
-          {/* <div className="grid gap-3">
-            <div className="font-semibold">Payment Information</div>
-            <dl className="grid gap-3">
-              <div className="flex items-center justify-between">
-                <dt className="flex items-center gap-1 text-muted-foreground">
-                  <CreditCard className="h-4 w-4" />
-                  Visa
-                </dt>
-                <dd>**** **** **** 4532</dd>
-              </div>
-            </dl>
-          </div> */}
         </CardContent>
         <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
           <div className="text-xs text-muted-foreground">
-            Owned by <span>{truncateAddress(listing?.listingOwner)}</span>
+            Owned by
+            {isOwner ? (
+              ' you'
+            ) : (
+              <span>{truncateAddress(listing?.listingOwner)}</span>
+            )}
           </div>
         </CardFooter>
       </Card>{' '}
-      <div className="flex-grow">
+      <div className="flex flex-grow flex-col justify-center gap-4 rounded-md">
         {adSpace.metadata?.imageGatewayURI && (
-          <Image
-            src={adSpace.metadata?.imageGatewayURI}
-            alt="AdSpace Image"
-            className="w-full"
-            width={500}
-            height={500}
-          />
+          <div className="relative flex w-full flex-row justify-center rounded-md border bg-white bg-opacity-20">
+            <Badge className="absolute right-2 top-2">image</Badge>
+            <div className="w-1/2">
+              <Image
+                src={adSpace.metadata?.imageGatewayURI}
+                alt="AdSpace Image"
+                className="w-full"
+                width={500}
+                height={500}
+              />
+            </div>
+          </div>
+        )}
+        {adSpace.metadata?.description && (
+          <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
+            <Badge className="absolute right-2 top-2">description</Badge>
+            <div className="w-1/2">
+              <p className="text-white">{adSpace.metadata?.description}</p>
+            </div>
+          </div>
+        )}
+        {adSpace.metadata?.external_url && (
+          <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
+            <Badge className="absolute right-2 top-2">external_url</Badge>
+            <div className="w-1/2">
+              <Link href={adSpace.metadata?.external_url}>
+                <p className="text-white underline">
+                  {adSpace.metadata?.external_url}
+                </p>
+              </Link>
+            </div>
+          </div>
         )}
       </div>
     </Container>
