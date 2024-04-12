@@ -141,10 +141,11 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
     )
   }
 
-  const { data: isSuccess } = useWaitForTransactionReceipt({
-    hash: data,
-    query: { select: (rcpt) => rcpt.status === 'success' },
-  })
+  const { data: isSuccess, isLoading: txPending } =
+    useWaitForTransactionReceipt({
+      hash: data,
+      query: { select: (rcpt) => rcpt.status === 'success' },
+    })
 
   useEffect(() => {
     if (isSuccess) {
@@ -166,7 +167,7 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
     }
   }, [isSuccess, data])
 
-  const contentUpdating = isPending || uploadingData
+  const contentUpdating = isPending || uploadingData || txPending
 
   return (
     <Modal

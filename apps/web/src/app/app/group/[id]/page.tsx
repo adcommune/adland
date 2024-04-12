@@ -5,7 +5,9 @@ import Image from 'next/image'
 import { AdLand } from '@/lib/adland'
 import { Separator } from '@/components/ui/separator'
 
-const GroupPage = async ({ params: { id } }: { params: { id: string } }) => {
+type GroupPageProps = { params: { id: string } }
+
+const GroupPage = async ({ params: { id } }: GroupPageProps) => {
   const { adSpaces } = await new AdLand().getGroup(id)
 
   return (
