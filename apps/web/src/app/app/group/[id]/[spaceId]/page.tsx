@@ -117,18 +117,6 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
               </li>
             </ul>
           </div>
-          {/* <div className="grid gap-3">
-            <div className="font-semibold">Payment Information</div>
-            <dl className="grid gap-3">
-              <div className="flex items-center justify-between">
-                <dt className="flex items-center gap-1 text-muted-foreground">
-                  <CreditCard className="h-4 w-4" />
-                  Visa
-                </dt>
-                <dd>**** **** **** 4532</dd>
-              </div>
-            </dl>
-          </div> */}
         </CardContent>
         <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
           <div className="text-xs text-muted-foreground">
@@ -141,15 +129,17 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
           </div>
         </CardFooter>
       </Card>{' '}
-      <div className="flex-grow">
+      <div className="flex flex-grow flex-row justify-center rounded-md border bg-white bg-opacity-20 p-2">
         {adSpace.metadata?.imageGatewayURI && (
-          <Image
-            src={adSpace.metadata?.imageGatewayURI}
-            alt="AdSpace Image"
-            className="w-full"
-            width={500}
-            height={500}
-          />
+          <div className="w-1/2">
+            <Image
+              src={adSpace.metadata?.imageGatewayURI}
+              alt="AdSpace Image"
+              className="w-full"
+              width={500}
+              height={500}
+            />
+          </div>
         )}
       </div>
     </Container>
