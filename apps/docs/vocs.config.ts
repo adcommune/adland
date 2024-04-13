@@ -6,7 +6,7 @@ export default defineConfig({
     google: "Montserrat",
   },
   logoUrl: "https://i.imgur.com/LYRIycZ.png",
-  ogImageUrl: "https://i.imgur.com/hqIW3kL.jpg",
+  ogImageUrl: "https://i.imgur.com/6oeTt1J.jpg",
   theme: {
     accentColor: {
       backgroundAccent: { light: "#00429d", dark: "#77ae74" },
