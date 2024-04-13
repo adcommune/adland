@@ -32,7 +32,7 @@ const AdSpacePageLayout = async ({
                 : undefined
             }
             image={{
-              src: adSpace.metadata?.imageGatewayURI,
+              src: `${adSpace.metadata?.imageGatewayURI}?date=${new Date().toISOString()}`,
               aspectRatio: adSpace.metadata?.aspect_ratio as FrameAspectRatio,
             }}
           />
