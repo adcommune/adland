@@ -12,6 +12,9 @@ import FlowingBalance from '@/lib/superfluid'
 import { Button } from '../ui/button'
 import Image from 'next/image'
 import Link from 'next/link'
+import Copiable from '../Copiable'
+import { truncateAddress } from '@/lib/utils'
+import { superfluidAccountLink } from '@/config/constants'
 
 const AdGroupHeader = ({
   adGroup: { adGroup_subgraph },
@@ -45,7 +48,7 @@ const AdGroupHeader = ({
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="flex w-full flex-row justify-between text-sm font-medium">
             Streaming Revenue
-            <Link href={''}>
+            <Link href={superfluidAccountLink(beneficiary)} target="_blank">
               <Button variant="outline" className="gap-2">
                 <Image
                   src="/superfluid.png"
@@ -60,7 +63,13 @@ const AdGroupHeader = ({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p>Admin - {adGroup_subgraph.beneficiary}</p>
+          <p>
+            AdGroupAdmin -{' '}
+            <span className="group cursor-pointer flex-row gap-2 space-x-2 font-semibold">
+              {truncateAddress(adGroup_subgraph.beneficiary)}
+              <Copiable text={adGroup_subgraph.beneficiary} />
+            </span>
+          </p>
           <p className=" text-2xl font-bold">
             {benefBalance !== undefined && benefFlowRate !== undefined && (
               <FlowingBalance
