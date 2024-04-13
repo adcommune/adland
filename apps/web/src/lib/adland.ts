@@ -56,21 +56,24 @@ export class AdLand {
 
   private async _getAdSpaceMetadata(
     uri: string | undefined | null,
-  ): Promise<Metadata> {
+  ): Promise<Metadata | undefined> {
     if (uri?.includes('undefined')) {
       throw new Error('Invalid metadata URI')
     }
+    try {
+      const gatewayURI = uri ? getGatewayUri(uri) : null
 
-    const gatewayURI = uri ? getGatewayUri(uri) : null
+      const metadata = gatewayURI ? await fetchJSON(gatewayURI) : null
 
-    const metadata = gatewayURI ? await fetchJSON(gatewayURI) : null
+      if (metadata) {
+        metadata.imageGatewayURI = metadata.image
+          ? getGatewayUri(metadata.image)
+          : null
+      }
 
-    if (metadata) {
-      metadata.imageGatewayURI = metadata.image
-        ? getGatewayUri(metadata.image)
-        : null
+      return metadata
+    } catch (error) {
+      console.error(error)
     }
-
-    return metadata
   }
 }

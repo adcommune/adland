@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     data.append('file', file)
     data.append(
       'pinataMetadata',
-      JSON.stringify({ name: 'AdLand App Ad Image' }),
+      JSON.stringify({ name: file.name, type: file.type }),
     )
     data.append('pinataOptions', JSON.stringify({ cidVersion: 1 }))
     const res = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
