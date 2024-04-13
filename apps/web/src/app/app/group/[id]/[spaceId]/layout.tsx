@@ -7,6 +7,8 @@ type AdSpacePageLayoutProps = {
   params: { spaceId: string }
 }
 
+export const dynamic = 'force-dynamic'
+
 const AdSpacePageLayout = async ({
   children,
   params: { spaceId },

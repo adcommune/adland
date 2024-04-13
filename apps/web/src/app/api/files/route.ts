@@ -5,14 +5,23 @@ export async function POST(request: NextRequest) {
     const data = await request.formData()
     const file: File | null = data.get('file') as unknown as File
     data.append('file', file)
-    data.append('pinataMetadata', JSON.stringify({ name: file.name }))
+    data.append(
+      'pinataMetadata',
+      JSON.stringify({ name: 'AdLand App Ad Image' }),
+    )
+    data.append('pinataOptions', JSON.stringify({ cidVersion: 1 }))
     const res = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${process.env.PINATA_JWT}`,
+        'Content-Type': 'multipart/form-data',
       },
       body: data,
     })
+
+    console.log(res)
+    console.log(await res.json())
+
     const { IpfsHash } = await res.json()
 
     console.log(IpfsHash)
