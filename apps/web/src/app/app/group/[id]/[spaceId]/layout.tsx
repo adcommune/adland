@@ -1,4 +1,4 @@
-import { FrameAspectRatio } from '@/config/constants'
+import { FrameAspectRatio, baseURL } from '@/config/constants'
 import { AdLand } from '@/lib/adland'
 import { FrameMetadata } from '@coinbase/onchainkit'
 
@@ -32,7 +32,7 @@ const AdSpacePageLayout = async ({
                 : undefined
             }
             image={{
-              src: `${adSpace.metadata?.imageGatewayURI}?date=${new Date().toISOString()}`,
+              src: `${baseURL}/api/ad/${spaceId}/image?time=${Date.now()}`,
               aspectRatio: adSpace.metadata?.aspect_ratio as FrameAspectRatio,
             }}
           />

@@ -6,7 +6,6 @@ import { resolveAdSpaceWithMetadata } from '@/lib/helpers'
 export const dynamic = 'force-dynamic'
 
 type GetAdsRouteParams = { params: { listingId: string } }
-
 export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
   const ad = await adland
     .adSpace({
@@ -20,7 +19,11 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
 
   if (metadata) {
     if (metadata.imageGatewayURI) {
-      return NextResponse.redirect(metadata.imageGatewayURI)
+      return NextResponse.redirect(metadata.imageGatewayURI, {
+        headers: {
+          'Cache-Control': 'max-age=0',
+        },
+      })
     }
   }
 
