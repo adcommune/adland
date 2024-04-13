@@ -1,11 +1,17 @@
 export const uploadFile = async (file: File) => {
-  const data = new FormData();
-  data.set("file", file);
-  const res = await fetch("/api/files", {
-    method: "POST",
+  const data = new FormData()
+  data.set('file', file)
+  const res = await fetch('/api/files', {
+    method: 'POST',
     body: data,
-  });
-  const { IpfsHash } = await res.json();
+  }).then((res) => res.json())
 
-  return IpfsHash;
-};
+  console.log({ res })
+
+  if (res.error) {
+    throw new Error(res.error)
+  } else {
+    const { IpfsHash } = res
+    return IpfsHash
+  }
+}

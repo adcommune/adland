@@ -28,11 +28,9 @@ type UpdateAdDataDialogProps = {
 }
 
 const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
-  const { listing, metadata, adSpace_subgraph } = adSpace
+  const { listing, metadata } = adSpace
 
   const { updateAdDataModal } = useContext(ModalContext)
-
-  const gatewayUri = `https://${ipfsGateway}/ipfs/${adSpace_subgraph.uri}`
 
   const { adCommonOwnership } = useAppContracts()
 
@@ -50,7 +48,7 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
     url: string
     type: 'video' | 'image'
   } | null>(
-    metadata?.image && gatewayUri
+    metadata?.image
       ? {
           url: getGatewayUri(
             metadata?.animation_url ? metadata?.animation_url : metadata?.image,
@@ -70,6 +68,8 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
     if (file) {
       try {
         const hash = await uploadFile(file)
+
+        console.log('hash', hash)
 
         setImage({
           url: `${ipfsGateway}/${hash}`,
