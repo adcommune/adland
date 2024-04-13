@@ -10,9 +10,6 @@ export async function POST(request: NextRequest) {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${process.env.PINATA_JWT}`,
-        'Content-Type': 'multipart/form-data',
-        pinata_api_key: process.env.PINATA_API_KEY ?? '',
-        pinata_secret_api_key: process.env.PINATA_SECRET_KEY ?? '',
       },
       body: data,
     })
