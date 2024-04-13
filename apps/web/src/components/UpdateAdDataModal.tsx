@@ -158,6 +158,8 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
 
   const contentUpdateDisabled = uploadingImage || contentUpdating
 
+  console.log('image', image?.url)
+
   return (
     <Modal
       title="Update Ad Data"
