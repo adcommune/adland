@@ -6,10 +6,10 @@ import { Container } from './Container'
 
 const Navbar = ({ children }: { children: React.ReactNode }) => {
   return (
-    <header className="h-full border-b border-b-base border-opacity-0 py-5">
+    <header className="border-b-base h-full border-b border-opacity-0 py-5">
       <Container className="">
         <nav className="relative flex items-center justify-between">
-          <div className="h-[38px]">
+          <div className="h-[20px] md:h-[38px]">
             <Link href="/">
               <AdLandBrand />
             </Link>

@@ -38,6 +38,10 @@ type AdSpacePageProps = {
   params: { spaceId: string; id: string }
 }
 
+const PropertyContainer = ({ children }: { children: React.ReactNode }) => {
+  return <div className="w-full px-4 md:w-1/2">{children}</div>
+}
+
 const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
   const { address } = useAccount()
   const { acquireLeaseModal, updateAdDataModal, selfAssessmentModal } =
@@ -55,8 +59,8 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
   const isOwner = listing?.listingOwner === address
 
   return (
-    <Container className="relative flex min-h-[80vh] flex-row items-start gap-4 py-4">
-      <Card className="w-[400px] overflow-hidden font-body">
+    <Container className="relative flex min-h-[80vh] flex-col items-start gap-4 py-4 md:flex-row">
+      <Card className="overflow-hidden font-body">
         <CardHeader className="flex flex-row items-start gap-8 bg-muted/50">
           <div className="grid gap-0.5">
             <CardTitle className="group flex items-center gap-2 text-lg">
@@ -166,11 +170,11 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
           </div>
         </CardFooter>
       </Card>{' '}
-      <div className="flex flex-grow flex-col justify-center gap-4 rounded-md">
+      <div className="flex flex-grow flex-col justify-center gap-2 rounded-md">
         {adSpace.metadata?.imageGatewayURI && (
           <div className="relative flex w-full flex-row justify-center rounded-md border bg-white bg-opacity-20">
             <Badge className="absolute right-2 top-2">image</Badge>
-            <div className="w-1/2">
+            <PropertyContainer>
               <Image
                 src={adSpace.metadata?.imageGatewayURI}
                 alt="AdSpace Image"
@@ -178,27 +182,35 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
                 width={500}
                 height={500}
               />
-            </div>
+            </PropertyContainer>
           </div>
         )}
         {adSpace.metadata?.description && (
           <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
             <Badge className="absolute right-2 top-2">description</Badge>
-            <div className="w-1/2">
+            <PropertyContainer>
               <p className="text-white">{adSpace.metadata?.description}</p>
-            </div>
+            </PropertyContainer>
           </div>
         )}
         {adSpace.metadata?.external_url && (
           <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
             <Badge className="absolute right-2 top-2">external_url</Badge>
-            <div className="w-1/2">
+            <PropertyContainer>
               <Link href={adSpace.metadata?.external_url}>
                 <p className="text-white underline">
                   {adSpace.metadata?.external_url}
                 </p>
               </Link>
-            </div>
+            </PropertyContainer>
+          </div>
+        )}
+        {adSpace.metadata?.aspect_ratio && (
+          <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
+            <Badge className="absolute right-2 top-2">aspect_ratio</Badge>
+            <PropertyContainer>
+              <p className="text-white">{adSpace.metadata?.aspect_ratio}</p>
+            </PropertyContainer>
           </div>
         )}
       </div>

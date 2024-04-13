@@ -189,8 +189,8 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
         )
       }}
     >
-      <div className="flex flex-row gap-3">
-        <div className={'flex flex-row justify-center'}>
+      <div className="flex flex-col gap-3 md:flex-row">
+        <div>
           <div
             className={classNames(
               {
