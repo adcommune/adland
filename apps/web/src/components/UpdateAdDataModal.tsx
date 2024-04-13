@@ -15,13 +15,18 @@ import {
   SelectValue,
 } from './ui/select'
 import classNames from 'classnames'
-import { FrameAspectRatio, ipfsGateway } from '@/config/constants'
+import {
+  FrameAspectRatio,
+  authorizedFileTypes,
+  ipfsGateway,
+} from '@/config/constants'
 import { commonAdSpacesAbi } from '@adland/contracts'
 import { AdSpace, Metadata } from '@/lib/types'
 import { uploadFile } from '@/lib/file'
 import { ModalContext } from '@/context/ModalContext'
 import Modal from './Modal'
 import { queryClient } from '@/app/app/providers'
+import { toast } from 'sonner'
 
 type UpdateAdDataDialogProps = {
   adSpace: AdSpace
@@ -66,6 +71,10 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
     setUploadingImage(true)
     const file = e.target.files?.[0]
     if (file) {
+      if (!authorizedFileTypes.includes(file.type)) {
+        toast.error('Invalid file type (ie. png, jpeg, jpg)')
+        return setUploadingImage(false)
+      }
       try {
         const hash = await uploadFile(file)
 
@@ -180,8 +189,8 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
         )
       }}
     >
-      <div className="flex flex-row gap-3">
-        <div className={'flex flex-row justify-center'}>
+      <div className="flex flex-col gap-3 md:flex-row">
+        <div>
           <div
             className={classNames(
               {
@@ -209,7 +218,7 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
               ))}
           </div>
         </div>
-        <div className="">
+        <div className="w-full md:w-2/3">
           <div className="w-full space-y-2">
             <Label htmlFor="email">Ad Text</Label>
             <Input
@@ -265,6 +274,7 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
               className="cursor-pointer hover:bg-slate-100"
               id="picture"
               type="file"
+              accept=".png, .jpg, .jpeg"
               onChange={onFileChange}
             />
           </div>

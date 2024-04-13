@@ -33,12 +33,21 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
+import Copiable from '@/components/Copiable'
+import { baseURL } from '@/config/constants'
+import { Input } from '@/components/ui/input'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
 }
 
-const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
+const PropertyContainer = ({ children }: { children: React.ReactNode }) => {
+  return <div className="w-full px-4 md:w-1/2">{children}</div>
+}
+
+const AdSpacePage = ({
+  params: { spaceId, id: groupId },
+}: AdSpacePageProps) => {
   const { address } = useAccount()
   const { acquireLeaseModal, updateAdDataModal, selfAssessmentModal } =
     useContext(ModalContext)
@@ -55,20 +64,12 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
   const isOwner = listing?.listingOwner === address
 
   return (
-    <Container className="relative flex min-h-[80vh] flex-row items-start gap-4 py-4">
-      <Card className="w-[400px] overflow-hidden font-body">
+    <Container className="relative flex min-h-[80vh] flex-col items-start gap-4 py-4 md:flex-row">
+      <Card className="overflow-hidden font-body">
         <CardHeader className="flex flex-row items-start gap-8 bg-muted/50">
           <div className="grid gap-0.5">
             <CardTitle className="group flex items-center gap-2 text-lg">
               AdSpace {Number(listing?.listingId)}
-              <Button
-                size="icon"
-                variant="outline"
-                className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
-              >
-                <Copy className="h-3 w-3" />
-                <span className="sr-only">Copy Order ID</span>
-              </Button>
             </CardTitle>
             <CardDescription>
               Opened on{' '}
@@ -152,25 +153,44 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
                 <span className="text-muted-foreground">Currencry</span>
                 <span>{truncateAddress(listing?.currency)}</span>
               </li>
+              <li className="flex items-center justify-between">
+                <span className="text-muted-foreground">Owner</span>
+                <span>
+                  {' '}
+                  {isOwner ? (
+                    ' you'
+                  ) : (
+                    <span>{truncateAddress(listing?.listingOwner)}</span>
+                  )}
+                </span>
+              </li>
+              <li className="flex flex-col items-start justify-between gap-2">
+                <span className="text-muted-foreground">Share</span>
+                <div className="group flex w-full flex-row gap-2">
+                  <Input
+                    className="flex-grow cursor-default"
+                    disabled
+                    placeholder={`${baseURL}/app/group/${groupId}/${spaceId}`}
+                  />
+                  <Copiable
+                    text={`${baseURL}/app/group/${groupId}/${spaceId}`}
+                  />
+                </div>
+              </li>
             </ul>
           </div>
         </CardContent>
         <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
           <div className="text-xs text-muted-foreground">
-            Owned by
-            {isOwner ? (
-              ' you'
-            ) : (
-              <span>{truncateAddress(listing?.listingOwner)}</span>
-            )}
+            This ad is frameable on the open web
           </div>
         </CardFooter>
       </Card>{' '}
-      <div className="flex flex-grow flex-col justify-center gap-4 rounded-md">
+      <div className="flex flex-grow flex-col justify-center gap-2 rounded-md">
         {adSpace.metadata?.imageGatewayURI && (
           <div className="relative flex w-full flex-row justify-center rounded-md border bg-white bg-opacity-20">
             <Badge className="absolute right-2 top-2">image</Badge>
-            <div className="w-1/2">
+            <PropertyContainer>
               <Image
                 src={adSpace.metadata?.imageGatewayURI}
                 alt="AdSpace Image"
@@ -178,27 +198,35 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
                 width={500}
                 height={500}
               />
-            </div>
+            </PropertyContainer>
           </div>
         )}
         {adSpace.metadata?.description && (
           <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
             <Badge className="absolute right-2 top-2">description</Badge>
-            <div className="w-1/2">
+            <PropertyContainer>
               <p className="text-white">{adSpace.metadata?.description}</p>
-            </div>
+            </PropertyContainer>
           </div>
         )}
         {adSpace.metadata?.external_url && (
           <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
             <Badge className="absolute right-2 top-2">external_url</Badge>
-            <div className="w-1/2">
+            <PropertyContainer>
               <Link href={adSpace.metadata?.external_url}>
                 <p className="text-white underline">
                   {adSpace.metadata?.external_url}
                 </p>
               </Link>
-            </div>
+            </PropertyContainer>
+          </div>
+        )}
+        {adSpace.metadata?.aspect_ratio && (
+          <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
+            <Badge className="absolute right-2 top-2">aspect_ratio</Badge>
+            <PropertyContainer>
+              <p className="text-white">{adSpace.metadata?.aspect_ratio}</p>
+            </PropertyContainer>
           </div>
         )}
       </div>
