@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'AdLand - Revenue for your community',
-    images: ['https://i.imgur.com/Jjz6HxX.jpg'],
+    images: ['https://i.imgur.com/6oeTt1J.jpg'],
   },
   description:
     'AdLand is a protocol to generate revenue for your community through collective advertising ownershup.',
