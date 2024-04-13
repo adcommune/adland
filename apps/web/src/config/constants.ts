@@ -38,7 +38,10 @@ export enum FrameAspectRatio {
 export const baseURL = (() => {
   let protocol = 'http'
   let url = 'localhost:3000'
-  if (process.env.VERCEL_URL) {
+  if (process.env.NEXT_PUBLIC_URL) {
+    protocol = 'https'
+    url = process.env.NEXT_PUBLIC_URL
+  } else if (process.env.VERCEL_URL) {
     protocol = 'https'
     url = process.env.VERCEL_URL
   } else if (process.env.VERCEL_BRANCH_URL) {
