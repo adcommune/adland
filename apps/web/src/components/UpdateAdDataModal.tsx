@@ -218,7 +218,7 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
               ))}
           </div>
         </div>
-        <div className="">
+        <div className="w-full md:w-2/3">
           <div className="w-full space-y-2">
             <Label htmlFor="email">Ad Text</Label>
             <Input

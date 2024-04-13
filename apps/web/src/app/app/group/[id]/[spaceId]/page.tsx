@@ -33,6 +33,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
+import Copiable from '@/components/Copiable'
+import { baseURL } from '@/config/constants'
+import { Input } from '@/components/ui/input'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
@@ -42,7 +45,9 @@ const PropertyContainer = ({ children }: { children: React.ReactNode }) => {
   return <div className="w-full px-4 md:w-1/2">{children}</div>
 }
 
-const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
+const AdSpacePage = ({
+  params: { spaceId, id: groupId },
+}: AdSpacePageProps) => {
   const { address } = useAccount()
   const { acquireLeaseModal, updateAdDataModal, selfAssessmentModal } =
     useContext(ModalContext)
@@ -65,14 +70,6 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
           <div className="grid gap-0.5">
             <CardTitle className="group flex items-center gap-2 text-lg">
               AdSpace {Number(listing?.listingId)}
-              <Button
-                size="icon"
-                variant="outline"
-                className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
-              >
-                <Copy className="h-3 w-3" />
-                <span className="sr-only">Copy Order ID</span>
-              </Button>
             </CardTitle>
             <CardDescription>
               Opened on{' '}
@@ -156,17 +153,36 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
                 <span className="text-muted-foreground">Currencry</span>
                 <span>{truncateAddress(listing?.currency)}</span>
               </li>
+              <li className="flex items-center justify-between">
+                <span className="text-muted-foreground">Owner</span>
+                <span>
+                  {' '}
+                  {isOwner ? (
+                    ' you'
+                  ) : (
+                    <span>{truncateAddress(listing?.listingOwner)}</span>
+                  )}
+                </span>
+              </li>
+              <li className="flex flex-col items-start justify-between gap-2">
+                <span className="text-muted-foreground">Share</span>
+                <div className="group flex w-full flex-row gap-2">
+                  <Input
+                    className="flex-grow cursor-default"
+                    disabled
+                    placeholder={`${baseURL}/app/group/${groupId}/${spaceId}`}
+                  />
+                  <Copiable
+                    text={`${baseURL}/app/group/${groupId}/${spaceId}`}
+                  />
+                </div>
+              </li>
             </ul>
           </div>
         </CardContent>
         <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
           <div className="text-xs text-muted-foreground">
-            Owned by
-            {isOwner ? (
-              ' you'
-            ) : (
-              <span>{truncateAddress(listing?.listingOwner)}</span>
-            )}
+            This ad is frameable on the open web
           </div>
         </CardFooter>
       </Card>{' '}
