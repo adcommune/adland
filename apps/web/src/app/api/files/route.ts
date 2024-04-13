@@ -14,25 +14,16 @@ export async function POST(request: NextRequest) {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${process.env.PINATA_JWT}`,
-        'Content-Type': 'multipart/form-data',
       },
       body: data,
-    })
+    }).then((res) => res.json())
 
     console.log(res)
-    console.log(await res.json())
 
-    const { IpfsHash } = await res.json()
-
-    console.log(IpfsHash)
-
-    return NextResponse.json({ IpfsHash }, { status: 200 })
+    return NextResponse.json(res, { status: 200 })
   } catch (e) {
     console.log(e)
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 },
-    )
+    return NextResponse.json(e, { status: 500 })
   }
 }
 
