@@ -4,7 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy:optsepolia": "graph deploy --product hosted-service nezz0746/adland-optsepolia",
+    "deploy:optsepolia": "graph deploy --studio adland-optsepolia",
     "test": "graph test"
   },
   "dependencies": {
