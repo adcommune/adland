@@ -26,7 +26,7 @@ import {
   BeaconUpgraded,
   Initialized,
   OwnershipTransferred,
-  TokenXSet,
+  TokenX,
   Transfer,
   Upgraded,
 } from "../generated/schema";
@@ -199,7 +199,7 @@ export function handleOwnershipTransferred(
 }
 
 export function handleTokenXSet(event: TokenXSetEvent): void {
-  let entity = new TokenXSet(
+  let entity = new TokenX(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   );
   entity.underlyingToken = event.params.underlyingToken;
