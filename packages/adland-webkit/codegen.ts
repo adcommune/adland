@@ -25,8 +25,8 @@ const config: CodegenConfig = {
       config: {
         reactQueryVersion: 5,
         fetcher: {
-          endpoint: constants.subgraphUrl,
-          fetchParams: {},
+          func: "./fetcher#fetcher",
+          isReactHook: true,
         },
       },
     },
