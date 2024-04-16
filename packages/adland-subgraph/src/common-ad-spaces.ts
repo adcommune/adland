@@ -220,6 +220,13 @@ export function handleTransfer(event: TransferEvent): void {
   entity.to = event.params.to;
   entity.tokenId = event.params.tokenId;
 
+  let adSpace = AdSpace.load(event.params.tokenId.toString());
+
+  if (adSpace) {
+    adSpace.uri = "";
+    adSpace.save();
+  }
+
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
