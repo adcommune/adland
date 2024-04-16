@@ -22,6 +22,13 @@ export function Hero() {
 
   return (
     <Container className="flex min-h-[76vh] flex-col justify-center gap-8 py-8 text-center">
+      <h1 className="mx-auto font-display text-3xl text-white 2xl:text-5xl">
+        Revenue for your community
+      </h1>
+      <p className="mx-auto max-w-2xl font-body text-lg text-gray-200">
+        Radical, decentralized, transparent revenue generation through
+        collective advertising ownership.
+      </p>
       <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-5">
         {!isLoading
           ? data?.map(({ metadata }) => {
