@@ -33,7 +33,7 @@ type RootLayoutProps = {
   children: React.ReactNode
 }
 
-export default function RootLayout({ children, ...rest }: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
@@ -44,7 +44,7 @@ export default function RootLayout({ children, ...rest }: RootLayoutProps) {
       )}
     >
       <body className="relative z-[2]">
-        <div className="overflow-hidden">
+        <div className="">
           {children}
           <Analytics />
         </div>

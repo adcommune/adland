@@ -5,7 +5,10 @@ import { Hero } from '@/components/Hero'
 import Navbar from '@/components/Navbar'
 import MobileNavigation from '@/components/Navigation/MovileNavigation'
 import { nav_links } from '@/config/links'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Link from 'next/link'
+
+const queryClient = new QueryClient()
 
 export default function Home() {
   return (
@@ -32,7 +35,9 @@ export default function Home() {
           })}
         </div>
       </Navbar>
-      <Hero />
+      <QueryClientProvider client={queryClient}>
+        <Hero />
+      </QueryClientProvider>
       <Footer />
     </>
   )
