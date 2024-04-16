@@ -4,4 +4,5 @@ export type Constants = {
   subgraphUrl: string;
   pinataPublicGateway: string;
   chain: Chain;
+  landingPageAdGroup: string;
 };
