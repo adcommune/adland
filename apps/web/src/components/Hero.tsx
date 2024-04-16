@@ -31,12 +31,15 @@ export function Hero() {
       </p>
       <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-5">
         {!isLoading
-          ? data?.map(({ metadata }) => {
+          ? data?.map(({ metadata, adSpace_subgraph }) => {
               const clickable = Boolean(metadata?.external_url)
               const link = metadata?.external_url ?? ''
 
               return (
-                <div className="flex aspect-square flex-col justify-center bg-white bg-opacity-10">
+                <div
+                  key={adSpace_subgraph.id}
+                  className="flex aspect-square flex-col justify-center bg-white bg-opacity-10"
+                >
                   {metadata?.imageGatewayURI ? (
                     <Link
                       href={link}
