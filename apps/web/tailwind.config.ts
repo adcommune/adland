@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      aspectRatio: {
+        '1/1': '1 / 1',
+        '1.91/1': '1.91 / 1',
+      },
       fontFamily: {
         body: 'var(--font-montserrat)',
         display: 'var(--font-antique-olive)',
