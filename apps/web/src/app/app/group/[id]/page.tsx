@@ -18,7 +18,7 @@ const GroupPage = async ({ params: { id } }: GroupPageProps) => {
   return (
     <Container className="flex flex-col gap-2 p-4">
       <AdGroupHeader adGroup={adGroup} />
-      <Tabs defaultValue="account" className="w-full">
+      <Tabs defaultValue="ad-spaces" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="ad-spaces">Ad Spaces</TabsTrigger>
           <TabsTrigger value="activity">Activity</TabsTrigger>
