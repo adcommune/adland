@@ -6,4 +6,5 @@ export const constants: Constants = {
     "https://api.studio.thegraph.com/query/958/adland-optsepolia/0.0.1",
   pinataPublicGateway: "amethyst-representative-mandrill-369.mypinata.cloud",
   chain: optimismSepolia,
+  landingPageAdGroup: "1",
 };
