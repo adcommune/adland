@@ -81,7 +81,7 @@ export function Hero() {
         >
           <Button
             size="sm"
-            className="p x-8 bg-transparentfont-body w-full text-white sm:w-auto"
+            className="p x-8 w-full bg-transparent font-body text-white sm:w-auto"
             variant="outline"
           >
             YOUR AD HERE
