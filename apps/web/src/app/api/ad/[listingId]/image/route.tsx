@@ -37,7 +37,9 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
         },
       )
 
-      imageResponse.headers.set('Cache-Control', 'public, max-age=0')
+      const max_age = 5 * 60 // 5 minutes
+
+      imageResponse.headers.set('Cache-Control', 'public, max-age=' + max_age)
 
       return imageResponse
     }
