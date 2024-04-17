@@ -4,14 +4,9 @@ import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import useAppContracts from '@/hooks/useAppContracts'
 import { getWeeklyTaxDue } from '@/lib/utils'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import { formatEther } from 'viem'
-import {
-  useAccount,
-  useBalance,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi'
+import { useAccount, useBalance } from 'wagmi'
 import { format, addWeeks } from 'date-fns'
 import { AdSpace, Listing } from '@/lib/types'
 import {
@@ -19,11 +14,17 @@ import {
   useSimulateDirectListingsLogicBuyFromListing,
   useWriteIsethUpgradeByEth,
 } from '@adland/contracts'
-import { NATIVE_CURRENCY } from '@/config/constants'
+import { NATIVE_CURRENCY, superfluidUpgradeLink } from '@/config/constants'
 import Modal from '@/components/Modal'
 import { useParams } from 'next/navigation'
 import { queryClient } from '@/app/app/providers'
 import { ModalContext } from '@/context/ModalContext'
+import useTransaction from '@/hooks/useTransaction'
+import { Alert, AlertDescription, AlertTitle } from './ui/alert'
+import Link from 'next/link'
+import { handleWriteErrors } from '@/lib/viem'
+import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
+import { toast } from 'sonner'
 
 const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
   const { spaceId } = useParams()
@@ -33,67 +34,95 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
   const [numberOfWeeks, setNumberOfWeeks] = useState<number>(1)
   const { acquireLeaseModal } = useContext(ModalContext)
 
-  const { data: ethXBalane } = useReadSuperTokenBalanceOf({
+  const {
+    data: { superBalance, isEnough } = {
+      superBalance: BigInt(0),
+      isEnough: true,
+    },
+    refetch: refetchSuperBalance,
+  } = useReadSuperTokenBalanceOf({
     address: ethx,
     args: address && [address],
+    query: {
+      select: (data) => ({
+        superBalance: data,
+        isEnough: data >= getWeeklyTaxDue(pricePerToken, taxRate),
+      }),
+    },
   })
+
+  const numberOfWeeksAvailable = Number(
+    superBalance / getWeeklyTaxDue(pricePerToken, taxRate) ?? 0,
+  )
 
   const { data: ethBalance } = useBalance({
     address: address,
   })
 
-  const { writeContract: callUpgradeByEth } = useWriteIsethUpgradeByEth()
+  const {
+    data: upgradeTxHash,
+    writeContract: callUpgradeByEth,
+    isPending,
+  } = useWriteIsethUpgradeByEth()
 
   const depositRent = (weeks: number) => {
     const price = pricePerToken
 
     if (!taxRate || price === undefined) return
 
-    callUpgradeByEth({
-      address: ethx,
-      args: undefined,
-      value: getWeeklyTaxDue(price, taxRate) * BigInt(weeks),
-    })
+    callUpgradeByEth(
+      {
+        address: ethx,
+        args: undefined,
+        value: getWeeklyTaxDue(price, taxRate) * BigInt(weeks),
+      },
+      {
+        onError: (error) => handleWriteErrors(error),
+      },
+    )
   }
 
-  const { data: buyRequest } = useSimulateDirectListingsLogicBuyFromListing({
-    args: [listingId, address, BigInt(1), NATIVE_CURRENCY, pricePerToken],
-    value: pricePerToken,
-    query: { enabled: true },
-  })
+  const { data: buyRequest, refetch: refetchBuySim } =
+    useSimulateDirectListingsLogicBuyFromListing({
+      args: address && [
+        listingId,
+        address,
+        BigInt(1),
+        NATIVE_CURRENCY,
+        pricePerToken,
+      ],
+      value: pricePerToken,
+      query: { enabled: Boolean(address) },
+    })
 
-  const { data: hash, writeContract, isPending } = useWriteContract({})
+  const { isLoading } = useWaitForTransactionSuccess(
+    upgradeTxHash,
+    useCallback(() => {
+      refetchSuperBalance()
+      refetchBuySim()
+      toast.success('Rent deposited successfully')
+    }, []),
+  )
 
-  const { data: txSuccess, isLoading } = useWaitForTransactionReceipt({
-    hash,
-    query: {
-      enabled: Boolean(hash),
-      select: (receipt) => receipt.status === 'success',
-    },
-  })
-
-  useEffect(() => {
-    if (txSuccess && address) {
-      acquireLeaseModal.set(false)
-      queryClient.setQueryData(
-        ['adSpace-', spaceId],
-        (old: AdSpace): AdSpace => {
-          return {
-            ...old,
-            listing: {
-              ...old.listing,
-              listingOwner: address,
-            },
-          }
-        },
-      )
-    }
-  }, [txSuccess])
-
-  const takoverLoading = isPending || isLoading
-
-  const numberOfWeeksAvailable = Number(
-    (ethXBalane ?? BigInt(0)) / getWeeklyTaxDue(pricePerToken, taxRate) ?? 0,
+  const { loading: takoverLoading, writeContract } = useTransaction(
+    useCallback(() => {
+      if (address) {
+        acquireLeaseModal.set(false)
+        queryClient.setQueryData(
+          ['adSpace-', spaceId],
+          (old: AdSpace): AdSpace => {
+            return {
+              ...old,
+              listing: {
+                ...old.listing,
+                listingOwner: address,
+              },
+            }
+          },
+        )
+      }
+      toast.success('Lease acquired successfully !')
+    }, []),
   )
 
   return (
@@ -125,7 +154,7 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
           <ul className="grid gap-3">
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Balance</span>
-              <span>{formatEther(ethXBalane ?? BigInt(0))} ETHx</span>
+              <span>{formatEther(superBalance)} ETHx</span>
             </li>
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Weekly Tax Due</span>
@@ -162,6 +191,8 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
                   }}
                 />
                 <Button
+                  loading={isPending || isLoading}
+                  disabled={isLoading}
                   onClick={() => {
                     depositRent(numberOfWeeks)
                   }}
@@ -179,6 +210,22 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
             </li>
           </ul>
         </div>
+        {!isEnough && (
+          <Alert variant="destructive" className="my-4">
+            <AlertTitle>Out of funds</AlertTitle>
+            <AlertDescription>
+              You SuperToken balance should account for at least 1 week of this
+              asset&apos;s tax. Deposit more with the deposit button about or on{' '}
+              <Link
+                href={superfluidUpgradeLink}
+                className="underline"
+                target="_blank"
+              >
+                Superfluid&apos;s dashboard
+              </Link>
+            </AlertDescription>
+          </Alert>
+        )}
       </Modal>
     </>
   )

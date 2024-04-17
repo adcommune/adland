@@ -4,6 +4,7 @@ import { Montserrat } from 'next/font/google'
 import localFont from 'next/font/local'
 import clsx from 'clsx'
 import { Analytics } from '@vercel/analytics/react'
+import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
   title: {
@@ -47,6 +48,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <div className="">
           {children}
           <Analytics />
+          <Toaster
+            toastOptions={{
+              className: 'font-body',
+            }}
+          />
         </div>
       </body>
     </html>

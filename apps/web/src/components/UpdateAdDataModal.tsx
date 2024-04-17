@@ -2,10 +2,11 @@ import { Button } from './ui/button'
 import Image from 'next/image'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import useAppContracts from '@/hooks/useAppContracts'
 import { getAR, getGatewayUri } from '@/lib/utils'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { useWriteContract } from 'wagmi'
+import { omit, isEqual } from 'lodash'
 import {
   Select,
   SelectContent,
@@ -27,6 +28,8 @@ import { ModalContext } from '@/context/ModalContext'
 import Modal from './Modal'
 import { queryClient } from '@/app/app/providers'
 import { toast } from 'sonner'
+import { handleWriteErrors } from '@/lib/viem'
+import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
 
 type UpdateAdDataDialogProps = {
   adSpace: AdSpace
@@ -91,7 +94,11 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
     setUploadingImage(false)
   }
 
-  const { data, writeContractAsync, isPending } = useWriteContract({})
+  const {
+    data: updateDataTxHash,
+    writeContract,
+    isPending,
+  } = useWriteContract({})
 
   const [uploadingData, setUploadingData] = useState(false)
 
@@ -116,13 +123,22 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
     }
     data.aspect_ratio = aspectRatio
 
+    if (adSpace.metadata) {
+      const oldMetadata = omit(adSpace.metadata, ['imageGatewayURI'])
+
+      if (isEqual(data, oldMetadata)) {
+        setUploadingData(false)
+        return toast.error('No changes detected')
+      }
+    }
+
     const metadata: File = new File([JSON.stringify(data)], 'metadata.json')
     const hash = await uploadFile(metadata)
     const adIpfsURI = `ipfs://${hash}`
 
     setUploadingData(false)
 
-    await writeContractAsync(
+    writeContract(
       {
         abi: commonAdSpacesAbi,
         address: adCommonOwnership,
@@ -133,18 +149,14 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
         onSuccess: () => {
           setNewMetadata(data)
         },
+        onError: (error) => handleWriteErrors(error),
       },
     )
   }
 
-  const { data: isSuccess, isLoading: txPending } =
-    useWaitForTransactionReceipt({
-      hash: data,
-      query: { select: (rcpt) => rcpt.status === 'success' },
-    })
-
-  useEffect(() => {
-    if (isSuccess) {
+  const { isLoading } = useWaitForTransactionSuccess(
+    updateDataTxHash,
+    useCallback(() => {
       updateAdDataModal.set(false)
 
       if (!newMetadata) return
@@ -160,14 +172,12 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
           }
         },
       )
-    }
-  }, [isSuccess])
+    }, []),
+  )
 
-  const contentUpdating = isPending || uploadingData || txPending
+  const contentUpdating = isPending || uploadingData || isLoading
 
   const contentUpdateDisabled = uploadingImage || contentUpdating
-
-  console.log('image', image?.url)
 
   return (
     <Modal
@@ -190,35 +200,36 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
       }}
     >
       <div className="flex flex-col gap-3 md:flex-row">
-        <div>
-          <div
-            className={classNames(
-              {
-                'aspect-1/1': FrameAspectRatio.SQUARE === aspectRatio,
-                'aspect-1.91/1': FrameAspectRatio.RECTANGLE === aspectRatio,
-              },
-              'w-full',
-            )}
-          >
-            {image &&
-              (image.type === 'video' ? (
-                <video className="w-full" controls preload="nonde">
-                  <source src={image.url} type="video/mp4"></source>
-                </video>
-              ) : (
-                <Image
-                  src={image.url}
-                  alt="Uploaded image"
-                  width={200}
-                  height={200}
-                  className={classNames(
-                    'h-full w-full bg-gray-100 object-contain',
-                  )}
-                />
-              ))}
-          </div>
+        <div
+          className={classNames(
+            {
+              'aspect-1/1': FrameAspectRatio.SQUARE === aspectRatio,
+              'aspect-1.91/1': FrameAspectRatio.RECTANGLE === aspectRatio,
+            },
+            'w-full md:w-1/2',
+          )}
+        >
+          {image ? (
+            image.type === 'video' ? (
+              <video className="w-full" controls preload="nonde">
+                <source src={image.url} type="video/mp4"></source>
+              </video>
+            ) : (
+              <Image
+                src={image.url}
+                alt="Uploaded image"
+                width={200}
+                height={200}
+                className={classNames(
+                  'h-full w-full bg-gray-100 object-contain',
+                )}
+              />
+            )
+          ) : (
+            <div className="h-full bg-gray-100"></div>
+          )}
         </div>
-        <div className="w-full md:w-2/3">
+        <div className="w-full md:w-1/2">
           <div className="w-full space-y-2">
             <Label htmlFor="email">Ad Text</Label>
             <Input

@@ -188,13 +188,13 @@ const AdSpacePage = ({
       </Card>{' '}
       <div className="flex flex-grow flex-col justify-center gap-2 rounded-md">
         {adSpace.metadata?.imageGatewayURI && (
-          <div className="relative flex w-full flex-row justify-center rounded-md border bg-white bg-opacity-20">
+          <div className="relative flex min-h-[300px] w-full flex-row justify-center rounded-md border bg-white bg-opacity-20">
             <Badge className="absolute right-2 top-2">image</Badge>
             <PropertyContainer>
               <Image
                 src={adSpace.metadata?.imageGatewayURI}
                 alt="AdSpace Image"
-                className="w-full"
+                className="h-full w-full object-contain"
                 width={500}
                 height={500}
               />

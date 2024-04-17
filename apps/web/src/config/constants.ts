@@ -67,3 +67,6 @@ export const authorizedFileTypes = ['image/jpeg', 'image/png', 'image/jpg']
 
 export const superfluidAccountLink = (address: string) =>
   `https://app.superfluid.finance/?view=${address}`
+
+export const superfluidUpgradeLink =
+  'https://app.superfluid.finance/wrap?upgrade'
