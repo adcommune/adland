@@ -54,6 +54,10 @@ export class AdLand {
     }
   }
 
+  async getAdSpaceMetadata(uri: string): Promise<Metadata | undefined> {
+    return this._getAdSpaceMetadata(uri)
+  }
+
   private async _getAdSpaceMetadata(
     uri: string | undefined | null,
   ): Promise<Metadata | undefined> {
