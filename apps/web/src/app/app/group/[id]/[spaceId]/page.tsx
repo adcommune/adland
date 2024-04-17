@@ -1,6 +1,6 @@
 'use client'
 
-import { Copy, ImageIcon, MoreVertical, ShoppingCart } from 'lucide-react'
+import { ImageIcon, MoreVertical, ShoppingCart } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/card'
 import { Container } from '@/components/Container'
 import { AdLand } from '@/lib/adland'
-import Image from 'next/image'
 import { format } from 'date-fns'
 import { formatEther } from 'viem'
 import { truncateAddress } from '@/lib/utils'
@@ -23,8 +22,6 @@ import { useContext } from 'react'
 import { ModalContext } from '@/context/ModalContext'
 import AcquireLeaseModal from '@/components/AcquireLeaseModal'
 import UpdateAdDataDialog from '@/components/UpdateAdDataModal'
-import { Badge } from '@/components/ui/badge'
-import Link from 'next/link'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,13 +33,10 @@ import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
 import Copiable from '@/components/Copiable'
 import { baseURL } from '@/config/constants'
 import { Input } from '@/components/ui/input'
+import AdPropertyList from '@/components/AdSpaces/AdPropertyList'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
-}
-
-const PropertyContainer = ({ children }: { children: React.ReactNode }) => {
-  return <div className="w-full px-4 md:w-1/2">{children}</div>
 }
 
 const AdSpacePage = ({
@@ -186,50 +180,7 @@ const AdSpacePage = ({
           </div>
         </CardFooter>
       </Card>{' '}
-      <div className="flex flex-grow flex-col justify-center gap-2 rounded-md">
-        {adSpace.metadata?.imageGatewayURI && (
-          <div className="relative flex min-h-[300px] w-full flex-row justify-center rounded-md border bg-white bg-opacity-20">
-            <Badge className="absolute right-2 top-2">image</Badge>
-            <PropertyContainer>
-              <Image
-                src={adSpace.metadata?.imageGatewayURI}
-                alt="AdSpace Image"
-                className="h-full w-full object-contain"
-                width={500}
-                height={500}
-              />
-            </PropertyContainer>
-          </div>
-        )}
-        {adSpace.metadata?.description && (
-          <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
-            <Badge className="absolute right-2 top-2">description</Badge>
-            <PropertyContainer>
-              <p className="text-white">{adSpace.metadata?.description}</p>
-            </PropertyContainer>
-          </div>
-        )}
-        {adSpace.metadata?.external_url && (
-          <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
-            <Badge className="absolute right-2 top-2">external_url</Badge>
-            <PropertyContainer>
-              <Link href={adSpace.metadata?.external_url}>
-                <p className="text-white underline">
-                  {adSpace.metadata?.external_url}
-                </p>
-              </Link>
-            </PropertyContainer>
-          </div>
-        )}
-        {adSpace.metadata?.aspect_ratio && (
-          <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
-            <Badge className="absolute right-2 top-2">aspect_ratio</Badge>
-            <PropertyContainer>
-              <p className="text-white">{adSpace.metadata?.aspect_ratio}</p>
-            </PropertyContainer>
-          </div>
-        )}
-      </div>
+      <AdPropertyList metadata={adSpace.metadata} />
     </Container>
   )
 }
