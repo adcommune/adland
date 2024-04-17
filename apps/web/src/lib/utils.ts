@@ -7,9 +7,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const truncateAddress = (address?: string) => {
+export const truncateAddress = (address?: string, length?: number) => {
   if (!address) return ''
-  return `${address.slice(0, 6)}...${address.slice(-4)}`
+  return `${address.slice(0, length || 6)}...${address.slice(-4)}`
 }
 
 export const getExplorerLink = (

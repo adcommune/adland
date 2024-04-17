@@ -25,6 +25,7 @@ import Link from 'next/link'
 import { handleWriteErrors } from '@/lib/viem'
 import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
 import { toast } from 'sonner'
+import { Separator } from './ui/separator'
 
 const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
   const { spaceId } = useParams()
@@ -150,6 +151,7 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
         }}
       >
         <div className="grid gap-3">
+          <Separator />
           <div className="font-semibold">Super Token Info</div>
           <ul className="grid gap-3">
             <li className="flex items-center justify-between">
@@ -202,6 +204,7 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
               </div>
             </li>
           </ul>
+          <Separator />
           <div className="font-semibold">ETH Info</div>
           <ul className="grid gap-3">
             <li className="flex items-center justify-between">
