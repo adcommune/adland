@@ -57,9 +57,15 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
   }
 
   const { data: buyRequest } = useSimulateDirectListingsLogicBuyFromListing({
-    args: [listingId, address, BigInt(1), NATIVE_CURRENCY, pricePerToken],
+    args: address && [
+      listingId,
+      address,
+      BigInt(1),
+      NATIVE_CURRENCY,
+      pricePerToken,
+    ],
     value: pricePerToken,
-    query: { enabled: true },
+    query: { enabled: Boolean(address) },
   })
 
   const { data: hash, writeContract, isPending } = useWriteContract({})
