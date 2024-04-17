@@ -6,26 +6,33 @@ import {
   useWriteCfAv1ForwarderGrantPermissions,
 } from '@adland/contracts'
 import { handleWriteErrors } from '@/lib/viem'
+import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
 
 const StreamPermissionButton = () => {
   const { address } = useAccount()
   const { cfaV1, ethx, marketplace } = useAppContracts()
 
-  const { data: permissionGrantedToMarketplace, isFetched } =
-    useReadCfAv1ForwarderGetFlowOperatorPermissions({
-      address: cfaV1,
-      args: address && [ethx, address, marketplace],
-      query: {
-        enabled: Boolean(address),
-        select: (data: any) => {
-          console.log(data)
-          return data[0] === 7
-        },
+  const {
+    data: permissionGrantedToMarketplace,
+    isFetched,
+    refetch,
+  } = useReadCfAv1ForwarderGetFlowOperatorPermissions({
+    address: cfaV1,
+    args: address && [ethx, address, marketplace],
+    query: {
+      enabled: Boolean(address),
+      select: (data: any) => {
+        console.log(data)
+        return data[0] === 7
       },
-    })
+    },
+  })
 
-  const { writeContract: callGrantPermission, isPending } =
-    useWriteCfAv1ForwarderGrantPermissions()
+  const {
+    data: hash,
+    writeContract: callGrantPermission,
+    isPending,
+  } = useWriteCfAv1ForwarderGrantPermissions()
 
   const grantPermission = () => {
     callGrantPermission(
@@ -39,6 +46,10 @@ const StreamPermissionButton = () => {
     )
   }
 
+  const { isLoading } = useWaitForTransactionSuccess(hash, () => {
+    refetch()
+  })
+
   return (
     <>
       {' '}
@@ -46,7 +57,7 @@ const StreamPermissionButton = () => {
         <Button
           className="font-body"
           disabled={isPending}
-          loading={isPending}
+          loading={isPending || isLoading}
           onClick={() => {
             grantPermission()
           }}
