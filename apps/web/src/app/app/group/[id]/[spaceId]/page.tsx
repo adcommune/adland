@@ -33,6 +33,7 @@ import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
 import Copiable from '@/components/Copiable'
 import { baseURL } from '@/config/constants'
 import { Input } from '@/components/ui/input'
+import Image from 'next/image'
 import AdPropertyList from '@/components/AdSpaces/AdPropertyList'
 
 type AdSpacePageProps = {
@@ -158,20 +159,40 @@ const AdSpacePage = ({
                   )}
                 </span>
               </li>
-              <li className="flex flex-col items-start justify-between gap-2">
-                <span className="text-muted-foreground">Share</span>
-                <div className="group flex w-full flex-row gap-2">
-                  <Input
-                    className="flex-grow cursor-default"
-                    disabled
-                    placeholder={`${baseURL}/app/group/${groupId}/${spaceId}`}
-                  />
-                  <Copiable
-                    text={`${baseURL}/app/group/${groupId}/${spaceId}`}
-                  />
-                </div>
-              </li>
             </ul>
+            <div className="grid gap-3">
+              <div className="font-semibold">Integrations</div>
+              <ul className="grid gap-3">
+                <li className="flex flex-col items-start justify-between gap-2">
+                  <span className="text-muted-foreground">
+                    Share ad space in a frame
+                  </span>
+                  <div className="group flex w-full flex-row items-center gap-2">
+                    <div className="aspect-square h-full">
+                      <Image
+                        src="/farcaster.png"
+                        width={50}
+                        height={50}
+                        className="h-full w-full scale-[85%] object-contain"
+                        alt="farcaster-logo"
+                      />
+                    </div>
+                    <Input
+                      className="h-full flex-grow cursor-default text-opacity-100 disabled:opacity-100"
+                      disabled
+                      placeholder={truncateAddress(
+                        `${baseURL}/app/group/${groupId}/${spaceId}`,
+                        14,
+                      )}
+                    />
+                    <Copiable
+                      visible
+                      text={`${baseURL}/app/group/${groupId}/${spaceId}`}
+                    />
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </CardContent>
         <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">

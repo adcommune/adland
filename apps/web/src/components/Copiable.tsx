@@ -1,8 +1,15 @@
 import { CheckIcon, Copy } from 'lucide-react'
 import { Button } from './ui/button'
 import { useCopyToClipboard } from '@/hooks/useClipboard'
+import classNames from 'classnames'
 
-const Copiable = ({ text }: { text: string }) => {
+const Copiable = ({
+  text,
+  visible = false,
+}: {
+  text: string
+  visible?: boolean
+}) => {
   const [copiedText, copy] = useCopyToClipboard()
 
   return (
@@ -10,7 +17,9 @@ const Copiable = ({ text }: { text: string }) => {
       onClick={() => copy(text)}
       size="icon"
       variant="outline"
-      className="h-full opacity-0 transition-opacity group-hover:opacity-100"
+      className={classNames('aspect-square h-full', {
+        'opacity-0 transition-opacity group-hover:opacity-100': !visible,
+      })}
     >
       {copiedText === text ? (
         <CheckIcon className="h-3 w-3 fill-green-700" />
