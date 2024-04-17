@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { truncateAddress } from '@/lib/utils'
 import { defaultChain } from '@/config/constants'
+import { zeroAddress } from 'viem'
 
 export const ConnectButton = () => {
   const { ready, authenticated, login, logout, user, connectWallet } =
@@ -24,11 +25,21 @@ export const ConnectButton = () => {
 
   const disableLogin = !ready || (ready && authenticated)
 
-  if (!ready) return <></>
+  if (!ready)
+    return (
+      <Button disabled variant="outline">
+        <p>{truncateAddress(zeroAddress)}</p>
+      </Button>
+    )
 
   if (!authenticated) {
     return (
-      <Button disabled={disableLogin} onClick={login} type="button">
+      <Button
+        disabled={disableLogin}
+        onClick={login}
+        type="button"
+        className="font-body"
+      >
         Connect Wallet
       </Button>
     )
@@ -46,6 +57,7 @@ export const ConnectButton = () => {
             wallet.switchChain(defaultChain.id)
           }
         }}
+        className="font-body"
         type="button"
       >
         Wrong Network
@@ -57,7 +69,7 @@ export const ConnectButton = () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button type="button" variant="outline" className="h-full">
+          <Button type="button" variant="outline" className="h-full font-body">
             {truncateAddress(address ?? user?.wallet?.address)}
           </Button>
         </DropdownMenuTrigger>
