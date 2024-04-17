@@ -3,17 +3,18 @@
   "version": "0.1.0",
   "description": "Adland contracts, ABIs & types",
   "type": "module",
-  "types": "./dist/index.d.ts",
-  "main": "./dist/index.js",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
-    "build": "tsc",
     "codegen": "wagmi generate"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
     "@wagmi/cli": "^2.1.4",
-    "wagmi": "^2.5.17",
-    "typescript": "^5.4.4",
-    "viem": "^2.9.13"
+    "viem": "^2.9.13",
+    "typescript": "^5.4.4"
+  },
+  "peerDependencies": {
+    "wagmi": "^2.5.17"
   }
 }
