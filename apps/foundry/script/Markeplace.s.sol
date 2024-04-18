@@ -118,6 +118,14 @@ contract MarketplaceScript is BaseScript, IExtension {
         );
     }
 
+    function deployNewDirectListingLogic(address marketplace) public {
+        Extension memory directListingExtension = _deployNewDirectListing();
+
+        MarketplaceV3(payable(address(marketplace))).replaceExtension(
+            directListingExtension
+        );
+    }
+
     function deployAdLandTestnet(
         address marketplace
     ) public broadcastOn(DeployementChain.OptimismSepolia) {
@@ -184,7 +192,10 @@ contract MarketplaceScript is BaseScript, IExtension {
     function _deployMarketplace(
         address deployer
     ) public returns (DirectListingsLogic) {
-        Extension[] memory extensions = _setupExtensions();
+        Extension memory directListingExtension = _deployNewDirectListing();
+
+        Extension[] memory extensions = new Extension[](1);
+        extensions[0] = directListingExtension;
 
         address impl = address(
             new MarketplaceV3(
@@ -218,12 +229,10 @@ contract MarketplaceScript is BaseScript, IExtension {
         return DirectListingsLogic(marketplace);
     }
 
-    function _setupExtensions()
+    function _deployNewDirectListing()
         internal
-        returns (Extension[] memory extensions)
+        returns (Extension memory directListingExtension)
     {
-        extensions = new Extension[](1);
-
         // Deploy `DirectListings`
         address directListings = address(
             new DirectListingsLogic(address(weth))
@@ -231,6 +240,7 @@ contract MarketplaceScript is BaseScript, IExtension {
 
         // Extension: DirectListingsLogic
         Extension memory extensionDirectListings;
+
         extensionDirectListings.metadata = ExtensionMetadata({
             name: "DirectListingsLogic",
             metadataURI: "ipfs://DirectListings",
@@ -291,7 +301,7 @@ contract MarketplaceScript is BaseScript, IExtension {
             "getListing(uint256)"
         );
 
-        extensions[0] = extensionDirectListings;
+        directListingExtension = extensionDirectListings;
     }
 
     function _grandCommonAdsAccessToMarketplace(
