@@ -157,7 +157,15 @@ contract MarketplaceScript is BaseScript, IExtension {
             )
         );
 
-        commonAdGroupFactory.transferOwnership(address(commonAds));
+        commonAdGroupFactory.grantRole(
+            keccak256("GROUP_CREATOR"),
+            address(commonAds)
+        );
+
+        _saveDeployment(
+            address(commonAdGroupFactory),
+            "CommonAdGroupAdminFactory"
+        );
         _saveDeployment(address(commonAds), "CommonAdSpaces");
 
         TestToken dai = TestToken(daix.getUnderlyingToken());

@@ -38,6 +38,7 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
     WETH9 public weth;
     DirectListingsLogic public marketplace;
     CommonAdSpaces public commonAds;
+    CommonAdGroupAdminFactory public commonAdGroupFactory;
     address internal deployer = vm.addr(420);
     address internal recipient = vm.addr(421);
     uint256 initialPrice = 0.1 ether;
@@ -70,21 +71,21 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
 
         vm.label(address(marketplace), "marketplace");
 
-        CommonAdGroupAdminFactory commonAdGroupFactory = CommonAdGroupAdminFactory(
-                address(
-                    new UUPSProxy(
-                        address(new CommonAdGroupAdminFactory()),
-                        abi.encodeWithSelector(
-                            CommonAdGroupAdminFactory.initialize.selector,
-                            AccountCreatorConfig({
-                                registry: registry,
-                                implementation: address(implementation),
-                                accountProxy: address(accountProxy)
-                            })
-                        )
+        commonAdGroupFactory = CommonAdGroupAdminFactory(
+            address(
+                new UUPSProxy(
+                    address(new CommonAdGroupAdminFactory()),
+                    abi.encodeWithSelector(
+                        CommonAdGroupAdminFactory.initialize.selector,
+                        AccountCreatorConfig({
+                            registry: registry,
+                            implementation: address(implementation),
+                            accountProxy: address(accountProxy)
+                        })
                     )
                 )
-            );
+            )
+        );
 
         commonAds = CommonAdSpaces(
             address(
@@ -100,7 +101,10 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
             )
         );
 
-        commonAdGroupFactory.transferOwnership(address(commonAds));
+        commonAdGroupFactory.grantRole(
+            keccak256("GROUP_CREATOR"),
+            address(commonAds)
+        );
 
         _grantTaxManagerRole(deployer);
 

@@ -19,6 +19,8 @@ import {AccountV3} from "tokenbound/AccountV3Upgradable.sol";
 import {AdSpaceConfig} from "../src/CommonAdSpaces.sol";
 import {CommonAdGroupAdminFactory} from "../src/CommonAdGroupAdminFactory.sol";
 
+import {CommonAdGroupAdminFactoryMock} from "./mocks/CommonAdGroupAdminFactoryMock.sol";
+
 contract CommonAdSpacesTest is CommonAdSpacesBase {
     using SuperTokenV1Library for ISuperToken;
     uint256 constant baseTaxRateBPS = 120; // 1.2% per month
@@ -26,6 +28,19 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     uint256 constant DEFAULT_QUANTITY = 1;
     string buyerAdURI = "https://www.google.com";
     string buyer2AdURI = "https://www.yahoo.com";
+
+    function testAdminUpgrade() public {
+        CommonAdGroupAdminFactoryMock newFactoryMock = new CommonAdGroupAdminFactoryMock();
+
+        vm.prank(deployer);
+        commonAdGroupFactory.upgradeTo(address(newFactoryMock));
+
+        assertEq(
+            CommonAdGroupAdminFactoryMock(address(commonAdGroupFactory))
+                .whoAmI(),
+            "CommonAdGroupAdminFactoryMock"
+        );
+    }
 
     function testCannotTransferAsOwnerOfListing() public {
         commonAds.createAdGroup(
@@ -64,7 +79,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         CommonAdGroupAdminFactory adminFactory = commonAds
             .adGroupAdminFactory();
 
-        vm.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert();
         adminFactory.createGroupAdmin(vm.addr(69));
 
         vm.prank(address(commonAds));
