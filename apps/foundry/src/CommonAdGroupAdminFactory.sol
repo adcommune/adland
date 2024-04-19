@@ -52,7 +52,7 @@ contract CommonAdGroupAdminFactory is
         onlyRole(GROUP_CREATOR)
         returns (address adGroupAdmin, uint256 adGroupId)
     {
-        uint256 groupId = _groupIds++;
+        uint256 groupId = _groupIds;
 
         _safeMint(recipient, groupId);
 
