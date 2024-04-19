@@ -44,7 +44,7 @@ contract CommonAdGroupAdminFactory is
     function createGroupAdmin(
         address recipient
     ) external onlyOwner returns (address adGroupAdmin, uint256 adGroupId) {
-        uint256 groupId = _groupIds++;
+        uint256 groupId = _groupIds;
 
         _safeMint(recipient, groupId);
 
