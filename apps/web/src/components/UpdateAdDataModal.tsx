@@ -172,7 +172,7 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
           }
         },
       )
-    }, []),
+    }, [newMetadata]),
   )
 
   const contentUpdating = isPending || uploadingData || isLoading

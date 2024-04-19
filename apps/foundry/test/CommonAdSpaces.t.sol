@@ -14,9 +14,12 @@ import {ISETH} from "@superfluid-finance/ethereum-contracts/contracts/interfaces
 import {StreamCreator} from "./mocks/StreamCreator.sol";
 import {TestToken} from "@superfluid-finance/ethereum-contracts/contracts/utils/TestToken.sol";
 import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
+import {AccountV3} from "tokenbound/AccountV3Upgradable.sol";
 
 import {AdSpaceConfig} from "../src/CommonAdSpaces.sol";
 import {CommonAdGroupAdminFactory} from "../src/CommonAdGroupAdminFactory.sol";
+
+import {CommonAdGroupAdminFactoryMock} from "./mocks/CommonAdGroupAdminFactoryMock.sol";
 
 contract CommonAdSpacesTest is CommonAdSpacesBase {
     using SuperTokenV1Library for ISuperToken;
@@ -25,6 +28,19 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     uint256 constant DEFAULT_QUANTITY = 1;
     string buyerAdURI = "https://www.google.com";
     string buyer2AdURI = "https://www.yahoo.com";
+
+    function testAdminUpgrade() public {
+        CommonAdGroupAdminFactoryMock newFactoryMock = new CommonAdGroupAdminFactoryMock();
+
+        vm.prank(deployer);
+        commonAdGroupFactory.upgradeTo(address(newFactoryMock));
+
+        assertEq(
+            CommonAdGroupAdminFactoryMock(address(commonAdGroupFactory))
+                .whoAmI(),
+            "CommonAdGroupAdminFactoryMock"
+        );
+    }
 
     function testCannotTransferAsOwnerOfListing() public {
         commonAds.createAdGroup(
@@ -63,7 +79,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         CommonAdGroupAdminFactory adminFactory = commonAds
             .adGroupAdminFactory();
 
-        vm.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert();
         adminFactory.createGroupAdmin(vm.addr(69));
 
         vm.prank(address(commonAds));
@@ -103,6 +119,58 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             account,
             vm.addr(96),
             duePerSecondInt
+        );
+    }
+
+    function testBuyerCancelsStream() public {
+        (address admin, ) = commonAds.createAdGroup(
+            recipient,
+            AdSpaceConfig({
+                currency: CurrencyTransferLib.NATIVE_TOKEN,
+                initialPrice: initialPrice,
+                taxRate: baseTaxRateBPS
+            }),
+            3
+        );
+
+        address buyer = _getAccount(69, 1000 ether);
+
+        _grantMaxFlowPermissions(ethx, buyer, address(marketplace));
+
+        _upgradeETH(
+            ethx,
+            buyer,
+            _taxDuePerWeek(baseTaxRateBPS, initialPrice) * 10
+        );
+
+        vm.prank(buyer);
+        marketplace.buyFromListing{value: initialPrice}(
+            1,
+            buyer,
+            DEFAULT_QUANTITY,
+            CurrencyTransferLib.NATIVE_TOKEN,
+            initialPrice
+        );
+
+        _logFlowInfo(buyer, admin);
+
+        vm.warp(block.timestamp + 1 days);
+
+        vm.startPrank(buyer);
+        ISuperToken(ethx).deleteFlow(buyer, admin);
+        vm.stopPrank();
+
+        vm.prank(recipient);
+        AccountV3(payable(admin)).execute(
+            address(marketplace),
+            0,
+            abi.encodeWithSelector(
+                DirectListingsLogic(payable(address(marketplace)))
+                    .forecloseListing
+                    .selector,
+                1
+            ),
+            0
         );
     }
 

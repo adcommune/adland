@@ -157,7 +157,15 @@ contract MarketplaceScript is BaseScript, IExtension {
             )
         );
 
-        commonAdGroupFactory.transferOwnership(address(commonAds));
+        commonAdGroupFactory.grantRole(
+            keccak256("GROUP_CREATOR"),
+            address(commonAds)
+        );
+
+        _saveDeployment(
+            address(commonAdGroupFactory),
+            "CommonAdGroupAdminFactory"
+        );
         _saveDeployment(address(commonAds), "CommonAdSpaces");
 
         TestToken dai = TestToken(daix.getUnderlyingToken());
@@ -216,6 +224,16 @@ contract MarketplaceScript is BaseScript, IExtension {
         );
 
         return DirectListingsLogic(marketplace);
+    }
+
+    function replaceWithNewDirectListingLogic(
+        address marketplace
+    ) public broadcastOn(DeployementChain.OptimismSepolia) {
+        Extension[] memory extensions = _setupExtensions();
+
+        MarketplaceV3(payable(address(marketplace))).replaceExtension(
+            extensions[0]
+        );
     }
 
     function _setupExtensions()

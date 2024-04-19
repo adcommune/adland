@@ -1,23 +1,27 @@
 import { useEffect } from 'react'
+import { Log } from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
 
 const useWaitForTransactionSuccess = (
   hash: `0x${string}` | undefined,
-  callback: () => void,
+  callback: (logs: Log<bigint, number, false>[]) => void,
 ) => {
-  const { data: isSuccess, isLoading } = useWaitForTransactionReceipt({
+  const { data, isLoading } = useWaitForTransactionReceipt({
     hash,
     query: {
       enabled: Boolean(hash),
-      select: (receipt) => receipt.status === 'success',
+      select: (receipt) => ({
+        isSuccess: receipt.status === 'success',
+        logs: receipt.logs,
+      }),
     },
   })
 
   useEffect(() => {
-    if (isSuccess) {
-      callback()
+    if (data?.isSuccess && hash) {
+      callback(data?.logs)
     }
-  }, [isSuccess, callback])
+  }, [data, callback])
 
   return {
     isLoading,

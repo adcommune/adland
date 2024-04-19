@@ -3,7 +3,7 @@ pragma solidity ^0.8.19;
 
 import {ERC721Upgradeable} from "@openzeppelin-upgradeable/contracts/token/ERC721/ERC721Upgradeable.sol";
 import {UUPSUpgradeable} from "@openzeppelin-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
-import {OwnableUpgradeable} from "@openzeppelin-upgradeable/contracts/access/OwnableUpgradeable.sol";
+import {AccessControlUpgradeable} from "@openzeppelin-upgradeable/contracts/access/AccessControlUpgradeable.sol";
 import {ICommonAdGroupAdminFactory} from "./interfaces/ICommonAdGroupAdminFactory.sol";
 import {ERC6551AccountCreatorUpgradeable, AccountCreatorConfig} from "./lib/ERC6551AccountCreator.sol";
 
@@ -14,9 +14,11 @@ import {ERC6551AccountCreatorUpgradeable, AccountCreatorConfig} from "./lib/ERC6
 contract CommonAdGroupAdminFactory is
     ERC6551AccountCreatorUpgradeable,
     ERC721Upgradeable,
-    OwnableUpgradeable,
+    AccessControlUpgradeable,
     UUPSUpgradeable
 {
+    bytes32 public constant GROUP_CREATOR = keccak256("GROUP_CREATOR");
+
     /// @dev incrementing groupIds
     uint256 internal _groupIds;
 
@@ -29,9 +31,11 @@ contract CommonAdGroupAdminFactory is
     ) public initializer {
         __ERC6551AccountCreator__init(accountConfig);
         __ERC721_init("CommonAdGroupAdminFactory", "CAGAF");
-        __Ownable_init();
+        __AccessControl_init();
         __UUPSUpgradeable_init();
         _groupIds = 1;
+
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
 
     /**
@@ -43,8 +47,12 @@ contract CommonAdGroupAdminFactory is
      */
     function createGroupAdmin(
         address recipient
-    ) external onlyOwner returns (address adGroupAdmin, uint256 adGroupId) {
-        uint256 groupId = _groupIds++;
+    )
+        external
+        onlyRole(GROUP_CREATOR)
+        returns (address adGroupAdmin, uint256 adGroupId)
+    {
+        uint256 groupId = _groupIds;
 
         _safeMint(recipient, groupId);
 
@@ -66,7 +74,18 @@ contract CommonAdGroupAdminFactory is
         adGroupAdmin = _getAccount(block.chainid, address(this), adGroupId);
     }
 
+    function supportsInterface(
+        bytes4 interfaceId
+    )
+        public
+        view
+        override(ERC721Upgradeable, AccessControlUpgradeable)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
+
     function _authorizeUpgrade(
         address newImplementation
-    ) internal override onlyOwner {}
+    ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 }

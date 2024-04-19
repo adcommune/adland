@@ -88,4 +88,22 @@ abstract contract BaseScript is Script {
             deployerPrivateKey = vm.envUint("PK");
         }
     }
+
+    function _readDeployment(
+        string memory contractName
+    ) internal returns (address) {
+        string memory filePathWithEncodePacked = string(
+            abi.encodePacked(
+                "./deployments/",
+                vm.toString(block.chainid),
+                "/",
+                contractName,
+                ".json"
+            )
+        );
+
+        string memory json = vm.readFile(filePathWithEncodePacked);
+
+        return vm.parseJsonAddress(json, ".address");
+    }
 }

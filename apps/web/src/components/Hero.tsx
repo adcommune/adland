@@ -13,9 +13,7 @@ import { ShoppingCartIcon } from 'lucide-react'
 export function Hero() {
   const { data, isLoading } = useQuery({
     queryFn: () => {
-      return new AdLand()
-        .getGroup(constants.landingPageAdGroup)
-        .then(({ adSpaces }) => adSpaces)
+      return new AdLand().getGroup(constants.landingPageAdGroup)
     },
     queryKey: ['landing-ads'],
   })
@@ -31,7 +29,7 @@ export function Hero() {
       </p>
       <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-5">
         {!isLoading
-          ? data?.map(({ metadata, adSpace_subgraph }) => {
+          ? data?.adSpaces?.map(({ metadata, adSpace_subgraph }) => {
               const clickable = Boolean(metadata?.external_url)
               const link = metadata?.external_url ?? ''
 

@@ -35,14 +35,13 @@ const AdGroupHeader = ({
     },
   })
 
-  const { data: benefFlowRate, refetch } =
-    useReadCfAv1ForwarderGetAccountFlowrate({
-      address: cfaV1,
-      args: beneficiary && [ethx, beneficiary],
-      query: {
-        enabled: Boolean(beneficiary),
-      },
-    })
+  const { data: benefFlowRate } = useReadCfAv1ForwarderGetAccountFlowrate({
+    address: cfaV1,
+    args: beneficiary && [ethx, beneficiary],
+    query: {
+      enabled: Boolean(beneficiary),
+    },
+  })
 
   const monthlyRevenue =
     parseFloat(formatEther(benefFlowRate ?? BigInt(0))) * 30 * 24 * 60 * 60
