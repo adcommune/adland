@@ -12,7 +12,7 @@ export class AdLand {
     this.adland = getAdLand(new GraphQLClient(constants.subgraphUrl))
   }
 
-  async getGroup(id: string): Promise<AdGroup> {
+  async getGroup(id: string): Promise<AdGroup | undefined> {
     const group = await this.adland
       .adGroup({
         id,
@@ -22,7 +22,7 @@ export class AdLand {
       })
 
     if (!group) {
-      throw new Error('Group not found')
+      return undefined
     } else {
       return {
         adGroup_subgraph: group,

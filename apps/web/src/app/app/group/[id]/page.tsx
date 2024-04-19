@@ -13,6 +13,14 @@ type GroupPageProps = { params: { id: string } }
 const GroupPage = async ({ params: { id } }: GroupPageProps) => {
   const adGroup = await new AdLand().getGroup(id)
 
+  if (!adGroup) {
+    return (
+      <Container className="flex  h-[400px] w-full flex-row items-center justify-center gap-2 p-4">
+        <p className="font-body text-2xl text-white">AD GROUP NOT FOUND</p>
+      </Container>
+    )
+  }
+
   const { adSpaces } = adGroup
 
   return (
