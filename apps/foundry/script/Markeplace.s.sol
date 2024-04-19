@@ -226,6 +226,16 @@ contract MarketplaceScript is BaseScript, IExtension {
         return DirectListingsLogic(marketplace);
     }
 
+    function replaceWithNewDirectListingLogic(
+        address marketplace
+    ) public broadcastOn(DeployementChain.OptimismSepolia) {
+        Extension[] memory extensions = _setupExtensions();
+
+        MarketplaceV3(payable(address(marketplace))).replaceExtension(
+            extensions[0]
+        );
+    }
+
     function _setupExtensions()
         internal
         returns (Extension[] memory extensions)
