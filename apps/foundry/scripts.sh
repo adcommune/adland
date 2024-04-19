@@ -7,3 +7,7 @@ forge script MarketplaceScript -s "deployAdLandTestnet(address)" $MARKETPLACE --
 # VERIFICATION SCRIPTS
 
 forge verify-contract --watch $MARKETPLACE src/CommonAdSpaces.sol:CommonAdSpaces --chain-id 11155420
+
+# Upgrades
+
+forge script UpgradeAdGroupAdminScript -s "upgradeTestnet()"
