@@ -12,6 +12,26 @@ export class AdLand {
     this.adland = getAdLand(new GraphQLClient(constants.subgraphUrl))
   }
 
+  async listGroups(): Promise<AdGroup[]> {
+    const groups = await this.adland.adGroups().then((response) => {
+      return response.adGroups
+    })
+
+    return Promise.all(
+      groups.map(async (group) => {
+        return {
+          adGroup_subgraph: group,
+          adSpaces: await Promise.all(
+            group.adSpaces.map(async (adSpace) => ({
+              adSpace_subgraph: adSpace,
+              metadata: await this._getAdSpaceMetadata(adSpace.uri),
+            })),
+          ),
+        }
+      }),
+    )
+  }
+
   async getGroup(id: string): Promise<AdGroup | undefined> {
     const group = await this.adland
       .adGroup({
