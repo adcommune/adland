@@ -10,6 +10,15 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       where: $adGroup_adSpaces_where
     ) {
       id
+      metadata {
+        id
+        image
+        imageGatewayURI
+        description
+        aspect_ratio
+        animation_url
+        external_url
+      }
       uri
       blockTimestamp
       transactionHash
@@ -36,6 +45,15 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       where: $adGroups_adSpaces_where
     ) {
       id
+      metadata {
+        id
+        image
+        imageGatewayURI
+        description
+        aspect_ratio
+        animation_url
+        external_url
+      }
       uri
       blockTimestamp
       transactionHash
@@ -51,6 +69,15 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       beneficiary
       blockTimestamp
       transactionHash
+    }
+    metadata {
+      id
+      image
+      imageGatewayURI
+      description
+      aspect_ratio
+      animation_url
+      external_url
     }
     uri
     blockTimestamp
@@ -72,9 +99,45 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       blockTimestamp
       transactionHash
     }
+    metadata {
+      id
+      image
+      imageGatewayURI
+      description
+      aspect_ratio
+      animation_url
+      external_url
+    }
     uri
     blockTimestamp
     transactionHash
+  }
+}query adSpaceMetadata($id: ID!, $block: Block_height) {
+  adSpaceMetadata(id: $id, block: $block) {
+    id
+    image
+    imageGatewayURI
+    description
+    aspect_ratio
+    animation_url
+    external_url
+  }
+}query adSpaceMetadata_collection($skip: Int, $first: Int, $orderBy: AdSpaceMetadata_orderBy, $orderDirection: OrderDirection, $where: AdSpaceMetadata_filter, $block: Block_height) {
+  adSpaceMetadata_collection(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    image
+    imageGatewayURI
+    description
+    aspect_ratio
+    animation_url
+    external_url
   }
 }query tokenX($id: ID!, $block: Block_height) {
   tokenX(id: $id, block: $block) {

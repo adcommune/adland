@@ -188,6 +188,7 @@ export type AdSpace = {
   adGroup: AdGroup;
   blockTimestamp: Scalars['BigInt']['output'];
   id: Scalars['String']['output'];
+  metadata?: Maybe<AdSpaceMetadata>;
   transactionHash: Scalars['Bytes']['output'];
   uri?: Maybe<Scalars['String']['output']>;
 };
@@ -268,6 +269,174 @@ export enum AdSpaceCreated_OrderBy {
   GroupId = 'groupId',
   Id = 'id',
   TransactionHash = 'transactionHash'
+}
+
+export type AdSpaceMetadata = {
+  __typename?: 'AdSpaceMetadata';
+  animation_url?: Maybe<Scalars['String']['output']>;
+  aspect_ratio?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  external_url?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  image?: Maybe<Scalars['String']['output']>;
+  imageGatewayURI?: Maybe<Scalars['String']['output']>;
+};
+
+export type AdSpaceMetadata_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<AdSpaceMetadata_Filter>>>;
+  animation_url?: InputMaybe<Scalars['String']['input']>;
+  animation_url_contains?: InputMaybe<Scalars['String']['input']>;
+  animation_url_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  animation_url_ends_with?: InputMaybe<Scalars['String']['input']>;
+  animation_url_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  animation_url_gt?: InputMaybe<Scalars['String']['input']>;
+  animation_url_gte?: InputMaybe<Scalars['String']['input']>;
+  animation_url_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  animation_url_lt?: InputMaybe<Scalars['String']['input']>;
+  animation_url_lte?: InputMaybe<Scalars['String']['input']>;
+  animation_url_not?: InputMaybe<Scalars['String']['input']>;
+  animation_url_not_contains?: InputMaybe<Scalars['String']['input']>;
+  animation_url_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  animation_url_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  animation_url_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  animation_url_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  animation_url_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  animation_url_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  animation_url_starts_with?: InputMaybe<Scalars['String']['input']>;
+  animation_url_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_contains?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_ends_with?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_gt?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_gte?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  aspect_ratio_lt?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_lte?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_not?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_not_contains?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  aspect_ratio_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_starts_with?: InputMaybe<Scalars['String']['input']>;
+  aspect_ratio_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
+  description_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_ends_with?: InputMaybe<Scalars['String']['input']>;
+  description_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_gt?: InputMaybe<Scalars['String']['input']>;
+  description_gte?: InputMaybe<Scalars['String']['input']>;
+  description_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  description_lt?: InputMaybe<Scalars['String']['input']>;
+  description_lte?: InputMaybe<Scalars['String']['input']>;
+  description_not?: InputMaybe<Scalars['String']['input']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
+  description_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  description_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  description_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  description_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_starts_with?: InputMaybe<Scalars['String']['input']>;
+  description_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  external_url?: InputMaybe<Scalars['String']['input']>;
+  external_url_contains?: InputMaybe<Scalars['String']['input']>;
+  external_url_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  external_url_ends_with?: InputMaybe<Scalars['String']['input']>;
+  external_url_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  external_url_gt?: InputMaybe<Scalars['String']['input']>;
+  external_url_gte?: InputMaybe<Scalars['String']['input']>;
+  external_url_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  external_url_lt?: InputMaybe<Scalars['String']['input']>;
+  external_url_lte?: InputMaybe<Scalars['String']['input']>;
+  external_url_not?: InputMaybe<Scalars['String']['input']>;
+  external_url_not_contains?: InputMaybe<Scalars['String']['input']>;
+  external_url_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  external_url_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  external_url_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  external_url_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  external_url_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  external_url_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  external_url_starts_with?: InputMaybe<Scalars['String']['input']>;
+  external_url_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  image?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_contains?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_ends_with?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_gt?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_gte?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  imageGatewayURI_lt?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_lte?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_not?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_not_contains?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  imageGatewayURI_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_starts_with?: InputMaybe<Scalars['String']['input']>;
+  imageGatewayURI_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_contains?: InputMaybe<Scalars['String']['input']>;
+  image_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_ends_with?: InputMaybe<Scalars['String']['input']>;
+  image_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_gt?: InputMaybe<Scalars['String']['input']>;
+  image_gte?: InputMaybe<Scalars['String']['input']>;
+  image_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  image_lt?: InputMaybe<Scalars['String']['input']>;
+  image_lte?: InputMaybe<Scalars['String']['input']>;
+  image_not?: InputMaybe<Scalars['String']['input']>;
+  image_not_contains?: InputMaybe<Scalars['String']['input']>;
+  image_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  image_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  image_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  image_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  image_starts_with?: InputMaybe<Scalars['String']['input']>;
+  image_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  or?: InputMaybe<Array<InputMaybe<AdSpaceMetadata_Filter>>>;
+};
+
+export enum AdSpaceMetadata_OrderBy {
+  AnimationUrl = 'animation_url',
+  AspectRatio = 'aspect_ratio',
+  Description = 'description',
+  ExternalUrl = 'external_url',
+  Id = 'id',
+  Image = 'image',
+  ImageGatewayUri = 'imageGatewayURI'
 }
 
 export type AdSpaceStrategyUpdated = {
@@ -493,6 +662,27 @@ export type AdSpace_Filter = {
   id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   id_starts_with?: InputMaybe<Scalars['String']['input']>;
   id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  metadata?: InputMaybe<Scalars['String']['input']>;
+  metadata_?: InputMaybe<AdSpaceMetadata_Filter>;
+  metadata_contains?: InputMaybe<Scalars['String']['input']>;
+  metadata_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  metadata_ends_with?: InputMaybe<Scalars['String']['input']>;
+  metadata_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  metadata_gt?: InputMaybe<Scalars['String']['input']>;
+  metadata_gte?: InputMaybe<Scalars['String']['input']>;
+  metadata_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  metadata_lt?: InputMaybe<Scalars['String']['input']>;
+  metadata_lte?: InputMaybe<Scalars['String']['input']>;
+  metadata_not?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_contains?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  metadata_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  metadata_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  metadata_starts_with?: InputMaybe<Scalars['String']['input']>;
+  metadata_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   or?: InputMaybe<Array<InputMaybe<AdSpace_Filter>>>;
   transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
@@ -534,6 +724,14 @@ export enum AdSpace_OrderBy {
   AdGroupTransactionHash = 'adGroup__transactionHash',
   BlockTimestamp = 'blockTimestamp',
   Id = 'id',
+  Metadata = 'metadata',
+  MetadataAnimationUrl = 'metadata__animation_url',
+  MetadataAspectRatio = 'metadata__aspect_ratio',
+  MetadataDescription = 'metadata__description',
+  MetadataExternalUrl = 'metadata__external_url',
+  MetadataId = 'metadata__id',
+  MetadataImage = 'metadata__image',
+  MetadataImageGatewayUri = 'metadata__imageGatewayURI',
   TransactionHash = 'transactionHash',
   Uri = 'uri'
 }
@@ -1690,6 +1888,8 @@ export type Query = {
   adSpace?: Maybe<AdSpace>;
   adSpaceCreated?: Maybe<AdSpaceCreated>;
   adSpaceCreateds: Array<AdSpaceCreated>;
+  adSpaceMetadata?: Maybe<AdSpaceMetadata>;
+  adSpaceMetadata_collection: Array<AdSpaceMetadata>;
   adSpaceStrategyUpdated?: Maybe<AdSpaceStrategyUpdated>;
   adSpaceStrategyUpdateds: Array<AdSpaceStrategyUpdated>;
   adSpaceURIUpdated?: Maybe<AdSpaceUriUpdated>;
@@ -1791,6 +1991,24 @@ export type QueryAdSpaceCreatedsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<AdSpaceCreated_Filter>;
+};
+
+
+export type QueryAdSpaceMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryAdSpaceMetadata_CollectionArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AdSpaceMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AdSpaceMetadata_Filter>;
 };
 
 
@@ -2121,6 +2339,8 @@ export type Subscription = {
   adSpace?: Maybe<AdSpace>;
   adSpaceCreated?: Maybe<AdSpaceCreated>;
   adSpaceCreateds: Array<AdSpaceCreated>;
+  adSpaceMetadata?: Maybe<AdSpaceMetadata>;
+  adSpaceMetadata_collection: Array<AdSpaceMetadata>;
   adSpaceStrategyUpdated?: Maybe<AdSpaceStrategyUpdated>;
   adSpaceStrategyUpdateds: Array<AdSpaceStrategyUpdated>;
   adSpaceURIUpdated?: Maybe<AdSpaceUriUpdated>;
@@ -2222,6 +2442,24 @@ export type SubscriptionAdSpaceCreatedsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<AdSpaceCreated_Filter>;
+};
+
+
+export type SubscriptionAdSpaceMetadataArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionAdSpaceMetadata_CollectionArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AdSpaceMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AdSpaceMetadata_Filter>;
 };
 
 
@@ -3080,7 +3318,7 @@ export type AdGroupQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any }> } | null };
+export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, metadata?: { __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null }> } | null };
 
 export type AdGroupsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3097,7 +3335,7 @@ export type AdGroupsQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any }> }> };
+export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, metadata?: { __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null }> }> };
 
 export type AdSpaceQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3105,7 +3343,7 @@ export type AdSpaceQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } } | null };
+export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, metadata?: { __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null } | null };
 
 export type AdSpacesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3117,7 +3355,27 @@ export type AdSpacesQueryVariables = Exact<{
 }>;
 
 
-export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }> };
+export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, metadata?: { __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null }> };
+
+export type AdSpaceMetadataQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Block_Height>;
+}>;
+
+
+export type AdSpaceMetadataQuery = { __typename?: 'Query', adSpaceMetadata?: { __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null };
+
+export type AdSpaceMetadata_CollectionQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AdSpaceMetadata_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<AdSpaceMetadata_Filter>;
+  block?: InputMaybe<Block_Height>;
+}>;
+
+
+export type AdSpaceMetadata_CollectionQuery = { __typename?: 'Query', adSpaceMetadata_collection: Array<{ __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null }> };
 
 export type TokenXQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3514,6 +3772,15 @@ export const AdGroupDocument = `
       where: $adGroup_adSpaces_where
     ) {
       id
+      metadata {
+        id
+        image
+        imageGatewayURI
+        description
+        aspect_ratio
+        animation_url
+        external_url
+      }
       uri
       blockTimestamp
       transactionHash
@@ -3560,6 +3827,15 @@ export const AdGroupsDocument = `
       where: $adGroups_adSpaces_where
     ) {
       id
+      metadata {
+        id
+        image
+        imageGatewayURI
+        description
+        aspect_ratio
+        animation_url
+        external_url
+      }
       uri
       blockTimestamp
       transactionHash
@@ -3595,6 +3871,15 @@ export const AdSpaceDocument = `
       beneficiary
       blockTimestamp
       transactionHash
+    }
+    metadata {
+      id
+      image
+      imageGatewayURI
+      description
+      aspect_ratio
+      animation_url
+      external_url
     }
     uri
     blockTimestamp
@@ -3636,6 +3921,15 @@ export const AdSpacesDocument = `
       blockTimestamp
       transactionHash
     }
+    metadata {
+      id
+      image
+      imageGatewayURI
+      description
+      aspect_ratio
+      animation_url
+      external_url
+    }
     uri
     blockTimestamp
     transactionHash
@@ -3655,6 +3949,73 @@ export const useAdSpacesQuery = <
       {
     queryKey: variables === undefined ? ['adSpaces'] : ['adSpaces', variables],
     queryFn: fetcher<AdSpacesQuery, AdSpacesQueryVariables>(AdSpacesDocument).bind(null, variables),
+    ...options
+  }
+    )};
+
+export const AdSpaceMetadataDocument = `
+    query adSpaceMetadata($id: ID!, $block: Block_height) {
+  adSpaceMetadata(id: $id, block: $block) {
+    id
+    image
+    imageGatewayURI
+    description
+    aspect_ratio
+    animation_url
+    external_url
+  }
+}
+    `;
+
+export const useAdSpaceMetadataQuery = <
+      TData = AdSpaceMetadataQuery,
+      TError = unknown
+    >(
+      variables: AdSpaceMetadataQueryVariables,
+      options?: Omit<UseQueryOptions<AdSpaceMetadataQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdSpaceMetadataQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<AdSpaceMetadataQuery, TError, TData>(
+      {
+    queryKey: ['adSpaceMetadata', variables],
+    queryFn: fetcher<AdSpaceMetadataQuery, AdSpaceMetadataQueryVariables>(AdSpaceMetadataDocument).bind(null, variables),
+    ...options
+  }
+    )};
+
+export const AdSpaceMetadata_CollectionDocument = `
+    query adSpaceMetadata_collection($skip: Int, $first: Int, $orderBy: AdSpaceMetadata_orderBy, $orderDirection: OrderDirection, $where: AdSpaceMetadata_filter, $block: Block_height) {
+  adSpaceMetadata_collection(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    image
+    imageGatewayURI
+    description
+    aspect_ratio
+    animation_url
+    external_url
+  }
+}
+    `;
+
+export const useAdSpaceMetadata_CollectionQuery = <
+      TData = AdSpaceMetadata_CollectionQuery,
+      TError = unknown
+    >(
+      variables?: AdSpaceMetadata_CollectionQueryVariables,
+      options?: Omit<UseQueryOptions<AdSpaceMetadata_CollectionQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdSpaceMetadata_CollectionQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<AdSpaceMetadata_CollectionQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['adSpaceMetadata_collection'] : ['adSpaceMetadata_collection', variables],
+    queryFn: fetcher<AdSpaceMetadata_CollectionQuery, AdSpaceMetadata_CollectionQueryVariables>(AdSpaceMetadata_CollectionDocument).bind(null, variables),
     ...options
   }
     )};
