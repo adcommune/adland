@@ -12,6 +12,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       id
       metadata {
         id
+        name
         image
         imageGatewayURI
         description
@@ -47,6 +48,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       id
       metadata {
         id
+        name
         image
         imageGatewayURI
         description
@@ -72,6 +74,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
     }
     metadata {
       id
+      name
       image
       imageGatewayURI
       description
@@ -101,6 +104,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
     }
     metadata {
       id
+      name
       image
       imageGatewayURI
       description
@@ -115,6 +119,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
 }query adSpaceMetadata($id: ID!, $block: Block_height) {
   adSpaceMetadata(id: $id, block: $block) {
     id
+    name
     image
     imageGatewayURI
     description
@@ -132,6 +137,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
     block: $block
   ) {
     id
+    name
     image
     imageGatewayURI
     description

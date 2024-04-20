@@ -23,6 +23,11 @@ export function handleMetadata(content: Bytes): void {
           cid;
       }
 
+      let name = metadata.get("name");
+      if (name) {
+        adSpaceMetadata.name = name.toString();
+      }
+
       let description = metadata.get("description");
       if (description) {
         adSpaceMetadata.description = description.toString();

@@ -19,6 +19,7 @@ type AdSpace @entity(immutable: false) {
 
 type AdSpaceMetadata @entity(immutable: true) {
   id: String!
+  name: String
   image: String
   imageGatewayURI: String
   description: String

@@ -280,6 +280,7 @@ export type AdSpaceMetadata = {
   id: Scalars['String']['output'];
   image?: Maybe<Scalars['String']['output']>;
   imageGatewayURI?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
 };
 
 export type AdSpaceMetadata_Filter = {
@@ -426,6 +427,26 @@ export type AdSpaceMetadata_Filter = {
   image_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   image_starts_with?: InputMaybe<Scalars['String']['input']>;
   image_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  name_contains?: InputMaybe<Scalars['String']['input']>;
+  name_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  name_ends_with?: InputMaybe<Scalars['String']['input']>;
+  name_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  name_gt?: InputMaybe<Scalars['String']['input']>;
+  name_gte?: InputMaybe<Scalars['String']['input']>;
+  name_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  name_lt?: InputMaybe<Scalars['String']['input']>;
+  name_lte?: InputMaybe<Scalars['String']['input']>;
+  name_not?: InputMaybe<Scalars['String']['input']>;
+  name_not_contains?: InputMaybe<Scalars['String']['input']>;
+  name_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  name_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  name_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  name_starts_with?: InputMaybe<Scalars['String']['input']>;
+  name_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   or?: InputMaybe<Array<InputMaybe<AdSpaceMetadata_Filter>>>;
 };
 
@@ -436,7 +457,8 @@ export enum AdSpaceMetadata_OrderBy {
   ExternalUrl = 'external_url',
   Id = 'id',
   Image = 'image',
-  ImageGatewayUri = 'imageGatewayURI'
+  ImageGatewayUri = 'imageGatewayURI',
+  Name = 'name'
 }
 
 export type AdSpaceStrategyUpdated = {
@@ -732,6 +754,7 @@ export enum AdSpace_OrderBy {
   MetadataId = 'metadata__id',
   MetadataImage = 'metadata__image',
   MetadataImageGatewayUri = 'metadata__imageGatewayURI',
+  MetadataName = 'metadata__name',
   TransactionHash = 'transactionHash',
   Uri = 'uri'
 }
@@ -3318,7 +3341,7 @@ export type AdGroupQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, metadata?: { __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null }> } | null };
+export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, metadata?: { __typename?: 'AdSpaceMetadata', id: string, name?: string | null, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null }> } | null };
 
 export type AdGroupsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3335,7 +3358,7 @@ export type AdGroupsQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, metadata?: { __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null }> }> };
+export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, metadata?: { __typename?: 'AdSpaceMetadata', id: string, name?: string | null, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null }> }> };
 
 export type AdSpaceQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3343,7 +3366,7 @@ export type AdSpaceQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, metadata?: { __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null } | null };
+export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, metadata?: { __typename?: 'AdSpaceMetadata', id: string, name?: string | null, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null } | null };
 
 export type AdSpacesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3355,7 +3378,7 @@ export type AdSpacesQueryVariables = Exact<{
 }>;
 
 
-export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, metadata?: { __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null }> };
+export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, metadata?: { __typename?: 'AdSpaceMetadata', id: string, name?: string | null, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null }> };
 
 export type AdSpaceMetadataQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3363,7 +3386,7 @@ export type AdSpaceMetadataQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceMetadataQuery = { __typename?: 'Query', adSpaceMetadata?: { __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null };
+export type AdSpaceMetadataQuery = { __typename?: 'Query', adSpaceMetadata?: { __typename?: 'AdSpaceMetadata', id: string, name?: string | null, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null } | null };
 
 export type AdSpaceMetadata_CollectionQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3375,7 +3398,7 @@ export type AdSpaceMetadata_CollectionQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceMetadata_CollectionQuery = { __typename?: 'Query', adSpaceMetadata_collection: Array<{ __typename?: 'AdSpaceMetadata', id: string, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null }> };
+export type AdSpaceMetadata_CollectionQuery = { __typename?: 'Query', adSpaceMetadata_collection: Array<{ __typename?: 'AdSpaceMetadata', id: string, name?: string | null, image?: string | null, imageGatewayURI?: string | null, description?: string | null, aspect_ratio?: string | null, animation_url?: string | null, external_url?: string | null }> };
 
 export type TokenXQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3774,6 +3797,7 @@ export const AdGroupDocument = `
       id
       metadata {
         id
+        name
         image
         imageGatewayURI
         description
@@ -3829,6 +3853,7 @@ export const AdGroupsDocument = `
       id
       metadata {
         id
+        name
         image
         imageGatewayURI
         description
@@ -3874,6 +3899,7 @@ export const AdSpaceDocument = `
     }
     metadata {
       id
+      name
       image
       imageGatewayURI
       description
@@ -3923,6 +3949,7 @@ export const AdSpacesDocument = `
     }
     metadata {
       id
+      name
       image
       imageGatewayURI
       description
@@ -3957,6 +3984,7 @@ export const AdSpaceMetadataDocument = `
     query adSpaceMetadata($id: ID!, $block: Block_height) {
   adSpaceMetadata(id: $id, block: $block) {
     id
+    name
     image
     imageGatewayURI
     description
@@ -3994,6 +4022,7 @@ export const AdSpaceMetadata_CollectionDocument = `
     block: $block
   ) {
     id
+    name
     image
     imageGatewayURI
     description
