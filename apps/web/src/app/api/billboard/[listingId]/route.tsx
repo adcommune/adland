@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { FrameAspectRatio, adPlaceholderURL } from '@/config/constants'
+import { FrameAspectRatio, noAdFrameImageCID } from '@/config/constants'
 import { ImageResponse } from '@vercel/og'
 import { AdLand } from '@/lib/adland'
 import { applyMultiplier, billboardSettings, initialWidth } from './utils'
@@ -7,6 +7,7 @@ import {
   rectangleBillboardBackground,
   squareBillboardBackground,
 } from './assets'
+import { constants } from '@adland/common'
 
 type GetAdsRouteParams = { params: { listingId: string } }
 export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
@@ -98,5 +99,7 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
     }
   }
 
-  return NextResponse.redirect(adPlaceholderURL)
+  return NextResponse.redirect(
+    `https://${constants.pinataPublicGateway}/ipfs/${noAdFrameImageCID}`,
+  )
 }

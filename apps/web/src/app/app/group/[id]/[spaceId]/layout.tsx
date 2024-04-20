@@ -28,30 +28,16 @@ const AdSpacePageLayout = async ({
   return (
     <>
       <FrameMetadata
-        buttons={
-          adSpace.metadata?.external_url
-            ? [
-                {
-                  label: 'Link',
-                  action: 'link',
-                  target: adSpace.metadata?.external_url,
-                },
-              ]
-            : [
-                {
-                  label: 'Buy this ad space',
-                  action: 'link',
-                  target: `${baseURL}/app/group/${adSpaceSubgraph.adGroup.id}/${spaceId}`,
-                },
-              ]
-        }
+        buttons={[
+          {
+            label: 'Buy this ad space',
+            action: 'link',
+            target: `${baseURL}/app/group/${adSpaceSubgraph.adGroup.id}/${spaceId}`,
+          },
+        ]}
         image={{
-          src: noAd
-            ? `https://${constants.pinataPublicGateway}/ipfs/${noAdFrameImageCID}`
-            : `${baseURL}/api/billboard/${spaceId}?time=${Date.now()}`,
-          aspectRatio: noAd
-            ? FrameAspectRatio.SQUARE
-            : (adSpace.metadata?.aspect_ratio as FrameAspectRatio),
+          src: `${baseURL}/api/billboard/${spaceId}?time=${Date.now()}`,
+          aspectRatio: FrameAspectRatio.SQUARE,
         }}
       />
       {children}
