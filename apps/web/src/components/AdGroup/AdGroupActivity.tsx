@@ -34,7 +34,9 @@ const AdGroupActivity = ({ adGroup }: AdGroupActivityProps) => {
                 <p>{listing.listingId}</p>
               </div>
               <div className="col-span-2 font-body">
-                <Badge>New Ad Space</Badge>
+                <Badge>
+                  New <span className="ml-1 hidden md:flex"> Ad Space</span>
+                </Badge>
               </div>
               <div className="col-span-5 font-body">
                 <ul className="grid">

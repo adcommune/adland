@@ -70,3 +70,6 @@ export const superfluidAccountLink = (address: string) =>
 
 export const superfluidUpgradeLink =
   'https://app.superfluid.finance/wrap?upgrade'
+
+export const noAdFrameImageCID =
+  'QmNmAqKyGEXd1ZM4a1FRND8D4Kftgz5XRNCkC44XwFYa4g'
