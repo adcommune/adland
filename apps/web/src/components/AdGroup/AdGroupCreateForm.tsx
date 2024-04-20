@@ -29,17 +29,18 @@ import {
   formatEther,
   parseEther,
 } from 'viem'
-import { usePublicClient, useWriteContract } from 'wagmi'
+import { useWriteContract } from 'wagmi'
 import useAppContracts from '@/hooks/useAppContracts'
 import { NATIVE_CURRENCY } from '@/config/constants'
 import { commonAdSpacesAbi, directListingsLogicAbi } from '@adland/contracts'
 import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { handleWriteErrors } from '@/lib/viem'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+import { Checkbox } from '../ui/checkbox'
 
 const createAdGroupSchema = z.object({
+  recipientIsBeneficiary: z.boolean().default(true),
   beneficiary: z.string(),
   currency: z.string(),
   initialPrice: z.bigint(),
@@ -53,11 +54,14 @@ type CreateAdGroupFormProps = {
   beneficiary: Address
 }
 
-const CreateAdGroupForm = ({ beneficiary }: CreateAdGroupFormProps) => {
+const CreateAdGroupForm = ({
+  beneficiary: rawBeneficiary,
+}: CreateAdGroupFormProps) => {
   const form = useForm<CreateAdGroupFormValues>({
     resolver: zodResolver(createAdGroupSchema),
     defaultValues: {
-      beneficiary,
+      beneficiary: rawBeneficiary,
+      recipientIsBeneficiary: true,
       currency: NATIVE_CURRENCY,
       initialPrice: BigInt(1e16),
       taxRate: BigInt(10),
@@ -78,6 +82,7 @@ const CreateAdGroupForm = ({ beneficiary }: CreateAdGroupFormProps) => {
     initialPrice,
     taxRate,
     size,
+    recipientIsBeneficiary,
   }: CreateAdGroupFormValues) => {
     writeContract(
       {
@@ -85,7 +90,7 @@ const CreateAdGroupForm = ({ beneficiary }: CreateAdGroupFormProps) => {
         address: adCommonOwnership,
         functionName: 'createAdGroup',
         args: [
-          beneficiary as Address,
+          recipientIsBeneficiary ? rawBeneficiary : (beneficiary as Address),
           {
             currency: currency as Address,
             initialPrice,
@@ -132,12 +137,60 @@ const CreateAdGroupForm = ({ beneficiary }: CreateAdGroupFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="font-body">
         <Card>
           <CardHeader>
-            <CardTitle>Create Ad Title</CardTitle>
+            <CardTitle>Open new Ad spaces</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
+            <FormField
+              control={form.control}
+              name="recipientIsBeneficiary"
+              render={({ field: { value: checked, onChange } }) => (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="beneficiary"
+                    render={({
+                      field: {
+                        value: beneficiaryValue,
+                        onChange: onChangeBeneficiary,
+                      },
+                    }) => (
+                      <FormItem>
+                        <FormLabel>Ad Group Recipient</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            disabled={checked}
+                            defaultValue={beneficiaryValue}
+                            onChange={(e) => {
+                              const val = e.target.value
+
+                              onChangeBeneficiary(val)
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormDescription>
+                    <FormItem>
+                      <FormControl>
+                        <div className="flex flex-row items-center gap-4">
+                          <Checkbox
+                            checked={checked}
+                            onCheckedChange={onChange}
+                          />
+                          <p className="text-sm">Creating for myself</p>
+                        </div>
+                      </FormControl>
+                    </FormItem>
+                  </FormDescription>
+                </>
+              )}
+            />
             <FormField
               control={form.control}
               name="initialPrice"
