@@ -75,7 +75,7 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
     const file = e.target.files?.[0]
     if (file) {
       if (!authorizedFileTypes.includes(file.type)) {
-        toast.error('Invalid file type (ie. png, jpeg, jpg)')
+        toast.error('Invalid file type (ie. png, jpeg, jpg, gif)')
         return setUploadingImage(false)
       }
       try {
@@ -285,7 +285,9 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
               className="cursor-pointer hover:bg-slate-100"
               id="picture"
               type="file"
-              accept=".png, .jpg, .jpeg"
+              accept={authorizedFileTypes
+                .map((e) => e.replace('image/', ''))
+                .join(', ')}
               onChange={onFileChange}
             />
           </div>

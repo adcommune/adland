@@ -63,7 +63,12 @@ export const adPlaceholderURL = `https://i.imgur.com/gE8pP8q.png`
 
 export const MAX_BPS = 10000
 
-export const authorizedFileTypes = ['image/jpeg', 'image/png', 'image/jpg']
+export const authorizedFileTypes = [
+  'image/jpeg',
+  'image/png',
+  'image/jpg',
+  'image/gif',
+]
 
 export const superfluidAccountLink = (address: string) =>
   `https://app.superfluid.finance/?view=${address}`
