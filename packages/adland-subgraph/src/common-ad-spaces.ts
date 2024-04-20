@@ -30,6 +30,7 @@ import {
   Transfer,
   Upgraded,
 } from "../generated/schema";
+import { AdSpaceMetadata as AdSpaceMetadataTemplate } from "../generated/templates";
 
 export function handleAdGroupCreated(event: AdGroupCreatedEvent): void {
   let entity = new AdGroupCreated(
@@ -107,6 +108,11 @@ export function handleAdSpaceURIUpdated(event: AdSpaceURIUpdatedEvent): void {
   let adSpace = AdSpace.load(event.params.adId.toString());
 
   if (adSpace) {
+    if (event.params.uri.startsWith("ipfs://")) {
+      let cid = event.params.uri.replace("ipfs://", "");
+      AdSpaceMetadataTemplate.create(cid);
+      adSpace.metadata = cid;
+    }
     adSpace.uri = event.params.uri;
     adSpace.save();
   }

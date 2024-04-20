@@ -146,6 +146,23 @@ export class AdSpace extends Entity {
     this.set("adGroup", Value.fromString(value));
   }
 
+  get metadata(): string | null {
+    let value = this.get("metadata");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set metadata(value: string | null) {
+    if (!value) {
+      this.unset("metadata");
+    } else {
+      this.set("metadata", Value.fromString(<string>value));
+    }
+  }
+
   get uri(): string | null {
     let value = this.get("uri");
     if (!value || value.kind == ValueKind.NULL) {
@@ -187,6 +204,150 @@ export class AdSpace extends Entity {
 
   set transactionHash(value: Bytes) {
     this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class AdSpaceMetadata extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save AdSpaceMetadata entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type AdSpaceMetadata must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("AdSpaceMetadata", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): AdSpaceMetadata | null {
+    return changetype<AdSpaceMetadata | null>(
+      store.get_in_block("AdSpaceMetadata", id),
+    );
+  }
+
+  static load(id: string): AdSpaceMetadata | null {
+    return changetype<AdSpaceMetadata | null>(store.get("AdSpaceMetadata", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get image(): string | null {
+    let value = this.get("image");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set image(value: string | null) {
+    if (!value) {
+      this.unset("image");
+    } else {
+      this.set("image", Value.fromString(<string>value));
+    }
+  }
+
+  get imageGatewayURI(): string | null {
+    let value = this.get("imageGatewayURI");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set imageGatewayURI(value: string | null) {
+    if (!value) {
+      this.unset("imageGatewayURI");
+    } else {
+      this.set("imageGatewayURI", Value.fromString(<string>value));
+    }
+  }
+
+  get description(): string | null {
+    let value = this.get("description");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set description(value: string | null) {
+    if (!value) {
+      this.unset("description");
+    } else {
+      this.set("description", Value.fromString(<string>value));
+    }
+  }
+
+  get aspect_ratio(): string | null {
+    let value = this.get("aspect_ratio");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set aspect_ratio(value: string | null) {
+    if (!value) {
+      this.unset("aspect_ratio");
+    } else {
+      this.set("aspect_ratio", Value.fromString(<string>value));
+    }
+  }
+
+  get animation_url(): string | null {
+    let value = this.get("animation_url");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set animation_url(value: string | null) {
+    if (!value) {
+      this.unset("animation_url");
+    } else {
+      this.set("animation_url", Value.fromString(<string>value));
+    }
+  }
+
+  get external_url(): string | null {
+    let value = this.get("external_url");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set external_url(value: string | null) {
+    if (!value) {
+      this.unset("external_url");
+    } else {
+      this.set("external_url", Value.fromString(<string>value));
+    }
   }
 }
 

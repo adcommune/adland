@@ -11,9 +11,20 @@ type AdGroup @entity(immutable: false) {
 type AdSpace @entity(immutable: false) {
   id: String!
   adGroup: AdGroup!
+  metadata: AdSpaceMetadata
   uri: String
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+}
+
+type AdSpaceMetadata @entity(immutable: true) {
+  id: String!
+  image: String
+  imageGatewayURI: String
+  description: String
+  aspect_ratio: String
+  animation_url: String
+  external_url: String
 }
 
 type TokenX @entity(immutable: false) {
