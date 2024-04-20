@@ -17,10 +17,10 @@ const billboardSettings: Record<FrameAspectRatio, BillboardSettings> = {
     billboardHeight: 200,
   },
   '1:1': {
-    top: 80,
-    left: 90,
-    billboardWith: 320,
-    billboardHeight: 320,
+    top: 113,
+    left: 25,
+    billboardWith: 445,
+    billboardHeight: 220,
   },
 }
 
