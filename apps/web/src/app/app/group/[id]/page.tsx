@@ -33,7 +33,8 @@ const GroupPage = async ({ params: { id } }: GroupPageProps) => {
         </TabsList>
         <TabsContent value="ad-spaces" className="w-full">
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-            {adSpaces?.map(({ adSpace_subgraph: adSpace, metadata }, index) => {
+            {adSpaces?.map(({ adSpace_subgraph: adSpace }, index) => {
+              const metadata = adSpace?.metadata
               return (
                 <Link
                   key={adSpace?.transactionHash + adSpace?.id}

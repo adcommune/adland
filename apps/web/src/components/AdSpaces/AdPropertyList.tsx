@@ -2,22 +2,25 @@ import { Metadata } from '@/lib/types'
 import { Badge } from '../ui/badge'
 import Image from 'next/image'
 import Link from 'next/link'
+import { AdSpaceMetadata } from '@adland/webkit/src/hooks'
 
 const PropertyContainer = ({ children }: { children: React.ReactNode }) => {
   return <div className="w-full px-4 md:w-1/2">{children}</div>
 }
 
 type AdPropertyListProps = {
-  metadata?: Metadata | null
+  metadata?: AdSpaceMetadata | null
 }
 
-const emptyMetadata: Metadata = {
+const emptyMetadata: AdSpaceMetadata = {
+  id: '',
   name: '',
   image: '',
   imageGatewayURI: '',
   external_url: '',
   description: '',
   aspect_ratio: '',
+  animation_url: '',
 }
 
 const AdPropertyList = ({ metadata = emptyMetadata }: AdPropertyListProps) => {

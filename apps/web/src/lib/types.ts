@@ -46,8 +46,6 @@ export type AdSpace = {
   // Omits adGroup from AdSpace_subgraph, query directly the adGroup if needed
   adSpace_subgraph: Omit<AdSpace_subgraph, 'adGroup'>
   listing: Listing
-  // undefined if adSpace_subgraph.uri undefined
-  metadata?: Metadata
 }
 
 export type AdGroup = {

@@ -5,7 +5,9 @@ import { AdLand } from '@/lib/adland'
 
 type GetAdsRouteParams = { params: { listingId: string } }
 export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
-  const metadata = await new AdLand().getAdSpaceMetadata(params.listingId)
+  const { adSpace_subgraph } = await new AdLand().getAdSpace(params.listingId)
+
+  const metadata = adSpace_subgraph.metadata
 
   const width = 500
   let height = width

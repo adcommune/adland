@@ -17,23 +17,24 @@ const AdSpacePageLayout = async ({
 
   return (
     <>
-      {adSpace?.metadata?.imageGatewayURI !== undefined &&
-        adSpace?.metadata?.aspect_ratio !== undefined && (
+      {adSpace?.adSpace_subgraph.metadata?.imageGatewayURI !== undefined &&
+        adSpace?.adSpace_subgraph.metadata?.aspect_ratio !== undefined && (
           <FrameMetadata
             buttons={
-              adSpace.metadata?.external_url
+              adSpace?.adSpace_subgraph.metadata?.external_url
                 ? [
                     {
                       label: 'Link',
                       action: 'link',
-                      target: adSpace.metadata?.external_url,
+                      target: adSpace?.adSpace_subgraph.metadata?.external_url,
                     },
                   ]
                 : undefined
             }
             image={{
               src: `${baseURL}/api/ad/${spaceId}/image?time=${Date.now()}`,
-              aspectRatio: adSpace.metadata?.aspect_ratio as FrameAspectRatio,
+              aspectRatio: adSpace?.adSpace_subgraph.metadata
+                ?.aspect_ratio as FrameAspectRatio,
             }}
           />
         )}

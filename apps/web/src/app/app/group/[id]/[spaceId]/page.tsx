@@ -201,7 +201,7 @@ const AdSpacePage = ({
           </div>
         </CardFooter>
       </Card>{' '}
-      <AdPropertyList metadata={adSpace.metadata} />
+      <AdPropertyList metadata={adSpace.adSpace_subgraph.metadata} />
     </Container>
   )
 }

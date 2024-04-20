@@ -29,7 +29,9 @@ export function Hero() {
       </p>
       <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-5">
         {!isLoading
-          ? data?.adSpaces?.map(({ metadata, adSpace_subgraph }) => {
+          ? data?.adSpaces?.map(({ adSpace_subgraph }) => {
+              const { metadata } = adSpace_subgraph
+
               const clickable = Boolean(metadata?.external_url)
               const link = metadata?.external_url ?? ''
 

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { adland } from '@/lib/services'
-import { resolveAdSpaceWithMetadata } from '@/lib/helpers'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,7 +18,5 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
     return NextResponse.error()
   }
 
-  const resolvedAd = await resolveAdSpaceWithMetadata(ad)
-
-  return NextResponse.json(resolvedAd)
+  return NextResponse.json(ad)
 }

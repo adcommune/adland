@@ -29,15 +29,14 @@ import {
   formatEther,
   parseEther,
 } from 'viem'
-import { usePublicClient, useWriteContract } from 'wagmi'
+import { useWriteContract } from 'wagmi'
 import useAppContracts from '@/hooks/useAppContracts'
 import { NATIVE_CURRENCY } from '@/config/constants'
 import { commonAdSpacesAbi, directListingsLogicAbi } from '@adland/contracts'
 import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { handleWriteErrors } from '@/lib/viem'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 
 const createAdGroupSchema = z.object({
   beneficiary: z.string(),
