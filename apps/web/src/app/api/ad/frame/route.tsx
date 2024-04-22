@@ -12,20 +12,25 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   const frameRequest = await req.json()
 
   try {
-    const frame_id = `${constants.chain.name}:frame:${spaceId}`
+    const frame_id = `ad-${constants.chain.id}-${spaceId}`
 
-    await fetch('https://api.pinata.cloud/farcaster/frames/interactions', {
-      method: 'POST',
-      body: JSON.stringify({
-        frame_id,
-        data: frameRequest,
-        custom_id: spaceId,
-      }),
-      headers: {
-        Authorization: `Bearer ${process.env.PINATA_JWT}`,
-        'Content-Type': 'application/json',
+    const anal_response = await fetch(
+      'https://api.pinata.cloud/farcaster/frames/interactions',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          frame_id,
+          data: frameRequest,
+          custom_id: spaceId,
+        }),
+        headers: {
+          Authorization: `Bearer ${process.env.PINATA_JWT}`,
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    ).then((res) => res.json())
+
+    console.log('PINATA ANALYTICS:', anal_response)
   } catch (error) {
     console.error('PINATA ANALYTICS:', error)
   }
