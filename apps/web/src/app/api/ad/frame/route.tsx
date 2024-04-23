@@ -1,6 +1,6 @@
 import { FrameAspectRatio, baseURL } from '@/config/constants'
 import { AdLand } from '@/lib/adland'
-import { constants } from '@adland/common'
+import { getFramePinataId } from '@/lib/utils'
 import { AdSpace_subgraph } from '@adland/webkit'
 import { FrameButtonMetadata, getFrameHtmlResponse } from '@coinbase/onchainkit'
 
@@ -12,7 +12,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   const frameRequest = await req.json()
 
   try {
-    const frame_id = `ad-${constants.chain.id}-${spaceId}`
+    const frame_id = getFramePinataId(spaceId)
 
     const anal_response = await fetch(
       'https://api.pinata.cloud/farcaster/frames/interactions',

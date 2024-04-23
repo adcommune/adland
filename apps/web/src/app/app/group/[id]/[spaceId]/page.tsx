@@ -18,7 +18,7 @@ import { formatEther } from 'viem'
 import { truncateAddress } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { ModalContext } from '@/context/ModalContext'
 import AcquireLeaseModal from '@/components/AcquireLeaseModal'
 import UpdateAdDataDialog from '@/components/UpdateAdDataModal'
@@ -30,11 +30,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
-import Copiable from '@/components/Copiable'
-import { baseURL, getTokenSymbol } from '@/config/constants'
-import { Input } from '@/components/ui/input'
+import { getTokenSymbol } from '@/config/constants'
 import Image from 'next/image'
 import AdPropertyList from '@/components/AdSpaces/AdPropertyList'
+import classNames from 'classnames'
+import FarcasterIntegration from '@/components/FarcasterIntegration'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
@@ -52,6 +52,10 @@ const AdSpacePage = ({
     queryKey: ['adSpace-', spaceId],
   })
 
+  const [selectedIntegration, setSelectedIntegration] = useState<
+    'farcaster' | null
+  >(null)
+
   if (!(adSpace && adSpace.tokenX) || isLoading) return null
 
   const { listing } = adSpace
@@ -60,7 +64,7 @@ const AdSpacePage = ({
 
   return (
     <Container className="relative flex min-h-[80vh] flex-col items-start gap-4 py-4 md:flex-row">
-      <Card className="overflow-hidden font-body">
+      <Card className="min-w-[400px] overflow-hidden font-body">
         <CardHeader className="flex flex-row items-start gap-8 bg-muted/50">
           <div className="grid gap-0.5">
             <CardTitle className="group flex items-center gap-2 text-lg">
@@ -138,7 +142,10 @@ const AdSpacePage = ({
             <ul className="grid gap-3">
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Price</span>
-                <span>{formatEther(listing?.pricePerToken)}</span>
+                <span>
+                  {formatEther(listing?.pricePerToken)}{' '}
+                  {getTokenSymbol(listing?.currency)}
+                </span>
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Tax Rate</span>
@@ -165,35 +172,34 @@ const AdSpacePage = ({
             </ul>
             <div className="grid gap-3">
               <div className="font-semibold">Integrations</div>
-              <ul className="grid gap-3">
-                <li className="flex flex-col items-start justify-between gap-2">
-                  <span className="text-muted-foreground">
-                    Share ad space in a frame
-                  </span>
-                  <div className="group flex w-full flex-row items-center gap-2">
-                    <div className="aspect-square h-full">
-                      <Image
-                        src="/farcaster.png"
-                        width={50}
-                        height={50}
-                        className="h-full w-full scale-[85%] object-contain"
-                        alt="farcaster-logo"
-                      />
-                    </div>
-                    <Input
-                      className="h-full flex-grow cursor-default text-opacity-100 disabled:opacity-100"
-                      disabled
-                      placeholder={truncateAddress(
-                        `${baseURL}/app/group/${groupId}/${spaceId}`,
-                        14,
-                      )}
-                    />
-                    <Copiable
-                      visible
-                      text={`${baseURL}/app/group/${groupId}/${spaceId}`}
+              <ul className="grid grid-cols-2 gap-3">
+                <Button
+                  variant={'outline'}
+                  onClick={() => {
+                    if (selectedIntegration !== 'farcaster') {
+                      setSelectedIntegration('farcaster')
+                    } else {
+                      setSelectedIntegration(null)
+                    }
+                  }}
+                  className={classNames(
+                    'group flex h-12 w-full flex-row items-center justify-start gap-4 p-1 font-body',
+                    {
+                      'bg-slate-200': selectedIntegration === 'farcaster',
+                    },
+                  )}
+                >
+                  <div className="aspect-square h-full">
+                    <Image
+                      src="/farcaster.png"
+                      width={50}
+                      height={50}
+                      className="h-full w-full scale-[85%] object-contain"
+                      alt="farcaster-logo"
                     />
                   </div>
-                </li>
+                  <p>Farcaster</p>
+                </Button>
               </ul>
             </div>
           </div>
@@ -204,7 +210,16 @@ const AdSpacePage = ({
           </div>
         </CardFooter>
       </Card>{' '}
-      <AdPropertyList metadata={adSpace.metadata} />
+      {selectedIntegration === null ? (
+        <AdPropertyList metadata={adSpace.metadata} />
+      ) : (
+        (() => {
+          if (selectedIntegration === 'farcaster') {
+            return <FarcasterIntegration groupId={groupId} spaceId={spaceId} />
+          }
+          return null
+        })()
+      )}
     </Container>
   )
 }
