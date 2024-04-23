@@ -173,7 +173,10 @@ const CreateAdGroupForm = ({
                     <SelectContent>
                       <SelectGroup>
                         {superTokens.map((token) => (
-                          <SelectItem value={token.underlyingToken}>
+                          <SelectItem
+                            key={token.id}
+                            value={token.underlyingToken}
+                          >
                             {getTokenSymbol(token.underlyingToken) ??
                               truncateAddress(token.underlyingToken)}
                           </SelectItem>
