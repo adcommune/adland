@@ -31,7 +31,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
 import Copiable from '@/components/Copiable'
-import { baseURL } from '@/config/constants'
+import { baseURL, getTokenSymbol } from '@/config/constants'
 import { Input } from '@/components/ui/input'
 import Image from 'next/image'
 import AdPropertyList from '@/components/AdSpaces/AdPropertyList'
@@ -52,7 +52,7 @@ const AdSpacePage = ({
     queryKey: ['adSpace-', spaceId],
   })
 
-  if (!adSpace || isLoading) return null
+  if (!(adSpace && adSpace.tokenX) || isLoading) return null
 
   const { listing } = adSpace
 
@@ -129,7 +129,7 @@ const AdSpacePage = ({
                 <UpdateAdDataDialog adSpace={adSpace} />
               </>
             )}
-            <AcquireLeaseModal listing={listing} />
+            <AcquireLeaseModal listing={listing} superToken={adSpace.tokenX} />
           </div>
         </CardHeader>
         <CardContent className="p-6 text-sm">
@@ -146,7 +146,10 @@ const AdSpacePage = ({
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Currencry</span>
-                <span>{truncateAddress(listing?.currency)}</span>
+                <span>
+                  {getTokenSymbol(listing?.currency) ??
+                    truncateAddress(listing?.currency)}
+                </span>
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Owner</span>
