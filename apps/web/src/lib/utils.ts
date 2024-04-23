@@ -1,4 +1,5 @@
 import { FrameAspectRatio, defaultChain, ipfsGateway } from '@/config/constants'
+import { constants } from '@adland/common'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { Address, Chain } from 'viem'
@@ -6,6 +7,9 @@ import { Address, Chain } from 'viem'
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+export const getFramePinataId = (spaceId: string) =>
+  `ad-${constants.chain.id}-${spaceId}`
 
 export const truncateAddress = (address?: string, length?: number) => {
   if (!address) return ''
@@ -50,3 +54,12 @@ export const getAR = (aspectRatio?: string): FrameAspectRatio => {
     FrameAspectRatio.RECTANGLE
   )
 }
+
+export const lowerCaseObjectKeys = (obj: Record<string, any>) =>
+  Object.keys(obj).reduce(
+    (acc, key) => {
+      acc[key.toLowerCase()] = obj[key]
+      return acc
+    },
+    {} as Record<string, any>,
+  )

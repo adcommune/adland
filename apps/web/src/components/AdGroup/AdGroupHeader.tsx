@@ -18,11 +18,13 @@ import { superfluidAccountLink } from '@/config/constants'
 import { formatEther } from 'viem'
 import { Separator } from '../ui/separator'
 
+type AdGroupHeaderProps = {
+  adGroup: AdGroup
+}
+
 const AdGroupHeader = ({
   adGroup: { adGroup_subgraph },
-}: {
-  adGroup: AdGroup
-}) => {
+}: AdGroupHeaderProps) => {
   const { beneficiary } = adGroup_subgraph
 
   const { ethx, cfaV1 } = useAppContracts()
@@ -88,10 +90,10 @@ const AdGroupHeader = ({
                 ETH
               </span>
             </li>
-            <li className="flex items-center justify-between">
+            {/* <li className="flex items-center justify-between">
               <span className="font-light">Monthly group revenue</span>
               <span className="font-light">{monthlyRevenue} ETH</span>
-            </li>
+            </li> */}
           </ul>
         </CardContent>
       </Card>

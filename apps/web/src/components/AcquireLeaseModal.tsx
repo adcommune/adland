@@ -3,18 +3,23 @@
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import useAppContracts from '@/hooks/useAppContracts'
-import { getWeeklyTaxDue } from '@/lib/utils'
+import { getExplorerLink, getWeeklyTaxDue } from '@/lib/utils'
 import { useCallback, useContext, useState } from 'react'
-import { formatEther } from 'viem'
-import { useAccount, useBalance } from 'wagmi'
+import { erc20Abi, formatEther } from 'viem'
+import { useAccount, useBalance, useReadContracts } from 'wagmi'
 import { format, addWeeks } from 'date-fns'
 import { AdSpace, Listing } from '@/lib/types'
 import {
+  cfAv1ForwarderAbi,
   useReadSuperTokenBalanceOf,
   useSimulateDirectListingsLogicBuyFromListing,
   useWriteIsethUpgradeByEth,
 } from '@adland/contracts'
-import { NATIVE_CURRENCY, superfluidUpgradeLink } from '@/config/constants'
+import {
+  NATIVE_CURRENCY,
+  getTokenSymbol,
+  superfluidUpgradeLink,
+} from '@/config/constants'
 import Modal from '@/components/Modal'
 import { useParams } from 'next/navigation'
 import { queryClient } from '@/app/app/providers'
@@ -26,14 +31,23 @@ import { handleWriteErrors } from '@/lib/viem'
 import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
 import { toast } from 'sonner'
 import { Separator } from './ui/separator'
+import { TokenX } from '@adland/webkit/src/hooks'
 
-const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
+type AcquireLeaseModalProps = {
+  listing: Listing
+  superToken: TokenX
+}
+
+const AcquireLeaseModal = ({ listing, superToken }: AcquireLeaseModalProps) => {
   const { spaceId } = useParams()
   const { listingId, taxRate, pricePerToken } = listing
   const { address } = useAccount()
-  const { ethx } = useAppContracts()
+  const { marketplace, cfaV1 } = useAppContracts()
   const [numberOfWeeks, setNumberOfWeeks] = useState<number>(1)
   const { acquireLeaseModal } = useContext(ModalContext)
+
+  const isNativeCurrency =
+    superToken.underlyingToken.toLowerCase() === NATIVE_CURRENCY.toLowerCase()
 
   const {
     data: { superBalance, isEnough } = {
@@ -42,7 +56,7 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
     },
     refetch: refetchSuperBalance,
   } = useReadSuperTokenBalanceOf({
-    address: ethx,
+    address: superToken.superToken,
     args: address && [address],
     query: {
       select: (data) => ({
@@ -60,8 +74,39 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
     address: address,
   })
 
+  const { data: reads, refetch: rereadBalances } = useReadContracts({
+    contracts: [
+      {
+        abi: erc20Abi,
+        functionName: 'balanceOf',
+        address: superToken.underlyingToken,
+        args: address && [address],
+      },
+      {
+        abi: erc20Abi,
+        functionName: 'allowance',
+        address: superToken.underlyingToken,
+        args: address && [address, marketplace],
+      },
+      {
+        abi: cfAv1ForwarderAbi,
+        functionName: 'getFlowOperatorPermissions',
+        address: cfaV1,
+        args: address && [superToken.superToken, address, marketplace],
+      },
+    ],
+    query: {
+      select: (data) => ({
+        currencyBalance: data[0].result,
+        allowance: data[1].result,
+        allowanceIsEnough: (data[1].result ?? BigInt(0)) >= pricePerToken,
+        permissionGranted: data[2].result && data[2].result[0] === 7,
+      }),
+    },
+  })
+
   const {
-    data: upgradeTxHash,
+    data: upgradeEthTxHash,
     writeContract: callUpgradeByEth,
     isPending,
   } = useWriteIsethUpgradeByEth()
@@ -73,7 +118,7 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
 
     callUpgradeByEth(
       {
-        address: ethx,
+        address: superToken.superToken,
         args: undefined,
         value: getWeeklyTaxDue(price, taxRate) * BigInt(weeks),
       },
@@ -89,15 +134,15 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
         listingId,
         address,
         BigInt(1),
-        NATIVE_CURRENCY,
+        superToken.underlyingToken,
         pricePerToken,
       ],
-      value: pricePerToken,
+      value: isNativeCurrency ? pricePerToken : BigInt(0),
       query: { enabled: Boolean(address) },
     })
 
   const { isLoading } = useWaitForTransactionSuccess(
-    upgradeTxHash,
+    upgradeEthTxHash,
     useCallback(() => {
       refetchSuperBalance()
       refetchBuySim()
@@ -126,6 +171,17 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
     }, []),
   )
 
+  const { writeContract: allow, loading } = useTransaction(() => {
+    rereadBalances()
+    refetchBuySim()
+  })
+
+  const { writeContract: grantPermissionToken, loading: permissionLoading } =
+    useTransaction(() => {
+      rereadBalances()
+      refetchBuySim()
+    })
+
   return (
     <>
       <Modal
@@ -145,7 +201,8 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
               }}
               loading={takoverLoading}
             >
-              Take over lease ({formatEther(pricePerToken)} ETH)
+              Take over lease ({formatEther(pricePerToken)}{' '}
+              {getTokenSymbol(listing.currency)})
             </Button>
           )
         }}
@@ -156,7 +213,16 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
           <ul className="grid gap-3">
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Balance</span>
-              <span>{formatEther(superBalance)} ETHx</span>
+              <span>
+                {formatEther(superBalance)}{' '}
+                <Link
+                  target="_blank"
+                  className="underline"
+                  href={getExplorerLink(listing?.currency, 'address')}
+                >
+                  {getTokenSymbol(listing.currency)}x
+                </Link>
+              </span>
             </li>
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Weekly Tax Due</span>
@@ -167,7 +233,7 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
                     taxRate ?? BigInt(0),
                   ),
                 )}{' '}
-                ETHx
+                {getTokenSymbol(listing.currency)}x
               </span>
             </li>
             <li className="flex items-center justify-between">
@@ -176,41 +242,104 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
               </span>
               <span>
                 {format(
-                  addWeeks(Date.now(), numberOfWeeksAvailable),
+                  addWeeks(
+                    Date.now(),
+                    numberOfWeeksAvailable > 20 * 52
+                      ? 20 * 52
+                      : numberOfWeeksAvailable,
+                  ),
                   'MMM d, yyyy',
                 )}{' '}
                 ({numberOfWeeksAvailable} weeks)
               </span>
             </li>
-            <li>
-              <div className="flex flex-row gap-4">
-                <Slider
-                  defaultValue={[0]}
-                  max={10}
-                  step={1}
-                  onValueChange={(value: any) => {
-                    setNumberOfWeeks(value[0])
-                  }}
-                />
-                <Button
-                  loading={isPending || isLoading}
-                  disabled={isLoading}
-                  onClick={() => {
-                    depositRent(numberOfWeeks)
-                  }}
-                >
-                  Deposit Rent: {numberOfWeeks} weeks
-                </Button>
-              </div>
-            </li>
+            {isNativeCurrency && (
+              <li>
+                <div className="flex flex-row gap-4">
+                  <Slider
+                    defaultValue={[0]}
+                    max={10}
+                    step={1}
+                    onValueChange={(value: any) => {
+                      setNumberOfWeeks(value[0])
+                    }}
+                  />
+                  <Button
+                    loading={isPending || isLoading}
+                    disabled={isLoading}
+                    onClick={() => {
+                      depositRent(numberOfWeeks)
+                    }}
+                  >
+                    Deposit Rent: {numberOfWeeks} weeks
+                  </Button>
+                </div>
+              </li>
+            )}
           </ul>
           <Separator />
           <div className="font-semibold">ETH Info</div>
           <ul className="grid gap-3">
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Balance</span>
-              <span>{Number(formatEther(ethBalance?.value ?? BigInt(0)))}</span>
+              <span>
+                {Number(
+                  formatEther(
+                    isNativeCurrency
+                      ? ethBalance?.value ?? BigInt(0)
+                      : reads?.currencyBalance ?? BigInt(0),
+                  ),
+                )}
+              </span>
             </li>
+            {!isNativeCurrency && !reads?.allowanceIsEnough && (
+              <li>
+                <Button
+                  loading={loading}
+                  disabled={loading}
+                  onClick={() => {
+                    allow(
+                      {
+                        abi: erc20Abi,
+                        functionName: 'approve',
+                        address: superToken.underlyingToken,
+                        args: [marketplace, pricePerToken],
+                      },
+                      {
+                        onError: (error) => handleWriteErrors(error),
+                      },
+                    )
+                  }}
+                  className="w-full"
+                >
+                  Approve {getTokenSymbol(listing.currency)}x
+                </Button>
+              </li>
+            )}
+            {!reads?.permissionGranted && (
+              <li>
+                <Button
+                  loading={permissionLoading}
+                  disabled={permissionLoading}
+                  onClick={() => {
+                    grantPermissionToken(
+                      {
+                        abi: cfAv1ForwarderAbi,
+                        functionName: 'grantPermissions',
+                        address: cfaV1,
+                        args: [superToken.superToken, marketplace],
+                      },
+                      {
+                        onError: (error) => handleWriteErrors(error),
+                      },
+                    )
+                  }}
+                  className="w-full"
+                >
+                  Grant Permission
+                </Button>
+              </li>
+            )}
           </ul>
         </div>
         {!isEnough && (
@@ -218,7 +347,7 @@ const AcquireLeaseModal = ({ listing }: { listing: Listing }) => {
             <AlertTitle>Out of funds</AlertTitle>
             <AlertDescription>
               You SuperToken balance should account for at least 1 week of this
-              asset&apos;s tax. Deposit more with the deposit button about or on{' '}
+              asset&apos;s tax. Deposit more with the deposit button above or on{' '}
               <Link
                 href={superfluidUpgradeLink}
                 className="underline"
