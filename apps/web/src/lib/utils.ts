@@ -50,3 +50,12 @@ export const getAR = (aspectRatio?: string): FrameAspectRatio => {
     FrameAspectRatio.RECTANGLE
   )
 }
+
+export const lowerCaseObjectKeys = (obj: Record<string, any>) =>
+  Object.keys(obj).reduce(
+    (acc, key) => {
+      acc[key.toLowerCase()] = obj[key]
+      return acc
+    },
+    {} as Record<string, any>,
+  )

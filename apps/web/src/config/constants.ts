@@ -2,6 +2,7 @@ import { Chain, optimismSepolia, sepolia } from 'wagmi/chains'
 import { alchemyKey } from './variables'
 import { Address } from 'viem'
 import { constants } from '@adland/common'
+import { lowerCaseObjectKeys } from '@/lib/utils'
 
 export const defaultChain: Chain = optimismSepolia
 
@@ -78,3 +79,18 @@ export const superfluidUpgradeLink =
 
 export const noAdFrameImageCID =
   'QmNmAqKyGEXd1ZM4a1FRND8D4Kftgz5XRNCkC44XwFYa4g'
+
+export const tokenSymbolsByChain: Record<number, Record<string, string>> = {
+  [optimismSepolia.id]: {
+    '0x4247bA6C3658Fa5C0F523BAcea8D0b97aF1a175e': 'fDAI',
+    [NATIVE_CURRENCY]: 'ETH',
+  },
+}
+
+export const getTokenSymbol = (tokenAddress: string) => {
+  if (!tokenSymbolsByChain[defaultChain.id]) return undefined
+  return (
+    tokenSymbolsByChain[defaultChain.id][tokenAddress] ??
+    lowerCaseObjectKeys(tokenSymbolsByChain[defaultChain.id])[tokenAddress]
+  )
+}

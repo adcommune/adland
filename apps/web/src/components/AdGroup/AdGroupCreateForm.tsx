@@ -31,13 +31,23 @@ import {
 } from 'viem'
 import { useWriteContract } from 'wagmi'
 import useAppContracts from '@/hooks/useAppContracts'
-import { NATIVE_CURRENCY } from '@/config/constants'
 import { commonAdSpacesAbi, directListingsLogicAbi } from '@adland/contracts'
 import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
 import { useCallback } from 'react'
 import { handleWriteErrors } from '@/lib/viem'
 import { toast } from 'sonner'
 import { Checkbox } from '../ui/checkbox'
+import { TokenX } from '@adland/webkit/src/hooks'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select'
+import { truncateAddress } from '@/lib/utils'
+import { getTokenSymbol } from '@/config/constants'
 
 const createAdGroupSchema = z.object({
   recipientIsBeneficiary: z.boolean().default(true),
@@ -52,17 +62,19 @@ type CreateAdGroupFormValues = z.infer<typeof createAdGroupSchema>
 
 type CreateAdGroupFormProps = {
   beneficiary: Address
+  superTokens: TokenX[]
 }
 
 const CreateAdGroupForm = ({
   beneficiary: rawBeneficiary,
+  superTokens,
 }: CreateAdGroupFormProps) => {
   const form = useForm<CreateAdGroupFormValues>({
     resolver: zodResolver(createAdGroupSchema),
     defaultValues: {
       beneficiary: rawBeneficiary,
       recipientIsBeneficiary: true,
-      currency: NATIVE_CURRENCY,
+      currency: superTokens[0].underlyingToken,
       initialPrice: BigInt(1e16),
       taxRate: BigInt(10),
       size: BigInt(1),
@@ -143,6 +155,35 @@ const CreateAdGroupForm = ({
             <CardTitle>Open new Ad spaces</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
+            <FormField
+              control={form.control}
+              name="currency"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Currency</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select the currencry" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        {superTokens.map((token) => (
+                          <SelectItem value={token.underlyingToken}>
+                            {getTokenSymbol(token.underlyingToken) ??
+                              truncateAddress(token.underlyingToken)}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="recipientIsBeneficiary"
