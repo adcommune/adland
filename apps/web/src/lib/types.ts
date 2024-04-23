@@ -1,5 +1,6 @@
 import { directListingsLogicAbi } from '@adland/contracts'
 import { AdGroup_subgraph, AdSpace_subgraph } from '@adland/webkit'
+import { TokenX } from '@adland/webkit/src/hooks'
 import { ContractFunctionReturnType } from 'viem'
 
 export type Listing = ContractFunctionReturnType<
@@ -48,6 +49,7 @@ export type AdSpace = {
   listing: Listing
   // undefined if adSpace_subgraph.uri undefined
   metadata?: Metadata
+  tokenX?: TokenX
 }
 
 export type AdGroup = {

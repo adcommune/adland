@@ -61,6 +61,12 @@ export class AdLand {
 
     const listing = await new Market().getListing(id)
 
+    const tokenX = await this.adland
+      .tokenXs({
+        where: { underlyingToken: listing?.currency },
+      })
+      .then((res) => res.tokenXs[0])
+
     if (!adSpace) {
       throw new Error('AdSpace not found')
     }
@@ -71,6 +77,7 @@ export class AdLand {
       adSpace_subgraph: adSpace,
       listing,
       metadata,
+      tokenX,
     }
   }
 
