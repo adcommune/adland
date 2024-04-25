@@ -7,7 +7,7 @@
     "preview": "vocs preview"
   },
   "dependencies": {
-    "@repo/tailwind-config": "*",
+    "@repo/tailwind-config": "workspace:*",
     "react": "latest",
     "react-dom": "latest",
     "vocs": "latest",

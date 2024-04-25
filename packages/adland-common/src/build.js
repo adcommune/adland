@@ -1,11 +1,10 @@
 const { exec } = require("child_process");
 const fs = require("fs");
 
-const stage = process.env.STAGE;
+let stage = process.env.STAGE;
 
 if (!stage || (stage !== "testnet" && stage !== "mainnet")) {
-  console.error("Please provide a valid stage (testnet or mainnet)");
-  process.exit(1);
+  stage = "local";
 }
 
 // Adjust the paths according to your project structure

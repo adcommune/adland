@@ -26,10 +26,10 @@ import { AdSpace, Metadata } from '@/lib/types'
 import { uploadFile } from '@/lib/file'
 import { ModalContext } from '@/context/ModalContext'
 import Modal from './Modal'
-import { queryClient } from '@/app/app/providers'
 import { toast } from 'sonner'
 import { handleWriteErrors } from '@/lib/viem'
 import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
+import { queryClient } from './AppProviders'
 
 type UpdateAdDataDialogProps = {
   adSpace: AdSpace

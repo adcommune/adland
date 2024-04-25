@@ -1,44 +1,29 @@
-'use client'
-
-import { Footer } from '@/components/Footer'
-import { Hero } from '@/components/Hero'
-import Navbar from '@/components/Navbar'
-import MobileNavigation from '@/components/Navigation/MovileNavigation'
-import { nav_links } from '@/config/links'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Container } from '@/components/Container'
+import { AdLand } from '@/lib/adland'
 import Link from 'next/link'
 
-const queryClient = new QueryClient()
+const AppPage = async () => {
+  const groups = await new AdLand().listGroups()
 
-export default function Home() {
   return (
-    <>
-      <Navbar>
-        <div className="flex items-center gap-x-5 md:gap-x-8">
-          <div className="-mr-1 md:hidden">
-            <MobileNavigation />
-          </div>
-        </div>
-        <div className="hidden gap-x-4 sm:flex">
-          {nav_links.map((link) => {
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                target={link.target}
-                className="fill-white font-body text-white"
-                aria-label={'AdLand social links: ' + link.name}
-              >
-                {link.icon ? link.icon : link.name}
-              </Link>
-            )
-          })}
-        </div>
-      </Navbar>
-      <QueryClientProvider client={queryClient}>
-        <Hero />
-      </QueryClientProvider>
-      <Footer />
-    </>
+    <div className="flex min-h-[79vh] flex-col p-2">
+      <Container className="flex w-full flex-col gap-2 p-4">
+        {groups.map((group) => (
+          <Link
+            href={'/group/' + group.adGroup_subgraph.id}
+            key={group.adGroup_subgraph.id}
+          >
+            <div className="flex flex-row justify-between rounded-md bg-white p-3 hover:bg-gray-100">
+              <h1>Ad Group - #{group.adGroup_subgraph.id}</h1>
+              <div className="flex flex-wrap">
+                {group.adSpaces.length} Ad Spaces
+              </div>
+            </div>
+          </Link>
+        ))}
+      </Container>
+    </div>
   )
 }
+
+export default AppPage

@@ -41,14 +41,11 @@ const FarcasterIntegration = ({
             className="h-full flex-grow cursor-default text-opacity-100 disabled:opacity-100"
             disabled
             placeholder={truncateAddress(
-              `${baseURL}/app/group/${groupId}/${spaceId}`,
+              `${baseURL}/group/${groupId}/${spaceId}`,
               14,
             )}
           />
-          <Copiable
-            visible
-            text={`${baseURL}/app/group/${groupId}/${spaceId}`}
-          />
+          <Copiable visible text={`${baseURL}/group/${groupId}/${spaceId}`} />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">

@@ -74,7 +74,7 @@ export function Hero() {
       </div>
       <div className="flex w-full flex-row justify-end">
         <Link
-          href={'/app/group/' + constants.landingPageAdGroup}
+          href={'/group/' + constants.landingPageAdGroup}
           className="w-full sm:w-auto"
         >
           <Button
