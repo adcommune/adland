@@ -7,7 +7,7 @@ import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { useSimulateDirectListingsLogicUpdateListing } from '@adland/contracts'
 import { ModalContext } from '@/context/ModalContext'
 import Modal from './Modal'
-import { queryClient } from '@/app/app/providers'
+import { queryClient } from './AppProviders'
 
 type AdSpaceCardProps = { adSpace: AdSpace }
 

@@ -5,6 +5,7 @@ import localFont from 'next/font/local'
 import clsx from 'clsx'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from 'sonner'
+import AppProviders from '@/components/AppProviders'
 
 export const metadata: Metadata = {
   title: {
@@ -46,7 +47,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     >
       <body className="relative z-[2]">
         <div className="">
-          {children}
+          <AppProviders>{children}</AppProviders>
           <Analytics />
           <Toaster
             toastOptions={{

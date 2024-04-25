@@ -22,7 +22,6 @@ import {
 } from '@/config/constants'
 import Modal from '@/components/Modal'
 import { useParams } from 'next/navigation'
-import { queryClient } from '@/app/app/providers'
 import { ModalContext } from '@/context/ModalContext'
 import useTransaction from '@/hooks/useTransaction'
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
@@ -32,6 +31,7 @@ import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
 import { toast } from 'sonner'
 import { Separator } from './ui/separator'
 import { TokenX } from '@adland/webkit/src/hooks'
+import { queryClient } from './AppProviders'
 
 type AcquireLeaseModalProps = {
   listing: Listing
