@@ -10,7 +10,6 @@ import { ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import MobileNavigation from "@/components/Navigation/MovileNavigation";
-import { appURL } from "@/config/variables";
 
 export default async function Home() {
   const adGroup = await new AdLand().getGroup(constants.landingPageAdGroup);
@@ -95,7 +94,7 @@ export default async function Home() {
         <div className="flex w-full flex-row justify-end">
           <Link
             target="_blank"
-            href={`${appURL}/group/${constants.landingPageAdGroup}`}
+            href={`${constants.appUrl}/group/${constants.landingPageAdGroup}`}
             className="w-full sm:w-auto"
           >
             <Button

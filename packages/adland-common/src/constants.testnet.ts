@@ -7,4 +7,5 @@ export const constants: Constants = {
   pinataPublicGateway: "amethyst-representative-mandrill-369.mypinata.cloud",
   chain: optimismSepolia,
   landingPageAdGroup: "1",
+  appUrl: "https://testnet.adland.space",
 };
