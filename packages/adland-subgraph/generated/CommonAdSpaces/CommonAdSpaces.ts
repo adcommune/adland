@@ -27,7 +27,7 @@ export class AdGroupCreated__Params {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get beneficiary(): Address {
+  get recipient(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 }
@@ -296,56 +296,6 @@ export class Upgraded__Params {
   }
 }
 
-export class CommonAdSpaces__createAdGroupResult {
-  value0: Address;
-  value1: BigInt;
-
-  constructor(value0: Address, value1: BigInt) {
-    this.value0 = value0;
-    this.value1 = value1;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromAddress(this.value0));
-    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
-    return map;
-  }
-
-  getAdGroupAdmin(): Address {
-    return this.value0;
-  }
-
-  getAdGroupId(): BigInt {
-    return this.value1;
-  }
-}
-
-export class CommonAdSpaces__createAdGroup1Result {
-  value0: Address;
-  value1: BigInt;
-
-  constructor(value0: Address, value1: BigInt) {
-    this.value0 = value0;
-    this.value1 = value1;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromAddress(this.value0));
-    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
-    return map;
-  }
-
-  getAdGroupAdmin(): Address {
-    return this.value0;
-  }
-
-  getAdGroupId(): BigInt {
-    return this.value1;
-  }
-}
-
 export class CommonAdSpaces__createAdGroup1InputInitialAdSpaceConfigStruct extends ethereum.Tuple {
   get currency(): Address {
     return this[0].toAddress();
@@ -390,27 +340,19 @@ export class CommonAdSpaces extends ethereum.SmartContract {
     return new CommonAdSpaces("CommonAdSpaces", address);
   }
 
-  adGroupAdminFactory(): Address {
-    let result = super.call(
-      "adGroupAdminFactory",
-      "adGroupAdminFactory():(address)",
-      [],
-    );
+  adGroupIds(): BigInt {
+    let result = super.call("adGroupIds", "adGroupIds():(uint256)", []);
 
-    return result[0].toAddress();
+    return result[0].toBigInt();
   }
 
-  try_adGroupAdminFactory(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "adGroupAdminFactory",
-      "adGroupAdminFactory():(address)",
-      [],
-    );
+  try_adGroupIds(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("adGroupIds", "adGroupIds():(uint256)", []);
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   balanceOf(owner: Address): BigInt {
@@ -432,47 +374,37 @@ export class CommonAdSpaces extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  createAdGroup(recipient: Address): CommonAdSpaces__createAdGroupResult {
+  createAdGroup(recipient: Address): BigInt {
     let result = super.call(
       "createAdGroup",
-      "createAdGroup(address):(address,uint256)",
+      "createAdGroup(address):(uint256)",
       [ethereum.Value.fromAddress(recipient)],
     );
 
-    return new CommonAdSpaces__createAdGroupResult(
-      result[0].toAddress(),
-      result[1].toBigInt(),
-    );
+    return result[0].toBigInt();
   }
 
-  try_createAdGroup(
-    recipient: Address,
-  ): ethereum.CallResult<CommonAdSpaces__createAdGroupResult> {
+  try_createAdGroup(recipient: Address): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "createAdGroup",
-      "createAdGroup(address):(address,uint256)",
+      "createAdGroup(address):(uint256)",
       [ethereum.Value.fromAddress(recipient)],
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new CommonAdSpaces__createAdGroupResult(
-        value[0].toAddress(),
-        value[1].toBigInt(),
-      ),
-    );
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   createAdGroup1(
     recipient: Address,
     initialAdSpaceConfig: CommonAdSpaces__createAdGroup1InputInitialAdSpaceConfigStruct,
     size: BigInt,
-  ): CommonAdSpaces__createAdGroup1Result {
+  ): BigInt {
     let result = super.call(
       "createAdGroup",
-      "createAdGroup(address,(address,uint256,uint256),uint256):(address,uint256)",
+      "createAdGroup(address,(address,uint256,uint256),uint256):(uint256)",
       [
         ethereum.Value.fromAddress(recipient),
         ethereum.Value.fromTuple(initialAdSpaceConfig),
@@ -480,20 +412,17 @@ export class CommonAdSpaces extends ethereum.SmartContract {
       ],
     );
 
-    return new CommonAdSpaces__createAdGroup1Result(
-      result[0].toAddress(),
-      result[1].toBigInt(),
-    );
+    return result[0].toBigInt();
   }
 
   try_createAdGroup1(
     recipient: Address,
     initialAdSpaceConfig: CommonAdSpaces__createAdGroup1InputInitialAdSpaceConfigStruct,
     size: BigInt,
-  ): ethereum.CallResult<CommonAdSpaces__createAdGroup1Result> {
+  ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "createAdGroup",
-      "createAdGroup(address,(address,uint256,uint256),uint256):(address,uint256)",
+      "createAdGroup(address,(address,uint256,uint256),uint256):(uint256)",
       [
         ethereum.Value.fromAddress(recipient),
         ethereum.Value.fromTuple(initialAdSpaceConfig),
@@ -504,12 +433,7 @@ export class CommonAdSpaces extends ethereum.SmartContract {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new CommonAdSpaces__createAdGroup1Result(
-        value[0].toAddress(),
-        value[1].toBigInt(),
-      ),
-    );
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   getAdUri(adId: BigInt): string {
@@ -899,12 +823,8 @@ export class CreateAdGroupCall__Outputs {
     this._call = call;
   }
 
-  get adGroupAdmin(): Address {
-    return this._call.outputValues[0].value.toAddress();
-  }
-
   get adGroupId(): BigInt {
-    return this._call.outputValues[1].value.toBigInt();
+    return this._call.outputValues[0].value.toBigInt();
   }
 }
 
@@ -947,12 +867,8 @@ export class CreateAdGroup1Call__Outputs {
     this._call = call;
   }
 
-  get adGroupAdmin(): Address {
-    return this._call.outputValues[0].value.toAddress();
-  }
-
   get adGroupId(): BigInt {
-    return this._call.outputValues[1].value.toBigInt();
+    return this._call.outputValues[0].value.toBigInt();
   }
 }
 
@@ -991,12 +907,8 @@ export class InitializeCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _adGroupAdminFactory(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
   get _placeholderURI(): string {
-    return this._call.inputValues[2].value.toString();
+    return this._call.inputValues[1].value.toString();
   }
 }
 

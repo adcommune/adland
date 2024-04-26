@@ -36,7 +36,7 @@ export function handleAdGroupCreated(event: AdGroupCreatedEvent): void {
     event.transaction.hash.concatI32(event.logIndex.toI32())
   );
   entity.groupId = event.params.groupId;
-  entity.beneficiary = event.params.beneficiary;
+  entity.beneficiary = event.params.recipient;
 
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
@@ -46,7 +46,7 @@ export function handleAdGroupCreated(event: AdGroupCreatedEvent): void {
 
   let adGroup = new AdGroup(event.params.groupId.toString());
 
-  adGroup.beneficiary = event.params.beneficiary;
+  adGroup.beneficiary = event.params.recipient;
   adGroup.blockTimestamp = event.block.timestamp;
   adGroup.transactionHash = event.transaction.hash;
 
