@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import AdLandBrand from './Icons'
 import { Container } from './Container'

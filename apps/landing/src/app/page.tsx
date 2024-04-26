@@ -11,6 +11,8 @@ import Link from "next/link";
 import Image from "next/image";
 import MobileNavigation from "@/components/Navigation/MovileNavigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const adGroup = await new AdLand().getGroup(constants.landingPageAdGroup);
 
