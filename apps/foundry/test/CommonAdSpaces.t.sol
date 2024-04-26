@@ -29,19 +29,6 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     string buyerAdURI = "https://www.google.com";
     string buyer2AdURI = "https://www.yahoo.com";
 
-    function testAdminUpgrade() public {
-        CommonAdGroupAdminFactoryMock newFactoryMock = new CommonAdGroupAdminFactoryMock();
-
-        vm.prank(deployer);
-        commonAdGroupFactory.upgradeTo(address(newFactoryMock));
-
-        assertEq(
-            CommonAdGroupAdminFactoryMock(address(commonAdGroupFactory))
-                .whoAmI(),
-            "CommonAdGroupAdminFactoryMock"
-        );
-    }
-
     function testCannotTransferAsOwnerOfListing() public {
         commonAds.createAdGroup(
             recipient,
@@ -73,19 +60,6 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         vm.prank(buyer);
         vm.expectRevert("CommonAdSpaces: Only marketplace can transfer");
         commonAds.transferFrom(buyer, vm.addr(111), 1);
-    }
-
-    function testCommonAdGroupAdminFactory() public {
-        CommonAdGroupAdminFactory adminFactory = commonAds
-            .adGroupAdminFactory();
-
-        vm.expectRevert();
-        adminFactory.createGroupAdmin(vm.addr(69));
-
-        vm.prank(address(commonAds));
-        adminFactory.createGroupAdmin(vm.addr(69));
-
-        assertEq(adminFactory.ownerOf(1), vm.addr(69));
     }
 
     function testCreateAdGroup() public {
@@ -123,7 +97,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyerCancelsStream() public {
-        (address admin, ) = commonAds.createAdGroup(
+        commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -152,30 +126,20 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             initialPrice
         );
 
-        _logFlowInfo(buyer, admin);
+        _logFlowInfo(buyer, recipient);
 
         vm.warp(block.timestamp + 1 days);
 
         vm.startPrank(buyer);
-        ISuperToken(ethx).deleteFlow(buyer, admin);
+        ISuperToken(ethx).deleteFlow(buyer, recipient);
         vm.stopPrank();
 
         vm.prank(recipient);
-        AccountV3(payable(admin)).execute(
-            address(marketplace),
-            0,
-            abi.encodeWithSelector(
-                DirectListingsLogic(payable(address(marketplace)))
-                    .forecloseListing
-                    .selector,
-                1
-            ),
-            0
-        );
+        marketplace.forecloseListing(1);
     }
 
     function testBuyListingETH() public {
-        (address admin, ) = commonAds.createAdGroup(
+        commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -210,8 +174,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         // Add missing amount
         _upgradeETH(ethx, buyer, missingAmount);
 
-        assertEq(commonAds.ownerOf(1), admin);
-        assertEq(admin.balance, 0);
+        assertEq(commonAds.ownerOf(1), recipient);
+        assertEq(recipient.balance, 0);
 
         vm.prank(buyer);
         marketplace.buyFromListing{value: initialPrice}(
@@ -227,7 +191,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
 
         vm.warp(block.timestamp + 1 days);
 
-        assertEq(admin.balance, initialPrice);
+        assertEq(recipient.balance, initialPrice);
         assertEq(commonAds.ownerOf(1), buyer);
 
         IDirectListings.Listing memory listing = marketplace.getListing(1);
@@ -262,7 +226,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         commonAds.safeTransferFrom(buyer2, vm.addr(22), 1);
 
         // Expect flow for buyer to be stopped
-        assertEq(_getFlowRate(address(ethx), buyer, admin), 0);
+        assertEq(_getFlowRate(address(ethx), buyer, recipient), 0);
 
         // Test Buyer 2 can set ad uri
         vm.prank(buyer);
@@ -274,7 +238,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyMultipleListings() public {
-        (address admin, ) = commonAds.createAdGroup(
+        commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -300,7 +264,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
 
         assertEq(
             _computeAssetFlowRate(baseTaxRateBPS, initialPrice),
-            _getFlowRate(address(ethx), buyer, admin)
+            _getFlowRate(address(ethx), buyer, recipient)
         );
 
         vm.prank(buyer);
@@ -314,7 +278,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
 
         assertEq(
             _computeAssetFlowRate(baseTaxRateBPS, initialPrice) * 2,
-            _getFlowRate(address(ethx), buyer, admin)
+            _getFlowRate(address(ethx), buyer, recipient)
         );
 
         address buyer2 = _getAccount(22, 1000 ether);
@@ -334,7 +298,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
 
         assertEq(
             _computeAssetFlowRate(baseTaxRateBPS, initialPrice),
-            _getFlowRate(address(ethx), buyer, admin)
+            _getFlowRate(address(ethx), buyer, recipient)
         );
 
         vm.prank(buyer2);
@@ -346,7 +310,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             initialPrice
         );
 
-        assertEq(0, _getFlowRate(address(ethx), buyer, admin));
+        assertEq(0, _getFlowRate(address(ethx), buyer, recipient));
     }
 
     function testBuyListingDAI() public {
@@ -389,7 +353,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testSelfAssessListingPrice() public {
-        (address admin, ) = commonAds.createAdGroup(
+        commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -433,12 +397,12 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
 
         assertEq(
             _computeAssetFlowRate(baseTaxRateBPS, initialPrice),
-            _getFlowRate(address(ethx), buyer, admin)
+            _getFlowRate(address(ethx), buyer, recipient)
         );
 
         console.log(
             "flowBefore",
-            uint256(int256(_getFlowRate(address(ethx), buyer, admin)))
+            uint256(int256(_getFlowRate(address(ethx), buyer, recipient)))
         );
 
         vm.prank(buyer);
@@ -446,12 +410,12 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
 
         console.log(
             "flowAfter",
-            uint256(int256(_getFlowRate(address(ethx), buyer, admin)))
+            uint256(int256(_getFlowRate(address(ethx), buyer, recipient)))
         );
 
         assertEq(
             _computeAssetFlowRate(baseTaxRateBPS, newPrice),
-            _getFlowRate(address(ethx), buyer, admin)
+            _getFlowRate(address(ethx), buyer, recipient)
         );
 
         priceChangeParams.pricePerToken = initialPrice;
@@ -461,7 +425,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
 
         assertEq(
             _computeAssetFlowRate(baseTaxRateBPS, initialPrice),
-            _getFlowRate(address(ethx), buyer, admin)
+            _getFlowRate(address(ethx), buyer, recipient)
         );
 
         priceChangeParams.pricePerToken = newPrice;
@@ -528,7 +492,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testCancelListing() public {
-        (address admin, ) = commonAds.createAdGroup(
+        commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -554,7 +518,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         );
 
         assertEq(
-            _getFlowRate(address(ethx), buyer, admin),
+            _getFlowRate(address(ethx), buyer, recipient),
             _computeFlowRate(baseTaxRateBPS, initialPrice)
         );
         assertEq(commonAds.ownerOf(1), buyer);
@@ -562,12 +526,12 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         vm.prank(buyer);
         marketplace.cancelListing(1);
 
-        assertEq(_getFlowRate(address(ethx), buyer, admin), 0);
-        assertEq(commonAds.ownerOf(1), admin);
+        assertEq(_getFlowRate(address(ethx), buyer, recipient), 0);
+        assertEq(commonAds.ownerOf(1), recipient);
     }
 
     function testForecloseListing() public {
-        (address admin, ) = commonAds.createAdGroup(
+        commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -594,13 +558,14 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
 
         vm.warp(block.timestamp + 7 days);
 
-        vm.prank(admin);
+        vm.prank(recipient);
         marketplace.forecloseListing(1);
 
-        assertEq(commonAds.ownerOf(1), admin);
-        assertEq(_getFlowRate(address(ethx), buyer, admin), 0);
+        assertEq(commonAds.ownerOf(1), recipient);
+        assertEq(_getFlowRate(address(ethx), buyer, recipient), 0);
 
         _upgradeETH(ethx, buyer, _taxDuePerWeek(baseTaxRateBPS, initialPrice));
+
         vm.prank(buyer);
         marketplace.buyFromListing{value: initialPrice}(
             1,

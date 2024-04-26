@@ -6,7 +6,11 @@ import {IAdStrategy} from "./IAdStrategy.sol";
 
 /// @title ICommonAds
 interface ICommonAdSpaces {
-    event AdGroupCreated(uint256 indexed groupId, address indexed beneficiary);
+    event AdGroupCreated(
+        uint256 indexed groupId,
+        address indexed beneficiary,
+        address indexed recipient
+    );
 
     event AdSpaceCreated(uint256 indexed groupId, uint256 indexed adId);
 
@@ -24,13 +28,13 @@ interface ICommonAdSpaces {
 
     function createAdGroup(
         address recipient
-    ) external returns (address adGroupAdmin, uint256 adGroupId);
+    ) external returns (uint256 adGroupId);
 
     function createAdGroup(
         address recipient,
         AdSpaceConfig memory initialAdSpaceConfig,
         uint256 numberOfAdSpaces
-    ) external returns (address adGroupAdmin, uint256 adGroupId);
+    ) external returns (uint256 adGroupId);
 
     function openAdSpaces(
         uint256 adGroupId,

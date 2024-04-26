@@ -71,22 +71,6 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
 
         vm.label(address(marketplace), "marketplace");
 
-        commonAdGroupFactory = CommonAdGroupAdminFactory(
-            address(
-                new UUPSProxy(
-                    address(new CommonAdGroupAdminFactory()),
-                    abi.encodeWithSelector(
-                        CommonAdGroupAdminFactory.initialize.selector,
-                        AccountCreatorConfig({
-                            registry: registry,
-                            implementation: address(implementation),
-                            accountProxy: address(accountProxy)
-                        })
-                    )
-                )
-            )
-        );
-
         commonAds = CommonAdSpaces(
             address(
                 new UUPSProxy(
@@ -94,16 +78,10 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
                     abi.encodeWithSelector(
                         CommonAdSpaces.initialize.selector,
                         address(marketplace),
-                        address(commonAdGroupFactory),
                         ""
                     )
                 )
             )
-        );
-
-        commonAdGroupFactory.grantRole(
-            keccak256("GROUP_CREATOR"),
-            address(commonAds)
         );
 
         _grantTaxManagerRole(deployer);
