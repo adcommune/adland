@@ -175,7 +175,7 @@ contract CommonAdSpaces is
 
         adGroups[adGroupIds] = AdGroup({owner: recipient});
 
-        emit AdGroupCreated(adGroupId, recipient, recipient);
+        emit AdGroupCreated(adGroupId, recipient);
     }
 
     function _openAdSpaces(

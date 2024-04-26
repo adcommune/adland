@@ -6,11 +6,7 @@ import {IAdStrategy} from "./IAdStrategy.sol";
 
 /// @title ICommonAds
 interface ICommonAdSpaces {
-    event AdGroupCreated(
-        uint256 indexed groupId,
-        address indexed beneficiary,
-        address indexed recipient
-    );
+    event AdGroupCreated(uint256 indexed groupId, address indexed recipient);
 
     event AdSpaceCreated(uint256 indexed groupId, uint256 indexed adId);
 
