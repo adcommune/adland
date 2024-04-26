@@ -234,6 +234,9 @@ importers:
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      permissionless:
+        specifier: ^0.1.21
+        version: 0.1.21(viem@2.9.13(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4))
       pinata-fdk:
         specifier: ^3.9.0
         version: 3.9.0(bufferutil@4.0.8)(encoding@0.1.13)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)
@@ -7866,6 +7869,11 @@ packages:
 
   periscopic@3.1.0:
     resolution: {integrity: sha512-vKiQ8RRtkl9P+r/+oefh25C3fhybptkHKCZSPlcXiJux2tJF55GnEj3BVn4A5gKfq9NWWXXrxkHBwVPUfH0opw==}
+
+  permissionless@0.1.21:
+    resolution: {integrity: sha512-/7zI4082w8pUYU/Xi4GOcWc4vhgjkW15/q7srA+b3TCn6/Uhnr1CjQl8ABJWEF1SYlVE+/x8e8RntBZ9VRDYpw==}
+    peerDependencies:
+      viem: ^2.9.17
 
   picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
@@ -20213,6 +20221,10 @@ snapshots:
       '@types/estree': 1.0.5
       estree-walker: 3.0.3
       is-reference: 3.0.2
+
+  permissionless@0.1.21(viem@2.9.13(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)):
+    dependencies:
+      viem: 2.9.13(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)
 
   picocolors@1.0.0: {}
 

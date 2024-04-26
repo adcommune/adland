@@ -1,10 +1,17 @@
 import { toast } from 'sonner'
 import { WriteContractErrorType } from 'wagmi/actions'
-import { UserRejectedRequestError, BaseError } from 'viem'
+import {
+  UserRejectedRequestError,
+  BaseError,
+  createPublicClient,
+  http,
+} from 'viem'
+import { alchemyUrlByChain } from '@/config/constants'
+import { constants } from '@adland/common'
 
 export const handleWriteErrors = (
-  error: WriteContractErrorType,
-  callback?: (error: BaseError) => void,
+  error: WriteContractErrorType | Error,
+  callback?: (error: BaseError | Error) => void,
 ) => {
   if (error instanceof BaseError) {
     const revertError = error.walk(
@@ -14,9 +21,13 @@ export const handleWriteErrors = (
     if (revertError instanceof UserRejectedRequestError) {
       toast.error('User rejected the request')
     }
-
-    if (callback) {
-      callback(error)
-    }
+  }
+  if (callback) {
+    callback(error)
   }
 }
+
+export const publicClient = createPublicClient({
+  transport: http(alchemyUrlByChain[constants.chain.id]),
+  chain: constants.chain,
+})
