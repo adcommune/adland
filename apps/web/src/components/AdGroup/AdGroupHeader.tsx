@@ -50,11 +50,11 @@ const AdGroupHeader = ({
                 </Button>
               </Link>
             ) : (
-              <Link href={`/group/${adGroup_subgraph.id}/settings`}>
-                <Button variant="outline">
-                  <CogIcon size={24} />
-                </Button>
-              </Link>
+              // <Link href={`/group/${adGroup_subgraph.id}/settings`}>
+              <Button variant="outline" disabled>
+                <CogIcon size={24} />
+              </Button>
+              // </Link>
             )}
           </div>
         </CardHeader>
