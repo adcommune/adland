@@ -4,13 +4,15 @@ pragma solidity ^0.8.19;
 import {CFASuperAppBase} from "@superfluid-finance/ethereum-contracts/contracts/apps/CFASuperAppBase.sol";
 import {ISuperfluid, ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 import {SuperTokenV1Library} from "@superfluid-finance/ethereum-contracts/contracts/apps/SuperTokenV1Library.sol";
+import {PoolConfig} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/gdav1/IGeneralDistributionAgreementV1.sol";
+import {ISuperfluidPool} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/gdav1/ISuperfluidPool.sol";
 
 contract CommonAdGroup is CFASuperAppBase {
     using SuperTokenV1Library for ISuperToken;
 
     address poolManager;
 
-    mapping(ISuperToken => address) public pools;
+    mapping(ISuperToken => ISuperfluidPool) public pools;
 
     constructor(
         ISuperfluid _host,
@@ -25,10 +27,11 @@ contract CommonAdGroup is CFASuperAppBase {
         address _sender,
         bytes calldata _ctx
     ) internal override returns (bytes memory) {
+        address pool = _getPool(_superToken);
+
         int96 inflowRate = _superToken.getFlowRate(_sender, address(this));
 
-        return
-            _superToken.createFlowWithCtx(pools[_superToken], inflowRate, _ctx);
+        return _superToken.createFlowWithCtx(pool, inflowRate, _ctx);
     }
 
     function onFlowUpdated(
@@ -38,15 +41,12 @@ contract CommonAdGroup is CFASuperAppBase {
         uint256 /*lastUpdated*/,
         bytes calldata ctx
     ) internal override returns (bytes memory) {
+        address pool = _getPool(_superToken);
+
         int96 inflowChange = _superToken.getFlowRate(_sender, address(this)) -
             _previousFlowRate;
 
-        return
-            _superToken.updateFlowWithCtx(
-                pools[_superToken],
-                inflowChange,
-                ctx
-            );
+        return _superToken.updateFlowWithCtx(pool, inflowChange, ctx);
     }
 
     function onFlowDeleted(
@@ -57,11 +57,18 @@ contract CommonAdGroup is CFASuperAppBase {
         uint256 /*lastUpdated*/,
         bytes calldata ctx
     ) internal override returns (bytes memory) {
-        return
-            _superToken.deleteFlowWithCtx(
-                address(this),
-                pools[_superToken],
-                ctx
+        address pool = _getPool(_superToken);
+
+        return _superToken.deleteFlowWithCtx(address(this), pool, ctx);
+    }
+
+    function _getPool(ISuperToken _superToken) internal returns (address pool) {
+        if (address(pools[_superToken]) != address(0)) {
+            pools[_superToken] = _superToken.createPool(
+                poolManager,
+                PoolConfig(false, true)
             );
+        }
+        pool = address(pools[_superToken]);
     }
 }
