@@ -127,22 +127,6 @@ contract MarketplaceScript is BaseScript, IExtension {
 
         _initialize();
 
-        CommonAdGroupAdminFactory commonAdGroupFactory = CommonAdGroupAdminFactory(
-                address(
-                    new UUPSProxy(
-                        address(new CommonAdGroupAdminFactory()),
-                        abi.encodeWithSelector(
-                            CommonAdGroupAdminFactory.initialize.selector,
-                            AccountCreatorConfig({
-                                registry: registry,
-                                implementation: address(implementation),
-                                accountProxy: address(accountProxy)
-                            })
-                        )
-                    )
-                )
-            );
-
         CommonAdSpaces commonAds = CommonAdSpaces(
             address(
                 new UUPSProxy(
@@ -150,22 +134,12 @@ contract MarketplaceScript is BaseScript, IExtension {
                     abi.encodeWithSelector(
                         CommonAdSpaces.initialize.selector,
                         address(marketplace),
-                        address(commonAdGroupFactory),
                         ""
                     )
                 )
             )
         );
 
-        commonAdGroupFactory.grantRole(
-            keccak256("GROUP_CREATOR"),
-            address(commonAds)
-        );
-
-        _saveDeployment(
-            address(commonAdGroupFactory),
-            "CommonAdGroupAdminFactory"
-        );
         _saveDeployment(address(commonAds), "CommonAdSpaces");
 
         TestToken dai = TestToken(daix.getUnderlyingToken());

@@ -1,5 +1,5 @@
 import { Chain, optimismSepolia, sepolia } from 'wagmi/chains'
-import { alchemyKey } from './variables'
+import { alchemyKey, pimlicoKey } from './variables'
 import { Address } from 'viem'
 import { constants } from '@adland/common'
 import { lowerCaseObjectKeys } from '@/lib/utils'
@@ -9,6 +9,8 @@ export const defaultChain: Chain = optimismSepolia
 export const NATIVE_CURRENCY = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 
 export const ipfsGateway = `https://${constants.pinataPublicGateway}/ipfs`
+
+export const pimlicoURL = `https://api.pimlico.io/v2/${constants.chain.id}/rpc?apikey=${pimlicoKey}`
 
 export const alchemyUrlByChain: Record<number, string> = {
   [sepolia.id]: `https://eth-sepolia.g.alchemy.com/v2/${alchemyKey}`,

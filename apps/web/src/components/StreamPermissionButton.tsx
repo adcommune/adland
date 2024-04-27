@@ -7,6 +7,7 @@ import {
 } from '@adland/contracts'
 import { handleWriteErrors } from '@/lib/viem'
 import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
+import { useCallback } from 'react'
 
 const StreamPermissionButton = () => {
   const { address } = useAccount()
@@ -22,7 +23,6 @@ const StreamPermissionButton = () => {
     query: {
       enabled: Boolean(address),
       select: (data: any) => {
-        console.log(data)
         return data[0] === 7
       },
     },
@@ -46,9 +46,12 @@ const StreamPermissionButton = () => {
     )
   }
 
-  const { isLoading } = useWaitForTransactionSuccess(hash, () => {
-    refetch()
-  })
+  const { isLoading } = useWaitForTransactionSuccess(
+    hash,
+    useCallback(() => {
+      refetch()
+    }, []),
+  )
 
   return (
     <>

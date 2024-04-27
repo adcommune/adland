@@ -7,6 +7,7 @@ const {
 const { buildOperationNodeForField } = require("@graphql-tools/utils");
 const axios = require("axios").default;
 const fs = require("fs/promises");
+const { constants } = require("@adland/common");
 
 async function getSchemaFromUrl(url) {
   const response = await axios
@@ -17,15 +18,7 @@ async function getSchemaFromUrl(url) {
 }
 
 const main = async function () {
-  let schemaUrl;
-
-  // Prompt for schema URL
-  if (process.argv.length < 3) {
-    console.log("Please provide a schema URL");
-    process.exit(1);
-  } else {
-    schemaUrl = process.argv[2];
-  }
+  let schemaUrl = constants.subgraphUrl;
 
   console.log("Using schema from: ", schemaUrl);
 

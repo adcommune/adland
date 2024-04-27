@@ -1,6 +1,10 @@
 import { Container } from '@/components/Container'
+import { Button } from '@/components/ui/button'
 import { AdLand } from '@/lib/adland'
+import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
+
+export const dynamic = 'force-dynamic'
 
 const AppPage = async () => {
   const groups = await new AdLand().listGroups()
@@ -8,6 +12,12 @@ const AppPage = async () => {
   return (
     <div className="flex min-h-[79vh] flex-col p-2">
       <Container className="flex w-full flex-col gap-2 p-4">
+        {/* <Link href={'/group/create'}> */}
+        <Button className="gap-2" disabled>
+          <PlusIcon size={16} />
+          Create Ad Group
+        </Button>
+        {/* </Link> */}
         {groups.map((group) => (
           <Link
             href={'/group/' + group.adGroup_subgraph.id}

@@ -2,22 +2,21 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { http } from 'viem'
-import { optimismSepolia } from 'viem/chains'
-
-import { alchemyKey, privyAppId } from '@/config/variables'
+import { privyAppId } from '@/config/variables'
 import { PrivyProvider } from '@privy-io/react-auth'
 import { WagmiProvider, createConfig } from '@privy-io/wagmi'
 import { ModalProvider } from '@/context/ModalContext'
 import AppNavbar from './AppNavbar'
+import { constants } from '@adland/common'
+import { alchemyUrlByChain } from '@/config/constants'
+
 export const queryClient = new QueryClient()
 
 export const config = createConfig({
-  chains: [optimismSepolia],
+  chains: [constants.chain],
   ssr: true,
   transports: {
-    [optimismSepolia.id]: http(
-      `https://opt-sepolia.g.alchemy.com/v2/${alchemyKey}`,
-    ),
+    [constants.chain.id]: http(alchemyUrlByChain[constants.chain.id]),
   },
 })
 
@@ -27,17 +26,19 @@ const AppProviders = ({ children }: { children: React.ReactNode }) => {
       appId={privyAppId}
       config={{
         appearance: {
+          showWalletLoginFirst: false,
           theme: 'light',
           accentColor: '#4e4e4e',
         },
         loginMethods: ['wallet'],
         embeddedWallets: {
-          createOnLogin: 'off',
+          createOnLogin: 'users-without-wallets',
+          noPromptOnSignature: true,
         },
       }}
     >
       <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={config} reconnectOnMount={false}>
+        <WagmiProvider config={config} reconnectOnMount={true}>
           <ModalProvider>
             <div className="h-full antialiased">
               <AppNavbar />

@@ -21,7 +21,7 @@ contract CommonAdSpaces is
     uint256 internal MAX_BPS;
     string public placeholderURI;
     IDirectListings marketplace;
-    CommonAdGroupAdminFactory public adGroupAdminFactory;
+    uint256 public adGroupIds;
 
     mapping(uint256 => AdGroup) adGroups;
 
@@ -33,7 +33,6 @@ contract CommonAdSpaces is
 
     function initialize(
         address _marketplace,
-        address _adGroupAdminFactory,
         string memory _placeholderURI
     ) public initializer {
         __ERC721Royalty_init();
@@ -42,14 +41,13 @@ contract CommonAdSpaces is
         __UUPSUpgradeable_init();
 
         marketplace = IDirectListings(_marketplace);
-        adGroupAdminFactory = CommonAdGroupAdminFactory(_adGroupAdminFactory);
         placeholderURI = _placeholderURI;
         MAX_BPS = 10_000;
     }
 
     modifier onlyAdGroupAdmin(uint256 adGroupId) {
         require(
-            adGroupAdminFactory.getGroupAdmin(adGroupId) == msg.sender,
+            adGroups[adGroupId].owner == msg.sender,
             "CommonAdSpaces: Not group admin"
         );
         _;
@@ -63,12 +61,11 @@ contract CommonAdSpaces is
     /**
      * @dev Creates a new ad group for the specified recipient.
      * @param recipient The address of the recipient for the ad group.
-     * @return adGroupAdmin The address of the ad group admin.
      * @return adGroupId The ID of the newly created ad group.
      */
     function createAdGroup(
         address recipient
-    ) external returns (address adGroupAdmin, uint256 adGroupId) {
+    ) external returns (uint256 adGroupId) {
         return _createdGroup(recipient);
     }
 
@@ -77,15 +74,14 @@ contract CommonAdSpaces is
      * @param recipient The address of the recipient for the ad group.
      * @param initialAdSpaceConfig The initial configuration for the ad spaces in the ad group.
      * @param size The size of the ad group.
-     * @return adGroupAdmin The address of the ad group admin.
      * @return adGroupId The ID of the created ad group.
      */
     function createAdGroup(
         address recipient,
         AdSpaceConfig memory initialAdSpaceConfig,
         uint256 size
-    ) external returns (address adGroupAdmin, uint256 adGroupId) {
-        (adGroupAdmin, adGroupId) = _createdGroup(recipient);
+    ) external returns (uint256 adGroupId) {
+        adGroupId = _createdGroup(recipient);
 
         _openAdSpaces(adGroupId, initialAdSpaceConfig, size);
     }
@@ -172,14 +168,14 @@ contract CommonAdSpaces is
 
     function _createdGroup(
         address recipient
-    ) internal returns (address adGroupAdmin, uint256 adGroupId) {
-        (adGroupAdmin, adGroupId) = adGroupAdminFactory.createGroupAdmin(
-            recipient
-        );
+    ) internal returns (uint256 adGroupId) {
+        adGroupIds++;
 
-        adGroups[adGroupId] = AdGroup({admin: adGroupAdmin});
+        adGroupId = adGroupIds;
 
-        emit AdGroupCreated(adGroupId, adGroupAdmin);
+        adGroups[adGroupIds] = AdGroup({owner: recipient});
+
+        emit AdGroupCreated(adGroupId, recipient);
     }
 
     function _openAdSpaces(
@@ -188,18 +184,18 @@ contract CommonAdSpaces is
         uint256 numberOfAdSpaces
     ) internal {
         for (uint256 i = 0; i < numberOfAdSpaces; i++) {
-            _openAdSpace(adGroupId, config);
+            _openAdSpace(adGroups[adGroupId].owner, adGroupId, config);
         }
     }
 
     function _openAdSpace(
+        address recipient,
         uint256 adGroupId,
         AdSpaceConfig memory config
     ) internal returns (uint256 adId) {
         require(config.taxRate < MAX_BPS, "CommonAdSpaces: Tax rate too high");
 
         adId = marketplace.totalListings();
-        address admin = adGroupAdminFactory.getGroupAdmin(adGroupId);
 
         _mint(address(this), adId);
 
@@ -210,7 +206,7 @@ contract CommonAdSpaces is
                 1,
                 config.currency,
                 config.taxRate,
-                admin,
+                recipient,
                 config.initialPrice,
                 uint128(block.timestamp),
                 type(uint128).max,
@@ -218,7 +214,7 @@ contract CommonAdSpaces is
             )
         );
 
-        _transfer(address(this), admin, adId);
+        _transfer(address(this), recipient, adId);
 
         emit AdSpaceCreated(adGroupId, adId);
     }
