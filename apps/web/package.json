@@ -45,7 +45,7 @@
     "lucide-react": "^0.365.0",
     "next": "^14.0.4",
     "next-themes": "^0.3.0",
-    "permissionless": "^0.1.21",
+    "permissionless": "0.0.34",
     "pinata-fdk": "^3.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -55,7 +55,7 @@
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.4.4",
-    "viem": "2.9.13",
+    "viem": "2.9.23",
     "wagmi": "2.5.17",
     "zod": "3.22.4"
   },

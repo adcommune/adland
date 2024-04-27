@@ -110,19 +110,6 @@ type SmartAccountWriteParams = {
   value?: bigint
 }
 
-const recurrentlySerializeBigInts = (obj: any): any => {
-  const level = 0
-
-  const replacer = (key: string, value: any) => {
-    if (typeof value === 'bigint') {
-      return value.toString()
-    }
-    return value
-  }
-
-  return JSON.stringify(obj, replacer, level)
-}
-
 const useSmartAccountWrite = () => {
   const { client } = useContext(SmartAccountContext)
 

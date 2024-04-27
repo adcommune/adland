@@ -9,7 +9,7 @@
     "@types/node": "^20.10.8"
   },
   "dependencies": {
-    "viem": "^2.9.13",
+    "viem": "2.9.23",
     "typescript": "^5.4.4"
   }
 }

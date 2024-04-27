@@ -26,12 +26,14 @@ const AppProviders = ({ children }: { children: React.ReactNode }) => {
       appId={privyAppId}
       config={{
         appearance: {
+          showWalletLoginFirst: false,
           theme: 'light',
           accentColor: '#4e4e4e',
         },
         loginMethods: ['wallet'],
         embeddedWallets: {
-          createOnLogin: 'off',
+          createOnLogin: 'users-without-wallets',
+          noPromptOnSignature: true,
         },
       }}
     >

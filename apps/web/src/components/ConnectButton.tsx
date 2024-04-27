@@ -19,7 +19,7 @@ export const ConnectButton = () => {
   const { ready, authenticated, login, logout, user, connectWallet } =
     usePrivy()
   const { wallets } = useWallets()
-  const { address } = useAccount()
+  const address = user?.wallet?.address ?? zeroAddress
 
   const wallet = wallets[0]
 
@@ -70,7 +70,7 @@ export const ConnectButton = () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button type="button" variant="outline" className="h-full font-body">
-            {truncateAddress(address ?? user?.wallet?.address)}
+            {truncateAddress(address)}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
