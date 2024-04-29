@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Container } from '@/components/Container'
 import { AdLand } from '@/lib/adland'
 import { format } from 'date-fns'
 import { formatEther } from 'viem'
@@ -35,6 +34,28 @@ import Image from 'next/image'
 import AdPropertyList from '@/components/AdSpaces/AdPropertyList'
 import classNames from 'classnames'
 import FarcasterIntegration from '@/components/FarcasterIntegration'
+import { useSimulateDirectListingsLogicForecloseListing } from '@adland/contracts'
+import useTransaction from '@/hooks/useTransaction'
+
+const ForecloseDropdownItem = ({ listingId }: { listingId: bigint }) => {
+  const { data } = useSimulateDirectListingsLogicForecloseListing({
+    args: [listingId],
+  })
+
+  const { writeContract, loading } = useTransaction(() => {})
+
+  return (
+    <DropdownMenuItem
+      disabled={!Boolean(data?.request)}
+      onClick={() => {
+        writeContract(data!.request)
+      }}
+      className="bg-red-500 text-white"
+    >
+      Foreclos{loading ? 'ing...' : 'e'}
+    </DropdownMenuItem>
+  )
+}
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
@@ -61,79 +82,96 @@ const AdSpacePage = ({
   const { listing } = adSpace
 
   const isOwner = listing?.listingOwner === address
+  const isBeneficiarty = listing?.taxBeneficiary === address
+  const showDropdown = isOwner || isBeneficiarty
 
   return (
     <div className="relative flex min-h-[80vh] flex-col items-start gap-4 py-4 md:flex-row">
       <Card className="min-w-[400px] overflow-hidden font-body">
-        <CardHeader className="flex flex-row items-start gap-8 bg-muted/50">
-          <div className="grid gap-0.5">
-            <CardTitle className="group flex items-center gap-2 text-lg">
-              AdSpace {Number(listing?.listingId)}
-            </CardTitle>
-            <CardDescription>
-              Opened on{' '}
-              {format(Number(listing?.startTimestamp) * 1000, 'MMMM do')}
-            </CardDescription>
-          </div>
-          <div className="ml-auto flex items-center gap-1">
-            {isOwner ? (
-              <Button
-                size="sm"
-                variant="default"
-                className="h-8 gap-1"
-                onClick={() => {
-                  updateAdDataModal.set(true)
-                }}
-              >
-                <ImageIcon className="h-3.5 w-3.5" />
-                <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                  Edit Ad
-                </span>
-              </Button>
-            ) : (
-              <>
+        <CardHeader className="flex flex-col gap-2 bg-muted/50">
+          <div className="flex flex-row items-start gap-8 ">
+            <div className="grid gap-0.5">
+              <CardTitle className="group flex items-center gap-2 text-lg">
+                AdSpace {Number(listing?.listingId)}
+              </CardTitle>
+              <CardDescription>
+                Opened on{' '}
+                {format(Number(listing?.startTimestamp) * 1000, 'MMMM do')}
+              </CardDescription>
+            </div>
+            <div className="ml-auto flex items-center gap-1">
+              {isOwner ? (
                 <Button
                   size="sm"
                   variant="default"
                   className="h-8 gap-1"
                   onClick={() => {
-                    acquireLeaseModal.set(true)
+                    updateAdDataModal.set(true)
                   }}
                 >
-                  <ShoppingCart className="h-3.5 w-3.5" />
+                  <ImageIcon className="h-3.5 w-3.5" />
                   <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                    Acquire space
+                    Edit Ad
                   </span>
                 </Button>
-              </>
-            )}
-            {isOwner && (
-              <>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button size="icon" variant="outline" className="h-8 w-8">
-                      <MoreVertical className="h-3.5 w-3.5" />
-                      <span className="sr-only">More</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem
-                      onClick={() => {
-                        selfAssessmentModal.set(true)
-                      }}
-                    >
-                      Self Assess
-                    </DropdownMenuItem>
-                    {/* <DropdownMenuItem>Give up</DropdownMenuItem> */}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem disabled>Give up</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <SelfPriceAssementModal adSpace={adSpace} />
-                <UpdateAdDataDialog adSpace={adSpace} />
-              </>
-            )}
-            <AcquireLeaseModal listing={listing} superToken={adSpace.tokenX} />
+              ) : (
+                <>
+                  <Button
+                    size="sm"
+                    variant="default"
+                    className="h-8 gap-1"
+                    onClick={() => {
+                      acquireLeaseModal.set(true)
+                    }}
+                  >
+                    <ShoppingCart className="h-3.5 w-3.5" />
+                    <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
+                      Acquire space
+                    </span>
+                  </Button>
+                </>
+              )}
+
+              {showDropdown && (
+                <>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button size="icon" variant="outline" className="h-8 w-8">
+                        <MoreVertical className="h-3.5 w-3.5" />
+                        <span className="sr-only">More</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+
+                    <DropdownMenuContent align="end">
+                      {isOwner && (
+                        <>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              selfAssessmentModal.set(true)
+                            }}
+                          >
+                            Self Assess
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem disabled>Give up</DropdownMenuItem>
+                        </>
+                      )}
+                      {isBeneficiarty && !isOwner && (
+                        <ForecloseDropdownItem
+                          listingId={adSpace.listing.listingId}
+                        />
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <SelfPriceAssementModal adSpace={adSpace} />
+                  <UpdateAdDataDialog adSpace={adSpace} />
+                </>
+              )}
+              <AcquireLeaseModal
+                listing={listing}
+                superToken={adSpace.tokenX}
+              />
+            </div>
           </div>
         </CardHeader>
         <CardContent className="p-6 text-sm">
