@@ -2,8 +2,10 @@ import { GraphQLClient } from 'graphql-request'
 import { getSdk as getAdLand } from '@adland/webkit'
 import { constants } from '@adland/common'
 import { Market } from './market'
-import { AdGroup, AdSpace, Metadata } from './types'
+import { AdGroup, AdSpace, Listing, Metadata } from './types'
 import { fetchJSON, getGatewayUri } from './utils'
+import { client } from './services'
+import { erc721Abi } from 'viem'
 
 export class AdLand {
   private adland: ReturnType<typeof getAdLand>
@@ -28,6 +30,26 @@ export class AdLand {
             })),
           ),
         }
+      }),
+    )
+  }
+
+  async listGroupListings(id: string): Promise<Listing[]> {
+    const group = await this.adland
+      .adGroup({
+        id,
+      })
+      .then((response) => {
+        return response.adGroup
+      })
+
+    if (!group) {
+      throw new Error('Group not found')
+    }
+
+    return Promise.all(
+      group.adSpaces.map(async (adSpace) => {
+        return await new Market().getListing(adSpace.id)
       }),
     )
   }
@@ -60,6 +82,14 @@ export class AdLand {
     const adSpace = (await this.adland.adSpace({ id })).adSpace
 
     const listing = await new Market().getListing(id)
+
+    // Temporary fix for non coherent listing owner in the direct listing contract
+    listing.listingOwner = await client.readContract({
+      abi: erc721Abi,
+      functionName: 'ownerOf',
+      address: listing.assetContract,
+      args: [listing.listingId],
+    })
 
     const tokenX = await this.adland
       .tokenXs({
