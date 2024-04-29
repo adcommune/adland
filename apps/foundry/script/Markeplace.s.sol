@@ -229,7 +229,7 @@ contract MarketplaceScript is BaseScript, IExtension {
             implementation: directListings
         });
 
-        extensionDirectListings.functions = new ExtensionFunction[](13);
+        extensionDirectListings.functions = new ExtensionFunction[](14);
         extensionDirectListings.functions[0] = ExtensionFunction(
             DirectListingsLogic.totalListings.selector,
             "totalListings()"
@@ -281,6 +281,10 @@ contract MarketplaceScript is BaseScript, IExtension {
         extensionDirectListings.functions[12] = ExtensionFunction(
             DirectListingsLogic.getListing.selector,
             "getListing(uint256)"
+        );
+        extensionDirectListings.functions[13] = ExtensionFunction(
+            DirectListingsLogic.forecloseListing.selector,
+            "forecloseListing(uint256)"
         );
 
         extensions[0] = extensionDirectListings;

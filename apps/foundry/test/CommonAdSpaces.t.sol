@@ -556,7 +556,14 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             initialPrice
         );
 
-        vm.warp(block.timestamp + 7 days);
+        // 4 hour protocol deposit
+        vm.warp(block.timestamp + 6 days + 20 hours - 2);
+
+        vm.prank(recipient);
+        vm.expectRevert("Marketplace: owner has balance");
+        marketplace.forecloseListing(1);
+
+        vm.warp(block.timestamp + 4 hours);
 
         vm.prank(recipient);
         marketplace.forecloseListing(1);
