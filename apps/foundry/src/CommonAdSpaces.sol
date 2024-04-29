@@ -41,6 +41,7 @@ contract CommonAdSpaces is
         address _marketplace,
         IEntryPoint _entryPoint,
         ISuperfluid _host,
+        address _poolManager,
         string memory _placeholderURI
     ) public initializer {
         __ERC721Royalty_init();
@@ -50,7 +51,8 @@ contract CommonAdSpaces is
 
         adGroupAccountFactory = new CommonAdGroupAccountFactory(
             _entryPoint,
-            _host
+            _host,
+            _poolManager
         );
 
         marketplace = IDirectListings(_marketplace);

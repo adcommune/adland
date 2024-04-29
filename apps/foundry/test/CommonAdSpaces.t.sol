@@ -18,6 +18,7 @@ import {StreamCreator} from "./mocks/StreamCreator.sol";
 import {TestToken} from "@superfluid-finance/ethereum-contracts/contracts/utils/TestToken.sol";
 import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
 import {AccountV3} from "tokenbound/AccountV3Upgradable.sol";
+import {ISuperfluidPool} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/gdav1/ISuperfluidPool.sol";
 
 import {AdSpaceConfig} from "../src/CommonAdSpaces.sol";
 import {AdGroup} from "../src/lib/Structs.sol";
@@ -174,6 +175,19 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
 
         vm.warp(block.timestamp + 7 days + 1);
 
+        ISuperfluidPool pool = CommonAdGroupAccount(payable(recipient)).getPool(
+            ethx
+        );
+
+        assertEq(ethx.isMemberConnected(address(pool), recipient), true);
+
+        vm.prank(owner);
+        CommonAdGroupAccount(payable(recipient)).execute(
+            address(pool),
+            0,
+            abi.encodeWithSignature("claimAll(address)", recipient)
+        );
+
         vm.prank(owner);
         CommonAdGroupAccount(payable(recipient)).execute(
             address(ethx),
@@ -191,6 +205,10 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             // transfer to owner
             ""
         );
+
+        console.log("Pool balance: ", ethx.balanceOf(address(pool)));
+        console.log("Recipient balance: ", ethx.balanceOf(recipient));
+        console.log("Owner balance: ", ethx.balanceOf(owner));
 
         assertEq(owner.balance, dueWeekly);
     }

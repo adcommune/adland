@@ -15,9 +15,15 @@ import "./CommonAdGroupAccount.sol";
  */
 contract CommonAdGroupAccountFactory {
     CommonAdGroupAccount public immutable accountImplementation;
+    address public poolManager;
 
-    constructor(IEntryPoint _entryPoint, ISuperfluid _host) {
+    constructor(
+        IEntryPoint _entryPoint,
+        ISuperfluid _host,
+        address _poolManager
+    ) {
         accountImplementation = new CommonAdGroupAccount(_entryPoint, _host);
+        poolManager = _poolManager;
     }
 
     /**
@@ -39,7 +45,10 @@ contract CommonAdGroupAccountFactory {
             payable(
                 new ERC1967Proxy{salt: bytes32(salt)}(
                     address(accountImplementation),
-                    abi.encodeCall(CommonAdGroupAccount.initialize, (owner))
+                    abi.encodeCall(
+                        CommonAdGroupAccount.initialize,
+                        (owner, poolManager)
+                    )
                 )
             )
         );
@@ -62,7 +71,7 @@ contract CommonAdGroupAccountFactory {
                             address(accountImplementation),
                             abi.encodeCall(
                                 CommonAdGroupAccount.initialize,
-                                (owner)
+                                (owner, poolManager)
                             )
                         )
                     )
