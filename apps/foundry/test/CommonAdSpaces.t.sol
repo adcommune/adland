@@ -10,27 +10,29 @@ import {CurrencyTransferLib} from "contracts/lib/CurrencyTransferLib.sol";
 import {IDirectListings} from "contracts/prebuilts/marketplace/IMarketplace.sol";
 import {UD60x18, ud, intoUint256} from "@prb/math/src/UD60x18.sol";
 import {SuperTokenV1Library} from "@superfluid-finance/ethereum-contracts/contracts/apps/SuperTokenV1Library.sol";
-import {ISETH} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/tokens/ISETH.sol";
+import {PoolConfig} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/gdav1/IGeneralDistributionAgreementV1.sol";
+import {ISuperfluidPool} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/gdav1/ISuperfluidPool.sol";
+import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperToken.sol";
+import {ISETHCustom, ISETH} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/tokens/ISETH.sol";
 import {StreamCreator} from "./mocks/StreamCreator.sol";
 import {TestToken} from "@superfluid-finance/ethereum-contracts/contracts/utils/TestToken.sol";
 import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
 import {AccountV3} from "tokenbound/AccountV3Upgradable.sol";
 
 import {AdSpaceConfig} from "../src/CommonAdSpaces.sol";
-import {CommonAdGroupAdminFactory} from "../src/CommonAdGroupAdminFactory.sol";
-
-import {CommonAdGroupAdminFactoryMock} from "./mocks/CommonAdGroupAdminFactoryMock.sol";
+import {AdGroup} from "../src/lib/Structs.sol";
+import {CommonAdGroupAccount} from "../src/CommonAdGroupAccount.sol";
 
 contract CommonAdSpacesTest is CommonAdSpacesBase {
     using SuperTokenV1Library for ISuperToken;
-    uint256 constant baseTaxRateBPS = 120; // 1.2% per month
+    uint256 constant baseTaxRateBPS = 120; // 1.2% per week
     uint256 constant MAX_BPS = 10_000;
     uint256 constant DEFAULT_QUANTITY = 1;
     string buyerAdURI = "https://www.google.com";
     string buyer2AdURI = "https://www.yahoo.com";
 
     function testCannotTransferAsOwnerOfListing() public {
-        commonAds.createAdGroup(
+        (, AdGroup memory group) = commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -39,6 +41,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             }),
             3
         );
+        recipient = group.account;
 
         address buyer = _getAccount(69, 1000 ether);
 
@@ -97,7 +100,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyerCancelsStream() public {
-        commonAds.createAdGroup(
+        (, AdGroup memory group) = commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -106,6 +109,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             }),
             3
         );
+        recipient = group.account;
 
         address buyer = _getAccount(69, 1000 ether);
 
@@ -138,8 +142,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         marketplace.forecloseListing(1);
     }
 
-    function testBuyListingETH() public {
-        commonAds.createAdGroup(
+    function testAccountWithdraw() public {
+        (, AdGroup memory group) = commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -148,6 +152,60 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             }),
             3
         );
+        address owner = recipient;
+        recipient = group.account;
+
+        address buyer = _getAccount(69, 1000 ether);
+
+        _grantMaxFlowPermissions(ethx, buyer, address(marketplace));
+
+        uint256 dueWeekly = _taxDuePerWeek(baseTaxRateBPS, initialPrice);
+
+        _upgradeETH(ethx, buyer, dueWeekly);
+
+        vm.prank(buyer);
+        marketplace.buyFromListing{value: initialPrice}(
+            1,
+            buyer,
+            DEFAULT_QUANTITY,
+            CurrencyTransferLib.NATIVE_TOKEN,
+            initialPrice
+        );
+
+        vm.warp(block.timestamp + 7 days + 1);
+
+        vm.prank(owner);
+        CommonAdGroupAccount(payable(recipient)).execute(
+            address(ethx),
+            0,
+            abi.encode(ISETHCustom.downgradeToETH.selector, dueWeekly)
+        );
+
+        assertGte(ethx.balanceOf(recipient), dueWeekly);
+
+        // Transfer back to owner
+        vm.prank(owner);
+        CommonAdGroupAccount(payable(recipient)).execute(
+            owner,
+            dueWeekly,
+            // transfer to owner
+            ""
+        );
+
+        assertEq(owner.balance, dueWeekly);
+    }
+
+    function testBuyListingETH() public {
+        (, AdGroup memory group) = commonAds.createAdGroup(
+            recipient,
+            AdSpaceConfig({
+                currency: CurrencyTransferLib.NATIVE_TOKEN,
+                initialPrice: initialPrice,
+                taxRate: baseTaxRateBPS
+            }),
+            3
+        );
+        recipient = group.account;
 
         address buyer = _getAccount(69, 1000 ether);
 
@@ -238,7 +296,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyMultipleListings() public {
-        commonAds.createAdGroup(
+        (, AdGroup memory group) = commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -247,6 +305,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             }),
             3
         );
+        recipient = group.account;
 
         address buyer = _getAccount(69, 1000 ether);
 
@@ -317,7 +376,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         uint256 initialPriceInDai = 100e18; // 100 DAI
         uint256 taxRateBPS = 120; // 1.2% per month
 
-        commonAds.createAdGroup(
+        (, AdGroup memory group) = commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: address(dai),
@@ -326,6 +385,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             }),
             3
         );
+        recipient = group.account;
 
         address buyer = _getAccount(69, 1000 ether);
 
@@ -353,7 +413,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testSelfAssessListingPrice() public {
-        commonAds.createAdGroup(
+        (, AdGroup memory group) = commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -362,6 +422,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             }),
             3
         );
+        recipient = group.account;
 
         IDirectListings.Listing memory listing = marketplace.getListing(1);
 
@@ -492,7 +553,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testCancelListing() public {
-        commonAds.createAdGroup(
+        (, AdGroup memory group) = commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -501,6 +562,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             }),
             3
         );
+        recipient = group.account;
 
         address buyer = _getAccount(69, 1000 ether);
 
@@ -531,7 +593,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testForecloseListing() public {
-        commonAds.createAdGroup(
+        (, AdGroup memory group) = commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
                 currency: CurrencyTransferLib.NATIVE_TOKEN,
@@ -540,6 +602,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             }),
             3
         );
+        recipient = group.account;
 
         address buyer = _getAccount(69, 1000 ether);
 
@@ -641,6 +704,13 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         console.log("deposit              :", deposit);
         console.log("owedDeposit          :", owedDeposit);
         console.log("timestamp            :", timestamp);
+    }
+
+    function _logExpectedFlowRate(uint256 taxRateBPS, uint256 price) internal {
+        console.log(
+            "Expected Flow Rate: ",
+            uint256(int256(_computeFlowRate(taxRateBPS, price)))
+        );
     }
 
     function _computeFlowRate(

@@ -11,6 +11,9 @@ import {CommonAdGroupAdminFactory} from "./CommonAdGroupAdminFactory.sol";
 import {ICommonAdSpaces} from "./interfaces/ICommonAdSpaces.sol";
 import {IAdStrategy} from "./interfaces/IAdStrategy.sol";
 import {AdGroup, AdSpace, AdSpaceConfig} from "./lib/Structs.sol";
+import {ISuperfluid} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
+import {CommonAdGroupAccountFactory} from "./CommonAdGroupAccountFactory.sol";
+import {IEntryPoint} from "account-abstraction/interfaces/IEntryPoint.sol";
 
 contract CommonAdSpaces is
     ERC721RoyaltyUpgradeable,
@@ -21,7 +24,10 @@ contract CommonAdSpaces is
     uint256 internal MAX_BPS;
     string public placeholderURI;
     IDirectListings marketplace;
+    ISuperfluid public host;
     uint256 public adGroupIds;
+
+    CommonAdGroupAccountFactory adGroupAccountFactory;
 
     mapping(uint256 => AdGroup) adGroups;
 
@@ -33,6 +39,8 @@ contract CommonAdSpaces is
 
     function initialize(
         address _marketplace,
+        IEntryPoint _entryPoint,
+        ISuperfluid _host,
         string memory _placeholderURI
     ) public initializer {
         __ERC721Royalty_init();
@@ -40,14 +48,20 @@ contract CommonAdSpaces is
         __Ownable_init();
         __UUPSUpgradeable_init();
 
+        adGroupAccountFactory = new CommonAdGroupAccountFactory(
+            _entryPoint,
+            _host
+        );
+
         marketplace = IDirectListings(_marketplace);
         placeholderURI = _placeholderURI;
         MAX_BPS = 10_000;
+        host = _host;
     }
 
     modifier onlyAdGroupAdmin(uint256 adGroupId) {
         require(
-            adGroups[adGroupId].owner == msg.sender,
+            adGroups[adGroupId].account == msg.sender,
             "CommonAdSpaces: Not group admin"
         );
         _;
@@ -65,8 +79,9 @@ contract CommonAdSpaces is
      */
     function createAdGroup(
         address recipient
-    ) external returns (uint256 adGroupId) {
-        return _createdGroup(recipient);
+    ) external returns (uint256 adGroupId, AdGroup memory adGroup) {
+        adGroupId = _createAdGroup(recipient);
+        adGroup = adGroups[adGroupId];
     }
 
     /**
@@ -80,8 +95,9 @@ contract CommonAdSpaces is
         address recipient,
         AdSpaceConfig memory initialAdSpaceConfig,
         uint256 size
-    ) external returns (uint256 adGroupId) {
-        adGroupId = _createdGroup(recipient);
+    ) external returns (uint256 adGroupId, AdGroup memory adGroup) {
+        adGroupId = _createAdGroup(recipient);
+        adGroup = adGroups[adGroupId];
 
         _openAdSpaces(adGroupId, initialAdSpaceConfig, size);
     }
@@ -162,20 +178,28 @@ contract CommonAdSpaces is
         emit TokenXSet(underlyingToken, superToken);
     }
 
+    function setHost(ISuperfluid _host) external onlyOwner {
+        host = _host;
+    }
+
     /**
      * INTERNAL METHODS
      */
 
-    function _createdGroup(
+    function _createAdGroup(
         address recipient
     ) internal returns (uint256 adGroupId) {
         adGroupIds++;
 
         adGroupId = adGroupIds;
 
-        adGroups[adGroupIds] = AdGroup({owner: recipient});
+        address adGroupAccount = address(
+            adGroupAccountFactory.createAccount(recipient, uint256(0))
+        );
 
-        emit AdGroupCreated(adGroupId, recipient);
+        adGroups[adGroupIds] = AdGroup({account: adGroupAccount});
+
+        emit AdGroupCreated(adGroupId, adGroupAccount, recipient);
     }
 
     function _openAdSpaces(
@@ -184,7 +208,7 @@ contract CommonAdSpaces is
         uint256 numberOfAdSpaces
     ) internal {
         for (uint256 i = 0; i < numberOfAdSpaces; i++) {
-            _openAdSpace(adGroups[adGroupId].owner, adGroupId, config);
+            _openAdSpace(adGroups[adGroupId].account, adGroupId, config);
         }
     }
 

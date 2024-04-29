@@ -24,7 +24,7 @@ import {AccountGuardian} from "tokenbound/AccountGuardian.sol";
 import {Multicall3} from "multicall-authenticated/Multicall3.sol";
 import {AccountCreatorConfig} from "../../src/lib/ERC6551AccountCreator.sol";
 import {UUPSProxy} from "../../src/lib/UUPSProxy.sol";
-
+import {EntryPoint} from "account-abstraction/core/EntryPoint.sol";
 import {CommonAdSpaces} from "../../src/CommonAdSpaces.sol";
 import {CommonAdGroupAdminFactory} from "../../src/CommonAdGroupAdminFactory.sol";
 
@@ -78,6 +78,8 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
                     abi.encodeWithSelector(
                         CommonAdSpaces.initialize.selector,
                         address(marketplace),
+                        address(new EntryPoint()),
+                        address(sf.host),
                         ""
                     )
                 )

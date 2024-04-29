@@ -8,7 +8,7 @@ import {IAdStrategy} from "../interfaces/IAdStrategy.sol";
  * @dev Represents an advertising group.
  */
 struct AdGroup {
-    address owner;
+    address account;
 }
 
 /**

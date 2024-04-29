@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
-import {AdSpace, AdSpaceConfig} from "../lib/Structs.sol";
+import {AdGroup, AdSpace, AdSpaceConfig} from "../lib/Structs.sol";
 import {IAdStrategy} from "./IAdStrategy.sol";
 
 /// @title ICommonAds
 interface ICommonAdSpaces {
-    event AdGroupCreated(uint256 indexed groupId, address indexed recipient);
+    event AdGroupCreated(
+        uint256 indexed groupId,
+        address indexed account,
+        address indexed acountOwner
+    );
 
     event AdSpaceCreated(uint256 indexed groupId, uint256 indexed adId);
 
@@ -24,13 +28,13 @@ interface ICommonAdSpaces {
 
     function createAdGroup(
         address recipient
-    ) external returns (uint256 adGroupId);
+    ) external returns (uint256 adGroupId, AdGroup memory adGroup);
 
     function createAdGroup(
         address recipient,
         AdSpaceConfig memory initialAdSpaceConfig,
         uint256 numberOfAdSpaces
-    ) external returns (uint256 adGroupId);
+    ) external returns (uint256 adGroupId, AdGroup memory adGroup);
 
     function openAdSpaces(
         uint256 adGroupId,
