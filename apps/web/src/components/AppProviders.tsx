@@ -30,9 +30,10 @@ const AppProviders = ({ children }: { children: React.ReactNode }) => {
           theme: 'light',
           accentColor: '#4e4e4e',
         },
+        defaultChain: constants.chain,
         loginMethods: ['wallet'],
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets',
+          createOnLogin: 'off',
           noPromptOnSignature: true,
         },
       }}
