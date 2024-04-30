@@ -13,7 +13,7 @@ import {UUPSProxy} from "../src/lib/UUPSProxy.sol";
 import {CommonAdSpaces} from "../src/CommonAdSpaces.sol";
 
 contract AdLandScripts is BaseSetup {
-    function delpoyAdLand(
+    function deployAdLand(
         DeployementChain chain,
         address marketplace
     ) public broadcastOn(chain) {
@@ -90,6 +90,8 @@ contract AdLandScripts is BaseSetup {
             keccak256("ASSET_ROLE"),
             address(0)
         );
+
+        _saveDeployment(marketplace, "DirectListingsLogic");
 
         return DirectListingsLogic(marketplace);
     }
