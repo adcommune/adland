@@ -91,39 +91,40 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
         },
       )
     }
-  }
-
-  const plaholderImage = `https://${constants.pinataPublicGateway}/ipfs/${noAdFrameImageCID}`
-  // Basic square image
-  imageResponse = new ImageResponse(
-    (
-      <div
-        style={{
-          display: 'flex',
-          width,
-          height,
-          backgroundColor: 'black',
-        }}
-      >
-        <img
-          src={plaholderImage}
+  } else {
+    const plaholderImage = `https://${constants.pinataPublicGateway}/ipfs/${noAdFrameImageCID}`
+    // Basic square image
+    imageResponse = new ImageResponse(
+      (
+        <div
           style={{
             display: 'flex',
             width,
             height,
-            objectFit: 'contain',
+            backgroundColor: 'black',
           }}
-        />
-      </div>
-    ),
-    {
-      width,
-      height,
-    },
-  )
+        >
+          <img
+            src={plaholderImage}
+            style={{
+              display: 'flex',
+              width,
+              height,
+              objectFit: 'contain',
+            }}
+          />
+        </div>
+      ),
+      {
+        width,
+        height,
+      },
+    )
+  }
+
   const max_age = 5 * 60 // 5 minutes
 
-  imageResponse.headers.set('Cache-Control', 'public, max-age=' + max_age)
+  imageResponse?.headers.set('Cache-Control', 'public, max-age=' + max_age)
 
   return imageResponse
 }
