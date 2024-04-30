@@ -30,6 +30,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     string buyer2AdURI = "https://www.yahoo.com";
 
     function testCannotTransferAsOwnerOfListing() public {
+        vm.prank(deployer);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -63,6 +64,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testCreateAdGroup() public {
+        vm.prank(deployer);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -97,6 +99,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyerCancelsStream() public {
+        vm.prank(deployer);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -139,6 +142,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyListingETH() public {
+        vm.prank(deployer);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -238,6 +242,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyMultipleListings() public {
+        vm.prank(deployer);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -316,7 +321,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     function testBuyListingDAI() public {
         uint256 initialPriceInDai = 100e18; // 100 DAI
         uint256 taxRateBPS = 120; // 1.2% per month
-
+        vm.prank(deployer);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -353,6 +358,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testSelfAssessListingPrice() public {
+        vm.prank(deployer);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -492,6 +498,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testCancelListing() public {
+        vm.prank(deployer);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -531,6 +538,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testForecloseListing() public {
+        vm.prank(deployer);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({

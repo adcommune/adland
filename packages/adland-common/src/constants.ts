@@ -1,11 +1,11 @@
-import { optimismSepolia } from "viem/chains";
+import { base } from "viem/chains";
 import { Constants } from "./types";
 
 export const constants: Constants = {
   subgraphUrl:
-    "https://api.studio.thegraph.com/query/958/adland-optsepolia/version/latest",
+    "https://subgraph.satsuma-prod.com/541dfde21f82/nezzars-personnal--22386/adland-base/api",
   pinataPublicGateway: "amethyst-representative-mandrill-369.mypinata.cloud",
-  chain: optimismSepolia,
+  chain: base,
   landingPageAdGroup: "1",
-  appUrl: "http://localhost:3001",
+  appUrl: "https://app.adland.space",
 };

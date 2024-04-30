@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: CommonAdSpaces
-    network: optimism-sepolia
+    network: {{ network }}
     source:
-      address: "0x8643383A68bECafA97Cad062d1f4C51F1bfc3229"
+      address: "{{ commonAdSpaces }}"
       abi: CommonAdSpaces
-      startBlock: 11159858
+      startBlock: {{ startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -60,11 +60,11 @@ dataSources:
       file: ./src/common-ad-spaces.ts
   - kind: ethereum
     name: DirectListing
-    network: optimism-sepolia
+    network: {{ network }}
     source:
-      address: "0x44f808B028cD582b21C04f6de3580029d3E31Cb6"
+      address: "{{ directListingLogic }}"
       abi: DirectListing
-      startBlock: 11159858
+      startBlock: {{ startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
