@@ -1,4 +1,4 @@
-import { FrameAspectRatio, defaultChain, ipfsGateway } from '@/config/constants'
+import { FrameAspectRatio, ipfsGateway } from '@/config/constants'
 import { constants } from '@adland/common'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'

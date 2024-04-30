@@ -12,8 +12,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { truncateAddress } from '@/lib/utils'
-import { defaultChain } from '@/config/constants'
 import { zeroAddress } from 'viem'
+import { constants } from '@adland/common'
 
 export const ConnectButton = () => {
   const { ready, authenticated, login, logout, user, connectWallet } =
@@ -45,7 +45,7 @@ export const ConnectButton = () => {
     )
   }
 
-  const wrongNetwork = wallet?.chainId !== `eip155:${defaultChain.id}`
+  const wrongNetwork = wallet?.chainId !== `eip155:${constants.chain.id}`
 
   if (wrongNetwork) {
     return (
@@ -54,7 +54,7 @@ export const ConnectButton = () => {
           if (!wallet) {
             connectWallet()
           } else {
-            wallet.switchChain(defaultChain.id)
+            wallet.switchChain(constants.chain.id)
           }
         }}
         className="font-body"
