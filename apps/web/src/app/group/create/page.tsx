@@ -9,6 +9,8 @@ const CreateAdminGroupPage = () => {
   const { address } = useAccount()
   const { data } = useTokenXsQuery({ first: 5 })
 
+  console.log(data)
+
   if (!address || !data) return <></>
 
   return (
