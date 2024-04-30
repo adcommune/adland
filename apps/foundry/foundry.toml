@@ -8,6 +8,7 @@ fs_permissions = [
 ]
 
 [etherscan]
+base = { key = "${API_KEY_ETHERSCAN}" }
 # sepolia = { key = "${API_KEY_ETHERSCAN}" }
 # optsepolia = { key = "263b610c-9add-4683-baf2-e8e09a32eafd", chain = 11155420 }
 
@@ -15,6 +16,6 @@ fs_permissions = [
 local = "http://localhost:8545"
 sepolia = "https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_KEY}"
 optsepolia = "https://opt-sepolia.g.alchemy.com/v2/${ALCHEMY_KEY}"
-
+base = "https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}"
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
