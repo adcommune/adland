@@ -65,7 +65,7 @@ contract CommonAdSpaces is
      */
     function createAdGroup(
         address recipient
-    ) external returns (uint256 adGroupId) {
+    ) external onlyOwner returns (uint256 adGroupId) {
         return _createdGroup(recipient);
     }
 
@@ -80,7 +80,7 @@ contract CommonAdSpaces is
         address recipient,
         AdSpaceConfig memory initialAdSpaceConfig,
         uint256 size
-    ) external returns (uint256 adGroupId) {
+    ) external onlyOwner returns (uint256 adGroupId) {
         adGroupId = _createdGroup(recipient);
 
         _openAdSpaces(adGroupId, initialAdSpaceConfig, size);
