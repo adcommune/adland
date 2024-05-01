@@ -3,7 +3,7 @@ import { Constants } from "./types";
 
 export const constants: Constants = {
   subgraphUrl:
-    "https://subgraph.satsuma-prod.com/541dfde21f82/nezzars-personnal--22386/adland-base/api",
+    "https://api.studio.thegraph.com/query/958/adland-base/version/latest",
   pinataPublicGateway: "amethyst-representative-mandrill-369.mypinata.cloud",
   chain: base,
   landingPageAdGroup: "1",

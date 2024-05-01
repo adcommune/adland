@@ -305,6 +305,9 @@ importers:
       '@types/node':
         specifier: ^20.10.8
         version: 20.12.5
+      tsx:
+        specifier: ^4.7.3
+        version: 4.7.3
 
   packages/adland-contracts:
     dependencies:
@@ -9250,6 +9253,11 @@ packages:
     engines: {node: '>= 6'}
     peerDependencies:
       typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
+
+  tsx@4.7.3:
+    resolution: {integrity: sha512-+fQnMqIp/jxZEXLcj6WzYy9FhcS5/Dfk8y4AtzJ6ejKcKqmfTF8Gso/jtrzDggCF2zTU20gJa6n8XqPYwDAUYQ==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
 
   turbo-darwin-64@1.13.2:
     resolution: {integrity: sha512-CCSuD8CfmtncpohCuIgq7eAzUas0IwSbHfI8/Q3vKObTdXyN8vAo01gwqXjDGpzG9bTEVedD0GmLbD23dR0MLA==}
@@ -21847,6 +21855,13 @@ snapshots:
     dependencies:
       tslib: 1.14.1
       typescript: 5.4.4
+
+  tsx@4.7.3:
+    dependencies:
+      esbuild: 0.19.12
+      get-tsconfig: 4.7.3
+    optionalDependencies:
+      fsevents: 2.3.3
 
   turbo-darwin-64@1.13.2:
     optional: true

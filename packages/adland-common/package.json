@@ -6,10 +6,11 @@
     "build": "node src/build.js"
   },
   "devDependencies": {
-    "@types/node": "^20.10.8"
+    "@types/node": "^20.10.8",
+    "tsx": "^4.7.3"
   },
   "dependencies": {
-    "viem": "2.9.23",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.4",
+    "viem": "2.9.23"
   }
 }
