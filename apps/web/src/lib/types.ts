@@ -17,6 +17,7 @@ export type Metadata = {
   animation_url?: string
   external_url?: string
   aspect_ratio?: string
+  frame_redirect_url?: string
 }
 
 /**

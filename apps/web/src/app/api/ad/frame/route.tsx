@@ -37,6 +37,12 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   const adSpace = await new AdLand().getAdSpace(spaceId)
 
+  const frameRedirectURL = adSpace.metadata?.frame_redirect_url
+
+  if (frameRedirectURL) {
+    return NextResponse.redirect(frameRedirectURL)
+  }
+
   const adSpaceSubgraph = adSpace.adSpace_subgraph as AdSpace_subgraph
 
   const buttons: [FrameButtonMetadata] = [

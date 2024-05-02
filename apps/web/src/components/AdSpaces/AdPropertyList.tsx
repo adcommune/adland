@@ -25,7 +25,13 @@ const AdPropertyList = ({ metadata = emptyMetadata }: AdPropertyListProps) => {
     metadata = emptyMetadata
   }
 
-  const { imageGatewayURI, external_url, description, aspect_ratio } = metadata
+  const {
+    imageGatewayURI,
+    external_url,
+    description,
+    aspect_ratio,
+    frame_redirect_url,
+  } = metadata
 
   return (
     <div className="flex flex-grow flex-col justify-center gap-2 rounded-md">
@@ -63,6 +69,18 @@ const AdPropertyList = ({ metadata = emptyMetadata }: AdPropertyListProps) => {
           )}
         </PropertyContainer>
       </div>
+      {frame_redirect_url && (
+        <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
+          <Badge className="absolute right-2 top-2">frame_redirect_url</Badge>
+          <PropertyContainer>
+            {frame_redirect_url && (
+              <Link href={frame_redirect_url}>
+                <p className="text-white underline">{frame_redirect_url}</p>
+              </Link>
+            )}
+          </PropertyContainer>
+        </div>
+      )}
       <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
         <Badge className="absolute right-2 top-2">aspect_ratio</Badge>
         <PropertyContainer>

@@ -278,7 +278,9 @@ const AcquireLeaseModal = ({ listing, superToken }: AcquireLeaseModalProps) => {
             )}
           </ul>
           <Separator />
-          <div className="font-semibold">ETH Info</div>
+          <div className="font-semibold">
+            {getTokenSymbol(listing.currency)} Info
+          </div>
           <ul className="grid gap-3">
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Balance</span>
