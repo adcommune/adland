@@ -38,7 +38,7 @@ export enum FrameAspectRatio {
 
 export const baseURL = (() => {
   let protocol = 'http'
-  let url = 'localhost:3000'
+  let url = 'localhost:3001'
   if (process.env.NEXT_PUBLIC_URL) {
     protocol = 'https'
     url = process.env.NEXT_PUBLIC_URL
@@ -54,7 +54,7 @@ export const baseURL = (() => {
     return url
   } else {
     protocol = 'http'
-    url = 'localhost:3000'
+    url = 'localhost:3001'
   }
 
   return `${protocol}://${url}`

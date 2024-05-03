@@ -51,6 +51,9 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
   const [aspectRatio, setAspectRatio] = useState<FrameAspectRatio>(
     getAR(metadata?.aspect_ratio),
   )
+  const [frameRedirectUrl, setFrameRedirectUrl] = useState<string>(
+    metadata?.frame_redirect_url ?? '',
+  )
 
   const [image, setImage] = useState<{
     url: string
@@ -120,6 +123,9 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
     }
     if (externalUrl !== '') {
       data.external_url = externalUrl
+    }
+    if (frameRedirectUrl !== '') {
+      data.frame_redirect_url = frameRedirectUrl
     }
     data.aspect_ratio = aspectRatio
 
@@ -251,6 +257,18 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
               defaultValue={externalUrl}
               onChange={(e) => {
                 setExternalUrl(e.target.value)
+              }}
+            />
+          </div>
+          <div className="w-full space-y-2">
+            <Label htmlFor="email">Link</Label>
+            <Input
+              type="text"
+              id="frame_redirect_url"
+              placeholder="Frame Redirect URL"
+              defaultValue={externalUrl}
+              onChange={(e) => {
+                setFrameRedirectUrl(e.target.value)
               }}
             />
           </div>
