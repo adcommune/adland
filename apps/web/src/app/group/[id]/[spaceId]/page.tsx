@@ -34,28 +34,7 @@ import Image from 'next/image'
 import AdPropertyList from '@/components/AdSpaces/AdPropertyList'
 import classNames from 'classnames'
 import FarcasterIntegration from '@/components/FarcasterIntegration'
-import { useSimulateDirectListingsLogicForecloseListing } from '@adland/contracts'
-import useTransaction from '@/hooks/useTransaction'
-
-const ForecloseDropdownItem = ({ listingId }: { listingId: bigint }) => {
-  const { data } = useSimulateDirectListingsLogicForecloseListing({
-    args: [listingId],
-  })
-
-  const { writeContract, loading } = useTransaction(() => {})
-
-  return (
-    <DropdownMenuItem
-      disabled={!Boolean(data?.request)}
-      onClick={() => {
-        writeContract(data!.request)
-      }}
-      className="bg-red-500 text-white"
-    >
-      Foreclos{loading ? 'ing...' : 'e'}
-    </DropdownMenuItem>
-  )
-}
+import ForecloseDropdownItem from '@/components/AdSpaces/ForecloseDropdownItem'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
