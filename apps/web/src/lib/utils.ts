@@ -8,9 +8,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const getFramePinataId = (spaceId: string) =>
-  `ad-${constants.chain.id}-${spaceId}`
-
 export const truncateAddress = (address?: string, length?: number) => {
   if (!address) return ''
   return `${address.slice(0, length || 6)}...${address.slice(-4)}`

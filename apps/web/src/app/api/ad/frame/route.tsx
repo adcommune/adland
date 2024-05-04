@@ -1,9 +1,16 @@
 import { FrameAspectRatio, baseURL } from '@/config/constants'
 import { AdLand } from '@/lib/adland'
-import { postInteraction } from '@/lib/pinata'
-import { getFramePinataId } from '@/lib/utils'
+import {
+  getFramePinataCustomId,
+  getFramePinataId,
+  postInteraction,
+} from '@/lib/pinata'
 import { AdSpace_subgraph } from '@adland/webkit'
-import { FrameButtonMetadata, getFrameHtmlResponse } from '@coinbase/onchainkit'
+import {
+  FrameButtonMetadata,
+  getFrameHtmlResponse,
+  getFrameMessage,
+} from '@coinbase/onchainkit'
 
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -12,15 +19,22 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   const frameRequest = await req.json()
 
+  const { isValid, message } = await getFrameMessage(frameRequest)
+
+  if (!isValid) {
+    return NextResponse.json({ error: message })
+  }
+
   try {
     const frame_id = getFramePinataId(spaceId)
+    const custom_id = getFramePinataCustomId(frameRequest)
 
-    const anal_response = await postInteraction({
+    const analytics_response = await postInteraction({
       frame_id,
       frameRequest,
-      custom_id: spaceId,
+      custom_id,
     })
-    console.log('PINATA ANALYTICS:', anal_response)
+    console.log('PINATA ANALYTICS:', analytics_response)
   } catch (error) {
     console.error('PINATA ANALYTICS:', error)
   }

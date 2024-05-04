@@ -188,7 +188,7 @@ const AdSpacePage = ({
               </li>
             </ul>
             <div className="grid gap-3">
-              <div className="font-semibold">Integrations</div>
+              <div className="font-semibold">Distribution</div>
               <ul className="grid grid-cols-2 gap-3">
                 <Button
                   variant={'outline'}
