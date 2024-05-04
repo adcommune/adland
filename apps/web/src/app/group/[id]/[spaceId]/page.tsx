@@ -66,7 +66,7 @@ const AdSpacePage = ({
 
   return (
     <div className="relative flex min-h-[80vh] flex-col items-start gap-4 py-4 md:flex-row">
-      <Card className="min-w-[400px] overflow-hidden font-body">
+      <Card className="overflow-hidden font-body md:min-w-[400px]">
         <CardHeader className="flex flex-col gap-2 bg-muted/50">
           <div className="flex flex-row items-start gap-8 ">
             <div className="grid gap-0.5">

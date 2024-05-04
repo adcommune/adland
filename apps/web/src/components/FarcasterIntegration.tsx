@@ -96,7 +96,7 @@ const FarcasterIntegration = ({
                 Accounts distributing this ad space on the farcaster network
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            {/* <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -136,7 +136,7 @@ const FarcasterIntegration = ({
                   })}
                 </TableBody>
               </Table>
-            </CardContent>
+            </CardContent> */}
           </Card>
         </div>
       </div>
