@@ -1,3 +1,4 @@
+import { constants } from '@adland/common'
 import { FrameRequest } from '@coinbase/onchainkit'
 
 export const postInteraction = async (data: {
@@ -13,4 +14,15 @@ export const postInteraction = async (data: {
       'Content-Type': 'application/json',
     },
   }).then((res) => res.json())
+}
+
+export const getFramePinataId = (spaceId: string) =>
+  `ad-${constants.chain.id}-${spaceId}`
+
+/**
+ * Used to index interactions by caster
+ * @param request
+ */
+export const getFramePinataCustomId = (request: FrameRequest) => {
+  return `interaction-${constants.chain.id}-${request.untrustedData.castId.fid}`
 }
