@@ -1,13 +1,10 @@
 import { FrameAspectRatio, baseURL } from '@/config/constants'
 import { AdLand } from '@/lib/adland'
-import {
-  getFramePinataCustomId,
-  getFramePinataId,
-  postInteraction,
-} from '@/lib/pinata'
+import { getFrameId, postFrameInteractionAnalytics } from '@/lib/analytics'
 import { AdSpace_subgraph } from '@adland/webkit'
 import {
   FrameButtonMetadata,
+  FrameRequest,
   getFrameHtmlResponse,
   getFrameMessage,
 } from '@coinbase/onchainkit'
@@ -17,21 +14,10 @@ import { NextRequest, NextResponse } from 'next/server'
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const spaceId = req.nextUrl.searchParams.get('spaceId')!
 
-  const frameRequest = await req.json()
+  const frameRequest: FrameRequest = await req.json()
 
   // Validate frame, if successfull account for the interaction w/ analytics
   try {
-    const frame_id = getFramePinataId(spaceId)
-    const custom_id = getFramePinataCustomId(frameRequest)
-
-    console.log('PINATA ANALYTICS:', { frame_id, custom_id, frameRequest })
-
-    console.log({
-      frame_id,
-      frameRequest,
-      custom_id,
-    })
-
     const { isValid, message } = await getFrameMessage(frameRequest, {
       neynarApiKey: process.env.NEYNAR_API_KEY,
     })
@@ -39,18 +25,21 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     console.log({ spaceId, message })
 
     if (!isValid) {
-      return NextResponse.json({ error: message })
+      throw new Error(message)
     }
 
     try {
-      const analytics_response = await postInteraction({
-        frame_id,
-        frameRequest,
-        custom_id,
+      const frame_id = getFrameId(spaceId)
+
+      console.log('ANALYTICS ARGS:', { frame_id, frameRequest })
+      const analytics_response = await postFrameInteractionAnalytics({
+        frameId: frame_id,
+        castFid: frameRequest.untrustedData.castId.fid,
+        castHash: frameRequest.untrustedData.castId.hash,
       })
-      console.log('PINATA ANALYTICS:', analytics_response)
+      console.log('ANALYTICS RESPONSE:', analytics_response)
     } catch (error) {
-      console.error('PINATA ANALYTICS:', error)
+      console.error('ANALYTICS ERROR:', error)
     }
   } catch (error) {
     console.error('getFrameMessage:error:', error)

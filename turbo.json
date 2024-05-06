@@ -4,11 +4,14 @@
   "globalDotEnv": [".env"],
   "pipeline": {
     "build": {
-      "dependsOn": ["^build:common"],
+      "dependsOn": ["^build:common", "^generate"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
       "dotEnv": [".env"]
     },
     "build:common": {
+      "cache": false
+    },
+    "generate": {
       "cache": false
     },
     "lint": {},
