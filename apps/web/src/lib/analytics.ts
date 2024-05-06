@@ -12,6 +12,8 @@ export type AnalyticsPostParams = {
 export const getFrameId = (spaceId: string) =>
   `ad-${constants.chain.id}-${spaceId}`
 
+export const maxDistribution = 3
+
 export const postFrameInteractionAnalytics = async ({
   frameId,
   castFid,
@@ -29,7 +31,19 @@ export const postFrameInteractionAnalytics = async ({
     update: {},
   })
 
-  console.log({ id })
+  const casterNumberOfDistributions = await prisma.frameDistribution.count({
+    where: { casterFid: castFid },
+  })
+
+  if (casterNumberOfDistributions >= maxDistribution) {
+    console.log('Caster has reached the limit of distributions')
+    return
+  }
+  if (castFid === frameRequest?.untrustedData.fid) {
+    console.log('Caster does not contribute to their own distribution')
+    return
+  }
+
   // upsert new frame distribution
   const { interactions } = await prisma.frameDistribution.upsert({
     where: { id: castHash },
