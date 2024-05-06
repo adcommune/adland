@@ -19,30 +19,41 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   const frameRequest = await req.json()
 
-  const { isValid, message } = await getFrameMessage(frameRequest, {
-    neynarApiKey: process.env.NEYNAR_API_KEY,
-  })
-
-  console.log({ spaceId, message })
-
-  if (!isValid) {
-    return NextResponse.json({ error: message })
-  }
-
+  // Validate frame, if successfull account for the interaction w/ analytics
   try {
     const frame_id = getFramePinataId(spaceId)
     const custom_id = getFramePinataCustomId(frameRequest)
 
     console.log('PINATA ANALYTICS:', { frame_id, custom_id, frameRequest })
 
-    const analytics_response = await postInteraction({
+    console.log({
       frame_id,
       frameRequest,
       custom_id,
     })
-    console.log('PINATA ANALYTICS:', analytics_response)
+
+    const { isValid, message } = await getFrameMessage(frameRequest, {
+      neynarApiKey: process.env.NEYNAR_API_KEY,
+    })
+
+    console.log({ spaceId, message })
+
+    if (!isValid) {
+      return NextResponse.json({ error: message })
+    }
+
+    try {
+      const analytics_response = await postInteraction({
+        frame_id,
+        frameRequest,
+        custom_id,
+      })
+      console.log('PINATA ANALYTICS:', analytics_response)
+    } catch (error) {
+      console.error('PINATA ANALYTICS:', error)
+    }
   } catch (error) {
-    console.error('PINATA ANALYTICS:', error)
+    console.error('getFrameMessage:error:', error)
   }
 
   const adSpace = await new AdLand().getAdSpace(spaceId)
