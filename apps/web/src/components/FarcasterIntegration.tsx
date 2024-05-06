@@ -18,8 +18,10 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table'
-import { zeroAddress } from 'viem'
 import { getFramePinataId } from '@/lib/pinata'
+import { getFrameId } from '@/lib/analytics'
+import { format } from 'date-fns'
+import { AppDistributor } from '@/lib/types'
 
 type FarcasterIntegrationProps = {
   groupId: string
@@ -48,12 +50,15 @@ const FarcasterIntegration = ({
     queryKey: ['farcaster-analytics', spaceId],
   })
 
-  // const { data: topInteractions } = useQuery<PinataFrameAnalytics>({
-  //   queryFn: () => fetch('/api/ad/analytics/top').then((res) => res.json()),
-  //   queryKey: ['farcaster-analytics-top'],
-  // })
+  const { data: distributors } = useQuery<AppDistributor[]>({
+    queryFn: () =>
+      fetch(
+        '/api/ad/analytics/distributors?frameId=' + getFrameId(spaceId),
+      ).then((res) => res.json()),
+    queryKey: ['top-distributors', spaceId],
+  })
 
-  const distributors = [{ account: zeroAddress }]
+  console.log({ distributors })
 
   return (
     <div className="flex w-full flex-col gap-2">
@@ -115,28 +120,37 @@ const FarcasterIntegration = ({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {false &&
-                    distributors.map(({ account }) => {
+                  {distributors?.map(
+                    ({
+                      casterFid,
+                      createdAt,
+                      frameId,
+                      interactions,
+                      caster,
+                    }) => {
                       return (
-                        <TableRow className="bg-accent" key={account}>
+                        <TableRow
+                          className="bg-accent"
+                          key={casterFid + '-' + frameId}
+                        >
                           <TableCell>
-                            <div className="font-medium">Account 1</div>
-                            <div className="hidden text-sm text-muted-foreground md:inline">
-                              {truncateAddress(account)}
+                            <div className="font-medium">
+                              @{caster?.display_name}
                             </div>
                           </TableCell>
                           <TableCell className="hidden sm:table-cell">
-                            0
+                            {caster?.follower_count}
                           </TableCell>
                           <TableCell className="hidden sm:table-cell">
-                            x
+                            {format(createdAt, "yyyy-MM-dd' 'HH:mm")}
                           </TableCell>
                           <TableCell className="hidden md:table-cell">
-                            0
+                            {interactions}
                           </TableCell>
                         </TableRow>
                       )
-                    })}
+                    },
+                  )}
                 </TableBody>
               </Table>
             </CardContent>
