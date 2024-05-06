@@ -19,15 +19,21 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   const frameRequest = await req.json()
 
-  const { isValid, message } = await getFrameMessage(frameRequest)
+  // const { isValid, message } = await getFrameMessage(frameRequest, {
+  //   neynarApiKey: process.env.NEYNAR_API_KEY,
+  // })
 
-  if (!isValid) {
-    return NextResponse.json({ error: message })
-  }
+  // console.log({ spaceId, message })
+
+  // if (!isValid) {
+  //   return NextResponse.json({ error: message })
+  // }
 
   try {
     const frame_id = getFramePinataId(spaceId)
     const custom_id = getFramePinataCustomId(frameRequest)
+
+    console.log('PINATA ANALYTICS:', { frame_id, custom_id, frameRequest })
 
     const analytics_response = await postInteraction({
       frame_id,
