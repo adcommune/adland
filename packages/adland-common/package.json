@@ -3,7 +3,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "node src/build.js"
+    "build:common": "node src/build.js"
   },
   "devDependencies": {
     "@types/node": "^20.10.8",

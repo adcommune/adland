@@ -19,15 +19,15 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   const frameRequest = await req.json()
 
-  // const { isValid, message } = await getFrameMessage(frameRequest, {
-  //   neynarApiKey: process.env.NEYNAR_API_KEY,
-  // })
+  const { isValid, message } = await getFrameMessage(frameRequest, {
+    neynarApiKey: process.env.NEYNAR_API_KEY,
+  })
 
-  // console.log({ spaceId, message })
+  console.log({ spaceId, message })
 
-  // if (!isValid) {
-  //   return NextResponse.json({ error: message })
-  // }
+  if (!isValid) {
+    return NextResponse.json({ error: message })
+  }
 
   try {
     const frame_id = getFramePinataId(spaceId)
