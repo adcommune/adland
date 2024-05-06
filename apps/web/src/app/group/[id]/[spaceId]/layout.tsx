@@ -1,36 +1,12 @@
 import { FrameAspectRatio, baseURL } from '@/config/constants'
 import useAppContracts from '@/hooks/useAppContracts'
+import { StandartNFTMetadata as HeyCardMetadata } from '@/lib/hey'
 import { constants } from '@adland/common'
-import { FrameMetadata } from '@coinbase/onchainkit'
-import { Address } from 'viem'
+import { FrameMetadata as FcFrameMetadata } from '@coinbase/onchainkit'
 
 type AdSpacePageLayoutProps = {
   children: React.ReactNode
   params: { spaceId: string }
-}
-
-const StandartNFTMetadata = ({
-  chain,
-  collection,
-  contract_address,
-  creator_address,
-  media_url,
-}: {
-  chain: string
-  collection: string
-  contract_address: string | Address
-  media_url: string
-  creator_address?: string | Address
-}) => {
-  return (
-    <>
-      <meta property="eth:nft:chain" content={chain} />
-      <meta property="eth:nft:collection" content={collection} />
-      <meta property="eth:nft:contract_address" content={contract_address} />
-      <meta property="eth:nft:creator_address" content={creator_address} />
-      <meta property="eth:nft:media_url" content={media_url} />
-    </>
-  )
 }
 
 export const dynamic = 'force-dynamic'
@@ -42,7 +18,7 @@ const AdSpacePageLayout = async ({
   const { adCommonOwnership } = useAppContracts()
   return (
     <>
-      <FrameMetadata
+      <FcFrameMetadata
         buttons={[
           {
             label: 'Learn more',
@@ -56,7 +32,7 @@ const AdSpacePageLayout = async ({
         }}
         postUrl={`${baseURL}/api/ad/frame?spaceId=${spaceId}`}
       />
-      <StandartNFTMetadata
+      <HeyCardMetadata
         {...{
           chain: constants.chain.name,
           collection: 'AdLand: AdSpace #' + spaceId,
