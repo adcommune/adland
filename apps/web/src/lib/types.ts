@@ -1,6 +1,8 @@
 import { directListingsLogicAbi } from '@adland/contracts'
 import { AdGroup_subgraph, AdSpace_subgraph } from '@adland/webkit'
 import { TokenX } from '@adland/webkit/src/hooks'
+import { User } from '@neynar/nodejs-sdk/build/neynar-api/v2'
+import { FrameDistribution } from '@prisma/client'
 import { ContractFunctionReturnType } from 'viem'
 
 export type Listing = ContractFunctionReturnType<
@@ -57,3 +59,5 @@ export type AdGroup = {
   adGroup_subgraph: Omit<AdGroup_subgraph, 'adSpaces'>
   adSpaces: Omit<AdSpace, 'listing'>[]
 }
+
+export type AppDistributor = FrameDistribution & { caster?: User }

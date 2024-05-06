@@ -18,42 +18,28 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table'
-import { zeroAddress } from 'viem'
-import { getFramePinataId } from '@/lib/pinata'
+import { getFrameId, maxDistribution } from '@/lib/analytics'
+import { format } from 'date-fns'
+import { AppDistributor } from '@/lib/types'
 
 type FarcasterIntegrationProps = {
   groupId: string
   spaceId: string
 }
 
-type PinataFrameAnalytics = {
-  total_interactions: number
-  total_unique_interactions: number
-  time_periods: {
-    interactions: number
-    period_start_time: string
-    unique_interactions: number
-  }
-}
-
 const FarcasterIntegration = ({
   groupId,
   spaceId,
 }: FarcasterIntegrationProps) => {
-  const { data } = useQuery<PinataFrameAnalytics>({
+  const { data: distributors } = useQuery<AppDistributor[]>({
     queryFn: () =>
-      fetch('/api/ad/analytics?frameId=' + getFramePinataId(spaceId)).then(
-        (res) => res.json(),
-      ),
-    queryKey: ['farcaster-analytics', spaceId],
+      fetch(
+        '/api/ad/analytics/distributors?frameId=' + getFrameId(spaceId),
+      ).then((res) => res.json()),
+    queryKey: ['top-distributors', spaceId],
   })
 
-  // const { data: topInteractions } = useQuery<PinataFrameAnalytics>({
-  //   queryFn: () => fetch('/api/ad/analytics/top').then((res) => res.json()),
-  //   queryKey: ['farcaster-analytics-top'],
-  // })
-
-  const distributors = [{ account: zeroAddress }]
+  console.log({ distributors })
 
   return (
     <div className="flex w-full flex-col gap-2">
@@ -72,24 +58,6 @@ const FarcasterIntegration = ({
             <Copiable visible text={`${baseURL}/group/${groupId}/${spaceId}`} />
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardDescription>Total interactions</CardDescription>
-              <CardTitle className="text-4xl">
-                {data?.total_interactions ?? 0}
-              </CardTitle>
-            </CardHeader>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardDescription>Unique interactions</CardDescription>
-              <CardTitle className="text-4xl">
-                {data?.total_unique_interactions ?? 0}
-              </CardTitle>
-            </CardHeader>
-          </Card>
-        </div>
       </div>
       <div className="rounded-md border bg-white bg-opacity-20 p-4">
         <div>
@@ -98,6 +66,13 @@ const FarcasterIntegration = ({
               <CardTitle>Distributors</CardTitle>
               <CardDescription>
                 Accounts distributing this ad space on the farcaster network
+                <ul className="ml-4 list-disc">
+                  <li>
+                    Cannot distribute this ad more than {maxDistribution} times.
+                    Distribute carefully !
+                  </li>
+                  <li>Interactions with your own frame will not be counted.</li>
+                </ul>
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -115,28 +90,37 @@ const FarcasterIntegration = ({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {false &&
-                    distributors.map(({ account }) => {
+                  {distributors?.map(
+                    ({
+                      casterFid,
+                      createdAt,
+                      frameId,
+                      interactions,
+                      caster,
+                    }) => {
                       return (
-                        <TableRow className="bg-accent" key={account}>
+                        <TableRow
+                          className="bg-accent"
+                          key={casterFid + '-' + frameId}
+                        >
                           <TableCell>
-                            <div className="font-medium">Account 1</div>
-                            <div className="hidden text-sm text-muted-foreground md:inline">
-                              {truncateAddress(account)}
+                            <div className="font-medium">
+                              @{caster?.display_name}
                             </div>
                           </TableCell>
                           <TableCell className="hidden sm:table-cell">
-                            0
+                            {caster?.follower_count}
                           </TableCell>
                           <TableCell className="hidden sm:table-cell">
-                            x
+                            {format(createdAt, "yyyy-MM-dd' 'HH:mm")}
                           </TableCell>
                           <TableCell className="hidden md:table-cell">
-                            0
+                            {interactions}
                           </TableCell>
                         </TableRow>
                       )
-                    })}
+                    },
+                  )}
                 </TableBody>
               </Table>
             </CardContent>
