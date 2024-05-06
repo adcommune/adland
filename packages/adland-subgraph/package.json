@@ -3,7 +3,6 @@
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
-    "build": "graph build",
     "deploy:optsepolia": "mustache config/11155420.json template.yaml > subgraph.yaml && graph deploy --studio adland-optsepolia",
     "deploy:base": "mustache config/8453.json template.yaml > subgraph.yaml && graph deploy --studio adland-base",
     "deploy:base-alchemy": "mustache config/8453.json template.yaml > subgraph.yaml && graph deploy adland-base --version-label v0.0.1 --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key 1lJ0qXT0uMeXH --ipfs https://ipfs.satsuma.xyz",
