@@ -39,6 +39,7 @@ export const postFrameInteractionAnalytics = async ({
     console.log('Caster has reached the limit of distributions')
     return
   }
+  console.log('castFid=', castFid, '---fid=', frameRequest?.untrustedData.fid)
   if (castFid === frameRequest?.untrustedData.fid) {
     console.log('Caster does not contribute to their own distribution')
     return

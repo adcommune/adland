@@ -31,12 +31,13 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     try {
       const frame_id = getFrameId(spaceId)
 
-      console.log('ANALYTICS ARGS:', { frame_id, frameRequest })
-      const analytics_response = await postFrameInteractionAnalytics({
+      const args = {
         frameId: frame_id,
         castFid: frameRequest.untrustedData.castId.fid,
         castHash: frameRequest.untrustedData.castId.hash,
-      })
+      }
+      console.log('ANALYTICS ARGS:', args)
+      const analytics_response = await postFrameInteractionAnalytics(args)
       console.log('ANALYTICS RESPONSE:', analytics_response)
     } catch (error) {
       console.error('ANALYTICS ERROR:', error)
