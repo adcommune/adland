@@ -1,8 +1,16 @@
 import { FrameAspectRatio, baseURL } from '@/config/constants'
 import { AdLand } from '@/lib/adland'
-import { getFramePinataId } from '@/lib/utils'
+import {
+  getFramePinataCustomId,
+  getFramePinataId,
+  postInteraction,
+} from '@/lib/pinata'
 import { AdSpace_subgraph } from '@adland/webkit'
-import { FrameButtonMetadata, getFrameHtmlResponse } from '@coinbase/onchainkit'
+import {
+  FrameButtonMetadata,
+  getFrameHtmlResponse,
+  getFrameMessage,
+} from '@coinbase/onchainkit'
 
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -11,26 +19,22 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   const frameRequest = await req.json()
 
+  const { isValid, message } = await getFrameMessage(frameRequest)
+
+  if (!isValid) {
+    return NextResponse.json({ error: message })
+  }
+
   try {
     const frame_id = getFramePinataId(spaceId)
+    const custom_id = getFramePinataCustomId(frameRequest)
 
-    const anal_response = await fetch(
-      'https://api.pinata.cloud/farcaster/frames/interactions',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          frame_id,
-          data: frameRequest,
-          custom_id: spaceId,
-        }),
-        headers: {
-          Authorization: `Bearer ${process.env.PINATA_JWT}`,
-          'Content-Type': 'application/json',
-        },
-      },
-    ).then((res) => res.json())
-
-    console.log('PINATA ANALYTICS:', anal_response)
+    const analytics_response = await postInteraction({
+      frame_id,
+      frameRequest,
+      custom_id,
+    })
+    console.log('PINATA ANALYTICS:', analytics_response)
   } catch (error) {
     console.error('PINATA ANALYTICS:', error)
   }

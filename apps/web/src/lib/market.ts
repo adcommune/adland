@@ -13,8 +13,6 @@ export class Market {
     address: directListingsLogicAddress[constants.chain.id],
   }
 
-  constructor() {}
-
   async getListing(
     id: string,
   ): Promise<

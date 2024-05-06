@@ -34,28 +34,7 @@ import Image from 'next/image'
 import AdPropertyList from '@/components/AdSpaces/AdPropertyList'
 import classNames from 'classnames'
 import FarcasterIntegration from '@/components/FarcasterIntegration'
-import { useSimulateDirectListingsLogicForecloseListing } from '@adland/contracts'
-import useTransaction from '@/hooks/useTransaction'
-
-const ForecloseDropdownItem = ({ listingId }: { listingId: bigint }) => {
-  const { data } = useSimulateDirectListingsLogicForecloseListing({
-    args: [listingId],
-  })
-
-  const { writeContract, loading } = useTransaction(() => {})
-
-  return (
-    <DropdownMenuItem
-      disabled={!Boolean(data?.request)}
-      onClick={() => {
-        writeContract(data!.request)
-      }}
-      className="bg-red-500 text-white"
-    >
-      Foreclos{loading ? 'ing...' : 'e'}
-    </DropdownMenuItem>
-  )
-}
+import ForecloseDropdownItem from '@/components/AdSpaces/ForecloseDropdownItem'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
@@ -87,7 +66,7 @@ const AdSpacePage = ({
 
   return (
     <div className="relative flex min-h-[80vh] flex-col items-start gap-4 py-4 md:flex-row">
-      <Card className="min-w-[400px] overflow-hidden font-body">
+      <Card className="overflow-hidden font-body md:min-w-[400px]">
         <CardHeader className="flex flex-col gap-2 bg-muted/50">
           <div className="flex flex-row items-start gap-8 ">
             <div className="grid gap-0.5">
@@ -209,7 +188,7 @@ const AdSpacePage = ({
               </li>
             </ul>
             <div className="grid gap-3">
-              <div className="font-semibold">Integrations</div>
+              <div className="font-semibold">Distribution</div>
               <ul className="grid grid-cols-2 gap-3">
                 <Button
                   variant={'outline'}
