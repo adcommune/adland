@@ -18,6 +18,14 @@ const AdSpacePageLayout = async ({
   const { adCommonOwnership } = useAppContracts()
   return (
     <>
+      <HeyCardMetadata
+        {...{
+          chain: constants.chain.name,
+          collection: 'AdLand: AdSpace #' + spaceId,
+          contract_address: adCommonOwnership,
+          media_url: `${baseURL}/api/billboard/${spaceId}?time=${Date.now()}`,
+        }}
+      />
       <FcFrameMetadata
         buttons={[
           {
@@ -32,14 +40,7 @@ const AdSpacePageLayout = async ({
         }}
         postUrl={`${baseURL}/api/ad/frame?spaceId=${spaceId}`}
       />
-      <HeyCardMetadata
-        {...{
-          chain: constants.chain.name,
-          collection: 'AdLand: AdSpace #' + spaceId,
-          contract_address: adCommonOwnership,
-          media_url: `${baseURL}/api/billboard/${spaceId}?time=${Date.now()}`,
-        }}
-      />
+
       {children}
     </>
   )
