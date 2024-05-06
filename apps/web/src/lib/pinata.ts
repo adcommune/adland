@@ -38,6 +38,26 @@ export const getInteractions = async (frameId: string) => {
     },
   ).then((res) => res.json())
 }
+export const getTopInteractions = async () => {
+  // Past 30 days startDate, endDate in the format YYYY-MM-DD HH:MM:SS
+  const startDate = format(subDays(new Date(), 30), 'yyyy-MM-dd HH:mm:ss')
+  const endDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
+
+  const url =
+    'https://api.pinata.cloud/farcaster/frames/interactions/top?by=cast_fid' +
+    '&start_date=' +
+    startDate +
+    '&end_date=' +
+    endDate
+
+  return fetch(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${process.env.PINATA_JWT}`,
+      'Content-Type': 'application/json',
+    },
+  }).then((res) => res.json())
+}
 
 export const getFramePinataId = (spaceId: string) =>
   `ad-${constants.chain.id}-${spaceId}`

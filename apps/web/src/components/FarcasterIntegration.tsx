@@ -18,7 +18,6 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table'
-import { Badge } from './ui/badge'
 import { zeroAddress } from 'viem'
 import { getFramePinataId } from '@/lib/pinata'
 
@@ -48,6 +47,11 @@ const FarcasterIntegration = ({
       ),
     queryKey: ['farcaster-analytics', spaceId],
   })
+
+  // const { data: topInteractions } = useQuery<PinataFrameAnalytics>({
+  //   queryFn: () => fetch('/api/ad/analytics/top').then((res) => res.json()),
+  //   queryKey: ['farcaster-analytics-top'],
+  // })
 
   const distributors = [{ account: zeroAddress }]
 
@@ -96,7 +100,7 @@ const FarcasterIntegration = ({
                 Accounts distributing this ad space on the farcaster network
               </CardDescription>
             </CardHeader>
-            {/* <CardContent>
+            <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -107,36 +111,35 @@ const FarcasterIntegration = ({
                     <TableHead className="hidden md:table-cell">
                       Start
                     </TableHead>
-                    <TableHead className="text-right">Interactions</TableHead>
+                    <TableHead className="">Interactions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {distributors.map(({ account }) => {
-                    return (
-                      <TableRow className="bg-accent" key={account}>
-                        <TableCell>
-                          <div className="font-medium">Account 1</div>
-                          <div className="hidden text-sm text-muted-foreground md:inline">
-                            {truncateAddress(account)}
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          Sale
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">
-                          <Badge className="text-xs" variant="secondary">
-                            Fulfilled
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          2023-06-23
-                        </TableCell>
-                      </TableRow>
-                    )
-                  })}
+                  {false &&
+                    distributors.map(({ account }) => {
+                      return (
+                        <TableRow className="bg-accent" key={account}>
+                          <TableCell>
+                            <div className="font-medium">Account 1</div>
+                            <div className="hidden text-sm text-muted-foreground md:inline">
+                              {truncateAddress(account)}
+                            </div>
+                          </TableCell>
+                          <TableCell className="hidden sm:table-cell">
+                            0
+                          </TableCell>
+                          <TableCell className="hidden sm:table-cell">
+                            x
+                          </TableCell>
+                          <TableCell className="hidden md:table-cell">
+                            0
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
                 </TableBody>
               </Table>
-            </CardContent> */}
+            </CardContent>
           </Card>
         </div>
       </div>
