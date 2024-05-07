@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@adland/db'
 
 declare global {
   var prisma: PrismaClient | undefined
