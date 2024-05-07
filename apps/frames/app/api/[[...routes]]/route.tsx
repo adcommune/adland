@@ -5,23 +5,8 @@ import { devtools } from "frog/dev";
 import { neynar } from "frog/hubs";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
-import { colors, createSystem } from "frog/ui";
-
-export const {
-  Box,
-  Columns,
-  Column,
-  Heading,
-  HStack,
-  Rows,
-  Row,
-  Spacer,
-  Text,
-  VStack,
-  vars,
-} = createSystem({
-  colors: colors.light,
-});
+import { colors } from "frog/ui";
+import { vars, Box, Column, HStack } from "./utils";
 
 const app = new Frog({
   assetsPath: "/",
