@@ -317,6 +317,9 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
     devDependencies:
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.13.0
+        version: 5.13.0
       '@types/lodash':
         specifier: ^4.17.0
         version: 4.17.0
@@ -2776,6 +2779,9 @@ packages:
 
   '@prisma/get-platform@5.13.0':
     resolution: {integrity: sha512-B/WrQwYTzwr7qCLifQzYOmQhZcFmIFhR81xC45gweInSUn2hTEbfKUPd2keAog+y5WI5xLAFNJ3wkXplvSVkSw==}
+
+  '@prisma/nextjs-monorepo-workaround-plugin@5.13.0':
+    resolution: {integrity: sha512-KcrUjPotWYanktn7t97NwzeMHRsRT9P452EVO802J+yvCm9yKx6xtFzfUlD3NFOsUToAMytIE+t9Ct7/7bDnsg==}
 
   '@privy-io/react-auth@1.60.1':
     resolution: {integrity: sha512-OPYL91Oj37wm2yB0oQ3tUDQXyytlDCDirqbIrfNnQEIXgQp91K5uqjxcgktYxf7KfI3kxJswZdPLx0QmINPLHw==}
@@ -13857,6 +13863,8 @@ snapshots:
   '@prisma/get-platform@5.13.0':
     dependencies:
       '@prisma/debug': 5.13.0
+
+  '@prisma/nextjs-monorepo-workaround-plugin@5.13.0': {}
 
   '@privy-io/react-auth@1.60.1(@babel/core@7.24.4)(@react-native-async-storage/async-storage@1.23.1(react-native@0.73.6(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@6.0.3)))(@types/react@18.2.74)(bufferutil@4.0.8)(react-dom@18.2.0(react@18.2.0))(react-is@18.2.0)(react@18.2.0)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)':
     dependencies:
