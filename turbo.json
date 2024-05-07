@@ -12,8 +12,11 @@
       "cache": false
     },
     "generate": {
-      "cache": false
+      "dependsOn": ["^generate"]
     },
+    "db:migrate:deploy": {},
+    "db:push": {},
+    "db:seed": {},
     "lint": {},
     "type-check": {},
     "dev": {

@@ -172,6 +172,9 @@ importers:
       '@adland/contracts':
         specifier: workspace:*
         version: link:../../packages/adland-contracts
+      '@adland/db':
+        specifier: workspace:*
+        version: link:../../packages/adland-db
       '@adland/webkit':
         specifier: workspace:*
         version: link:../../packages/adland-webkit
@@ -280,9 +283,6 @@ importers:
       permissionless:
         specifier: 0.0.34
         version: 0.0.34(viem@2.9.23(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4))
-      prisma:
-        specifier: ^5.13.0
-        version: 5.13.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -373,6 +373,16 @@ importers:
       viem:
         specifier: 2.9.23
         version: 2.9.23(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)
+
+  packages/adland-db:
+    dependencies:
+      '@prisma/client':
+        specifier: latest
+        version: 5.13.0(prisma@5.13.0)
+    devDependencies:
+      prisma:
+        specifier: latest
+        version: 5.13.0
 
   packages/adland-subgraph:
     dependencies:

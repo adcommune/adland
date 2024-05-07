@@ -2,7 +2,7 @@ import { directListingsLogicAbi } from '@adland/contracts'
 import { AdGroup_subgraph, AdSpace_subgraph } from '@adland/webkit'
 import { TokenX } from '@adland/webkit/src/hooks'
 import { User } from '@neynar/nodejs-sdk/build/neynar-api/v2'
-import { FrameDistribution } from '@prisma/client'
+import { FrameDistribution } from '@adland/db'
 import { ContractFunctionReturnType } from 'viem'
 
 export type Listing = ContractFunctionReturnType<

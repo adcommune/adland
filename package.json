@@ -1,6 +1,12 @@
 {
   "private": true,
+  "prisma": {
+    "schema": "packages/adland-db/prisma/schema.prisma"
+  },
   "scripts": {
+    "db:migrate:deploy": "turbo run db:migrate:deploy",
+    "db:push": "turbo run db:push",
+    "generate": "turbo run generate",
     "build": "dotenv -- turbo build",
     "dev": "dotenv -- turbo dev",
     "codegen": "dotenv -- turbo codegen",
