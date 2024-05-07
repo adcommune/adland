@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server'
 import { zeroAddress } from 'viem'
 import { AppDistributor } from '@/lib/types'
 import { neynar } from '@/lib/neynar'
+import prisma from '@/lib/prisma'
 
 export async function GET(req: NextRequest): Promise<Response> {
   const frameId = req.nextUrl.searchParams.get('frameId')
