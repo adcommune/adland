@@ -1,9 +1,7 @@
 import { NextRequest } from 'next/server'
 import { zeroAddress } from 'viem'
-import { NeynarAPIClient } from '@neynar/nodejs-sdk'
 import { AppDistributor } from '@/lib/types'
-
-const neynar = new NeynarAPIClient(process.env.NEYNAR_API_KEY ?? '')
+import { neynar } from '@/lib/neynar'
 
 export async function GET(req: NextRequest): Promise<Response> {
   const frameId = req.nextUrl.searchParams.get('frameId')
