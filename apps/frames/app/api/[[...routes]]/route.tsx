@@ -6,7 +6,6 @@ import { neynar as neynarHub } from "frog/hubs";
 import { neynar } from "frog/middlewares";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
-import { colors } from "frog/ui";
 import { vars, Box, Column, HStack, header } from "./utils";
 import { kv } from "@vercel/kv";
 import { airdropConfig } from "@/config/constants";
@@ -24,13 +23,6 @@ const app = new Frog({
 });
 // Uncomment to use Edge Runtime
 export const runtime = "edge";
-
-const fruitColors: Record<string, keyof typeof colors.light> = {
-  apple: "green",
-  banana: "amber300",
-  cherry: "red",
-  date: "amber1000",
-};
 
 const local = process.env.NODE_ENV === "development";
 
@@ -61,9 +53,6 @@ app.frame(
           <Box grow>
             <HStack gap="8" grow>
               {header}
-              <Column grow alignVertical="center" alignHorizontal="center">
-                Fruit Frame
-              </Column>
             </HStack>
           </Box>
         ),
@@ -106,18 +95,9 @@ app.frame(
         <Box grow>
           <HStack gap="8" grow>
             {header}
-            {buttonValue ? (
-              <Column
-                grow
-                alignVertical="center"
-                alignHorizontal="center"
-                backgroundColor={fruitColors[buttonValue]}
-              >
-                You can mint !
-              </Column>
-            ) : (
-              <></>
-            )}
+            <Column grow alignVertical="center" alignHorizontal="center">
+              You can mint !
+            </Column>
           </HStack>
         </Box>
       ),

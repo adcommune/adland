@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"next dev --port 3002\" \"frog dev\"",
+    "disable_dev": "concurrently \"next dev --port 3002\" \"frog dev\"",
     "deploy": "vercel",
     "build": "next build",
     "start": "next start",
