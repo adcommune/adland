@@ -16,6 +16,17 @@ const {
   colors: colors.light,
 });
 
+const header = (
+  <Column
+    grow
+    alignVertical="center"
+    alignHorizontal="center"
+    backgroundColor={"background"}
+  >
+    AdLand Promo Mint
+  </Column>
+);
+
 export {
   Box,
   Columns,
@@ -28,4 +39,5 @@ export {
   Text,
   VStack,
   vars,
+  header,
 };
