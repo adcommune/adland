@@ -7,7 +7,10 @@ import { neynar } from "frog/middlewares";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
 import { colors } from "frog/ui";
-import { vars, Box, Column, HStack } from "./utils";
+import { vars, Box, Column, HStack, header } from "./utils";
+import { kv } from "@vercel/kv";
+import { airdropConfig } from "@/config/constants";
+import { constants } from "@adland/common";
 
 const app = new Frog({
   assetsPath: "/",
@@ -29,20 +32,21 @@ const fruitColors: Record<string, keyof typeof colors.light> = {
   date: "amber1000",
 };
 
+const local = process.env.NODE_ENV === "development";
+
 app.frame(
   "/",
   neynar({
     apiKey: process.env.NEYNAR_API_KEY as string,
     features: ["cast", "interactor"],
   }),
-  (c) => {
+  async (c) => {
     const {
       buttonValue,
       inputText,
       status,
       var: { interactor, cast },
     } = c;
-    const fruit = inputText || buttonValue;
     const recasted = cast?.reactions.recasts.find(
       (rc) => rc.fid === interactor?.fid
     );
@@ -55,27 +59,45 @@ app.frame(
         title: "Fruit Picker",
         image: (
           <Box grow>
-            <Column grow alignVertical="center" alignHorizontal="center">
-              Fruit Frame
-            </Column>
+            <HStack gap="8" grow>
+              {header}
+              <Column grow alignVertical="center" alignHorizontal="center">
+                Fruit Frame
+              </Column>
+            </HStack>
           </Box>
         ),
         intents: [<Button value="verify">Get Started</Button>],
       });
     }
 
-    if (!liked && !recasted) {
+    if (!liked && !recasted && !local) {
       return c.res({
         title: "Fruit Picker",
         image: (
           <Box grow>
-            <Column grow alignVertical="center" alignHorizontal="center">
-              Please like or recast the fruit frame
-            </Column>
+            <HStack gap="8" grow>
+              {header}
+              <Column grow alignVertical="center" alignHorizontal="center">
+                Please like or recast the fruit frame
+              </Column>
+            </HStack>
           </Box>
         ),
         intents: [<Button value="verify">Get Started</Button>],
       });
+    }
+
+    const airdrop = airdropConfig[constants.chain.id];
+
+    if (airdrop) {
+      const { maxCount } = airdrop;
+      const k = (cast?.parentHash ?? "hash") + ":count";
+      const count = parseInt((await kv.get(k)) ?? "0");
+
+      if (buttonValue === "mint" && count < maxCount) {
+        await kv.incr(k);
+      }
     }
 
     return c.res({
@@ -83,9 +105,7 @@ app.frame(
       image: (
         <Box grow>
           <HStack gap="8" grow>
-            <Column grow alignVertical="center" alignHorizontal="center">
-              {interactor?.displayName ?? "no-interactor"}
-            </Column>
+            {header}
             {buttonValue ? (
               <Column
                 grow
@@ -93,7 +113,7 @@ app.frame(
                 alignHorizontal="center"
                 backgroundColor={fruitColors[buttonValue]}
               >
-                {fruit ?? "no-fruit"}
+                You can mint !
               </Column>
             ) : (
               <></>
@@ -101,12 +121,7 @@ app.frame(
           </HStack>
         </Box>
       ),
-      intents: [
-        <Button value="apple">Apple</Button>,
-        <Button value="banana">Banana</Button>,
-        <Button value="cherry">Cherry</Button>,
-        <Button value="date">Date</Button>,
-      ],
+      intents: [<Button value="mint">Mint</Button>],
     });
   }
 );
