@@ -47,6 +47,9 @@ importers:
 
   apps/frames:
     dependencies:
+      '@adland/common':
+        specifier: workspace:*
+        version: link:../../packages/adland-common
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
