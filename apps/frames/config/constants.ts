@@ -1,5 +1,13 @@
 import { Address } from "viem";
-import { optimismSepolia, base } from "viem/chains";
+import { optimismSepolia, base, sepolia } from "viem/chains";
+
+export const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? "";
+
+export const alchemyUrlByChain: Record<number, string> = {
+  [sepolia.id]: `https://eth-sepolia.g.alchemy.com/v2/${alchemyKey}`,
+  [optimismSepolia.id]: `https://opt-sepolia.g.alchemy.com/v2/${alchemyKey}`,
+  [base.id]: `https://base-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+};
 
 export const airdropConfig: Record<
   number,
