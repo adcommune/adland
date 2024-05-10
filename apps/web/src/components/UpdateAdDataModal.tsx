@@ -261,12 +261,12 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
             />
           </div>
           <div className="w-full space-y-2">
-            <Label htmlFor="email">Link</Label>
+            <Label htmlFor="email">Frame Link</Label>
             <Input
               type="text"
               id="frame_redirect_url"
               placeholder="Frame Redirect URL"
-              defaultValue={externalUrl}
+              defaultValue={frameRedirectUrl}
               onChange={(e) => {
                 setFrameRedirectUrl(e.target.value)
               }}

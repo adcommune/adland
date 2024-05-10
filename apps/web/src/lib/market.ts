@@ -13,8 +13,6 @@ export class Market {
     address: directListingsLogicAddress[constants.chain.id],
   }
 
-  constructor() {}
-
   async getListing(
     id: string,
   ): Promise<
@@ -24,6 +22,11 @@ export class Market {
       'getListing'
     >
   > {
+    console.log(
+      'directListingsLogicAddress',
+      // @ts-ignore
+      directListingsLogicAddress[constants.chain.id],
+    )
     return await client.readContract({
       ...this.contractOptions,
       functionName: 'getListing',

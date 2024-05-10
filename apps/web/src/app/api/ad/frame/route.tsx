@@ -1,38 +1,49 @@
 import { FrameAspectRatio, baseURL } from '@/config/constants'
 import { AdLand } from '@/lib/adland'
-import { getFramePinataId } from '@/lib/utils'
+import { getFrameId, postFrameInteractionAnalytics } from '@/lib/analytics'
 import { AdSpace_subgraph } from '@adland/webkit'
-import { FrameButtonMetadata, getFrameHtmlResponse } from '@coinbase/onchainkit'
+import {
+  FrameButtonMetadata,
+  FrameRequest,
+  getFrameHtmlResponse,
+  getFrameMessage,
+} from '@coinbase/onchainkit'
 
 import { NextRequest, NextResponse } from 'next/server'
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const spaceId = req.nextUrl.searchParams.get('spaceId')!
 
-  const frameRequest = await req.json()
+  const frameRequest: FrameRequest = await req.json()
 
+  // Validate frame, if successfull account for the interaction w/ analytics
   try {
-    const frame_id = getFramePinataId(spaceId)
+    const { isValid, message } = await getFrameMessage(frameRequest, {
+      neynarApiKey: process.env.NEYNAR_API_KEY,
+    })
 
-    const anal_response = await fetch(
-      'https://api.pinata.cloud/farcaster/frames/interactions',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          frame_id,
-          data: frameRequest,
-          custom_id: spaceId,
-        }),
-        headers: {
-          Authorization: `Bearer ${process.env.PINATA_JWT}`,
-          'Content-Type': 'application/json',
-        },
-      },
-    ).then((res) => res.json())
+    console.log({ spaceId, message })
 
-    console.log('PINATA ANALYTICS:', anal_response)
+    if (!isValid) {
+      throw new Error(message)
+    }
+
+    try {
+      const frame_id = getFrameId(spaceId)
+
+      const args = {
+        frameId: frame_id,
+        castFid: frameRequest.untrustedData.castId.fid,
+        castHash: frameRequest.untrustedData.castId.hash,
+      }
+      console.log('ANALYTICS ARGS:', args)
+      const analytics_response = await postFrameInteractionAnalytics(args)
+      console.log('ANALYTICS RESPONSE:', analytics_response)
+    } catch (error) {
+      console.error('ANALYTICS ERROR:', error)
+    }
   } catch (error) {
-    console.error('PINATA ANALYTICS:', error)
+    console.error('getFrameMessage:error:', error)
   }
 
   const adSpace = await new AdLand().getAdSpace(spaceId)

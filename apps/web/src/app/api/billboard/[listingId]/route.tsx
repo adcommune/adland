@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { FrameAspectRatio, noAdFrameImageCID } from '@/config/constants'
 import { ImageResponse } from '@vercel/og'
 import { AdLand } from '@/lib/adland'
