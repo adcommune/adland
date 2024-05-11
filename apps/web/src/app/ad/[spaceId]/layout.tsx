@@ -3,6 +3,8 @@ import useAppContracts from '@/hooks/useAppContracts'
 import { StandartNFTMetadata as HeyCardMetadata } from '@/lib/hey'
 import { constants } from '@adland/common'
 import { FrameMetadata as FcFrameMetadata } from '@coinbase/onchainkit'
+import { getFrameMetadata } from 'frog/next'
+import { Metadata } from 'next'
 
 type AdSpacePageLayoutProps = {
   children: React.ReactNode
@@ -10,15 +12,19 @@ type AdSpacePageLayoutProps = {
 }
 
 export const dynamic = 'force-dynamic'
-
-const AdSpacePageLayout = async ({
-  children,
+export async function generateMetadata({
   params: { spaceId },
-}: AdSpacePageLayoutProps) => {
-  const { adCommonOwnership } = useAppContracts()
+}: AdSpacePageLayoutProps): Promise<Metadata> {
+  const frameURL = `${baseURL}/api/ad-frame/` + spaceId
+  const frameMetadata = await getFrameMetadata(frameURL)
+  return {
+    other: frameMetadata,
+  }
+}
+const AdSpacePageLayout = async ({ children }: AdSpacePageLayoutProps) => {
   return (
     <>
-      <HeyCardMetadata
+      {/* <HeyCardMetadata
         {...{
           chain: constants.chain.name,
           collection: 'AdLand: AdSpace #' + spaceId,
@@ -39,7 +45,7 @@ const AdSpacePageLayout = async ({
           aspectRatio: FrameAspectRatio.SQUARE,
         }}
         postUrl={`${baseURL}/api/ad/frame?spaceId=${spaceId}`}
-      />
+      /> */}
 
       {children}
     </>
