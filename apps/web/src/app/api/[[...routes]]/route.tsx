@@ -8,11 +8,11 @@ import { FrameAspectRatio, adPlaceholderURL, baseURL } from '@/config/constants'
 import { Box, Image, frameConfig, vars, Text } from './utils'
 import { AdLand } from '@/lib/adland'
 
-export const learnMoreBillboardBackground =
+const learnMoreBillboardBackground =
   'https://cdn.midjourney.com/ab3e008f-9b29-48cd-bce0-737a6a3d35ac/0_1.png'
-export const squareBillboardBackground =
+const squareBillboardBackground =
   'https://cdn.midjourney.com/70ae4003-8c49-4687-be21-f92e24e90289/0_0.png'
-export const distributorBillboardBackground = 'https://i.imgur.com/FoJusWv.jpg'
+const distributorBillboardBackground = 'https://i.imgur.com/FoJusWv.jpg'
 
 const { maxAge, height } = frameConfig
 
@@ -141,8 +141,10 @@ app.frame('/distributor', async (c) => {
     imageAspectRatio: FrameAspectRatio.SQUARE,
     imageOptions,
     intents: [
-      <TextInput placeholder="Pick you subname" />,
-      <Button value="submit">Submit</Button>,
+      <TextInput key={'textInput'} placeholder="Pick you subname" />,
+      <Button key={'submitButton'} value="submit">
+        Submit
+      </Button>,
     ],
   })
 })
