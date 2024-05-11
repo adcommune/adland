@@ -19,13 +19,28 @@ const {
   Image,
   vars,
 } = createSystem({
+  fonts: {
+    default: [
+      {
+        name: 'Montserrat',
+        weight: 400,
+        source: 'google',
+      },
+    ],
+  },
   colors: colors.light,
   units: {
     ...units,
-    'billboard-top': 0.225,
-    'billboard-left': 0.05,
-    'billboard-width': 0.89,
-    'billboard-height': 0.435,
+    // Ad Billboard
+    'billboard-top': 0.25,
+    'billboard-left': 0.175,
+    'billboard-width': 0.65,
+    'billboard-height': 0.32,
+    // Distributor Ad Billboard
+    'distributor-billboard-top': 0.25,
+    'distributor-billboard-left': 0.175,
+    'distributor-billboard-width': 0.65,
+    'distributor-billboard-height': 0.32,
   },
 })
 
