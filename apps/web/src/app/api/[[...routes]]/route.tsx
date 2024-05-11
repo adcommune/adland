@@ -8,10 +8,8 @@ import { FrameAspectRatio, adPlaceholderURL, baseURL } from '@/config/constants'
 import { Box, Image, frameConfig, vars, Text } from './utils'
 import { AdLand } from '@/lib/adland'
 
-const learnMoreBillboardBackground =
-  'https://cdn.midjourney.com/ab3e008f-9b29-48cd-bce0-737a6a3d35ac/0_1.png'
-const squareBillboardBackground =
-  'https://cdn.midjourney.com/70ae4003-8c49-4687-be21-f92e24e90289/0_0.png'
+const learnMoreBillboardBackground = 'https://i.imgur.com/jABvz51.jpg'
+const squareBillboardBackground = 'https://i.imgur.com/vvNJpNf.jpg'
 const distributorBillboardBackground = 'https://i.imgur.com/FoJusWv.jpg'
 
 const { maxAge, height } = frameConfig
