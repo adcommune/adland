@@ -34,7 +34,7 @@ const GroupPage = async ({ params: { id } }: GroupPageProps) => {
             return (
               <Link
                 key={adSpace?.transactionHash + adSpace?.id}
-                href={'/group/' + id + '/' + adSpace?.id}
+                href={'/ad/' + adSpace?.id}
               >
                 <Card className="flex flex-col overflow-hidden">
                   <CardHeader>
