@@ -2,8 +2,6 @@ import AdGroupHeader from '@/components/AdGroup/AdGroupHeader'
 import { Container } from '@/components/Container'
 import { AdLand } from '@/lib/adland'
 
-export const dynamic = 'force-dynamic'
-
 type GroupPageLayoutProps = {
   children: React.ReactNode
   params: { id: string }
