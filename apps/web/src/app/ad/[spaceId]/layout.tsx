@@ -19,6 +19,7 @@ export async function generateMetadata({
 }: AdSpacePageLayoutProps): Promise<Metadata> {
   const frameURL = `${baseURL}/api/ad-frame/` + spaceId
   const frameMetadata = await getFrameMetadata(frameURL)
+  console.log('frameMetadata', frameMetadata)
   return {
     other: frameMetadata,
   }
