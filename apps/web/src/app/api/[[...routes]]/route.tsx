@@ -16,9 +16,7 @@ const { maxAge, height } = frameConfig
 
 const app = new Frog({
   basePath: '/api',
-  headers: {
-    'cache-control': 'max-age=' + maxAge,
-  },
+  headers: {},
   ui: { vars },
 })
 
@@ -96,7 +94,7 @@ app.frame('/ad-frame/:spaceId', async (c) => {
     imageOptions,
     intents,
     headers: {
-      'cache-control': 'max-age=' + maxAge,
+      'Cache-Control': 'public, max-age=' + maxAge,
     },
   })
 })
