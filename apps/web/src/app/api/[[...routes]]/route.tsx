@@ -1,49 +1,45 @@
 /** @jsxImportSource frog/jsx */
 
-import { Button, FrameIntent, FrameResponse, Frog, TextInput } from 'frog'
+import { Button, FrameIntent, Frog, TextInput } from 'frog'
 import { handle } from 'frog/next'
 import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
 import { FrameAspectRatio, adPlaceholderURL, baseURL } from '@/config/constants'
-import { Box, Image, vars, Text } from './utils'
+import { Box, Image, vars, imageOptions, Text } from './utils'
 import { AdLand } from '@/lib/adland'
 import {
   distributorBillboardBackground,
-  frameConfig,
   learnMoreBillboardBackground,
 } from '@/config/frame'
+import { distributionEnabled } from './env'
 
-const { height } = frameConfig
+type BillboardWithContentProps = {
+  text?: string
+  imageSrc?: string
+  backgroundImage: string
+}
 
-const app = new Frog({
-  basePath: '/api',
-  headers: {},
-  ui: { vars },
-})
+const BillboardWithContent = ({
+  text,
+  imageSrc,
+  backgroundImage,
+}: BillboardWithContentProps) => {
+  let billboardContent = (
+    <Text color="background200" align="center" size="24" weight="700">
+      {text}
+    </Text>
+  )
 
-export const runtime = 'edge'
-
-app.frame('/ad-frame/:spaceId', async (c) => {
-  const { buttonValue } = c
-
-  const { spaceId } = c.req.param()
-
-  const metadata = await new AdLand().getAdSpaceMetadata(spaceId)
-
-  let imageAspectRatio: FrameAspectRatio = FrameAspectRatio.SQUARE
-  let intents: FrameIntent[] = []
-  let imageOptions: FrameResponse['imageOptions'] = {
-    height,
-    width: height,
+  if (imageSrc) {
+    billboardContent = (
+      <Image src={imageSrc} objectFit="cover" height="100%" width="100%" />
+    )
   }
-  let imageSrc = metadata?.imageGatewayURI ?? adPlaceholderURL
 
-  let image: (image_url: string) => string | JSX.Element = (
-    image_url: string,
-  ) => (
+  return (
     <Box
       grow
-      backgroundImage={`url(${image_url})`}
+      backgroundImage={`url(${backgroundImage})`}
       backgroundRepeat="no-repeat"
       backgroundSize={imageOptions.width + 'px ' + imageOptions.height + 'px'}
     >
@@ -54,11 +50,35 @@ app.frame('/ad-frame/:spaceId', async (c) => {
         height="billboard-height"
         alignVertical="center"
         alignHorizontal="center"
+        textAlign="center"
+        padding={text ? '20' : '0'}
       >
-        <Image src={imageSrc} objectFit="cover" height="100%" width="100%" />
+        {billboardContent}
       </Box>
     </Box>
   )
+}
+
+const app = new Frog({
+  basePath: '/api',
+  ui: { vars },
+})
+
+export const runtime = 'edge'
+
+/**
+ * AD FRAME
+ */
+app.frame('/ad-frame/:spaceId', async (c) => {
+  const { buttonValue } = c
+
+  const { spaceId } = c.req.param()
+
+  const metadata = await new AdLand().getAdSpaceMetadata(spaceId)
+
+  let imageAspectRatio: FrameAspectRatio = FrameAspectRatio.SQUARE
+  let intents: FrameIntent[] = []
+  let imageSrc = metadata?.imageGatewayURI ?? adPlaceholderURL
 
   if (buttonValue === 'learn-more') {
     intents.push(
@@ -72,14 +92,22 @@ app.frame('/ad-frame/:spaceId', async (c) => {
         </Button.Link>,
       )
     }
-    intents.push(
-      <Button value="distributor" action="/distributor">
-        Distribute
-      </Button>,
-    )
+
+    if (await distributionEnabled()) {
+      intents.push(
+        <Button value="distributor" action="/distributor">
+          Distribute
+        </Button>,
+      )
+    }
 
     return c.res({
-      image: image(learnMoreBillboardBackground),
+      image: (
+        <BillboardWithContent
+          backgroundImage={learnMoreBillboardBackground}
+          imageSrc={imageSrc}
+        />
+      ),
       imageAspectRatio,
       imageOptions,
       intents,
@@ -96,50 +124,57 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   })
 })
 
+/**
+ * DISTRIBUTOR: ADLAND SUBNAME FRAME
+ */
 app.frame('/distributor', async (c) => {
   const { buttonValue, inputText } = c
 
-  console.log('subname', { buttonValue, inputText })
+  let statement =
+    'Register your .adland.eth subname to become an official ad distributor'
+  let intents: FrameIntent[] = []
+  const submissionIntents = [
+    <TextInput key={'textInput'} placeholder="Pick you subname" />,
+    <Button key={'submitButton'} value="submit">
+      Submit
+    </Button>,
+  ]
 
-  let imageOptions: FrameResponse['imageOptions'] = {
-    height,
-    width: height,
+  if (buttonValue === 'submit') {
+    // check if the subname is available
+    const isAvailable = true
+    if (isAvailable) {
+      try {
+        // throw new Error('Subname registration failed')
+        statement = inputText + '.adland.eth registered successfully !'
+        intents = [
+          <Button key={'restart'} value="restart" action="/distributor">
+            Mint another
+          </Button>,
+          <Button.Link key={'link to etherscan'} href={'https://etherscan.io'}>
+            View on etherscan
+          </Button.Link>,
+        ]
+      } catch (error) {
+        statement = 'Subname registration failed 😔 Please try again'
+      }
+    } else {
+      statement = 'Subname is already taken. Please try again'
+    }
+  } else {
+    intents = submissionIntents
   }
 
-  let image: string | JSX.Element = (
-    <Box
-      grow
-      backgroundImage={`url(${distributorBillboardBackground})`}
-      backgroundRepeat="no-repeat"
-      backgroundSize={imageOptions.width + 'px ' + imageOptions.height + 'px'}
-    >
-      <Box
-        top="billboard-top"
-        left="billboard-left"
-        width="billboard-width"
-        height="billboard-height"
-        alignVertical="center"
-        alignHorizontal="center"
-        textAlign="center"
-        padding={'20'}
-      >
-        <Text color="background200" align="center" size="24" weight="700">
-          Register your .adland.eth subname to become an official distributor
-        </Text>
-      </Box>
-    </Box>
-  )
-
   return c.res({
-    image,
+    image: (
+      <BillboardWithContent
+        text={statement}
+        backgroundImage={distributorBillboardBackground}
+      />
+    ),
     imageAspectRatio: FrameAspectRatio.SQUARE,
     imageOptions,
-    intents: [
-      <TextInput key={'textInput'} placeholder="Pick you subname" />,
-      <Button key={'submitButton'} value="submit">
-        Submit
-      </Button>,
-    ],
+    intents,
   })
 })
 

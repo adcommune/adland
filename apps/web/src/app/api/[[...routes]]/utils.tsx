@@ -1,4 +1,5 @@
-import { frameAdPositions } from '@/config/frame'
+import { frameAdPositions, frameConfig } from '@/config/frame'
+import { FrameResponse } from 'frog'
 import { colors, createSystem, units } from 'frog/ui'
 
 const {
@@ -33,6 +34,13 @@ const {
     'billboard-height': frameAdPositions.default.height,
   },
 })
+
+const { height } = frameConfig
+
+export let imageOptions: NonNullable<FrameResponse['imageOptions']> = {
+  height,
+  width: height,
+}
 
 export {
   Box,
