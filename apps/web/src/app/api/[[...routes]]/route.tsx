@@ -23,6 +23,11 @@ const app = new Frog({
 
 export const runtime = 'edge'
 
+let imageOptions: FrameResponse['imageOptions'] = {
+  height,
+  width: height,
+}
+
 app.frame('/ad-frame/:spaceId', async (c) => {
   const { buttonValue } = c
 
@@ -32,10 +37,6 @@ app.frame('/ad-frame/:spaceId', async (c) => {
 
   let imageAspectRatio: FrameAspectRatio = FrameAspectRatio.SQUARE
   let intents: FrameIntent[] = []
-  let imageOptions: FrameResponse['imageOptions'] = {
-    height,
-    width: height,
-  }
   let imageSrc = metadata?.imageGatewayURI ?? adPlaceholderURL
 
   let image: (image_url: string) => string | JSX.Element = (
@@ -99,11 +100,39 @@ app.frame('/ad-frame/:spaceId', async (c) => {
 app.frame('/distributor', async (c) => {
   const { buttonValue, inputText } = c
 
-  console.log('subname', { buttonValue, inputText })
+  let statement =
+    'Register your .adland.eth subname to become an official ad distributor'
+  let intents: FrameIntent[] = []
+  const submissionIntents = [
+    <TextInput key={'textInput'} placeholder="Pick you subname" />,
+    <Button key={'submitButton'} value="submit">
+      Submit
+    </Button>,
+  ]
 
-  let imageOptions: FrameResponse['imageOptions'] = {
-    height,
-    width: height,
+  if (buttonValue === 'submit') {
+    // check if the subname is available
+    const isAvailable = true
+    if (isAvailable) {
+      try {
+        // throw new Error('Subname registration failed')
+        statement = inputText + '.adland.eth registered successfully !'
+        intents = [
+          <Button value="restart" action="/distributor">
+            Mint another
+          </Button>,
+          <Button.Link href={'https://etherscan.io'}>
+            View on etherscan
+          </Button.Link>,
+        ]
+      } catch (error) {
+        statement = 'Subname registration failed 😔 Please try again'
+      }
+    } else {
+      statement = 'Subname is already taken. Please try again'
+    }
+  } else {
+    intents = submissionIntents
   }
 
   let image: string | JSX.Element = (
@@ -124,7 +153,7 @@ app.frame('/distributor', async (c) => {
         padding={'20'}
       >
         <Text color="background200" align="center" size="24" weight="700">
-          Register your .adland.eth subname to become an official distributor
+          {statement}
         </Text>
       </Box>
     </Box>
@@ -134,12 +163,7 @@ app.frame('/distributor', async (c) => {
     image,
     imageAspectRatio: FrameAspectRatio.SQUARE,
     imageOptions,
-    intents: [
-      <TextInput key={'textInput'} placeholder="Pick you subname" />,
-      <Button key={'submitButton'} value="submit">
-        Submit
-      </Button>,
-    ],
+    intents,
   })
 })
 
