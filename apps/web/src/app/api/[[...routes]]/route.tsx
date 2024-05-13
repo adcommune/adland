@@ -5,12 +5,13 @@ import { handle } from 'frog/next'
 import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
 import { FrameAspectRatio, adPlaceholderURL, baseURL } from '@/config/constants'
-import { Box, Image, frameConfig, vars, Text } from './utils'
+import { Box, Image, vars, Text } from './utils'
 import { AdLand } from '@/lib/adland'
-
-const learnMoreBillboardBackground = 'https://i.imgur.com/jABvz51.jpg'
-const squareBillboardBackground = 'https://i.imgur.com/vvNJpNf.jpg'
-const distributorBillboardBackground = 'https://i.imgur.com/FoJusWv.jpg'
+import {
+  distributorBillboardBackground,
+  frameConfig,
+  learnMoreBillboardBackground,
+} from '@/config/frame'
 
 const { maxAge, height } = frameConfig
 
@@ -53,7 +54,6 @@ app.frame('/ad-frame/:spaceId', async (c) => {
         height="billboard-height"
         alignVertical="center"
         alignHorizontal="center"
-        // overflow="hidden"
       >
         <Image src={imageSrc} objectFit="cover" height="100%" width="100%" />
       </Box>
@@ -89,13 +89,15 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   )
 
   return c.res({
-    image: image(squareBillboardBackground),
+    // initial dynamic ad frame
+    image: baseURL + '/api/billboard/' + spaceId,
     imageAspectRatio,
-    imageOptions,
-    intents,
-    headers: {
-      'Cache-Control': 'public, max-age=' + maxAge,
+    imageOptions: {
+      headers: {
+        'Cache-Control': 'public, max-age=' + maxAge,
+      },
     },
+    intents,
   })
 })
 
@@ -119,10 +121,10 @@ app.frame('/distributor', async (c) => {
       backgroundSize={imageOptions.width + 'px ' + imageOptions.height + 'px'}
     >
       <Box
-        top="distributor-billboard-top"
-        left="distributor-billboard-left"
-        width="distributor-billboard-width"
-        height="distributor-billboard-height"
+        top="billboard-top"
+        left="billboard-left"
+        width="billboard-width"
+        height="billboard-height"
         alignVertical="center"
         alignHorizontal="center"
         textAlign="center"

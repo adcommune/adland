@@ -1,39 +1,25 @@
-import { FrameAspectRatio } from '@/config/constants'
-
-const initialWidth = 500
-
 type BillboardSettings = {
-  top: number
-  left: number
+  billboardTop: number
+  billboardLeft: number
   billboardWith: number
   billboardHeight: number
 }
 
-const billboardSettings: Record<FrameAspectRatio, BillboardSettings> = {
-  '1.91:1': {
-    top: 27,
-    left: 30,
-    billboardWith: 385,
-    billboardHeight: 200,
+const applyRatios = (
+  ratios: {
+    top: number
+    left: number
+    width: number
+    height: number
   },
-  '1:1': {
-    top: 113,
-    left: 25,
-    billboardWith: 445,
-    billboardHeight: 220,
-  },
-}
-
-const applyMultiplier = (
-  settings: BillboardSettings,
-  multiplier: number,
+  width: number,
 ): BillboardSettings => {
   return {
-    top: Math.round(settings.top * multiplier),
-    left: Math.round(settings.left * multiplier),
-    billboardWith: Math.round(settings.billboardWith * multiplier),
-    billboardHeight: Math.round(settings.billboardHeight * multiplier),
+    billboardTop: ratios.top * width,
+    billboardLeft: ratios.left * width,
+    billboardWith: ratios.width * width,
+    billboardHeight: ratios.height * width,
   }
 }
 
-export { initialWidth, billboardSettings, applyMultiplier }
+export { applyRatios }
