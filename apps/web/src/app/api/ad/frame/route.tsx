@@ -60,7 +60,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     {
       label: 'Buy this ad space',
       action: 'link',
-      target: `${baseURL}/group/${adSpaceSubgraph.adGroup.id}/${spaceId}`,
+      target: `${baseURL}/ad/${spaceId}`,
     },
   ]
 

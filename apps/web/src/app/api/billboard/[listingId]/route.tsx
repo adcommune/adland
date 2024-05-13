@@ -1,54 +1,37 @@
 import { NextRequest } from 'next/server'
-import { FrameAspectRatio, noAdFrameImageCID } from '@/config/constants'
+import { noAdFrameImageCID } from '@/config/constants'
 import { ImageResponse } from '@vercel/og'
 import { AdLand } from '@/lib/adland'
-import { applyMultiplier, billboardSettings, initialWidth } from './utils'
-import {
-  rectangleBillboardBackground,
-  squareBillboardBackground,
-} from './assets'
 import { constants } from '@adland/common'
+import {
+  frameAdPositions,
+  frameConfig,
+  squareBillboardBackground,
+} from '@/config/frame'
+import { applyRatios } from './utils'
 
 type GetAdsRouteParams = { params: { listingId: string } }
 export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
   const metadata = await new AdLand().getAdSpaceMetadata(params.listingId)
 
-  /**
-   * Constants
-   */
-  const multiplier = 1.3
-
   let imageResponse
-  let width = initialWidth * multiplier
-  let height
-  let background
+  let frameHeight = frameConfig.height
+  let frameWidth = frameConfig.height
 
-  height = width
-  background = squareBillboardBackground
   if (metadata) {
-    const aspect_ratio = metadata.aspect_ratio as FrameAspectRatio
-
-    /**
-     * Set height based on aspect ratio
-     */
-    if (metadata.aspect_ratio === FrameAspectRatio.RECTANGLE) {
-      height = Math.round(width / 1.91)
-      background = rectangleBillboardBackground
-    }
-
-    /**
-     * Billboard position settings
-     */
-    const { top, left, billboardWith, billboardHeight } = applyMultiplier(
-      billboardSettings[aspect_ratio],
-      multiplier,
-    )
+    const { billboardTop, billboardLeft, billboardHeight, billboardWith } =
+      applyRatios(frameAdPositions.default, frameWidth)
 
     if (metadata.imageGatewayURI) {
       imageResponse = new ImageResponse(
         (
           <div
-            style={{ display: 'flex', width, height, backgroundColor: 'black' }}
+            style={{
+              display: 'flex',
+              width: frameWidth,
+              height: frameHeight,
+              backgroundColor: 'black',
+            }}
           >
             <div
               style={{
@@ -56,17 +39,17 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
                 position: 'relative',
                 width: '100%',
                 height: '100%',
-                backgroundImage: `url(${background})`,
+                backgroundImage: `url(${squareBillboardBackground})`,
                 backgroundRepeat: 'no-repeat',
-                backgroundSize: `${width}px ${height}px`,
+                backgroundSize: `${frameWidth}px ${frameHeight}px`,
               }}
             >
               <div
                 style={{
                   display: 'flex',
                   position: 'absolute',
-                  top: `${top}px`,
-                  left: `${left}px`,
+                  top: `${billboardTop}px`,
+                  left: `${billboardLeft}px`,
                   width: `${billboardWith}px`,
                   height: `${billboardHeight}px`,
                 }}
@@ -77,7 +60,7 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
                     display: 'flex',
                     width: `${billboardWith}px`,
                     height: `${billboardHeight}px`,
-                    objectFit: 'contain',
+                    objectFit: 'cover',
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   }}
                 />
@@ -86,8 +69,8 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
           </div>
         ),
         {
-          width,
-          height,
+          width: frameWidth,
+          height: frameHeight,
         },
       )
     }
@@ -99,8 +82,8 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
         <div
           style={{
             display: 'flex',
-            width,
-            height,
+            width: frameWidth,
+            height: frameHeight,
             backgroundColor: 'black',
           }}
         >
@@ -108,21 +91,21 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
             src={plaholderImage}
             style={{
               display: 'flex',
-              width,
-              height,
+              width: frameWidth,
+              height: frameHeight,
               objectFit: 'contain',
             }}
           />
         </div>
       ),
       {
-        width,
-        height,
+        width: frameWidth,
+        height: frameHeight,
       },
     )
   }
 
-  const max_age = 5 * 60 // 5 minutes
+  const max_age = frameConfig.initialFrameImageMaxAge
 
   imageResponse?.headers.set('Cache-Control', 'public, max-age=' + max_age)
 

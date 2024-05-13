@@ -25,6 +25,9 @@
       "persistent": true,
       "dependsOn": ["^build"]
     },
+    "frog": {
+      "cache": false
+    },
     "clean": {
       "cache": false
     },

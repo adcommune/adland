@@ -11,7 +11,7 @@ export class AdLand {
   private adland: ReturnType<typeof getAdLand>
 
   constructor() {
-    this.adland = getAdLand(new GraphQLClient(constants.subgraphUrl))
+    this.adland = getAdLand(new GraphQLClient(constants.subgraphUrl, { fetch }))
   }
 
   async listGroups(): Promise<AdGroup[]> {
@@ -76,6 +76,22 @@ export class AdLand {
         ),
       }
     }
+  }
+
+  async getGoupBySpaceId(spaceId: string): Promise<AdGroup | undefined> {
+    const groupId = await this.adland
+      .adSpace({
+        id: spaceId,
+      })
+      .then((response) => {
+        return response.adSpace?.adGroup.id
+      })
+
+    if (!groupId) {
+      return undefined
+    }
+
+    return this.getGroup(groupId)
   }
 
   async getAdSpace(id: string): Promise<AdSpace> {
