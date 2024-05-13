@@ -1,6 +1,6 @@
 /** @jsxImportSource frog/jsx */
 
-import { Button, FrameIntent, Frog, TextInput } from 'frog'
+import { Button, FrameIntent, FrameResponse, Frog, TextInput } from 'frog'
 import { handle } from 'frog/next'
 import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
@@ -13,7 +13,7 @@ import {
   learnMoreBillboardBackground,
 } from '@/config/frame'
 
-const { maxAge, height } = frameConfig
+const { height } = frameConfig
 
 const app = new Frog({
   basePath: '/api',
@@ -32,11 +32,7 @@ app.frame('/ad-frame/:spaceId', async (c) => {
 
   let imageAspectRatio: FrameAspectRatio = FrameAspectRatio.SQUARE
   let intents: FrameIntent[] = []
-  let imageOptions: {
-    width: number
-    height: number
-    headers?: Record<string, string>
-  } = {
+  let imageOptions: FrameResponse['imageOptions'] = {
     height,
     width: height,
   }
@@ -92,13 +88,8 @@ app.frame('/ad-frame/:spaceId', async (c) => {
 
   intents.push(<Button value="learn-more">Learn more</Button>)
 
-  imageOptions.headers = {
-    'Cache-Control': 'public, max-age=' + maxAge,
-  }
-
   return c.res({
-    // initial dynamic ad frame
-    image: baseURL + '/api/billboard/' + spaceId,
+    image: baseURL + '/api/billboard/' + spaceId + '?date=' + Date.now(),
     imageAspectRatio,
     imageOptions,
     intents,
@@ -110,12 +101,10 @@ app.frame('/distributor', async (c) => {
 
   console.log('subname', { buttonValue, inputText })
 
-  let imageOptions: { width: number; height: number } = {
+  let imageOptions: FrameResponse['imageOptions'] = {
     height,
     width: height,
   }
-
-  // if()
 
   let image: string | JSX.Element = (
     <Box
