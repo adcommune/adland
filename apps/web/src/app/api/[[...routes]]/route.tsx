@@ -11,16 +11,19 @@ import {
   distributorBillboardBackground,
   learnMoreBillboardBackground,
 } from '@/config/frame'
+import { distributionEnabled } from './env'
+
+type BillboardWithContentProps = {
+  text?: string
+  imageSrc?: string
+  backgroundImage: string
+}
 
 export const BillboardWithContent = ({
   text,
   imageSrc,
   backgroundImage,
-}: {
-  text?: string
-  imageSrc?: string
-  backgroundImage: string
-}) => {
+}: BillboardWithContentProps) => {
   let billboardContent = (
     <Text color="background200" align="center" size="24" weight="700">
       {text}
@@ -89,11 +92,14 @@ app.frame('/ad-frame/:spaceId', async (c) => {
         </Button.Link>,
       )
     }
-    // intents.push(
-    //   <Button value="distributor" action="/distributor">
-    //     Distribute
-    //   </Button>,
-    // )
+
+    if (await distributionEnabled()) {
+      intents.push(
+        <Button value="distributor" action="/distributor">
+          Distribute
+        </Button>,
+      )
+    }
 
     return c.res({
       image: (
@@ -142,10 +148,10 @@ app.frame('/distributor', async (c) => {
         // throw new Error('Subname registration failed')
         statement = inputText + '.adland.eth registered successfully !'
         intents = [
-          <Button value="restart" action="/distributor">
+          <Button key={'restart'} value="restart" action="/distributor">
             Mint another
           </Button>,
-          <Button.Link href={'https://etherscan.io'}>
+          <Button.Link key={'link to etherscan'} href={'https://etherscan.io'}>
             View on etherscan
           </Button.Link>,
         ]
