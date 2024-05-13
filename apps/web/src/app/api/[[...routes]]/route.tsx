@@ -19,7 +19,7 @@ type BillboardWithContentProps = {
   backgroundImage: string
 }
 
-export const BillboardWithContent = ({
+const BillboardWithContent = ({
   text,
   imageSrc,
   backgroundImage,
