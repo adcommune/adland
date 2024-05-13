@@ -12,60 +12,31 @@ import {
   learnMoreBillboardBackground,
 } from '@/config/frame'
 
-export const BillboardWithTextImage = ({
+export const BillboardWithContent = ({
   text,
+  imageSrc,
   backgroundImage,
 }: {
-  text: string
+  text?: string
+  imageSrc?: string
   backgroundImage: string
-}) => (
-  <Box
-    grow
-    backgroundImage={`url(${backgroundImage})`}
-    backgroundRepeat="no-repeat"
-    backgroundSize={imageOptions.width + 'px ' + imageOptions.height + 'px'}
-  >
-    <Box
-      top="billboard-top"
-      left="billboard-left"
-      width="billboard-width"
-      height="billboard-height"
-      alignVertical="center"
-      alignHorizontal="center"
-      textAlign="center"
-      padding={'20'}
-    >
-      <Text color="background200" align="center" size="24" weight="700">
-        {text}
-      </Text>
-    </Box>
-  </Box>
-)
+}) => {
+  let billboardContent = (
+    <Text color="background200" align="center" size="24" weight="700">
+      {text}
+    </Text>
+  )
 
-const app = new Frog({
-  basePath: '/api',
-  ui: { vars },
-})
+  if (imageSrc) {
+    billboardContent = (
+      <Image src={imageSrc} objectFit="cover" height="100%" width="100%" />
+    )
+  }
 
-export const runtime = 'edge'
-
-app.frame('/ad-frame/:spaceId', async (c) => {
-  const { buttonValue } = c
-
-  const { spaceId } = c.req.param()
-
-  const metadata = await new AdLand().getAdSpaceMetadata(spaceId)
-
-  let imageAspectRatio: FrameAspectRatio = FrameAspectRatio.SQUARE
-  let intents: FrameIntent[] = []
-  let imageSrc = metadata?.imageGatewayURI ?? adPlaceholderURL
-
-  let image: (image_url: string) => string | JSX.Element = (
-    image_url: string,
-  ) => (
+  return (
     <Box
       grow
-      backgroundImage={`url(${image_url})`}
+      backgroundImage={`url(${backgroundImage})`}
       backgroundRepeat="no-repeat"
       backgroundSize={imageOptions.width + 'px ' + imageOptions.height + 'px'}
     >
@@ -76,11 +47,35 @@ app.frame('/ad-frame/:spaceId', async (c) => {
         height="billboard-height"
         alignVertical="center"
         alignHorizontal="center"
+        textAlign="center"
+        padding={text ? '20' : '0'}
       >
-        <Image src={imageSrc} objectFit="cover" height="100%" width="100%" />
+        {billboardContent}
       </Box>
     </Box>
   )
+}
+
+const app = new Frog({
+  basePath: '/api',
+  ui: { vars },
+})
+
+export const runtime = 'edge'
+
+/**
+ * AD FRAME
+ */
+app.frame('/ad-frame/:spaceId', async (c) => {
+  const { buttonValue } = c
+
+  const { spaceId } = c.req.param()
+
+  const metadata = await new AdLand().getAdSpaceMetadata(spaceId)
+
+  let imageAspectRatio: FrameAspectRatio = FrameAspectRatio.SQUARE
+  let intents: FrameIntent[] = []
+  let imageSrc = metadata?.imageGatewayURI ?? adPlaceholderURL
 
   if (buttonValue === 'learn-more') {
     intents.push(
@@ -94,14 +89,19 @@ app.frame('/ad-frame/:spaceId', async (c) => {
         </Button.Link>,
       )
     }
-    intents.push(
-      <Button value="distributor" action="/distributor">
-        Distribute
-      </Button>,
-    )
+    // intents.push(
+    //   <Button value="distributor" action="/distributor">
+    //     Distribute
+    //   </Button>,
+    // )
 
     return c.res({
-      image: image(learnMoreBillboardBackground),
+      image: (
+        <BillboardWithContent
+          backgroundImage={learnMoreBillboardBackground}
+          imageSrc={imageSrc}
+        />
+      ),
       imageAspectRatio,
       imageOptions,
       intents,
@@ -118,6 +118,9 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   })
 })
 
+/**
+ * DISTRIBUTOR: ADLAND SUBNAME FRAME
+ */
 app.frame('/distributor', async (c) => {
   const { buttonValue, inputText } = c
 
@@ -158,7 +161,7 @@ app.frame('/distributor', async (c) => {
 
   return c.res({
     image: (
-      <BillboardWithTextImage
+      <BillboardWithContent
         text={statement}
         backgroundImage={distributorBillboardBackground}
       />
