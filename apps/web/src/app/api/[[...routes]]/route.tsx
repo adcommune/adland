@@ -9,6 +9,7 @@ import { Box, Image, vars, imageOptions, Text } from './utils'
 import { AdLand } from '@/lib/adland'
 import {
   distributorBillboardBackground,
+  frameConfig,
   learnMoreBillboardBackground,
 } from '@/config/frame'
 import { distributionEnabled } from './env'
@@ -119,7 +120,13 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   return c.res({
     image: baseURL + '/api/billboard/' + spaceId + '?date=' + Date.now(),
     imageAspectRatio,
-    imageOptions,
+    imageOptions: {
+      ...imageOptions,
+      headers: {
+        'Cache-Control':
+          'public, max-age=' + frameConfig.initialFrameImageMaxAge,
+      },
+    },
     intents,
   })
 })
