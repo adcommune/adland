@@ -108,6 +108,7 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
   const max_age = frameConfig.initialFrameImageMaxAge
 
   imageResponse?.headers.set('Cache-Control', 'public, max-age=' + max_age)
+  imageResponse?.headers.set('cache-control', 'public, max-age=' + max_age)
 
   return imageResponse
 }

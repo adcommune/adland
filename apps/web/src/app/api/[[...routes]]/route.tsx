@@ -127,6 +127,8 @@ app.frame('/ad-frame/:spaceId', async (c) => {
       headers: {
         'Cache-Control':
           'public, max-age=' + frameConfig.initialFrameImageMaxAge,
+        'cache-control':
+          'public, max-age=' + frameConfig.initialFrameImageMaxAge,
       },
     },
     intents,
