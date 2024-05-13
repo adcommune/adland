@@ -1,32 +1,53 @@
 /** @jsxImportSource frog/jsx */
 
-import { Button, FrameIntent, FrameResponse, Frog, TextInput } from 'frog'
+import { Button, FrameIntent, Frog, TextInput } from 'frog'
 import { handle } from 'frog/next'
 import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
 import { FrameAspectRatio, adPlaceholderURL, baseURL } from '@/config/constants'
-import { Box, Image, vars, Text } from './utils'
+import { Box, Image, vars, imageOptions, Text } from './utils'
 import { AdLand } from '@/lib/adland'
 import {
   distributorBillboardBackground,
-  frameConfig,
   learnMoreBillboardBackground,
 } from '@/config/frame'
 
-const { height } = frameConfig
+export const BillboardWithTextImage = ({
+  text,
+  backgroundImage,
+}: {
+  text: string
+  backgroundImage: string
+}) => (
+  <Box
+    grow
+    backgroundImage={`url(${backgroundImage})`}
+    backgroundRepeat="no-repeat"
+    backgroundSize={imageOptions.width + 'px ' + imageOptions.height + 'px'}
+  >
+    <Box
+      top="billboard-top"
+      left="billboard-left"
+      width="billboard-width"
+      height="billboard-height"
+      alignVertical="center"
+      alignHorizontal="center"
+      textAlign="center"
+      padding={'20'}
+    >
+      <Text color="background200" align="center" size="24" weight="700">
+        {text}
+      </Text>
+    </Box>
+  </Box>
+)
 
 const app = new Frog({
   basePath: '/api',
-  headers: {},
   ui: { vars },
 })
 
 export const runtime = 'edge'
-
-let imageOptions: FrameResponse['imageOptions'] = {
-  height,
-  width: height,
-}
 
 app.frame('/ad-frame/:spaceId', async (c) => {
   const { buttonValue } = c
@@ -135,32 +156,13 @@ app.frame('/distributor', async (c) => {
     intents = submissionIntents
   }
 
-  let image: string | JSX.Element = (
-    <Box
-      grow
-      backgroundImage={`url(${distributorBillboardBackground})`}
-      backgroundRepeat="no-repeat"
-      backgroundSize={imageOptions.width + 'px ' + imageOptions.height + 'px'}
-    >
-      <Box
-        top="billboard-top"
-        left="billboard-left"
-        width="billboard-width"
-        height="billboard-height"
-        alignVertical="center"
-        alignHorizontal="center"
-        textAlign="center"
-        padding={'20'}
-      >
-        <Text color="background200" align="center" size="24" weight="700">
-          {statement}
-        </Text>
-      </Box>
-    </Box>
-  )
-
   return c.res({
-    image,
+    image: (
+      <BillboardWithTextImage
+        text={statement}
+        backgroundImage={distributorBillboardBackground}
+      />
+    ),
     imageAspectRatio: FrameAspectRatio.SQUARE,
     imageOptions,
     intents,
