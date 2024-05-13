@@ -32,7 +32,11 @@ app.frame('/ad-frame/:spaceId', async (c) => {
 
   let imageAspectRatio: FrameAspectRatio = FrameAspectRatio.SQUARE
   let intents: FrameIntent[] = []
-  let imageOptions: { width: number; height: number } = {
+  let imageOptions: {
+    width: number
+    height: number
+    headers?: Record<string, string>
+  } = {
     height,
     width: height,
   }
@@ -72,6 +76,11 @@ app.frame('/ad-frame/:spaceId', async (c) => {
         </Button.Link>,
       )
     }
+    intents.push(
+      <Button value="distributor" action="/distributor">
+        Distribute
+      </Button>,
+    )
 
     return c.res({
       image: image(learnMoreBillboardBackground),
@@ -82,21 +91,16 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   }
 
   intents.push(<Button value="learn-more">Learn more</Button>)
-  intents.push(
-    <Button value="distributor" action="/distributor">
-      Distributor
-    </Button>,
-  )
+
+  imageOptions.headers = {
+    'Cache-Control': 'public, max-age=' + maxAge,
+  }
 
   return c.res({
     // initial dynamic ad frame
     image: baseURL + '/api/billboard/' + spaceId,
     imageAspectRatio,
-    imageOptions: {
-      headers: {
-        'Cache-Control': 'public, max-age=' + maxAge,
-      },
-    },
+    imageOptions,
     intents,
   })
 })

@@ -14,11 +14,6 @@ type GetAdsRouteParams = { params: { listingId: string } }
 export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
   const metadata = await new AdLand().getAdSpaceMetadata(params.listingId)
 
-  /**
-   * Constants
-   */
-  const multiplier = 1.3
-
   let imageResponse
   let frameHeight = frameConfig.height
   let frameWidth = frameConfig.height
@@ -46,7 +41,7 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
                 height: '100%',
                 backgroundImage: `url(${squareBillboardBackground})`,
                 backgroundRepeat: 'no-repeat',
-                backgroundSize: `${billboardWith}px ${billboardHeight}px`,
+                backgroundSize: `${frameWidth}px ${frameHeight}px`,
               }}
             >
               <div
