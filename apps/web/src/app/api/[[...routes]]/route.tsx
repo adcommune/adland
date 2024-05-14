@@ -9,7 +9,6 @@ import { Box, Image, vars, imageOptions, Text } from './utils'
 import { AdLand } from '@/lib/adland'
 import {
   distributorBillboardBackground,
-  frameConfig,
   learnMoreBillboardBackground,
 } from '@/config/frame'
 import { distributionEnabled } from './env'
@@ -73,8 +72,6 @@ export const dynamic = 'force-dynamic'
  * AD FRAME
  */
 app.frame('/ad-frame/:spaceId', async (c) => {
-  const { buttonValue } = c
-
   const { spaceId } = c.req.param()
 
   const metadata = await new AdLand().getAdSpaceMetadata(spaceId)
@@ -83,56 +80,56 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   let intents: FrameIntent[] = []
   let imageSrc = metadata?.imageGatewayURI ?? adPlaceholderURL
 
-  if (buttonValue === 'learn-more') {
+  // if (buttonValue === 'learn-more') {
+  intents.push(
+    <Button.Link href={baseURL + '/ad/' + spaceId}>Your ad here</Button.Link>,
+  )
+
+  if (metadata?.external_url) {
     intents.push(
-      <Button.Link href={baseURL + '/ad/' + spaceId}>Your ad here</Button.Link>,
+      <Button.Link href={metadata.external_url}>
+        {metadata?.description}
+      </Button.Link>,
     )
-
-    if (metadata?.external_url) {
-      intents.push(
-        <Button.Link href={metadata.external_url}>
-          {metadata?.description}
-        </Button.Link>,
-      )
-    }
-
-    if (await distributionEnabled()) {
-      intents.push(
-        <Button value="distributor" action="/distributor">
-          Distribute
-        </Button>,
-      )
-    }
-
-    return c.res({
-      image: (
-        <BillboardWithContent
-          backgroundImage={learnMoreBillboardBackground}
-          imageSrc={imageSrc}
-        />
-      ),
-      imageAspectRatio,
-      imageOptions,
-      intents,
-    })
   }
 
-  intents.push(<Button value="learn-more">Learn more</Button>)
+  if (await distributionEnabled()) {
+    intents.push(
+      <Button value="distributor" action="/distributor">
+        Distribute
+      </Button>,
+    )
+  }
 
   return c.res({
-    image: baseURL + '/api/billboard/' + spaceId + '?date=' + Date.now(),
+    image: (
+      <BillboardWithContent
+        backgroundImage={learnMoreBillboardBackground}
+        imageSrc={imageSrc}
+      />
+    ),
     imageAspectRatio,
-    imageOptions: {
-      ...imageOptions,
-      headers: {
-        'Cache-Control':
-          'public, max-age=' + frameConfig.initialFrameImageMaxAge,
-        'cache-control':
-          'public, max-age=' + frameConfig.initialFrameImageMaxAge,
-      },
-    },
+    imageOptions,
     intents,
   })
+  // }
+
+  // intents.push(<Button value="learn-more">Learn more</Button>)
+
+  // return c.res({
+  //   image: baseURL + '/api/billboard/' + spaceId + '?date=' + Date.now(),
+  //   imageAspectRatio,
+  //   imageOptions: {
+  //     ...imageOptions,
+  //     headers: {
+  //       'Cache-Control':
+  //         'public, max-age=' + frameConfig.initialFrameImageMaxAge,
+  //       'cache-control':
+  //         'public, max-age=' + frameConfig.initialFrameImageMaxAge,
+  //     },
+  //   },
+  //   intents,
+  // })
 })
 
 /**

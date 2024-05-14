@@ -236,7 +236,7 @@ importers:
         version: 3.6.0
       frog:
         specifier: ^0.9.3
-        version: 0.9.3(@types/node@20.12.5)(bufferutil@4.0.8)(hono@4.3.4)(terser@5.30.3)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)
+        version: 0.9.4(@types/node@20.12.5)(bufferutil@4.0.8)(hono@4.3.4)(terser@5.30.3)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)
       graphql-request:
         specifier: ^6.1.0
         version: 6.1.0(encoding@0.1.13)(graphql@16.8.1)
@@ -1984,8 +1984,8 @@ packages:
     resolution: {integrity: sha512-XBru0xbtRlTZJyAiFJLn7XDKbCVXBaRhVQAQhB9TwND2gwj8jf9SDWIj/7VxVtNAjURJf7Ofcz58DRA6DPYiWA==}
     engines: {node: '>=18.14.1'}
 
-  '@hono/valibot-validator@0.2.4':
-    resolution: {integrity: sha512-R15tfgKguSZZKDaUH4sMDY7HgMwcBcM1hdu2rDS3g4gJa0RVjhCIXxi0i8GZQSxdobj/ZzzU9CaY3h/VaxX3ag==}
+  '@hono/valibot-validator@0.2.5':
+    resolution: {integrity: sha512-3XWssyNMiMKfsbHHpS3ykUWbIJlfdVML+io7MOr0IQ8VFf9cHdijw8jEaYPh92B3MxfFByOUPe/nY52JRq3VuQ==}
     peerDependencies:
       hono: '>=3.9.0'
       valibot: '>=0.13.1 <1'
@@ -5844,8 +5844,8 @@ packages:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
 
-  frog@0.9.3:
-    resolution: {integrity: sha512-b3AjTqq3zX3we6QUw4kqms0E2Uy24XRlOmxj3CS7guYIOvzDGuK65tI2CZrgFWDDQZxPhpJnY+54jh1ikSsTsg==}
+  frog@0.9.4:
+    resolution: {integrity: sha512-EpU7uPerg2AkBcGu0QsAcMGoKk+3GWEBBUYeF1lv/epjtKMvOz157MiaKMIvvlQqo7rGVkNBYz/q8giXiiFG/A==}
     hasBin: true
     peerDependencies:
       hono: ^4
@@ -11193,17 +11193,17 @@ snapshots:
 
   '@emotion/memoize@0.8.1': {}
 
-  '@emotion/react@11.11.4(@types/react@18.2.74)(react@18.3.1)':
+  '@emotion/react@11.11.4(@types/react@18.2.74)(react@18.2.0)':
     dependencies:
       '@babel/runtime': 7.24.4
       '@emotion/babel-plugin': 11.11.0
       '@emotion/cache': 11.11.0
       '@emotion/serialize': 1.1.4
-      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.3.1)
+      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
       '@emotion/utils': 1.2.1
       '@emotion/weak-memoize': 0.3.1
       hoist-non-react-statics: 3.3.2
-      react: 18.3.1
+      react: 18.2.0
     optionalDependencies:
       '@types/react': 18.2.74
 
@@ -11222,7 +11222,7 @@ snapshots:
       '@babel/runtime': 7.24.4
       '@emotion/babel-plugin': 11.11.0
       '@emotion/is-prop-valid': 1.2.2
-      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.3.1)
+      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.2.0)
       '@emotion/serialize': 1.1.4
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.3.1)
       '@emotion/utils': 1.2.1
@@ -11235,6 +11235,10 @@ snapshots:
   '@emotion/unitless@0.7.5': {}
 
   '@emotion/unitless@0.8.1': {}
+
+  '@emotion/use-insertion-effect-with-fallbacks@1.0.1(react@18.2.0)':
+    dependencies:
+      react: 18.2.0
 
   '@emotion/use-insertion-effect-with-fallbacks@1.0.1(react@18.3.1)':
     dependencies:
@@ -12257,7 +12261,7 @@ snapshots:
 
   '@hono/node-server@1.9.1': {}
 
-  '@hono/valibot-validator@0.2.4(hono@4.3.4)(valibot@0.30.0)':
+  '@hono/valibot-validator@0.2.5(hono@4.3.4)(valibot@0.30.0)':
     dependencies:
       hono: 4.3.4
       valibot: 0.30.0
@@ -12599,7 +12603,7 @@ snapshots:
 
   '@metamask/sdk-install-modal-web@0.14.1(@types/react@18.2.74)(react-native@0.73.6(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@6.0.3))':
     dependencies:
-      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.3.1)
+      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.2.0)
       '@emotion/styled': 11.11.5(@emotion/react@11.11.4(@types/react@18.2.74)(react@18.3.1))(@types/react@18.2.74)(react@18.3.1)
       i18next: 22.5.1
       qr-code-styling: 1.6.0-rc.1
@@ -17080,7 +17084,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0)
       hasown: 2.0.2
       is-core-module: 2.13.1
       is-glob: 4.0.3
@@ -17669,11 +17673,11 @@ snapshots:
 
   fresh@0.5.2: {}
 
-  frog@0.9.3(@types/node@20.12.5)(bufferutil@4.0.8)(hono@4.3.4)(terser@5.30.3)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4):
+  frog@0.9.4(@types/node@20.12.5)(bufferutil@4.0.8)(hono@4.3.4)(terser@5.30.3)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4):
     dependencies:
       '@bufbuild/protobuf': 1.9.0
       '@hono/node-server': 1.9.1
-      '@hono/valibot-validator': 0.2.4(hono@4.3.4)(valibot@0.30.0)
+      '@hono/valibot-validator': 0.2.5(hono@4.3.4)(valibot@0.30.0)
       '@noble/curves': 1.3.0
       '@noble/hashes': 1.4.0
       cac: 6.7.14
