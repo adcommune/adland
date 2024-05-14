@@ -1,12 +1,11 @@
 import AdGroupHeader from '@/components/AdGroup/AdGroupHeader'
 import { Container } from '@/components/Container'
-import { baseURL } from '@/config/constants'
+import { FrameAspectRatio, baseURL } from '@/config/constants'
 import useAppContracts from '@/hooks/useAppContracts'
 import { AdLand } from '@/lib/adland'
 import { StandartNFTMetadata as HeyCardMetadata } from '@/lib/hey'
 import { constants } from '@adland/common'
-import { getFrameMetadata } from 'frog/next'
-import { Metadata } from 'next'
+import { FrameMetadata } from '@coinbase/onchainkit'
 
 type AdSpacePageLayoutProps = {
   children: React.ReactNode
@@ -14,16 +13,7 @@ type AdSpacePageLayoutProps = {
 }
 
 export const dynamic = 'force-dynamic'
-export async function generateMetadata({
-  params: { spaceId },
-}: AdSpacePageLayoutProps): Promise<Metadata> {
-  const frameURL = `${baseURL}/api/ad-frame/` + spaceId
-  const frameMetadata = await getFrameMetadata(frameURL)
 
-  return {
-    other: frameMetadata,
-  }
-}
 const AdSpacePageLayout = async ({
   children,
   params: { spaceId },
@@ -31,9 +21,25 @@ const AdSpacePageLayout = async ({
   const adGroup = await new AdLand().getGoupBySpaceId(spaceId)
   const { adCommonOwnership } = useAppContracts()
 
+  const postURL = `${baseURL}/api/ad-frame/${spaceId}`
+  const dynamicBillboardURL = `${baseURL}/api/billboard/${spaceId}?time=${Date.now()}`
+
   return (
     <Container className="flex flex-col gap-2 p-4">
       {adGroup && <AdGroupHeader adGroup={adGroup} />}
+      <FrameMetadata
+        buttons={[
+          {
+            label: 'Learn More',
+            target: postURL,
+          },
+        ]}
+        postUrl={postURL}
+        image={{
+          src: dynamicBillboardURL,
+          aspectRatio: FrameAspectRatio.SQUARE,
+        }}
+      />
       <HeyCardMetadata
         {...{
           chain: constants.chain.name,
