@@ -7,6 +7,8 @@ type GroupPageLayoutProps = {
   params: { id: string }
 }
 
+export const dynamic = 'force-dynamic'
+
 const GroupPageLayout = async ({
   children,
   params: { id },
