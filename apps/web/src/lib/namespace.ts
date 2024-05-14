@@ -1,22 +1,47 @@
 export class Namespace {
-  base_url = 'https://offchain.namespace.tech/v1'
+  base_url = 'https://offchain-mainnet.namespace.tech/v1'
   domain: string
 
   constructor(domain: string) {
     this.domain = domain
   }
 
-  async checkAvailability(name: string): Promise<{ isAvailable: boolean }> {
-    return this.callNamespace(`/subname/availability/${name}/${this.domain}`)
+  async createSubname({ name, address }: { name: string; address: string }) {
+    return this.post(`/subname/mint`, {
+      label: name,
+      address,
+      domain: this.domain,
+    }).then((res) => {
+      if (res.error) {
+        console.error(res)
+        throw new Error(res.error)
+      }
+      return res
+    })
   }
 
-  private async callNamespace(path: string) {
+  async checkAvailability(name: string): Promise<{ isAvailable: boolean }> {
+    return this.get(`/subname/availability/${name}/${this.domain}`)
+  }
+
+  private async get(path: string) {
     return fetch(`${this.base_url}${path}`, {
       headers: {
         Authorization: `Bearer ${process.env.NAMESPACE_API_KEY}`,
         'Content-Type': 'application/json',
       },
       method: 'GET',
+    }).then((res) => res.json())
+  }
+
+  private async post(path: string, body: Record<string, any>) {
+    return fetch(`${this.base_url}${path}`, {
+      headers: {
+        Authorization: `Bearer ${process.env.NAMESPACE_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(body),
     }).then((res) => res.json())
   }
 }

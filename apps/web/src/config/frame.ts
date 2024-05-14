@@ -25,3 +25,5 @@ export const frameConfig = {
 export const squareBillboardBackground = 'https://i.imgur.com/vvNJpNf.jpg'
 export const learnMoreBillboardBackground = 'https://i.imgur.com/jABvz51.jpg'
 export const distributorBillboardBackground = 'https://i.imgur.com/FoJusWv.jpg'
+export const successDistributorBillboardBackground =
+  'https://i.imgur.com/Hl6vkzW.jpg'
