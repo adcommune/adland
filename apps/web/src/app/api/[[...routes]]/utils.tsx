@@ -23,6 +23,11 @@ const {
         weight: 400,
         source: 'google',
       },
+      {
+        name: 'Montserrat',
+        weight: 700,
+        source: 'google',
+      },
     ],
   },
   colors: colors.light,
