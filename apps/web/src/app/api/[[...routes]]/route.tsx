@@ -12,6 +12,7 @@ import {
   learnMoreBillboardBackground,
 } from '@/config/frame'
 import { distributionEnabled } from './env'
+import { Namespace } from '@/lib/namespace'
 
 type BillboardWithContentProps = {
   text?: string
@@ -136,6 +137,8 @@ app.frame('/ad-frame/:spaceId', async (c) => {
 app.frame('/distributor', async (c) => {
   const { buttonValue, inputText } = c
 
+  const namespace = new Namespace('adland.eth')
+
   let statement =
     'Register your .adland.eth subname to become an official ad distributor'
   let intents: FrameIntent[] = []
@@ -146,9 +149,11 @@ app.frame('/distributor', async (c) => {
     </Button>,
   ]
 
-  if (buttonValue === 'submit') {
-    // check if the subname is available
-    const isAvailable = true
+  if (buttonValue === 'submit' && inputText) {
+    const label = inputText
+
+    const { isAvailable } = await namespace.checkAvailability(label)
+
     if (isAvailable) {
       try {
         // throw new Error('Subname registration failed')
@@ -161,15 +166,26 @@ app.frame('/distributor', async (c) => {
             View on etherscan
           </Button.Link>,
         ]
+        return c.res({
+          image: (
+            <BillboardWithContent
+              text={statement}
+              backgroundImage={distributorBillboardBackground}
+            />
+          ),
+          imageAspectRatio: FrameAspectRatio.SQUARE,
+          imageOptions,
+          intents,
+        })
       } catch (error) {
         statement = 'Subname registration failed 😔 Please try again'
       }
     } else {
-      statement = 'Subname is already taken. Please try again'
+      statement = 'Subname is not available. Please try again'
     }
-  } else {
-    intents = submissionIntents
   }
+
+  intents = submissionIntents
 
   return c.res({
     image: (
