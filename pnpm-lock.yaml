@@ -20,6 +20,9 @@ importers:
       husky:
         specifier: ^9.0.11
         version: 9.0.11
+      husky:
+        specifier: ^9.0.11
+        version: 9.0.11
       prettier:
         specifier: ^3.2.5
         version: 3.2.5
@@ -213,6 +216,9 @@ importers:
       '@vercel/edge-config':
         specifier: ^1.1.0
         version: 1.1.0(typescript@5.4.4)
+      '@vercel/edge-config':
+        specifier: ^1.1.0
+        version: 1.1.0(typescript@5.4.4)
       '@vercel/og':
         specifier: ^0.6.2
         version: 0.6.2
@@ -240,6 +246,9 @@ importers:
       graphql-request:
         specifier: ^6.1.0
         version: 6.1.0(encoding@0.1.13)(graphql@16.8.1)
+      hono:
+        specifier: ^4.3.4
+        version: 4.3.4
       hono:
         specifier: ^4.3.4
         version: 4.3.4
@@ -3805,7 +3814,17 @@ packages:
 
   '@vercel/edge-config-fs@0.1.0':
     resolution: {integrity: sha512-NRIBwfcS0bUoUbRWlNGetqjvLSwgYH/BqKqDN7vK1g32p7dN96k0712COgaz6VFizAm9b0g6IG6hR6+hc0KCPg==}
+  '@vercel/edge-config-fs@0.1.0':
+    resolution: {integrity: sha512-NRIBwfcS0bUoUbRWlNGetqjvLSwgYH/BqKqDN7vK1g32p7dN96k0712COgaz6VFizAm9b0g6IG6hR6+hc0KCPg==}
 
+  '@vercel/edge-config@1.1.0':
+    resolution: {integrity: sha512-es/4BzzKfyUilL5E1knR42MZHJqHMRfqitrnv18gVZZUha9ywrX3qNoCrPsNMJ1HS8xAAz/FJEyel7YFIDfKoQ==}
+    engines: {node: '>=14.6'}
+    peerDependencies:
+      '@opentelemetry/api': ^1.7.0
+    peerDependenciesMeta:
+      '@opentelemetry/api':
+        optional: true
   '@vercel/edge-config@1.1.0':
     resolution: {integrity: sha512-es/4BzzKfyUilL5E1knR42MZHJqHMRfqitrnv18gVZZUha9ywrX3qNoCrPsNMJ1HS8xAAz/FJEyel7YFIDfKoQ==}
     engines: {node: '>=14.6'}
@@ -6177,6 +6196,8 @@ packages:
 
   hono@4.3.4:
     resolution: {integrity: sha512-oh+PBwW8yElj3bUlY2dTXhuPt1MCZp6Nb04tejLwY+GXdphQH6uCpUP0dY5iLvFY5wM8fNHrMx1QeMKbhnzw9w==}
+  hono@4.3.4:
+    resolution: {integrity: sha512-oh+PBwW8yElj3bUlY2dTXhuPt1MCZp6Nb04tejLwY+GXdphQH6uCpUP0dY5iLvFY5wM8fNHrMx1QeMKbhnzw9w==}
     engines: {node: '>=16.0.0'}
 
   hosted-git-info@2.8.9:
@@ -6218,6 +6239,11 @@ packages:
   human-signals@5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
+
+  husky@9.0.11:
+    resolution: {integrity: sha512-AB6lFlbwwyIqMdHYhwPe+kjOC3Oc5P3nThEoW/AaO2BX3vJDjWPFxYLxokUZOo6RNX20He3AaT8sESs9NJcmEw==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   husky@9.0.11:
     resolution: {integrity: sha512-AB6lFlbwwyIqMdHYhwPe+kjOC3Oc5P3nThEoW/AaO2BX3vJDjWPFxYLxokUZOo6RNX20He3AaT8sESs9NJcmEw==}
@@ -9346,6 +9372,14 @@ packages:
       typescript:
         optional: true
 
+  ts-essentials@9.4.1:
+    resolution: {integrity: sha512-oke0rI2EN9pzHsesdmrOrnqv1eQODmJpd/noJjwj2ZPC3Z4N2wbjrOEqnsEgmvlO2+4fBb0a794DCna2elEVIQ==}
+    peerDependencies:
+      typescript: '>=4.1.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
@@ -11193,17 +11227,17 @@ snapshots:
 
   '@emotion/memoize@0.8.1': {}
 
-  '@emotion/react@11.11.4(@types/react@18.2.74)(react@18.2.0)':
+  '@emotion/react@11.11.4(@types/react@18.2.74)(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.24.4
       '@emotion/babel-plugin': 11.11.0
       '@emotion/cache': 11.11.0
       '@emotion/serialize': 1.1.4
-      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
+      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.3.1)
       '@emotion/utils': 1.2.1
       '@emotion/weak-memoize': 0.3.1
       hoist-non-react-statics: 3.3.2
-      react: 18.2.0
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.2.74
 
@@ -11222,7 +11256,7 @@ snapshots:
       '@babel/runtime': 7.24.4
       '@emotion/babel-plugin': 11.11.0
       '@emotion/is-prop-valid': 1.2.2
-      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.2.0)
+      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.3.1)
       '@emotion/serialize': 1.1.4
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.3.1)
       '@emotion/utils': 1.2.1
@@ -11235,10 +11269,6 @@ snapshots:
   '@emotion/unitless@0.7.5': {}
 
   '@emotion/unitless@0.8.1': {}
-
-  '@emotion/use-insertion-effect-with-fallbacks@1.0.1(react@18.2.0)':
-    dependencies:
-      react: 18.2.0
 
   '@emotion/use-insertion-effect-with-fallbacks@1.0.1(react@18.3.1)':
     dependencies:
@@ -11396,6 +11426,7 @@ snapshots:
   '@eslint/eslintrc@2.1.4':
     dependencies:
       ajv: 6.12.6
+      debug: 4.3.4(supports-color@8.1.1)
       debug: 4.3.4(supports-color@8.1.1)
       espree: 9.6.1
       globals: 13.24.0
@@ -12264,6 +12295,7 @@ snapshots:
   '@hono/valibot-validator@0.2.5(hono@4.3.4)(valibot@0.30.0)':
     dependencies:
       hono: 4.3.4
+      hono: 4.3.4
       valibot: 0.30.0
 
   '@hookform/resolvers@3.3.4(react-hook-form@7.51.3(react@18.2.0))':
@@ -12273,6 +12305,7 @@ snapshots:
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.3
+      debug: 4.3.4(supports-color@8.1.1)
       debug: 4.3.4(supports-color@8.1.1)
       minimatch: 3.1.2
     transitivePeerDependencies:
@@ -12603,7 +12636,7 @@ snapshots:
 
   '@metamask/sdk-install-modal-web@0.14.1(@types/react@18.2.74)(react-native@0.73.6(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@6.0.3))':
     dependencies:
-      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.2.0)
+      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.3.1)
       '@emotion/styled': 11.11.5(@emotion/react@11.11.4(@types/react@18.2.74)(react@18.3.1))(@types/react@18.2.74)(react@18.3.1)
       i18next: 22.5.1
       qr-code-styling: 1.6.0-rc.1
@@ -14596,6 +14629,7 @@ snapshots:
     dependencies:
       crypto-js: 4.2.0
     optional: true
+    optional: true
 
   '@vanilla-extract/babel-plugin-debug-ids@1.0.5':
     dependencies:
@@ -14681,17 +14715,23 @@ snapshots:
       react: 18.2.0
 
   '@vercel/edge-config-fs@0.1.0': {}
+  '@vercel/edge-config-fs@0.1.0': {}
 
+  '@vercel/edge-config@1.1.0(typescript@5.4.4)':
   '@vercel/edge-config@1.1.0(typescript@5.4.4)':
     dependencies:
       '@vercel/edge-config-fs': 0.1.0
       ts-essentials: 9.4.1(typescript@5.4.4)
+      '@vercel/edge-config-fs': 0.1.0
+      ts-essentials: 9.4.1(typescript@5.4.4)
     transitivePeerDependencies:
+      - typescript
       - typescript
 
   '@vercel/kv@1.0.1':
     dependencies:
       '@upstash/redis': 1.25.1
+    optional: true
     optional: true
 
   '@vercel/og@0.6.2':
@@ -16419,6 +16459,8 @@ snapshots:
 
   crypto-js@4.2.0:
     optional: true
+  crypto-js@4.2.0:
+    optional: true
 
   css-background-parser@0.1.0: {}
 
@@ -17084,7 +17126,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0)
       hasown: 2.0.2
       is-core-module: 2.13.1
       is-glob: 4.0.3
@@ -17254,6 +17296,7 @@ snapshots:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
+      debug: 4.3.4(supports-color@8.1.1)
       debug: 4.3.4(supports-color@8.1.1)
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
@@ -17686,6 +17729,8 @@ snapshots:
       dom-parser: 1.1.5
       fast-glob: 3.3.2
       fs-extra: 11.2.0
+      hono: 4.3.4
+      hono-og: 0.0.27(hono@4.3.4)
       hono: 4.3.4
       hono-og: 0.0.27(hono@4.3.4)
       jose: 5.2.4
@@ -18145,13 +18190,16 @@ snapshots:
       react-is: 16.13.1
 
   hono-og@0.0.27(hono@4.3.4):
+  hono-og@0.0.27(hono@4.3.4):
     dependencies:
       '@vercel/og': 0.6.2
+      hono: 4.3.4
       hono: 4.3.4
       workers-og: 0.0.24
 
   hono@3.12.12: {}
 
+  hono@4.3.4: {}
   hono@4.3.4: {}
 
   hosted-git-info@2.8.9: {}
@@ -18200,6 +18248,8 @@ snapshots:
   human-signals@2.1.0: {}
 
   human-signals@5.0.0: {}
+
+  husky@9.0.11: {}
 
   husky@9.0.11: {}
 
@@ -22075,6 +22125,10 @@ snapshots:
       typescript: 5.4.4
 
   ts-easing@0.2.0: {}
+
+  ts-essentials@9.4.1(typescript@5.4.4):
+    optionalDependencies:
+      typescript: 5.4.4
 
   ts-essentials@9.4.1(typescript@5.4.4):
     optionalDependencies:

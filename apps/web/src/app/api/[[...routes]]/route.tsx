@@ -66,8 +66,6 @@ const app = new Frog({
 
 export const runtime = 'edge'
 
-export const dynamic = 'force-dynamic'
-
 /**
  * AD FRAME
  */
