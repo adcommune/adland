@@ -67,7 +67,7 @@ const app = new Frog<{ State: DistributorFrameState }>({
   basePath: '/api',
   ui: { vars },
   initialState: {
-    label: '',
+    labels: {},
   },
 })
 
@@ -141,7 +141,7 @@ app.frame('/ad-frame/:spaceId', async (c) => {
  * DISTRIBUTOR: ADLAND SUBNAME FRAME
  */
 type DistributorFrameState = {
-  label: string
+  labels: Record<number, string>
 }
 
 app.frame(
@@ -154,6 +154,7 @@ app.frame(
     const namespace = new Namespace('adland.eth')
     const { buttonValue, inputText, deriveState } = c
     const interactor = c.var.interactor
+    const interactorFID = interactor?.fid
 
     const interactorEthAddress =
       interactor?.verifiedAddresses.ethAddresses[0] ||
@@ -178,16 +179,10 @@ app.frame(
       </Button>,
     ]
 
-    const state = deriveState((previousState) => {
-      if (buttonValue === 'submit' && inputText) {
-        previousState.label = inputText
-      }
-    })
-
     /**¨
      * Confirm subname registration
      */
-    if (!interactorEthAddress) {
+    if (!interactorEthAddress || !interactorFID) {
       return c.res({
         image: (
           <BillboardWithContent
@@ -205,10 +200,20 @@ app.frame(
       })
     }
 
+    const state = deriveState((previousState) => {
+      if (buttonValue === 'submit' && inputText) {
+        previousState.labels[interactorFID] = inputText
+      }
+      if (buttonValue === 'restart') {
+        delete previousState.labels[interactorFID]
+      }
+    })
+
     if (buttonValue === 'confirm') {
+      const label = state.labels[interactorFID]
       try {
         await namespace.createSubname({
-          name: state.label,
+          name: label,
           address: interactorEthAddress,
           textRecords: {
             fid: interactor.fid,
@@ -223,13 +228,13 @@ app.frame(
           </Button>,
           <Button.Link
             key={'link to ens'}
-            href={`https://app.ens.domains/${state.label}.adland.eth`}
+            href={`https://app.ens.domains/${label}.adland.eth`}
           >
             ENS
           </Button.Link>,
           <Button.Link
             key={'link to etherscan'}
-            href={`https://etherscan.io/name-lookup-search?id=${state.label}.adland.eth`}
+            href={`https://etherscan.io/name-lookup-search?id=${label}.adland.eth`}
           >
             ETHERSCAN
           </Button.Link>,
@@ -239,9 +244,7 @@ app.frame(
           image: (
             <BillboardWithContent
               text={
-                'Congratulations ! ' +
-                state.label +
-                '.adland.eth has been minted!'
+                'Congratulations ! ' + label + '.adland.eth has been minted!'
               }
               backgroundImage={successDistributorBillboardBackground}
             />
