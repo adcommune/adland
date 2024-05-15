@@ -14,7 +14,7 @@ import {
   learnMoreBillboardBackground,
   successDistributorBillboardBackground,
 } from '@/config/frame'
-import { distributionEnabled } from './env'
+import { distributionEnabled, shouldRecastDistributor } from './env'
 import { Namespace } from '@/lib/namespace'
 
 type BillboardWithContentProps = {
@@ -148,13 +148,22 @@ app.frame(
   '/distributor',
   neynar({
     apiKey: process.env.NEYNAR_API_KEY as string,
-    features: ['interactor'],
+    features: ['interactor', 'cast'],
   }),
   async (c) => {
     const namespace = new Namespace('adland.eth')
-    const { buttonValue, inputText, deriveState } = c
-    const interactor = c.var.interactor
+    const {
+      buttonValue,
+      inputText,
+      deriveState,
+      var: { interactor, cast },
+    } = c
+
     const interactorFID = interactor?.fid
+
+    const recasted = cast?.reactions.recasts.some(
+      ({ fid }) => fid === interactorFID,
+    )
 
     const interactorEthAddress =
       interactor?.verifiedAddresses.ethAddresses[0] ||
@@ -267,6 +276,23 @@ app.frame(
      * Cancel subname registration
      */
     if (buttonValue === 'submit' && inputText) {
+      if (!recasted && (await shouldRecastDistributor())) {
+        return c.res({
+          image: (
+            <BillboardWithContent
+              text={'Recast to mint'}
+              backgroundImage={errorDistributorBillboardBackground}
+            />
+          ),
+          imageAspectRatio: FrameAspectRatio.SQUARE,
+          imageOptions,
+          intents: [
+            <Button key={'return'} value="return" action="/distributor">
+              Return
+            </Button>,
+          ],
+        })
+      }
       const label = inputText
 
       const { isAvailable } = await namespace.checkAvailability(label)
