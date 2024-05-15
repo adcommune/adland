@@ -204,24 +204,6 @@ app.frame(
       }
     })
 
-    if (!recasted && (await shouldRecastDistributor())) {
-      return c.res({
-        image: (
-          <BillboardWithContent
-            text={'Recast to mint'}
-            backgroundImage={errorDistributorBillboardBackground}
-          />
-        ),
-        imageAspectRatio: FrameAspectRatio.SQUARE,
-        imageOptions,
-        intents: [
-          <Button key={'return'} value="return" action="/distributor">
-            Return
-          </Button>,
-        ],
-      })
-    }
-
     if (buttonValue === 'confirm' && interactorFID && interactorEthAddress) {
       const label = state.labels[interactorFID]
       try {
