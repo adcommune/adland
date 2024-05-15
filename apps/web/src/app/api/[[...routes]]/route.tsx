@@ -101,7 +101,7 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   if (await distributionEnabled()) {
     intents.push(
       <Button value="distributor" action="/distributor">
-        Distribute
+        Mint Subname
       </Button>,
     )
   }
