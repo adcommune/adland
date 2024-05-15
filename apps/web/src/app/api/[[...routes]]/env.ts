@@ -6,3 +6,7 @@ const env = constants.chain.testnet ? 'testnet' : 'mainnet'
 export const distributionEnabled = async () =>
   (await get(`${env}-distribution`)) === 'true' ||
   process.env.NODE_ENV === 'development'
+
+export const shouldRecastDistributor = async () =>
+  (await get(`${env}-distribution-recast`)) === 'true' ||
+  process.env.NODE_ENV !== 'development'
