@@ -17,7 +17,7 @@ export class Namespace {
   }
 
   async createSubname({ name, address, textRecords }: CreateSubnameArguments) {
-    return this.post(`/subname/create`, {
+    return this.post(`/subname/mint`, {
       label: name,
       address,
       domain: this.domain,
