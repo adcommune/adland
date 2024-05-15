@@ -1,3 +1,13 @@
+type CreateSubnameArguments = {
+  name: string
+  address: string
+  textRecords?: {
+    fid?: number
+    avatar?: string
+    'com.warpcast'?: string
+  }
+}
+
 export class Namespace {
   base_url = 'https://offchain-mainnet.namespace.tech/v1'
   domain: string
@@ -6,11 +16,12 @@ export class Namespace {
     this.domain = domain
   }
 
-  async createSubname({ name, address }: { name: string; address: string }) {
-    return this.post(`/subname/mint`, {
+  async createSubname({ name, address, textRecords }: CreateSubnameArguments) {
+    return this.post(`/subname/create`, {
       label: name,
       address,
       domain: this.domain,
+      textRecords,
     }).then((res) => {
       if (res.error) {
         console.error(res)
