@@ -182,34 +182,20 @@ app.frame(
     /**¨
      * Confirm subname registration
      */
-    if (!interactorEthAddress || !interactorFID) {
-      return c.res({
-        image: (
-          <BillboardWithContent
-            text={'Something went wrong 😔 Please try again later'}
-            backgroundImage={errorDistributorBillboardBackground}
-          />
-        ),
-        imageAspectRatio: FrameAspectRatio.SQUARE,
-        imageOptions,
-        intents: [
-          <Button key={'retry'} value="retry" action="/distributor">
-            Cancel
-          </Button>,
-        ],
-      })
-    }
 
     const state = deriveState((previousState) => {
-      if (buttonValue === 'submit' && inputText) {
-        previousState.labels[interactorFID] = inputText
-      }
-      if (buttonValue === 'restart') {
-        delete previousState.labels[interactorFID]
+      console.log('previousState', previousState)
+      if (interactorFID) {
+        if (buttonValue === 'submit' && inputText) {
+          previousState.labels[interactorFID] = inputText
+        }
+        if (buttonValue === 'restart') {
+          delete previousState.labels[interactorFID]
+        }
       }
     })
 
-    if (buttonValue === 'confirm') {
+    if (buttonValue === 'confirm' && interactorFID && interactorEthAddress) {
       const label = state.labels[interactorFID]
       try {
         await namespace.createSubname({
