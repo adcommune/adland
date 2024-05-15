@@ -10,6 +10,7 @@ import { Box, Image, vars, imageOptions, Text } from './utils'
 import { AdLand } from '@/lib/adland'
 import {
   distributorBillboardBackground,
+  errorDistributorBillboardBackground,
   learnMoreBillboardBackground,
   successDistributorBillboardBackground,
 } from '@/config/frame'
@@ -150,6 +151,7 @@ app.frame(
     features: ['interactor'],
   }),
   async (c) => {
+    const namespace = new Namespace('adland.eth')
     const { buttonValue, inputText, deriveState } = c
     const interactor = c.var.interactor
 
@@ -157,10 +159,6 @@ app.frame(
       interactor?.verifiedAddresses.ethAddresses[0] ||
       interactor?.verifications[0] ||
       interactor?.custodyAddress
-
-    console.log({ interactorEthAddress })
-
-    const namespace = new Namespace('adland.eth')
 
     let statement =
       'Register your .adland.eth subname to become an official ad distributor'
@@ -194,7 +192,7 @@ app.frame(
         image: (
           <BillboardWithContent
             text={'Something went wrong 😔 Please try again later'}
-            backgroundImage={distributorBillboardBackground}
+            backgroundImage={errorDistributorBillboardBackground}
           />
         ),
         imageAspectRatio: FrameAspectRatio.SQUARE,
@@ -212,6 +210,11 @@ app.frame(
         await namespace.createSubname({
           name: state.label,
           address: interactorEthAddress,
+          textRecords: {
+            fid: interactor.fid,
+            avatar: interactor?.pfpUrl,
+            'com.warpcast': `https://warpcast.com/${interactor.username ?? interactor?.displayName}`,
+          },
         })
 
         intents = [
@@ -249,12 +252,19 @@ app.frame(
         })
       } catch (error) {
         statement = 'Subname registration failed 😔 Please try again'
-        intents = confirmingIntents
+        intents = [
+          <Button key={'confirm'} value="confirm" action="/distributor">
+            Try again
+          </Button>,
+          <Button key={'cancel'} value="cancel" action="/distributor">
+            Cancel
+          </Button>,
+        ]
         return c.res({
           image: (
             <BillboardWithContent
               text={statement}
-              backgroundImage={distributorBillboardBackground}
+              backgroundImage={errorDistributorBillboardBackground}
             />
           ),
           imageAspectRatio: FrameAspectRatio.SQUARE,
