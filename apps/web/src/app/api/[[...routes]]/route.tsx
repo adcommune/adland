@@ -294,6 +294,23 @@ app.frame(
      * Cancel subname registration
      */
     if (buttonValue === 'submit' && inputText) {
+      if (!recasted && (await shouldRecastDistributor())) {
+        return c.res({
+          image: (
+            <BillboardWithContent
+              text={'Recast to mint'}
+              backgroundImage={errorDistributorBillboardBackground}
+            />
+          ),
+          imageAspectRatio: FrameAspectRatio.SQUARE,
+          imageOptions,
+          intents: [
+            <Button key={'return'} value="return" action="/distributor">
+              Return
+            </Button>,
+          ],
+        })
+      }
       const label = inputText
 
       const { isAvailable } = await namespace.checkAvailability(label)
