@@ -18,10 +18,14 @@ export const frameAdPositions: Record<
 }
 
 export const frameConfig = {
-  initialFrameImageMaxAge: 1 * 60,
+  initialFrameImageMaxAge: 30 * 60,
   height: 1000,
 }
 
 export const squareBillboardBackground = 'https://i.imgur.com/vvNJpNf.jpg'
 export const learnMoreBillboardBackground = 'https://i.imgur.com/jABvz51.jpg'
 export const distributorBillboardBackground = 'https://i.imgur.com/FoJusWv.jpg'
+export const successDistributorBillboardBackground =
+  'https://i.imgur.com/Hl6vkzW.jpg'
+export const errorDistributorBillboardBackground =
+  'https://i.imgur.com/uf5FOVb.jpg'
