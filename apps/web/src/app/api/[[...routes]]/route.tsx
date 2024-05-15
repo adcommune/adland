@@ -300,6 +300,22 @@ app.frame(
         })
       } else {
         statement = 'Subname is not available. Please try again'
+        intents = [
+          <Button key={'retry'} value="retry" action="/distributor">
+            Retry
+          </Button>,
+        ]
+        return c.res({
+          image: (
+            <BillboardWithContent
+              text={statement}
+              backgroundImage={errorDistributorBillboardBackground}
+            />
+          ),
+          imageAspectRatio: FrameAspectRatio.SQUARE,
+          imageOptions,
+          intents,
+        })
       }
     }
 
