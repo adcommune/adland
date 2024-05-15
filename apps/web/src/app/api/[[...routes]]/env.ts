@@ -8,5 +8,4 @@ export const distributionEnabled = async () =>
   process.env.NODE_ENV === 'development'
 
 export const shouldRecastDistributor = async () =>
-  (await get(`${env}-distribution-recast`)) === 'true' ||
-  process.env.NODE_ENV !== 'development'
+  (await get(`${env}-distribution-recast`)) === 'true'
