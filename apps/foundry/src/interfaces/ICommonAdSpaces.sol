@@ -12,6 +12,8 @@ interface ICommonAdSpaces {
 
     event AdSpaceURIUpdated(uint256 indexed adId, string uri);
 
+    event AdPoolCreated(uint256 indexed adId, address indexed pool);
+
     event AdSpaceStrategyUpdated(
         uint256 indexed adId,
         IAdStrategy indexed strategy

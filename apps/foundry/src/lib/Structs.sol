@@ -2,6 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {IAdStrategy} from "../interfaces/IAdStrategy.sol";
+import {CommonAdPool} from "../CommonAdPool.sol";
 
 /**
  * @title AdGroup
@@ -19,6 +20,7 @@ struct AdSpace {
     uint256 adGroupId;
     string uri;
     IAdStrategy strategy;
+    CommonAdPool pool;
 }
 
 /**

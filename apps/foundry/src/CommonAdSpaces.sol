@@ -11,6 +11,8 @@ import {CommonAdGroupAdminFactory} from "./CommonAdGroupAdminFactory.sol";
 import {ICommonAdSpaces} from "./interfaces/ICommonAdSpaces.sol";
 import {IAdStrategy} from "./interfaces/IAdStrategy.sol";
 import {AdGroup, AdSpace, AdSpaceConfig} from "./lib/Structs.sol";
+import {CommonAdPool} from "./CommonAdPool.sol";
+import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 
 contract CommonAdSpaces is
     ERC721RoyaltyUpgradeable,
@@ -84,6 +86,19 @@ contract CommonAdSpaces is
         adGroupId = _createdGroup(recipient);
 
         _openAdSpaces(adGroupId, initialAdSpaceConfig, size);
+    }
+
+    function createAdPool(uint256 adId, address superToken) public {
+        CommonAdPool pool = new CommonAdPool(ISuperToken(superToken));
+
+        ads[adId].pool = pool;
+
+        ads[adId].pool.grantRole(
+            pool.POOL_ADMIN_ROLE(),
+            adGroups[ads[adId].adGroupId].owner
+        );
+
+        emit AdPoolCreated(adId, address(ads[adId].pool));
     }
 
     /**
