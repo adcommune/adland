@@ -18,7 +18,8 @@ import {AccountV3} from "tokenbound/AccountV3Upgradable.sol";
 
 import {AdSpaceConfig} from "../src/CommonAdSpaces.sol";
 import {CommonAdGroupAdminFactory} from "../src/CommonAdGroupAdminFactory.sol";
-
+import {AdGroup} from "../src/lib/Structs.sol";
+import {CommonAdPool} from "../src/CommonAdPool.sol";
 import {CommonAdGroupAdminFactoryMock} from "./mocks/CommonAdGroupAdminFactoryMock.sol";
 
 contract CommonAdSpacesTest is CommonAdSpacesBase {
@@ -28,6 +29,54 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     uint256 constant DEFAULT_QUANTITY = 1;
     string buyerAdURI = "https://www.google.com";
     string buyer2AdURI = "https://www.yahoo.com";
+
+    function testOpenAdPool() public {
+        vm.prank(deployer);
+        commonAds.createAdGroup(
+            recipient,
+            AdSpaceConfig({
+                currency: CurrencyTransferLib.NATIVE_TOKEN,
+                initialPrice: initialPrice,
+                taxRate: baseTaxRateBPS
+            }),
+            3
+        );
+
+        vm.deal(recipient, 10000 ether);
+        _upgradeETH(ethx, recipient, 100 ether);
+
+        uint256 adId = 0;
+        address frameDistributor = vm.addr(1234);
+        /**
+         * 1 - Create ad pool
+         */
+        vm.prank(recipient);
+        commonAds.createAdPool(adId, address(ethx));
+
+        // Create a flow of 1 ether per month
+        int96 adCampaignFlowRate = int96(int256(uint256(1 ether) / 30 days));
+        CommonAdPool adPool = commonAds.getAd(adId).adPool;
+
+        /**
+         * 2 - Grant member units admin role to frame distributor
+         */
+        vm.startPrank(recipient);
+        adPool.grantRole(adPool.MEMBER_UNITS_ADMIN_ROLE(), frameDistributor);
+        vm.stopPrank();
+
+        /**
+         * 3 - Grab first member units for frame distributor
+         */
+        vm.prank(recipient);
+        adPool.updateMemberUnits(frameDistributor, 10);
+
+        /**
+         * 4 - Campaign creator initiates pool flow
+         */
+        vm.startPrank(recipient);
+        ethx.distributeFlow(recipient, adPool.pool(), adCampaignFlowRate);
+        vm.stopPrank();
+    }
 
     function testCannotTransferAsOwnerOfListing() public {
         vm.prank(deployer);

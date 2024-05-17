@@ -10,7 +10,8 @@ import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 contract CommonAdPool is AccessControl {
     using SuperTokenV1Library for ISuperToken;
 
-    bytes32 public constant POOL_ADMIN_ROLE = keccak256("POOL_ADMIN_ROLE");
+    bytes32 public constant MEMBER_UNITS_ADMIN_ROLE =
+        keccak256("MEMBER_ADMIN_ROLE");
 
     ISuperToken public superToken;
 
@@ -22,9 +23,11 @@ contract CommonAdPool is AccessControl {
             address(this),
             PoolConfig({
                 transferabilityForUnitsOwner: false,
-                distributionFromAnyAddress: false
+                distributionFromAnyAddress: true
             })
         );
+        // Granting commonAdsContract the DEFAULT_ADMIN_ROLE
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
     /**
@@ -32,26 +35,12 @@ contract CommonAdPool is AccessControl {
      * @param member address of the member
      * @param units new units
      */
-    function updateMemberUnits(
-        address member,
-        uint128 units
-    ) public onlyRole(POOL_ADMIN_ROLE) {
+    function updateMemberUnits(address member, uint128 units) public {
+        require(
+            hasRole(MEMBER_UNITS_ADMIN_ROLE, msg.sender) ||
+                hasRole(DEFAULT_ADMIN_ROLE, msg.sender),
+            "CommonAdPool: not authorized to update member units"
+        );
         superToken.updateMemberUnits(pool, member, units);
-    }
-
-    /**
-     * Discrete distribution of tokens to the pool
-     * @param amount The amount of tokens to distribute
-     */
-    function distribute(uint256 amount) public onlyRole(POOL_ADMIN_ROLE) {
-        superToken.distributeToPool(address(this), pool, amount);
-    }
-
-    /**
-     * Distribute a flow to the pool
-     * @param flowRate The flow rate to distribute
-     */
-    function distributeFlow(int96 flowRate) public onlyRole(POOL_ADMIN_ROLE) {
-        superToken.distributeFlow(address(this), pool, flowRate);
     }
 }

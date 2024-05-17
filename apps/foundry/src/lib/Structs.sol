@@ -20,7 +20,7 @@ struct AdSpace {
     uint256 adGroupId;
     string uri;
     IAdStrategy strategy;
-    CommonAdPool pool;
+    CommonAdPool adPool;
 }
 
 /**

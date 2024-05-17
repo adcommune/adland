@@ -13,6 +13,7 @@ import {IAdStrategy} from "./interfaces/IAdStrategy.sol";
 import {AdGroup, AdSpace, AdSpaceConfig} from "./lib/Structs.sol";
 import {CommonAdPool} from "./CommonAdPool.sol";
 import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
+import {console} from "forge-std/Test.sol";
 
 contract CommonAdSpaces is
     ERC721RoyaltyUpgradeable,
@@ -25,9 +26,9 @@ contract CommonAdSpaces is
     IDirectListings marketplace;
     uint256 public adGroupIds;
 
-    mapping(uint256 => AdGroup) adGroups;
+    mapping(uint256 => AdGroup) public adGroups;
 
-    mapping(uint256 => AdSpace) ads;
+    mapping(uint256 => AdSpace) public ads;
 
     mapping(address => address) public tokenXs;
 
@@ -91,14 +92,14 @@ contract CommonAdSpaces is
     function createAdPool(uint256 adId, address superToken) public {
         CommonAdPool pool = new CommonAdPool(ISuperToken(superToken));
 
-        ads[adId].pool = pool;
+        ads[adId].adPool = pool;
 
-        ads[adId].pool.grantRole(
-            pool.POOL_ADMIN_ROLE(),
+        ads[adId].adPool.grantRole(
+            pool.DEFAULT_ADMIN_ROLE(),
             adGroups[ads[adId].adGroupId].owner
         );
 
-        emit AdPoolCreated(adId, address(ads[adId].pool));
+        emit AdPoolCreated(adId, address(pool));
     }
 
     /**
@@ -163,6 +164,16 @@ contract CommonAdSpaces is
         }
     }
 
+    function getAd(uint256 adId) external view returns (AdSpace memory) {
+        return ads[adId];
+    }
+
+    function getGroup(
+        uint256 adGroupId
+    ) external view returns (AdGroup memory) {
+        return adGroups[adGroupId];
+    }
+
     function getTokenX(address underlying) external view returns (address) {
         return tokenXs[underlying];
     }
@@ -184,11 +195,11 @@ contract CommonAdSpaces is
     function _createdGroup(
         address recipient
     ) internal returns (uint256 adGroupId) {
-        adGroupIds++;
-
         adGroupId = adGroupIds;
 
-        adGroups[adGroupIds] = AdGroup({owner: recipient});
+        adGroups[adGroupId] = AdGroup({owner: recipient});
+
+        adGroupIds++;
 
         emit AdGroupCreated(adGroupId, recipient);
     }

@@ -109,6 +109,7 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
 
         label(address(commonAds), "commonAds");
         label(recipient, "recipient");
+        label(deployer, "deployer");
 
         vm.stopPrank();
     }
