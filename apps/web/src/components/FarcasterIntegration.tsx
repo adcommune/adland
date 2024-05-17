@@ -16,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table'
+import { Button } from './ui/button'
 
 type FarcasterIntegrationProps = {
   groupId: string
@@ -31,17 +32,10 @@ const FarcasterIntegration = ({
       <div>
         <Card>
           <CardHeader className="">
-            <CardTitle className="font-body">Distributors</CardTitle>
+            <CardTitle className="font-body">
+              Distribution on Farcaster
+            </CardTitle>
             <CardDescription className="font-body">
-              Accounts distributing this ad space on the farcaster network
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <div>
-              <p className="font-body text-xl font-semibold">Frame Link</p>
-              <CardDescription className="font-body">
-                Copy & cast this link to distribute this ad space on farcaster
-              </CardDescription>
               <div className="flex w-full flex-row items-center justify-center gap-2">
                 <Input
                   className="h-full flex-grow cursor-default text-opacity-100 disabled:opacity-100"
@@ -50,7 +44,12 @@ const FarcasterIntegration = ({
                 />
                 <Copiable visible text={`${baseURL}/ad/${spaceId}`} />
               </div>
-            </div>
+              <CardDescription className="font-body">
+                This is your Ad Frame link. Copy and cast to share this ad.
+              </CardDescription>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -65,10 +64,13 @@ const FarcasterIntegration = ({
               </TableHeader>
               <TableBody>
                 <TableRow className="">
-                  <TableCell colSpan={6} className="text-center font-body">
-                    Distributor reward program not yet active. Make sure to mint
-                    your adland.eth subname through any Ad Frame on farcaster to
-                    enroll !
+                  <TableCell
+                    colSpan={6}
+                    className="items-center justify-center text-center font-body"
+                  >
+                    <div className="flex flex-col gap-2">
+                      <Button disabled>Start Campaign (coming soon)</Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               </TableBody>

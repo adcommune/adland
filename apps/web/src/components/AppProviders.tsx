@@ -33,7 +33,7 @@ const AppProviders = ({ children }: { children: React.ReactNode }) => {
         defaultChain: constants.chain,
         loginMethods: ['wallet'],
         embeddedWallets: {
-          createOnLogin: 'off',
+          createOnLogin: 'all-users',
           noPromptOnSignature: true,
         },
       }}
