@@ -15,10 +15,12 @@ export const dynamic = 'force-dynamic'
 type GetAdsRouteParams = { params: { listingId: string } }
 export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
   const metadata = await new AdLand().getAdSpaceMetadata(params.listingId)
+  const background = _req.nextUrl.searchParams.get('background')
 
   let imageResponse
   let frameHeight = frameConfig.height
   let frameWidth = frameConfig.height
+  let backgroundUrl = background ?? squareBillboardBackground
 
   if (metadata) {
     const { billboardTop, billboardLeft, billboardHeight, billboardWith } =
@@ -41,7 +43,7 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
                 position: 'relative',
                 width: '100%',
                 height: '100%',
-                backgroundImage: `url(${squareBillboardBackground})`,
+                backgroundImage: `url(${backgroundUrl})`,
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: `${frameWidth}px ${frameHeight}px`,
               }}
