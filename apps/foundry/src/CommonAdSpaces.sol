@@ -90,6 +90,11 @@ contract CommonAdSpaces is
     }
 
     function createAdPool(uint256 adId, address superToken) public {
+        require(
+            ads[adId].adPools[ISuperToken(superToken)] ==
+                CommonAdPool(address(0)),
+            "CommonAdSpaces: Ad pool already exists"
+        );
         CommonAdPool pool = new CommonAdPool(ISuperToken(superToken));
 
         ads[adId].adPools[ISuperToken(superToken)] = pool;
