@@ -1,4 +1,5 @@
 import {
+  AdPoolCreated as AdPoolCreatedEvent,
   AdGroupCreated as AdGroupCreatedEvent,
   AdSpaceCreated as AdSpaceCreatedEvent,
   AdSpaceStrategyUpdated as AdSpaceStrategyUpdatedEvent,
@@ -16,6 +17,7 @@ import {
 import {
   AdGroup,
   AdGroupCreated,
+  AdPool,
   AdSpace,
   AdSpaceCreated,
   AdSpaceStrategyUpdated,
@@ -30,6 +32,17 @@ import {
   Transfer,
   Upgraded,
 } from "../generated/schema";
+
+export function handleAdPoolCreated(event: AdPoolCreatedEvent): void {
+  let entity = new AdPool(event.params.pool.toHex());
+
+  entity.adSpace = event.params.adId.toString();
+  entity.adToken = event.params.superToken;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
+
+  entity.save();
+}
 
 export function handleAdGroupCreated(event: AdGroupCreatedEvent): void {
   let entity = new AdGroupCreated(
@@ -199,9 +212,8 @@ export function handleOwnershipTransferred(
 }
 
 export function handleTokenXSet(event: TokenXSetEvent): void {
-  let entity = new TokenX(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  );
+  let entity = new TokenX(event.params.superToken);
+
   entity.underlyingToken = event.params.underlyingToken;
   entity.superToken = event.params.superToken;
 

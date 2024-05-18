@@ -146,6 +146,10 @@ export class AdSpace extends Entity {
     this.set("adGroup", Value.fromString(value));
   }
 
+  get adPools(): AdPoolLoader {
+    return new AdPoolLoader("AdSpace", this.get("id")!.toString(), "adPools");
+  }
+
   get uri(): string | null {
     let value = this.get("uri");
     if (!value || value.kind == ValueKind.NULL) {
@@ -161,6 +165,98 @@ export class AdSpace extends Entity {
     } else {
       this.set("uri", Value.fromString(<string>value));
     }
+  }
+
+  get blockTimestamp(): BigInt {
+    let value = this.get("blockTimestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set blockTimestamp(value: BigInt) {
+    this.set("blockTimestamp", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class AdPool extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save AdPool entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type AdPool must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("AdPool", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): AdPool | null {
+    return changetype<AdPool | null>(store.get_in_block("AdPool", id));
+  }
+
+  static load(id: string): AdPool | null {
+    return changetype<AdPool | null>(store.get("AdPool", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get adSpace(): string {
+    let value = this.get("adSpace");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set adSpace(value: string) {
+    this.set("adSpace", Value.fromString(value));
+  }
+
+  get adToken(): Bytes {
+    let value = this.get("adToken");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set adToken(value: Bytes) {
+    this.set("adToken", Value.fromBytes(value));
   }
 
   get blockTimestamp(): BigInt {
@@ -2782,5 +2878,23 @@ export class AdSpaceLoader extends Entity {
   load(): AdSpace[] {
     let value = store.loadRelated(this._entity, this._id, this._field);
     return changetype<AdSpace[]>(value);
+  }
+}
+
+export class AdPoolLoader extends Entity {
+  _entity: string;
+  _field: string;
+  _id: string;
+
+  constructor(entity: string, id: string, field: string) {
+    super();
+    this._entity = entity;
+    this._id = id;
+    this._field = field;
+  }
+
+  load(): AdPool[] {
+    let value = store.loadRelated(this._entity, this._id, this._field);
+    return changetype<AdPool[]>(value);
   }
 }
