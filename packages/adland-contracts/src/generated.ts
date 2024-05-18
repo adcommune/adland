@@ -211,7 +211,7 @@ export const commonAdSpaceAssetAbi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const commonAdSpacesAbi = [
   { type: 'constructor', inputs: [], stateMutability: 'nonpayable' },
@@ -220,6 +220,33 @@ export const commonAdSpacesAbi = [
     inputs: [],
     name: 'adGroupIds',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    name: 'adGroups',
+    outputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    name: 'ads',
+    outputs: [
+      { name: 'adGroupId', internalType: 'uint256', type: 'uint256' },
+      { name: 'uri', internalType: 'string', type: 'string' },
+      {
+        name: 'strategy',
+        internalType: 'contract IAdStrategy',
+        type: 'address',
+      },
+      {
+        name: 'adPool',
+        internalType: 'contract CommonAdPool',
+        type: 'address',
+      },
+    ],
     stateMutability: 'view',
   },
   {
@@ -268,6 +295,43 @@ export const commonAdSpacesAbi = [
   },
   {
     type: 'function',
+    inputs: [
+      { name: 'adId', internalType: 'uint256', type: 'uint256' },
+      { name: 'superToken', internalType: 'address', type: 'address' },
+    ],
+    name: 'createAdPool',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'adId', internalType: 'uint256', type: 'uint256' }],
+    name: 'getAd',
+    outputs: [
+      {
+        name: '',
+        internalType: 'struct AdSpace',
+        type: 'tuple',
+        components: [
+          { name: 'adGroupId', internalType: 'uint256', type: 'uint256' },
+          { name: 'uri', internalType: 'string', type: 'string' },
+          {
+            name: 'strategy',
+            internalType: 'contract IAdStrategy',
+            type: 'address',
+          },
+          {
+            name: 'adPool',
+            internalType: 'contract CommonAdPool',
+            type: 'address',
+          },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [{ name: 'adId', internalType: 'uint256', type: 'uint256' }],
     name: 'getAdUri',
     outputs: [{ name: 'uri', internalType: 'string', type: 'string' }],
@@ -278,6 +342,22 @@ export const commonAdSpacesAbi = [
     inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
     name: 'getApproved',
     outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'adGroupId', internalType: 'uint256', type: 'uint256' }],
+    name: 'getGroup',
+    outputs: [
+      {
+        name: '',
+        internalType: 'struct AdGroup',
+        type: 'tuple',
+        components: [
+          { name: 'owner', internalType: 'address', type: 'address' },
+        ],
+      },
+    ],
     stateMutability: 'view',
   },
   {
@@ -544,6 +624,15 @@ export const commonAdSpacesAbi = [
     type: 'event',
     anonymous: false,
     inputs: [
+      { name: 'adId', internalType: 'uint256', type: 'uint256', indexed: true },
+      { name: 'pool', internalType: 'address', type: 'address', indexed: true },
+    ],
+    name: 'AdPoolCreated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
       {
         name: 'groupId',
         internalType: 'uint256',
@@ -732,16 +821,16 @@ export const commonAdSpacesAbi = [
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const commonAdSpacesAddress = {
   8453: '0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954',
-  11155420: '0x8643383A68bECafA97Cad062d1f4C51F1bfc3229',
+  11155420: '0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8',
 } as const
 
 /**
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const commonAdSpacesConfig = {
   address: commonAdSpacesAddress,
@@ -4173,7 +4262,7 @@ export const useReadCommonAdSpaceAssetGetTokenX =
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpaces = /*#__PURE__*/ createUseReadContract({
   abi: commonAdSpacesAbi,
@@ -4184,7 +4273,7 @@ export const useReadCommonAdSpaces = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"adGroupIds"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesAdGroupIds =
   /*#__PURE__*/ createUseReadContract({
@@ -4194,10 +4283,35 @@ export const useReadCommonAdSpacesAdGroupIds =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"adGroups"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
+ */
+export const useReadCommonAdSpacesAdGroups =
+  /*#__PURE__*/ createUseReadContract({
+    abi: commonAdSpacesAbi,
+    address: commonAdSpacesAddress,
+    functionName: 'adGroups',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"ads"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
+ */
+export const useReadCommonAdSpacesAds = /*#__PURE__*/ createUseReadContract({
+  abi: commonAdSpacesAbi,
+  address: commonAdSpacesAddress,
+  functionName: 'ads',
+})
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"balanceOf"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesBalanceOf =
   /*#__PURE__*/ createUseReadContract({
@@ -4207,10 +4321,22 @@ export const useReadCommonAdSpacesBalanceOf =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"getAd"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
+ */
+export const useReadCommonAdSpacesGetAd = /*#__PURE__*/ createUseReadContract({
+  abi: commonAdSpacesAbi,
+  address: commonAdSpacesAddress,
+  functionName: 'getAd',
+})
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"getAdUri"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesGetAdUri =
   /*#__PURE__*/ createUseReadContract({
@@ -4223,7 +4349,7 @@ export const useReadCommonAdSpacesGetAdUri =
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"getApproved"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesGetApproved =
   /*#__PURE__*/ createUseReadContract({
@@ -4233,10 +4359,23 @@ export const useReadCommonAdSpacesGetApproved =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"getGroup"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
+ */
+export const useReadCommonAdSpacesGetGroup =
+  /*#__PURE__*/ createUseReadContract({
+    abi: commonAdSpacesAbi,
+    address: commonAdSpacesAddress,
+    functionName: 'getGroup',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"getTokenX"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesGetTokenX =
   /*#__PURE__*/ createUseReadContract({
@@ -4249,7 +4388,7 @@ export const useReadCommonAdSpacesGetTokenX =
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"isApprovedForAll"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesIsApprovedForAll =
   /*#__PURE__*/ createUseReadContract({
@@ -4262,7 +4401,7 @@ export const useReadCommonAdSpacesIsApprovedForAll =
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"name"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesName = /*#__PURE__*/ createUseReadContract({
   abi: commonAdSpacesAbi,
@@ -4274,7 +4413,7 @@ export const useReadCommonAdSpacesName = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"owner"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesOwner = /*#__PURE__*/ createUseReadContract({
   abi: commonAdSpacesAbi,
@@ -4286,7 +4425,7 @@ export const useReadCommonAdSpacesOwner = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"ownerOf"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesOwnerOf = /*#__PURE__*/ createUseReadContract(
   {
@@ -4300,7 +4439,7 @@ export const useReadCommonAdSpacesOwnerOf = /*#__PURE__*/ createUseReadContract(
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"placeholderURI"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesPlaceholderUri =
   /*#__PURE__*/ createUseReadContract({
@@ -4313,7 +4452,7 @@ export const useReadCommonAdSpacesPlaceholderUri =
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"proxiableUUID"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesProxiableUuid =
   /*#__PURE__*/ createUseReadContract({
@@ -4326,7 +4465,7 @@ export const useReadCommonAdSpacesProxiableUuid =
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"royaltyInfo"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesRoyaltyInfo =
   /*#__PURE__*/ createUseReadContract({
@@ -4339,7 +4478,7 @@ export const useReadCommonAdSpacesRoyaltyInfo =
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"supportsInterface"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesSupportsInterface =
   /*#__PURE__*/ createUseReadContract({
@@ -4352,7 +4491,7 @@ export const useReadCommonAdSpacesSupportsInterface =
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"symbol"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesSymbol = /*#__PURE__*/ createUseReadContract({
   abi: commonAdSpacesAbi,
@@ -4364,7 +4503,7 @@ export const useReadCommonAdSpacesSymbol = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"tokenURI"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesTokenUri =
   /*#__PURE__*/ createUseReadContract({
@@ -4377,7 +4516,7 @@ export const useReadCommonAdSpacesTokenUri =
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"tokenXs"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useReadCommonAdSpacesTokenXs = /*#__PURE__*/ createUseReadContract(
   {
@@ -4391,7 +4530,7 @@ export const useReadCommonAdSpacesTokenXs = /*#__PURE__*/ createUseReadContract(
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpaces = /*#__PURE__*/ createUseWriteContract({
   abi: commonAdSpacesAbi,
@@ -4402,7 +4541,7 @@ export const useWriteCommonAdSpaces = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"approve"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesApprove =
   /*#__PURE__*/ createUseWriteContract({
@@ -4415,7 +4554,7 @@ export const useWriteCommonAdSpacesApprove =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"createAdGroup"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesCreateAdGroup =
   /*#__PURE__*/ createUseWriteContract({
@@ -4425,10 +4564,23 @@ export const useWriteCommonAdSpacesCreateAdGroup =
   })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"createAdPool"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
+ */
+export const useWriteCommonAdSpacesCreateAdPool =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdSpacesAbi,
+    address: commonAdSpacesAddress,
+    functionName: 'createAdPool',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"initialize"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesInitialize =
   /*#__PURE__*/ createUseWriteContract({
@@ -4441,7 +4593,7 @@ export const useWriteCommonAdSpacesInitialize =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"openAdSpaces"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesOpenAdSpaces =
   /*#__PURE__*/ createUseWriteContract({
@@ -4454,7 +4606,7 @@ export const useWriteCommonAdSpacesOpenAdSpaces =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"renounceOwnership"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesRenounceOwnership =
   /*#__PURE__*/ createUseWriteContract({
@@ -4467,7 +4619,7 @@ export const useWriteCommonAdSpacesRenounceOwnership =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"safeTransferFrom"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesSafeTransferFrom =
   /*#__PURE__*/ createUseWriteContract({
@@ -4480,7 +4632,7 @@ export const useWriteCommonAdSpacesSafeTransferFrom =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"setApprovalForAll"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesSetApprovalForAll =
   /*#__PURE__*/ createUseWriteContract({
@@ -4493,7 +4645,7 @@ export const useWriteCommonAdSpacesSetApprovalForAll =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"setTokenURI"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesSetTokenUri =
   /*#__PURE__*/ createUseWriteContract({
@@ -4506,7 +4658,7 @@ export const useWriteCommonAdSpacesSetTokenUri =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"setTokenX"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesSetTokenX =
   /*#__PURE__*/ createUseWriteContract({
@@ -4519,7 +4671,7 @@ export const useWriteCommonAdSpacesSetTokenX =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"transferFrom"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesTransferFrom =
   /*#__PURE__*/ createUseWriteContract({
@@ -4532,7 +4684,7 @@ export const useWriteCommonAdSpacesTransferFrom =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"transferOwnership"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesTransferOwnership =
   /*#__PURE__*/ createUseWriteContract({
@@ -4545,7 +4697,7 @@ export const useWriteCommonAdSpacesTransferOwnership =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"updateAdStrategy"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesUpdateAdStrategy =
   /*#__PURE__*/ createUseWriteContract({
@@ -4558,7 +4710,7 @@ export const useWriteCommonAdSpacesUpdateAdStrategy =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"updateAdURI"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesUpdateAdUri =
   /*#__PURE__*/ createUseWriteContract({
@@ -4571,7 +4723,7 @@ export const useWriteCommonAdSpacesUpdateAdUri =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"upgradeTo"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesUpgradeTo =
   /*#__PURE__*/ createUseWriteContract({
@@ -4584,7 +4736,7 @@ export const useWriteCommonAdSpacesUpgradeTo =
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"upgradeToAndCall"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWriteCommonAdSpacesUpgradeToAndCall =
   /*#__PURE__*/ createUseWriteContract({
@@ -4597,7 +4749,7 @@ export const useWriteCommonAdSpacesUpgradeToAndCall =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpaces =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4609,7 +4761,7 @@ export const useSimulateCommonAdSpaces =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"approve"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesApprove =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4622,7 +4774,7 @@ export const useSimulateCommonAdSpacesApprove =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"createAdGroup"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesCreateAdGroup =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4632,10 +4784,23 @@ export const useSimulateCommonAdSpacesCreateAdGroup =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"createAdPool"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
+ */
+export const useSimulateCommonAdSpacesCreateAdPool =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdSpacesAbi,
+    address: commonAdSpacesAddress,
+    functionName: 'createAdPool',
+  })
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"initialize"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesInitialize =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4648,7 +4813,7 @@ export const useSimulateCommonAdSpacesInitialize =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"openAdSpaces"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesOpenAdSpaces =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4661,7 +4826,7 @@ export const useSimulateCommonAdSpacesOpenAdSpaces =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"renounceOwnership"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesRenounceOwnership =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4674,7 +4839,7 @@ export const useSimulateCommonAdSpacesRenounceOwnership =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"safeTransferFrom"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesSafeTransferFrom =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4687,7 +4852,7 @@ export const useSimulateCommonAdSpacesSafeTransferFrom =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"setApprovalForAll"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesSetApprovalForAll =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4700,7 +4865,7 @@ export const useSimulateCommonAdSpacesSetApprovalForAll =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"setTokenURI"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesSetTokenUri =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4713,7 +4878,7 @@ export const useSimulateCommonAdSpacesSetTokenUri =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"setTokenX"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesSetTokenX =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4726,7 +4891,7 @@ export const useSimulateCommonAdSpacesSetTokenX =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"transferFrom"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesTransferFrom =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4739,7 +4904,7 @@ export const useSimulateCommonAdSpacesTransferFrom =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"transferOwnership"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesTransferOwnership =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4752,7 +4917,7 @@ export const useSimulateCommonAdSpacesTransferOwnership =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"updateAdStrategy"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesUpdateAdStrategy =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4765,7 +4930,7 @@ export const useSimulateCommonAdSpacesUpdateAdStrategy =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"updateAdURI"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesUpdateAdUri =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4778,7 +4943,7 @@ export const useSimulateCommonAdSpacesUpdateAdUri =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"upgradeTo"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesUpgradeTo =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4791,7 +4956,7 @@ export const useSimulateCommonAdSpacesUpgradeTo =
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"upgradeToAndCall"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useSimulateCommonAdSpacesUpgradeToAndCall =
   /*#__PURE__*/ createUseSimulateContract({
@@ -4804,7 +4969,7 @@ export const useSimulateCommonAdSpacesUpgradeToAndCall =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4816,7 +4981,7 @@ export const useWatchCommonAdSpacesEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"AdGroupCreated"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesAdGroupCreatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4826,10 +4991,23 @@ export const useWatchCommonAdSpacesAdGroupCreatedEvent =
   })
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"AdPoolCreated"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
+ */
+export const useWatchCommonAdSpacesAdPoolCreatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: commonAdSpacesAbi,
+    address: commonAdSpacesAddress,
+    eventName: 'AdPoolCreated',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"AdSpaceCreated"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesAdSpaceCreatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4842,7 +5020,7 @@ export const useWatchCommonAdSpacesAdSpaceCreatedEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"AdSpaceStrategyUpdated"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesAdSpaceStrategyUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4855,7 +5033,7 @@ export const useWatchCommonAdSpacesAdSpaceStrategyUpdatedEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"AdSpaceURIUpdated"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesAdSpaceUriUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4868,7 +5046,7 @@ export const useWatchCommonAdSpacesAdSpaceUriUpdatedEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"AdminChanged"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesAdminChangedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4881,7 +5059,7 @@ export const useWatchCommonAdSpacesAdminChangedEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"Approval"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesApprovalEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4894,7 +5072,7 @@ export const useWatchCommonAdSpacesApprovalEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"ApprovalForAll"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesApprovalForAllEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4907,7 +5085,7 @@ export const useWatchCommonAdSpacesApprovalForAllEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"BeaconUpgraded"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesBeaconUpgradedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4920,7 +5098,7 @@ export const useWatchCommonAdSpacesBeaconUpgradedEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"Initialized"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesInitializedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4933,7 +5111,7 @@ export const useWatchCommonAdSpacesInitializedEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4946,7 +5124,7 @@ export const useWatchCommonAdSpacesOwnershipTransferredEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"TokenXSet"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesTokenXSetEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4959,7 +5137,7 @@ export const useWatchCommonAdSpacesTokenXSetEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"Transfer"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesTransferEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -4972,7 +5150,7 @@ export const useWatchCommonAdSpacesTransferEvent =
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"Upgraded"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x27f55bA994B8FeAdeFdda6D56D997F1654E4b954)
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x8643383A68bECafA97Cad062d1f4C51F1bfc3229)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xBEe01F909a0Eed391B5F679B86dE5cB64eE3a8f8)
  */
 export const useWatchCommonAdSpacesUpgradedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
