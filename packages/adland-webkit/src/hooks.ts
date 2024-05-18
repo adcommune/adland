@@ -183,13 +183,137 @@ export enum AdGroup_OrderBy {
   TransactionHash = 'transactionHash'
 }
 
+export type AdPool = {
+  __typename?: 'AdPool';
+  adSpace: AdSpace;
+  adToken: TokenX;
+  blockTimestamp: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+  transactionHash: Scalars['Bytes']['output'];
+};
+
+export type AdPool_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  adSpace?: InputMaybe<Scalars['String']['input']>;
+  adSpace_?: InputMaybe<AdSpace_Filter>;
+  adSpace_contains?: InputMaybe<Scalars['String']['input']>;
+  adSpace_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  adSpace_ends_with?: InputMaybe<Scalars['String']['input']>;
+  adSpace_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adSpace_gt?: InputMaybe<Scalars['String']['input']>;
+  adSpace_gte?: InputMaybe<Scalars['String']['input']>;
+  adSpace_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  adSpace_lt?: InputMaybe<Scalars['String']['input']>;
+  adSpace_lte?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_contains?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  adSpace_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adSpace_starts_with?: InputMaybe<Scalars['String']['input']>;
+  adSpace_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken?: InputMaybe<Scalars['String']['input']>;
+  adToken_?: InputMaybe<TokenX_Filter>;
+  adToken_contains?: InputMaybe<Scalars['String']['input']>;
+  adToken_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken_ends_with?: InputMaybe<Scalars['String']['input']>;
+  adToken_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken_gt?: InputMaybe<Scalars['String']['input']>;
+  adToken_gte?: InputMaybe<Scalars['String']['input']>;
+  adToken_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  adToken_lt?: InputMaybe<Scalars['String']['input']>;
+  adToken_lte?: InputMaybe<Scalars['String']['input']>;
+  adToken_not?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_contains?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  adToken_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken_starts_with?: InputMaybe<Scalars['String']['input']>;
+  adToken_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  and?: InputMaybe<Array<InputMaybe<AdPool_Filter>>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  or?: InputMaybe<Array<InputMaybe<AdPool_Filter>>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+};
+
+export enum AdPool_OrderBy {
+  AdSpace = 'adSpace',
+  AdSpaceBlockTimestamp = 'adSpace__blockTimestamp',
+  AdSpaceId = 'adSpace__id',
+  AdSpaceTransactionHash = 'adSpace__transactionHash',
+  AdSpaceUri = 'adSpace__uri',
+  AdToken = 'adToken',
+  AdTokenBlockNumber = 'adToken__blockNumber',
+  AdTokenBlockTimestamp = 'adToken__blockTimestamp',
+  AdTokenId = 'adToken__id',
+  AdTokenSuperToken = 'adToken__superToken',
+  AdTokenTransactionHash = 'adToken__transactionHash',
+  AdTokenUnderlyingToken = 'adToken__underlyingToken',
+  BlockTimestamp = 'blockTimestamp',
+  Id = 'id',
+  TransactionHash = 'transactionHash'
+}
+
 export type AdSpace = {
   __typename?: 'AdSpace';
   adGroup: AdGroup;
+  adPools: Array<AdPool>;
   blockTimestamp: Scalars['BigInt']['output'];
   id: Scalars['String']['output'];
   transactionHash: Scalars['Bytes']['output'];
   uri?: Maybe<Scalars['String']['output']>;
+};
+
+
+export type AdSpaceAdPoolsArgs = {
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AdPool_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<AdPool_Filter>;
 };
 
 export type AdSpaceCreated = {
@@ -464,6 +588,7 @@ export type AdSpace_Filter = {
   adGroup_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   adGroup_starts_with?: InputMaybe<Scalars['String']['input']>;
   adGroup_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adPools_?: InputMaybe<AdPool_Filter>;
   and?: InputMaybe<Array<InputMaybe<AdSpace_Filter>>>;
   blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
   blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
@@ -532,6 +657,7 @@ export enum AdSpace_OrderBy {
   AdGroupBlockTimestamp = 'adGroup__blockTimestamp',
   AdGroupId = 'adGroup__id',
   AdGroupTransactionHash = 'adGroup__transactionHash',
+  AdPools = 'adPools',
   BlockTimestamp = 'blockTimestamp',
   Id = 'id',
   TransactionHash = 'transactionHash',
@@ -1687,6 +1813,8 @@ export type Query = {
   adGroupCreated?: Maybe<AdGroupCreated>;
   adGroupCreateds: Array<AdGroupCreated>;
   adGroups: Array<AdGroup>;
+  adPool?: Maybe<AdPool>;
+  adPools: Array<AdPool>;
   adSpace?: Maybe<AdSpace>;
   adSpaceCreated?: Maybe<AdSpaceCreated>;
   adSpaceCreateds: Array<AdSpaceCreated>;
@@ -1766,6 +1894,24 @@ export type QueryAdGroupsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<AdGroup_Filter>;
+};
+
+
+export type QueryAdPoolArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryAdPoolsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AdPool_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AdPool_Filter>;
 };
 
 
@@ -2118,6 +2264,8 @@ export type Subscription = {
   adGroupCreated?: Maybe<AdGroupCreated>;
   adGroupCreateds: Array<AdGroupCreated>;
   adGroups: Array<AdGroup>;
+  adPool?: Maybe<AdPool>;
+  adPools: Array<AdPool>;
   adSpace?: Maybe<AdSpace>;
   adSpaceCreated?: Maybe<AdSpaceCreated>;
   adSpaceCreateds: Array<AdSpaceCreated>;
@@ -2197,6 +2345,24 @@ export type SubscriptionAdGroupsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<AdGroup_Filter>;
+};
+
+
+export type SubscriptionAdPoolArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionAdPoolsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AdPool_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AdPool_Filter>;
 };
 
 
@@ -3077,10 +3243,15 @@ export type AdGroupQueryVariables = Exact<{
   adGroup_adSpaces_orderBy?: InputMaybe<AdSpace_OrderBy>;
   adGroup_adSpaces_orderDirection?: InputMaybe<OrderDirection>;
   adGroup_adSpaces_where?: InputMaybe<AdSpace_Filter>;
+  adGroup_adSpaces_adSpaces_adPools_skip?: InputMaybe<Scalars['Int']['input']>;
+  adGroup_adSpaces_adSpaces_adPools_first?: InputMaybe<Scalars['Int']['input']>;
+  adGroup_adSpaces_adSpaces_adPools_orderBy?: InputMaybe<AdPool_OrderBy>;
+  adGroup_adSpaces_adSpaces_adPools_orderDirection?: InputMaybe<OrderDirection>;
+  adGroup_adSpaces_adSpaces_adPools_where?: InputMaybe<AdPool_Filter>;
 }>;
 
 
-export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any }> } | null };
+export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> } | null };
 
 export type AdGroupsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3094,18 +3265,28 @@ export type AdGroupsQueryVariables = Exact<{
   adGroups_adSpaces_orderBy?: InputMaybe<AdSpace_OrderBy>;
   adGroups_adSpaces_orderDirection?: InputMaybe<OrderDirection>;
   adGroups_adSpaces_where?: InputMaybe<AdSpace_Filter>;
+  adGroups_adSpaces_adSpaces_adPools_skip?: InputMaybe<Scalars['Int']['input']>;
+  adGroups_adSpaces_adSpaces_adPools_first?: InputMaybe<Scalars['Int']['input']>;
+  adGroups_adSpaces_adSpaces_adPools_orderBy?: InputMaybe<AdPool_OrderBy>;
+  adGroups_adSpaces_adSpaces_adPools_orderDirection?: InputMaybe<OrderDirection>;
+  adGroups_adSpaces_adSpaces_adPools_where?: InputMaybe<AdPool_Filter>;
 }>;
 
 
-export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any }> }> };
+export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> }> };
 
 export type AdSpaceQueryVariables = Exact<{
   id: Scalars['ID']['input'];
   block?: InputMaybe<Block_Height>;
+  adSpace_adPools_skip?: InputMaybe<Scalars['Int']['input']>;
+  adSpace_adPools_first?: InputMaybe<Scalars['Int']['input']>;
+  adSpace_adPools_orderBy?: InputMaybe<AdPool_OrderBy>;
+  adSpace_adPools_orderDirection?: InputMaybe<OrderDirection>;
+  adSpace_adPools_where?: InputMaybe<AdPool_Filter>;
 }>;
 
 
-export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } } | null };
+export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
 
 export type AdSpacesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3114,10 +3295,35 @@ export type AdSpacesQueryVariables = Exact<{
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<AdSpace_Filter>;
   block?: InputMaybe<Block_Height>;
+  adSpaces_adPools_skip?: InputMaybe<Scalars['Int']['input']>;
+  adSpaces_adPools_first?: InputMaybe<Scalars['Int']['input']>;
+  adSpaces_adPools_orderBy?: InputMaybe<AdPool_OrderBy>;
+  adSpaces_adPools_orderDirection?: InputMaybe<OrderDirection>;
+  adSpaces_adPools_where?: InputMaybe<AdPool_Filter>;
 }>;
 
 
-export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }> };
+export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
+
+export type AdPoolQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Block_Height>;
+}>;
+
+
+export type AdPoolQuery = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
+
+export type AdPoolsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AdPool_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<AdPool_Filter>;
+  block?: InputMaybe<Block_Height>;
+}>;
+
+
+export type AdPoolsQuery = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
 
 export type TokenXQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3502,7 +3708,7 @@ export type UpgradedsQuery = { __typename?: 'Query', upgradeds: Array<{ __typena
 
 
 export const AdGroupDocument = `
-    query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGroup_adSpaces_first: Int, $adGroup_adSpaces_orderBy: AdSpace_orderBy, $adGroup_adSpaces_orderDirection: OrderDirection, $adGroup_adSpaces_where: AdSpace_filter) {
+    query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGroup_adSpaces_first: Int, $adGroup_adSpaces_orderBy: AdSpace_orderBy, $adGroup_adSpaces_orderDirection: OrderDirection, $adGroup_adSpaces_where: AdSpace_filter, $adGroup_adSpaces_adSpaces_adPools_skip: Int, $adGroup_adSpaces_adSpaces_adPools_first: Int, $adGroup_adSpaces_adSpaces_adPools_orderBy: AdPool_orderBy, $adGroup_adSpaces_adSpaces_adPools_orderDirection: OrderDirection, $adGroup_adSpaces_adSpaces_adPools_where: AdPool_filter) {
   adGroup(id: $id, block: $block) {
     id
     beneficiary
@@ -3514,6 +3720,25 @@ export const AdGroupDocument = `
       where: $adGroup_adSpaces_where
     ) {
       id
+      adPools(
+        skip: $adGroup_adSpaces_adSpaces_adPools_skip
+        first: $adGroup_adSpaces_adSpaces_adPools_first
+        orderBy: $adGroup_adSpaces_adSpaces_adPools_orderBy
+        orderDirection: $adGroup_adSpaces_adSpaces_adPools_orderDirection
+        where: $adGroup_adSpaces_adSpaces_adPools_where
+      ) {
+        id
+        adToken {
+          id
+          underlyingToken
+          superToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -3541,7 +3766,7 @@ export const useAdGroupQuery = <
     )};
 
 export const AdGroupsDocument = `
-    query adGroups($skip: Int, $first: Int, $orderBy: AdGroup_orderBy, $orderDirection: OrderDirection, $where: AdGroup_filter, $block: Block_height, $adGroups_adSpaces_skip: Int, $adGroups_adSpaces_first: Int, $adGroups_adSpaces_orderBy: AdSpace_orderBy, $adGroups_adSpaces_orderDirection: OrderDirection, $adGroups_adSpaces_where: AdSpace_filter) {
+    query adGroups($skip: Int, $first: Int, $orderBy: AdGroup_orderBy, $orderDirection: OrderDirection, $where: AdGroup_filter, $block: Block_height, $adGroups_adSpaces_skip: Int, $adGroups_adSpaces_first: Int, $adGroups_adSpaces_orderBy: AdSpace_orderBy, $adGroups_adSpaces_orderDirection: OrderDirection, $adGroups_adSpaces_where: AdSpace_filter, $adGroups_adSpaces_adSpaces_adPools_skip: Int, $adGroups_adSpaces_adSpaces_adPools_first: Int, $adGroups_adSpaces_adSpaces_adPools_orderBy: AdPool_orderBy, $adGroups_adSpaces_adSpaces_adPools_orderDirection: OrderDirection, $adGroups_adSpaces_adSpaces_adPools_where: AdPool_filter) {
   adGroups(
     skip: $skip
     first: $first
@@ -3560,6 +3785,25 @@ export const AdGroupsDocument = `
       where: $adGroups_adSpaces_where
     ) {
       id
+      adPools(
+        skip: $adGroups_adSpaces_adSpaces_adPools_skip
+        first: $adGroups_adSpaces_adSpaces_adPools_first
+        orderBy: $adGroups_adSpaces_adSpaces_adPools_orderBy
+        orderDirection: $adGroups_adSpaces_adSpaces_adPools_orderDirection
+        where: $adGroups_adSpaces_adSpaces_adPools_where
+      ) {
+        id
+        adToken {
+          id
+          underlyingToken
+          superToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -3587,12 +3831,31 @@ export const useAdGroupsQuery = <
     )};
 
 export const AdSpaceDocument = `
-    query adSpace($id: ID!, $block: Block_height) {
+    query adSpace($id: ID!, $block: Block_height, $adSpace_adPools_skip: Int, $adSpace_adPools_first: Int, $adSpace_adPools_orderBy: AdPool_orderBy, $adSpace_adPools_orderDirection: OrderDirection, $adSpace_adPools_where: AdPool_filter) {
   adSpace(id: $id, block: $block) {
     id
     adGroup {
       id
       beneficiary
+      blockTimestamp
+      transactionHash
+    }
+    adPools(
+      skip: $adSpace_adPools_skip
+      first: $adSpace_adPools_first
+      orderBy: $adSpace_adPools_orderBy
+      orderDirection: $adSpace_adPools_orderDirection
+      where: $adSpace_adPools_where
+    ) {
+      id
+      adToken {
+        id
+        underlyingToken
+        superToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       blockTimestamp
       transactionHash
     }
@@ -3620,7 +3883,7 @@ export const useAdSpaceQuery = <
     )};
 
 export const AdSpacesDocument = `
-    query adSpaces($skip: Int, $first: Int, $orderBy: AdSpace_orderBy, $orderDirection: OrderDirection, $where: AdSpace_filter, $block: Block_height) {
+    query adSpaces($skip: Int, $first: Int, $orderBy: AdSpace_orderBy, $orderDirection: OrderDirection, $where: AdSpace_filter, $block: Block_height, $adSpaces_adPools_skip: Int, $adSpaces_adPools_first: Int, $adSpaces_adPools_orderBy: AdPool_orderBy, $adSpaces_adPools_orderDirection: OrderDirection, $adSpaces_adPools_where: AdPool_filter) {
   adSpaces(
     skip: $skip
     first: $first
@@ -3633,6 +3896,25 @@ export const AdSpacesDocument = `
     adGroup {
       id
       beneficiary
+      blockTimestamp
+      transactionHash
+    }
+    adPools(
+      skip: $adSpaces_adPools_skip
+      first: $adSpaces_adPools_first
+      orderBy: $adSpaces_adPools_orderBy
+      orderDirection: $adSpaces_adPools_orderDirection
+      where: $adSpaces_adPools_where
+    ) {
+      id
+      adToken {
+        id
+        underlyingToken
+        superToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       blockTimestamp
       transactionHash
     }
@@ -3655,6 +3937,105 @@ export const useAdSpacesQuery = <
       {
     queryKey: variables === undefined ? ['adSpaces'] : ['adSpaces', variables],
     queryFn: fetcher<AdSpacesQuery, AdSpacesQueryVariables>(AdSpacesDocument).bind(null, variables),
+    ...options
+  }
+    )};
+
+export const AdPoolDocument = `
+    query adPool($id: ID!, $block: Block_height) {
+  adPool(id: $id, block: $block) {
+    id
+    adSpace {
+      id
+      adGroup {
+        id
+        beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    adToken {
+      id
+      underlyingToken
+      superToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    blockTimestamp
+    transactionHash
+  }
+}
+    `;
+
+export const useAdPoolQuery = <
+      TData = AdPoolQuery,
+      TError = unknown
+    >(
+      variables: AdPoolQueryVariables,
+      options?: Omit<UseQueryOptions<AdPoolQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdPoolQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<AdPoolQuery, TError, TData>(
+      {
+    queryKey: ['adPool', variables],
+    queryFn: fetcher<AdPoolQuery, AdPoolQueryVariables>(AdPoolDocument).bind(null, variables),
+    ...options
+  }
+    )};
+
+export const AdPoolsDocument = `
+    query adPools($skip: Int, $first: Int, $orderBy: AdPool_orderBy, $orderDirection: OrderDirection, $where: AdPool_filter, $block: Block_height) {
+  adPools(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    adSpace {
+      id
+      adGroup {
+        id
+        beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    adToken {
+      id
+      underlyingToken
+      superToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    blockTimestamp
+    transactionHash
+  }
+}
+    `;
+
+export const useAdPoolsQuery = <
+      TData = AdPoolsQuery,
+      TError = unknown
+    >(
+      variables?: AdPoolsQueryVariables,
+      options?: Omit<UseQueryOptions<AdPoolsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdPoolsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<AdPoolsQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['adPools'] : ['adPools', variables],
+    queryFn: fetcher<AdPoolsQuery, AdPoolsQueryVariables>(AdPoolsDocument).bind(null, variables),
     ...options
   }
     )};

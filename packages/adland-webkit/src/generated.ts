@@ -184,13 +184,137 @@ export enum AdGroup_OrderBy_subgraph {
   TransactionHash_subgraph = 'transactionHash'
 }
 
+export type AdPool_subgraph = {
+  __typename?: 'AdPool';
+  adSpace: AdSpace_subgraph;
+  adToken: TokenX_subgraph;
+  blockTimestamp: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+  transactionHash: Scalars['Bytes']['output'];
+};
+
+export type AdPool_Filter_subgraph = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter_subgraph>;
+  adSpace?: InputMaybe<Scalars['String']['input']>;
+  adSpace_?: InputMaybe<AdSpace_Filter_subgraph>;
+  adSpace_contains?: InputMaybe<Scalars['String']['input']>;
+  adSpace_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  adSpace_ends_with?: InputMaybe<Scalars['String']['input']>;
+  adSpace_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adSpace_gt?: InputMaybe<Scalars['String']['input']>;
+  adSpace_gte?: InputMaybe<Scalars['String']['input']>;
+  adSpace_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  adSpace_lt?: InputMaybe<Scalars['String']['input']>;
+  adSpace_lte?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_contains?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  adSpace_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  adSpace_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adSpace_starts_with?: InputMaybe<Scalars['String']['input']>;
+  adSpace_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken?: InputMaybe<Scalars['String']['input']>;
+  adToken_?: InputMaybe<TokenX_Filter_subgraph>;
+  adToken_contains?: InputMaybe<Scalars['String']['input']>;
+  adToken_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken_ends_with?: InputMaybe<Scalars['String']['input']>;
+  adToken_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken_gt?: InputMaybe<Scalars['String']['input']>;
+  adToken_gte?: InputMaybe<Scalars['String']['input']>;
+  adToken_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  adToken_lt?: InputMaybe<Scalars['String']['input']>;
+  adToken_lte?: InputMaybe<Scalars['String']['input']>;
+  adToken_not?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_contains?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  adToken_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  adToken_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adToken_starts_with?: InputMaybe<Scalars['String']['input']>;
+  adToken_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  and?: InputMaybe<Array<InputMaybe<AdPool_Filter_subgraph>>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  or?: InputMaybe<Array<InputMaybe<AdPool_Filter_subgraph>>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+};
+
+export enum AdPool_OrderBy_subgraph {
+  AdSpace_subgraph = 'adSpace',
+  AdSpaceBlockTimestamp_subgraph = 'adSpace__blockTimestamp',
+  AdSpaceId_subgraph = 'adSpace__id',
+  AdSpaceTransactionHash_subgraph = 'adSpace__transactionHash',
+  AdSpaceUri_subgraph = 'adSpace__uri',
+  AdToken_subgraph = 'adToken',
+  AdTokenBlockNumber_subgraph = 'adToken__blockNumber',
+  AdTokenBlockTimestamp_subgraph = 'adToken__blockTimestamp',
+  AdTokenId_subgraph = 'adToken__id',
+  AdTokenSuperToken_subgraph = 'adToken__superToken',
+  AdTokenTransactionHash_subgraph = 'adToken__transactionHash',
+  AdTokenUnderlyingToken_subgraph = 'adToken__underlyingToken',
+  BlockTimestamp_subgraph = 'blockTimestamp',
+  Id_subgraph = 'id',
+  TransactionHash_subgraph = 'transactionHash'
+}
+
 export type AdSpace_subgraph = {
   __typename?: 'AdSpace';
   adGroup: AdGroup_subgraph;
+  adPools: Array<AdPool_subgraph>;
   blockTimestamp: Scalars['BigInt']['output'];
   id: Scalars['String']['output'];
   transactionHash: Scalars['Bytes']['output'];
   uri?: Maybe<Scalars['String']['output']>;
+};
+
+
+export type AdSpaceAdPoolsArgs_subgraph = {
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AdPool_OrderBy_subgraph>;
+  orderDirection?: InputMaybe<OrderDirection_subgraph>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<AdPool_Filter_subgraph>;
 };
 
 export type AdSpaceCreated_subgraph = {
@@ -465,6 +589,7 @@ export type AdSpace_Filter_subgraph = {
   adGroup_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   adGroup_starts_with?: InputMaybe<Scalars['String']['input']>;
   adGroup_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  adPools_?: InputMaybe<AdPool_Filter_subgraph>;
   and?: InputMaybe<Array<InputMaybe<AdSpace_Filter_subgraph>>>;
   blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
   blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
@@ -533,6 +658,7 @@ export enum AdSpace_OrderBy_subgraph {
   AdGroupBlockTimestamp_subgraph = 'adGroup__blockTimestamp',
   AdGroupId_subgraph = 'adGroup__id',
   AdGroupTransactionHash_subgraph = 'adGroup__transactionHash',
+  AdPools_subgraph = 'adPools',
   BlockTimestamp_subgraph = 'blockTimestamp',
   Id_subgraph = 'id',
   TransactionHash_subgraph = 'transactionHash',
@@ -1688,6 +1814,8 @@ export type Query_subgraph = {
   adGroupCreated?: Maybe<AdGroupCreated_subgraph>;
   adGroupCreateds: Array<AdGroupCreated_subgraph>;
   adGroups: Array<AdGroup_subgraph>;
+  adPool?: Maybe<AdPool_subgraph>;
+  adPools: Array<AdPool_subgraph>;
   adSpace?: Maybe<AdSpace_subgraph>;
   adSpaceCreated?: Maybe<AdSpaceCreated_subgraph>;
   adSpaceCreateds: Array<AdSpaceCreated_subgraph>;
@@ -1767,6 +1895,24 @@ export type QueryAdGroupsArgs_subgraph = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy__subgraph;
   where?: InputMaybe<AdGroup_Filter_subgraph>;
+};
+
+
+export type QueryAdPoolArgs_subgraph = {
+  block?: InputMaybe<Block_Height_subgraph>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy__subgraph;
+};
+
+
+export type QueryAdPoolsArgs_subgraph = {
+  block?: InputMaybe<Block_Height_subgraph>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AdPool_OrderBy_subgraph>;
+  orderDirection?: InputMaybe<OrderDirection_subgraph>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy__subgraph;
+  where?: InputMaybe<AdPool_Filter_subgraph>;
 };
 
 
@@ -2119,6 +2265,8 @@ export type Subscription_subgraph = {
   adGroupCreated?: Maybe<AdGroupCreated_subgraph>;
   adGroupCreateds: Array<AdGroupCreated_subgraph>;
   adGroups: Array<AdGroup_subgraph>;
+  adPool?: Maybe<AdPool_subgraph>;
+  adPools: Array<AdPool_subgraph>;
   adSpace?: Maybe<AdSpace_subgraph>;
   adSpaceCreated?: Maybe<AdSpaceCreated_subgraph>;
   adSpaceCreateds: Array<AdSpaceCreated_subgraph>;
@@ -2198,6 +2346,24 @@ export type SubscriptionAdGroupsArgs_subgraph = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy__subgraph;
   where?: InputMaybe<AdGroup_Filter_subgraph>;
+};
+
+
+export type SubscriptionAdPoolArgs_subgraph = {
+  block?: InputMaybe<Block_Height_subgraph>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy__subgraph;
+};
+
+
+export type SubscriptionAdPoolsArgs_subgraph = {
+  block?: InputMaybe<Block_Height_subgraph>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AdPool_OrderBy_subgraph>;
+  orderDirection?: InputMaybe<OrderDirection_subgraph>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy__subgraph;
+  where?: InputMaybe<AdPool_Filter_subgraph>;
 };
 
 
@@ -3078,10 +3244,15 @@ export type AdGroupQueryVariables_subgraph = Exact<{
   adGroup_adSpaces_orderBy?: InputMaybe<AdSpace_OrderBy_subgraph>;
   adGroup_adSpaces_orderDirection?: InputMaybe<OrderDirection_subgraph>;
   adGroup_adSpaces_where?: InputMaybe<AdSpace_Filter_subgraph>;
+  adGroup_adSpaces_adSpaces_adPools_skip?: InputMaybe<Scalars['Int']['input']>;
+  adGroup_adSpaces_adSpaces_adPools_first?: InputMaybe<Scalars['Int']['input']>;
+  adGroup_adSpaces_adSpaces_adPools_orderBy?: InputMaybe<AdPool_OrderBy_subgraph>;
+  adGroup_adSpaces_adSpaces_adPools_orderDirection?: InputMaybe<OrderDirection_subgraph>;
+  adGroup_adSpaces_adSpaces_adPools_where?: InputMaybe<AdPool_Filter_subgraph>;
 }>;
 
 
-export type AdGroupQuery_subgraph = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any }> } | null };
+export type AdGroupQuery_subgraph = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> } | null };
 
 export type AdGroupsQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3095,18 +3266,28 @@ export type AdGroupsQueryVariables_subgraph = Exact<{
   adGroups_adSpaces_orderBy?: InputMaybe<AdSpace_OrderBy_subgraph>;
   adGroups_adSpaces_orderDirection?: InputMaybe<OrderDirection_subgraph>;
   adGroups_adSpaces_where?: InputMaybe<AdSpace_Filter_subgraph>;
+  adGroups_adSpaces_adSpaces_adPools_skip?: InputMaybe<Scalars['Int']['input']>;
+  adGroups_adSpaces_adSpaces_adPools_first?: InputMaybe<Scalars['Int']['input']>;
+  adGroups_adSpaces_adSpaces_adPools_orderBy?: InputMaybe<AdPool_OrderBy_subgraph>;
+  adGroups_adSpaces_adSpaces_adPools_orderDirection?: InputMaybe<OrderDirection_subgraph>;
+  adGroups_adSpaces_adSpaces_adPools_where?: InputMaybe<AdPool_Filter_subgraph>;
 }>;
 
 
-export type AdGroupsQuery_subgraph = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any }> }> };
+export type AdGroupsQuery_subgraph = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> }> };
 
 export type AdSpaceQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
   block?: InputMaybe<Block_Height_subgraph>;
+  adSpace_adPools_skip?: InputMaybe<Scalars['Int']['input']>;
+  adSpace_adPools_first?: InputMaybe<Scalars['Int']['input']>;
+  adSpace_adPools_orderBy?: InputMaybe<AdPool_OrderBy_subgraph>;
+  adSpace_adPools_orderDirection?: InputMaybe<OrderDirection_subgraph>;
+  adSpace_adPools_where?: InputMaybe<AdPool_Filter_subgraph>;
 }>;
 
 
-export type AdSpaceQuery_subgraph = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } } | null };
+export type AdSpaceQuery_subgraph = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
 
 export type AdSpacesQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3115,10 +3296,35 @@ export type AdSpacesQueryVariables_subgraph = Exact<{
   orderDirection?: InputMaybe<OrderDirection_subgraph>;
   where?: InputMaybe<AdSpace_Filter_subgraph>;
   block?: InputMaybe<Block_Height_subgraph>;
+  adSpaces_adPools_skip?: InputMaybe<Scalars['Int']['input']>;
+  adSpaces_adPools_first?: InputMaybe<Scalars['Int']['input']>;
+  adSpaces_adPools_orderBy?: InputMaybe<AdPool_OrderBy_subgraph>;
+  adSpaces_adPools_orderDirection?: InputMaybe<OrderDirection_subgraph>;
+  adSpaces_adPools_where?: InputMaybe<AdPool_Filter_subgraph>;
 }>;
 
 
-export type AdSpacesQuery_subgraph = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }> };
+export type AdSpacesQuery_subgraph = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
+
+export type AdPoolQueryVariables_subgraph = Exact<{
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Block_Height_subgraph>;
+}>;
+
+
+export type AdPoolQuery_subgraph = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
+
+export type AdPoolsQueryVariables_subgraph = Exact<{
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AdPool_OrderBy_subgraph>;
+  orderDirection?: InputMaybe<OrderDirection_subgraph>;
+  where?: InputMaybe<AdPool_Filter_subgraph>;
+  block?: InputMaybe<Block_Height_subgraph>;
+}>;
+
+
+export type AdPoolsQuery_subgraph = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
 
 export type TokenXQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3502,7 +3708,7 @@ export type UpgradedsQuery_subgraph = { __typename?: 'Query', upgradeds: Array<{
 
 
 export const AdGroupDocument_subgraph = gql`
-    query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGroup_adSpaces_first: Int, $adGroup_adSpaces_orderBy: AdSpace_orderBy, $adGroup_adSpaces_orderDirection: OrderDirection, $adGroup_adSpaces_where: AdSpace_filter) {
+    query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGroup_adSpaces_first: Int, $adGroup_adSpaces_orderBy: AdSpace_orderBy, $adGroup_adSpaces_orderDirection: OrderDirection, $adGroup_adSpaces_where: AdSpace_filter, $adGroup_adSpaces_adSpaces_adPools_skip: Int, $adGroup_adSpaces_adSpaces_adPools_first: Int, $adGroup_adSpaces_adSpaces_adPools_orderBy: AdPool_orderBy, $adGroup_adSpaces_adSpaces_adPools_orderDirection: OrderDirection, $adGroup_adSpaces_adSpaces_adPools_where: AdPool_filter) {
   adGroup(id: $id, block: $block) {
     id
     beneficiary
@@ -3514,6 +3720,25 @@ export const AdGroupDocument_subgraph = gql`
       where: $adGroup_adSpaces_where
     ) {
       id
+      adPools(
+        skip: $adGroup_adSpaces_adSpaces_adPools_skip
+        first: $adGroup_adSpaces_adSpaces_adPools_first
+        orderBy: $adGroup_adSpaces_adSpaces_adPools_orderBy
+        orderDirection: $adGroup_adSpaces_adSpaces_adPools_orderDirection
+        where: $adGroup_adSpaces_adSpaces_adPools_where
+      ) {
+        id
+        adToken {
+          id
+          underlyingToken
+          superToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -3524,7 +3749,7 @@ export const AdGroupDocument_subgraph = gql`
 }
     `;
 export const AdGroupsDocument_subgraph = gql`
-    query adGroups($skip: Int, $first: Int, $orderBy: AdGroup_orderBy, $orderDirection: OrderDirection, $where: AdGroup_filter, $block: Block_height, $adGroups_adSpaces_skip: Int, $adGroups_adSpaces_first: Int, $adGroups_adSpaces_orderBy: AdSpace_orderBy, $adGroups_adSpaces_orderDirection: OrderDirection, $adGroups_adSpaces_where: AdSpace_filter) {
+    query adGroups($skip: Int, $first: Int, $orderBy: AdGroup_orderBy, $orderDirection: OrderDirection, $where: AdGroup_filter, $block: Block_height, $adGroups_adSpaces_skip: Int, $adGroups_adSpaces_first: Int, $adGroups_adSpaces_orderBy: AdSpace_orderBy, $adGroups_adSpaces_orderDirection: OrderDirection, $adGroups_adSpaces_where: AdSpace_filter, $adGroups_adSpaces_adSpaces_adPools_skip: Int, $adGroups_adSpaces_adSpaces_adPools_first: Int, $adGroups_adSpaces_adSpaces_adPools_orderBy: AdPool_orderBy, $adGroups_adSpaces_adSpaces_adPools_orderDirection: OrderDirection, $adGroups_adSpaces_adSpaces_adPools_where: AdPool_filter) {
   adGroups(
     skip: $skip
     first: $first
@@ -3543,6 +3768,25 @@ export const AdGroupsDocument_subgraph = gql`
       where: $adGroups_adSpaces_where
     ) {
       id
+      adPools(
+        skip: $adGroups_adSpaces_adSpaces_adPools_skip
+        first: $adGroups_adSpaces_adSpaces_adPools_first
+        orderBy: $adGroups_adSpaces_adSpaces_adPools_orderBy
+        orderDirection: $adGroups_adSpaces_adSpaces_adPools_orderDirection
+        where: $adGroups_adSpaces_adSpaces_adPools_where
+      ) {
+        id
+        adToken {
+          id
+          underlyingToken
+          superToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -3553,12 +3797,31 @@ export const AdGroupsDocument_subgraph = gql`
 }
     `;
 export const AdSpaceDocument_subgraph = gql`
-    query adSpace($id: ID!, $block: Block_height) {
+    query adSpace($id: ID!, $block: Block_height, $adSpace_adPools_skip: Int, $adSpace_adPools_first: Int, $adSpace_adPools_orderBy: AdPool_orderBy, $adSpace_adPools_orderDirection: OrderDirection, $adSpace_adPools_where: AdPool_filter) {
   adSpace(id: $id, block: $block) {
     id
     adGroup {
       id
       beneficiary
+      blockTimestamp
+      transactionHash
+    }
+    adPools(
+      skip: $adSpace_adPools_skip
+      first: $adSpace_adPools_first
+      orderBy: $adSpace_adPools_orderBy
+      orderDirection: $adSpace_adPools_orderDirection
+      where: $adSpace_adPools_where
+    ) {
+      id
+      adToken {
+        id
+        underlyingToken
+        superToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       blockTimestamp
       transactionHash
     }
@@ -3569,7 +3832,7 @@ export const AdSpaceDocument_subgraph = gql`
 }
     `;
 export const AdSpacesDocument_subgraph = gql`
-    query adSpaces($skip: Int, $first: Int, $orderBy: AdSpace_orderBy, $orderDirection: OrderDirection, $where: AdSpace_filter, $block: Block_height) {
+    query adSpaces($skip: Int, $first: Int, $orderBy: AdSpace_orderBy, $orderDirection: OrderDirection, $where: AdSpace_filter, $block: Block_height, $adSpaces_adPools_skip: Int, $adSpaces_adPools_first: Int, $adSpaces_adPools_orderBy: AdPool_orderBy, $adSpaces_adPools_orderDirection: OrderDirection, $adSpaces_adPools_where: AdPool_filter) {
   adSpaces(
     skip: $skip
     first: $first
@@ -3585,7 +3848,91 @@ export const AdSpacesDocument_subgraph = gql`
       blockTimestamp
       transactionHash
     }
+    adPools(
+      skip: $adSpaces_adPools_skip
+      first: $adSpaces_adPools_first
+      orderBy: $adSpaces_adPools_orderBy
+      orderDirection: $adSpaces_adPools_orderDirection
+      where: $adSpaces_adPools_where
+    ) {
+      id
+      adToken {
+        id
+        underlyingToken
+        superToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      blockTimestamp
+      transactionHash
+    }
     uri
+    blockTimestamp
+    transactionHash
+  }
+}
+    `;
+export const AdPoolDocument_subgraph = gql`
+    query adPool($id: ID!, $block: Block_height) {
+  adPool(id: $id, block: $block) {
+    id
+    adSpace {
+      id
+      adGroup {
+        id
+        beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    adToken {
+      id
+      underlyingToken
+      superToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    blockTimestamp
+    transactionHash
+  }
+}
+    `;
+export const AdPoolsDocument_subgraph = gql`
+    query adPools($skip: Int, $first: Int, $orderBy: AdPool_orderBy, $orderDirection: OrderDirection, $where: AdPool_filter, $block: Block_height) {
+  adPools(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    adSpace {
+      id
+      adGroup {
+        id
+        beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    adToken {
+      id
+      underlyingToken
+      superToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
     blockTimestamp
     transactionHash
   }
@@ -4277,6 +4624,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adSpaces(variables?: AdSpacesQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdSpacesQuery_subgraph> {
       return withWrapper((wrappedRequestHeaders) => client.request<AdSpacesQuery_subgraph>(AdSpacesDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adSpaces', 'query', variables);
+    },
+    adPool(variables: AdPoolQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdPoolQuery_subgraph> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdPoolQuery_subgraph>(AdPoolDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adPool', 'query', variables);
+    },
+    adPools(variables?: AdPoolsQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdPoolsQuery_subgraph> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdPoolsQuery_subgraph>(AdPoolsDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adPools', 'query', variables);
     },
     tokenX(variables: TokenXQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<TokenXQuery_subgraph> {
       return withWrapper((wrappedRequestHeaders) => client.request<TokenXQuery_subgraph>(TokenXDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'tokenX', 'query', variables);

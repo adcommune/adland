@@ -1,4 +1,4 @@
-query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGroup_adSpaces_first: Int, $adGroup_adSpaces_orderBy: AdSpace_orderBy, $adGroup_adSpaces_orderDirection: OrderDirection, $adGroup_adSpaces_where: AdSpace_filter) {
+query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGroup_adSpaces_first: Int, $adGroup_adSpaces_orderBy: AdSpace_orderBy, $adGroup_adSpaces_orderDirection: OrderDirection, $adGroup_adSpaces_where: AdSpace_filter, $adGroup_adSpaces_adSpaces_adPools_skip: Int, $adGroup_adSpaces_adSpaces_adPools_first: Int, $adGroup_adSpaces_adSpaces_adPools_orderBy: AdPool_orderBy, $adGroup_adSpaces_adSpaces_adPools_orderDirection: OrderDirection, $adGroup_adSpaces_adSpaces_adPools_where: AdPool_filter) {
   adGroup(id: $id, block: $block) {
     id
     beneficiary
@@ -10,6 +10,25 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       where: $adGroup_adSpaces_where
     ) {
       id
+      adPools(
+        skip: $adGroup_adSpaces_adSpaces_adPools_skip
+        first: $adGroup_adSpaces_adSpaces_adPools_first
+        orderBy: $adGroup_adSpaces_adSpaces_adPools_orderBy
+        orderDirection: $adGroup_adSpaces_adSpaces_adPools_orderDirection
+        where: $adGroup_adSpaces_adSpaces_adPools_where
+      ) {
+        id
+        adToken {
+          id
+          underlyingToken
+          superToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -17,7 +36,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
     blockTimestamp
     transactionHash
   }
-}query adGroups($skip: Int, $first: Int, $orderBy: AdGroup_orderBy, $orderDirection: OrderDirection, $where: AdGroup_filter, $block: Block_height, $adGroups_adSpaces_skip: Int, $adGroups_adSpaces_first: Int, $adGroups_adSpaces_orderBy: AdSpace_orderBy, $adGroups_adSpaces_orderDirection: OrderDirection, $adGroups_adSpaces_where: AdSpace_filter) {
+}query adGroups($skip: Int, $first: Int, $orderBy: AdGroup_orderBy, $orderDirection: OrderDirection, $where: AdGroup_filter, $block: Block_height, $adGroups_adSpaces_skip: Int, $adGroups_adSpaces_first: Int, $adGroups_adSpaces_orderBy: AdSpace_orderBy, $adGroups_adSpaces_orderDirection: OrderDirection, $adGroups_adSpaces_where: AdSpace_filter, $adGroups_adSpaces_adSpaces_adPools_skip: Int, $adGroups_adSpaces_adSpaces_adPools_first: Int, $adGroups_adSpaces_adSpaces_adPools_orderBy: AdPool_orderBy, $adGroups_adSpaces_adSpaces_adPools_orderDirection: OrderDirection, $adGroups_adSpaces_adSpaces_adPools_where: AdPool_filter) {
   adGroups(
     skip: $skip
     first: $first
@@ -36,6 +55,25 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       where: $adGroups_adSpaces_where
     ) {
       id
+      adPools(
+        skip: $adGroups_adSpaces_adSpaces_adPools_skip
+        first: $adGroups_adSpaces_adSpaces_adPools_first
+        orderBy: $adGroups_adSpaces_adSpaces_adPools_orderBy
+        orderDirection: $adGroups_adSpaces_adSpaces_adPools_orderDirection
+        where: $adGroups_adSpaces_adSpaces_adPools_where
+      ) {
+        id
+        adToken {
+          id
+          underlyingToken
+          superToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -43,7 +81,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
     blockTimestamp
     transactionHash
   }
-}query adSpace($id: ID!, $block: Block_height) {
+}query adSpace($id: ID!, $block: Block_height, $adSpace_adPools_skip: Int, $adSpace_adPools_first: Int, $adSpace_adPools_orderBy: AdPool_orderBy, $adSpace_adPools_orderDirection: OrderDirection, $adSpace_adPools_where: AdPool_filter) {
   adSpace(id: $id, block: $block) {
     id
     adGroup {
@@ -52,11 +90,30 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       blockTimestamp
       transactionHash
     }
+    adPools(
+      skip: $adSpace_adPools_skip
+      first: $adSpace_adPools_first
+      orderBy: $adSpace_adPools_orderBy
+      orderDirection: $adSpace_adPools_orderDirection
+      where: $adSpace_adPools_where
+    ) {
+      id
+      adToken {
+        id
+        underlyingToken
+        superToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      blockTimestamp
+      transactionHash
+    }
     uri
     blockTimestamp
     transactionHash
   }
-}query adSpaces($skip: Int, $first: Int, $orderBy: AdSpace_orderBy, $orderDirection: OrderDirection, $where: AdSpace_filter, $block: Block_height) {
+}query adSpaces($skip: Int, $first: Int, $orderBy: AdSpace_orderBy, $orderDirection: OrderDirection, $where: AdSpace_filter, $block: Block_height, $adSpaces_adPools_skip: Int, $adSpaces_adPools_first: Int, $adSpaces_adPools_orderBy: AdPool_orderBy, $adSpaces_adPools_orderDirection: OrderDirection, $adSpaces_adPools_where: AdPool_filter) {
   adSpaces(
     skip: $skip
     first: $first
@@ -72,7 +129,85 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       blockTimestamp
       transactionHash
     }
+    adPools(
+      skip: $adSpaces_adPools_skip
+      first: $adSpaces_adPools_first
+      orderBy: $adSpaces_adPools_orderBy
+      orderDirection: $adSpaces_adPools_orderDirection
+      where: $adSpaces_adPools_where
+    ) {
+      id
+      adToken {
+        id
+        underlyingToken
+        superToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      blockTimestamp
+      transactionHash
+    }
     uri
+    blockTimestamp
+    transactionHash
+  }
+}query adPool($id: ID!, $block: Block_height) {
+  adPool(id: $id, block: $block) {
+    id
+    adSpace {
+      id
+      adGroup {
+        id
+        beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    adToken {
+      id
+      underlyingToken
+      superToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    blockTimestamp
+    transactionHash
+  }
+}query adPools($skip: Int, $first: Int, $orderBy: AdPool_orderBy, $orderDirection: OrderDirection, $where: AdPool_filter, $block: Block_height) {
+  adPools(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    adSpace {
+      id
+      adGroup {
+        id
+        beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    adToken {
+      id
+      underlyingToken
+      superToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
     blockTimestamp
     transactionHash
   }
