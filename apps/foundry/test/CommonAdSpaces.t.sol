@@ -55,7 +55,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
 
         // Create a flow of 1 ether per month
         int96 adCampaignFlowRate = int96(int256(uint256(1 ether) / 30 days));
-        CommonAdPool adPool = commonAds.getAd(adId).adPool;
+        CommonAdPool adPool = commonAds.getAdPool(adId, address(ethx));
 
         /**
          * 2 - Grant member units admin role to frame distributor

@@ -92,14 +92,14 @@ contract CommonAdSpaces is
     function createAdPool(uint256 adId, address superToken) public {
         CommonAdPool pool = new CommonAdPool(ISuperToken(superToken));
 
-        ads[adId].adPool = pool;
+        ads[adId].adPools[ISuperToken(superToken)] = pool;
 
-        ads[adId].adPool.grantRole(
+        ads[adId].adPools[ISuperToken(superToken)].grantRole(
             pool.DEFAULT_ADMIN_ROLE(),
             adGroups[ads[adId].adGroupId].owner
         );
 
-        emit AdPoolCreated(adId, address(pool));
+        emit AdPoolCreated(adId, superToken, address(pool));
     }
 
     /**
@@ -164,8 +164,11 @@ contract CommonAdSpaces is
         }
     }
 
-    function getAd(uint256 adId) external view returns (AdSpace memory) {
-        return ads[adId];
+    function getAdPool(
+        uint256 adId,
+        address superToken
+    ) external view returns (CommonAdPool) {
+        return ads[adId].adPools[ISuperToken(superToken)];
     }
 
     function getGroup(
