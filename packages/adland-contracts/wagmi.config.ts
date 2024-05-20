@@ -1,7 +1,7 @@
 import { defineConfig } from "@wagmi/cli";
 import { foundry, react } from "@wagmi/cli/plugins";
 import { foundryPath, getFoundryDeployments } from "./wagmi.helpers";
-import { erc721Abi } from "viem";
+import { erc20Abi, erc721Abi } from "viem";
 
 export default defineConfig(async () => {
   const deployments = await getFoundryDeployments();
@@ -13,6 +13,10 @@ export default defineConfig(async () => {
         abi: erc721Abi,
         name: "ERC721",
       },
+      {
+        abi: erc20Abi,
+        name: "ERC20",
+      },
     ],
     plugins: [
       foundry({
@@ -21,9 +25,11 @@ export default defineConfig(async () => {
         include: [
           "DirectListingsLogic.sol/*.json",
           "CommonAdSpaces.sol/*.json",
+          "CommonAdPool.sol/*.json",
           "SuperToken.sol/*.json",
           "ISETH.sol/*.json",
           "CFAv1Forwarder.sol/*.json",
+          "GDAv1Forwarder.sol/*.json",
         ],
       }),
       react({}),
