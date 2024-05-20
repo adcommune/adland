@@ -84,6 +84,7 @@ export const tokenSymbolsByChain: Record<number, Record<string, string>> = {
   [optimismSepolia.id]: {
     '0x4247bA6C3658Fa5C0F523BAcea8D0b97aF1a175e': 'fDAI',
     [NATIVE_CURRENCY]: 'ETH',
+    [zeroAddress]: 'ETH',
   },
   [base.id]: {
     [zeroAddress]: 'ETH',
