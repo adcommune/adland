@@ -32,7 +32,8 @@
       "cache": false
     },
     "codegen": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "cache": false
     }
   }
 }
