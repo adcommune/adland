@@ -19,6 +19,7 @@ type AdSpace @entity(immutable: false) {
 
 type AdPool @entity(immutable: false) {
   id: String!
+  dPool: Bytes!
   adSpace: AdSpace!
   adToken: TokenX!
   blockTimestamp: BigInt!

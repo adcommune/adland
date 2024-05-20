@@ -30,6 +30,8 @@ dataSources:
       abis:
         - name: CommonAdSpaces
           file: ./abis/CommonAdSpaces.json
+        - name: CommonAdPool
+          file: ./abis/CommonAdPool.json
       eventHandlers:
         - event: AdGroupCreated(indexed uint256,indexed address)
           handler: handleAdGroupCreated

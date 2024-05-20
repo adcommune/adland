@@ -1,3 +1,4 @@
+import { CommonAdPool } from "./../generated/CommonAdSpaces/CommonAdPool";
 import {
   AdPoolCreated as AdPoolCreatedEvent,
   AdGroupCreated as AdGroupCreatedEvent,
@@ -36,8 +37,11 @@ import {
 export function handleAdPoolCreated(event: AdPoolCreatedEvent): void {
   let entity = new AdPool(event.params.pool.toHex());
 
+  let commonAdPool = CommonAdPool.bind(event.params.pool);
+
   entity.adSpace = event.params.adId.toString();
   entity.adToken = event.params.superToken;
+  entity.dPool = commonAdPool.pool();
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
 

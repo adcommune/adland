@@ -233,6 +233,19 @@ export class AdPool extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get dPool(): Bytes {
+    let value = this.get("dPool");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set dPool(value: Bytes) {
+    this.set("dPool", Value.fromBytes(value));
+  }
+
   get adSpace(): string {
     let value = this.get("adSpace");
     if (!value || value.kind == ValueKind.NULL) {
