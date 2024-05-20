@@ -100,8 +100,6 @@ export class AdLand {
     const listing = await new Market().getListing(id)
 
     try {
-      console.log('listing', listing)
-
       // Temporary fix for non coherent listing owner in the direct listing contract
       listing.listingOwner = await client.readContract({
         abi: erc721Abi,

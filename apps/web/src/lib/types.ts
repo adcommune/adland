@@ -1,5 +1,9 @@
 import { directListingsLogicAbi } from '@adland/contracts'
-import { AdGroup_subgraph, AdSpace_subgraph } from '@adland/webkit'
+import {
+  AdGroup_subgraph,
+  AdPool_subgraph,
+  AdSpace_subgraph,
+} from '@adland/webkit'
 import { TokenX } from '@adland/webkit/src/hooks'
 import { User } from '@neynar/nodejs-sdk/build/neynar-api/v2'
 import { FrameDistribution } from '@adland/db'
@@ -48,7 +52,9 @@ export type Metadata = {
  */
 export type AdSpace = {
   // Omits adGroup from AdSpace_subgraph, query directly the adGroup if needed
-  adSpace_subgraph: Omit<AdSpace_subgraph, 'adGroup'>
+  adSpace_subgraph: Omit<AdSpace_subgraph, 'adGroup' | 'adPools'> & {
+    adPools: Omit<AdPool_subgraph, 'adSpace'>[]
+  }
   listing: Listing
   // undefined if adSpace_subgraph.uri undefined
   metadata?: Metadata
