@@ -189,6 +189,7 @@ export type AdPool_subgraph = {
   adSpace: AdSpace_subgraph;
   adToken: TokenX_subgraph;
   blockTimestamp: Scalars['BigInt']['output'];
+  dPool: Scalars['Bytes']['output'];
   id: Scalars['String']['output'];
   transactionHash: Scalars['Bytes']['output'];
 };
@@ -247,6 +248,16 @@ export type AdPool_Filter_subgraph = {
   blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
   blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  dPool?: InputMaybe<Scalars['Bytes']['input']>;
+  dPool_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  dPool_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  dPool_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  dPool_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  dPool_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  dPool_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  dPool_not?: InputMaybe<Scalars['Bytes']['input']>;
+  dPool_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  dPool_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   id?: InputMaybe<Scalars['String']['input']>;
   id_contains?: InputMaybe<Scalars['String']['input']>;
   id_contains_nocase?: InputMaybe<Scalars['String']['input']>;
@@ -294,6 +305,7 @@ export enum AdPool_OrderBy_subgraph {
   AdTokenTransactionHash_subgraph = 'adToken__transactionHash',
   AdTokenUnderlyingToken_subgraph = 'adToken__underlyingToken',
   BlockTimestamp_subgraph = 'blockTimestamp',
+  DPool_subgraph = 'dPool',
   Id_subgraph = 'id',
   TransactionHash_subgraph = 'transactionHash'
 }
@@ -3252,7 +3264,7 @@ export type AdGroupQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdGroupQuery_subgraph = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> } | null };
+export type AdGroupQuery_subgraph = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> } | null };
 
 export type AdGroupsQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3274,7 +3286,7 @@ export type AdGroupsQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdGroupsQuery_subgraph = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> }> };
+export type AdGroupsQuery_subgraph = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> }> };
 
 export type AdSpaceQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3287,7 +3299,7 @@ export type AdSpaceQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdSpaceQuery_subgraph = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
+export type AdSpaceQuery_subgraph = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
 
 export type AdSpacesQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3304,7 +3316,7 @@ export type AdSpacesQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdSpacesQuery_subgraph = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
+export type AdSpacesQuery_subgraph = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
 
 export type AdPoolQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3312,7 +3324,7 @@ export type AdPoolQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdPoolQuery_subgraph = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
+export type AdPoolQuery_subgraph = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
 
 export type AdPoolsQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3324,7 +3336,7 @@ export type AdPoolsQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdPoolsQuery_subgraph = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
+export type AdPoolsQuery_subgraph = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
 
 export type TokenXQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3728,6 +3740,7 @@ export const AdGroupDocument_subgraph = gql`
         where: $adGroup_adSpaces_adSpaces_adPools_where
       ) {
         id
+        dPool
         adToken {
           id
           underlyingToken
@@ -3776,6 +3789,7 @@ export const AdGroupsDocument_subgraph = gql`
         where: $adGroups_adSpaces_adSpaces_adPools_where
       ) {
         id
+        dPool
         adToken {
           id
           underlyingToken
@@ -3814,6 +3828,7 @@ export const AdSpaceDocument_subgraph = gql`
       where: $adSpace_adPools_where
     ) {
       id
+      dPool
       adToken {
         id
         underlyingToken
@@ -3856,6 +3871,7 @@ export const AdSpacesDocument_subgraph = gql`
       where: $adSpaces_adPools_where
     ) {
       id
+      dPool
       adToken {
         id
         underlyingToken
@@ -3877,6 +3893,7 @@ export const AdPoolDocument_subgraph = gql`
     query adPool($id: ID!, $block: Block_height) {
   adPool(id: $id, block: $block) {
     id
+    dPool
     adSpace {
       id
       adGroup {
@@ -3913,6 +3930,7 @@ export const AdPoolsDocument_subgraph = gql`
     block: $block
   ) {
     id
+    dPool
     adSpace {
       id
       adGroup {

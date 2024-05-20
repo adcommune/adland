@@ -18,6 +18,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
         where: $adGroup_adSpaces_adSpaces_adPools_where
       ) {
         id
+        dPool
         adToken {
           id
           underlyingToken
@@ -63,6 +64,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
         where: $adGroups_adSpaces_adSpaces_adPools_where
       ) {
         id
+        dPool
         adToken {
           id
           underlyingToken
@@ -98,6 +100,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       where: $adSpace_adPools_where
     ) {
       id
+      dPool
       adToken {
         id
         underlyingToken
@@ -137,6 +140,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       where: $adSpaces_adPools_where
     ) {
       id
+      dPool
       adToken {
         id
         underlyingToken
@@ -155,6 +159,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
 }query adPool($id: ID!, $block: Block_height) {
   adPool(id: $id, block: $block) {
     id
+    dPool
     adSpace {
       id
       adGroup {
@@ -188,6 +193,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
     block: $block
   ) {
     id
+    dPool
     adSpace {
       id
       adGroup {
