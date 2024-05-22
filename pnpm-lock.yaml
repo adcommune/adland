@@ -256,8 +256,8 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       permissionless:
-        specifier: 0.0.34
-        version: 0.0.34(viem@2.9.23(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4))
+        specifier: 0.1.29
+        version: 0.1.29(viem@2.9.23(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4))
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -7962,10 +7962,10 @@ packages:
   periscopic@3.1.0:
     resolution: {integrity: sha512-vKiQ8RRtkl9P+r/+oefh25C3fhybptkHKCZSPlcXiJux2tJF55GnEj3BVn4A5gKfq9NWWXXrxkHBwVPUfH0opw==}
 
-  permissionless@0.0.34:
-    resolution: {integrity: sha512-lP59+7VmjLO7dPctH69kgcJ8evxGkrjQ9hruOA+7ymWvUMiuXAfVxvXSWCV+lg67N2TGs1JneEuhwK+iI3kPvA==}
+  permissionless@0.1.29:
+    resolution: {integrity: sha512-jKkgl3G2b4hv5DvX2U8v0OI3JfX+nEzj9a6zsrcXuJaLZdS14td4tExnlmBY93nUN6lRC6NfPZjdLbi8Dkzz7w==}
     peerDependencies:
-      viem: ^2.0.0
+      viem: ^2.9.17
 
   pg-int8@1.0.1:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
@@ -20450,7 +20450,7 @@ snapshots:
       estree-walker: 3.0.3
       is-reference: 3.0.2
 
-  permissionless@0.0.34(viem@2.9.23(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)):
+  permissionless@0.1.29(viem@2.9.23(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)):
     dependencies:
       viem: 2.9.23(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)
 
