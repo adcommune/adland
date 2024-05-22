@@ -30,6 +30,8 @@ export default defineConfig(async () => {
           "ISETH.sol/*.json",
           "CFAv1Forwarder.sol/*.json",
           "GDAv1Forwarder.sol/*.json",
+          "SuperTokenV1Library.sol/*.json",
+          "GeneralDistributionAgreementV1.sol/*.json",
         ],
       }),
       react({}),
