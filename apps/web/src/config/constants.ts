@@ -18,16 +18,19 @@ export const alchemyUrlByChain: Record<number, string> = {
 
 export const superfluidAddresses: Record<
   11155111 | 11155420 | 8453,
-  { cfaV1: Address }
+  { cfaV1: Address; gdaV1: Address }
 > = {
   [11155111]: {
     cfaV1: '0xcfA132E353cB4E398080B9700609bb008eceB125',
+    gdaV1: '0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08',
   },
   [11155420]: {
     cfaV1: '0xcfA132E353cB4E398080B9700609bb008eceB125',
+    gdaV1: '0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08',
   },
   [8453]: {
     cfaV1: '0xcfA132E353cB4E398080B9700609bb008eceB125',
+    gdaV1: '0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08',
   },
 }
 
