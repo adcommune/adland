@@ -62,17 +62,6 @@ contract CommonAdSpaces is
     }
 
     /**
-     * @dev Creates a new ad group for the specified recipient.
-     * @param recipient The address of the recipient for the ad group.
-     * @return adGroupId The ID of the newly created ad group.
-     */
-    function createAdGroup(
-        address recipient
-    ) external onlyOwner returns (uint256 adGroupId) {
-        return _createdGroup(recipient);
-    }
-
-    /**
      * @dev Creates a new ad group with the specified recipient, initial ad space configuration, and size.
      * @param recipient The address of the recipient for the ad group.
      * @param initialAdSpaceConfig The initial configuration for the ad spaces in the ad group.
@@ -83,7 +72,7 @@ contract CommonAdSpaces is
         address recipient,
         AdSpaceConfig memory initialAdSpaceConfig,
         uint256 size
-    ) external onlyOwner returns (uint256 adGroupId) {
+    ) external returns (uint256 adGroupId) {
         adGroupId = _createdGroup(recipient);
 
         _openAdSpaces(adGroupId, initialAdSpaceConfig, size);

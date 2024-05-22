@@ -21,6 +21,8 @@ import {CommonAdGroupAdminFactory} from "../src/CommonAdGroupAdminFactory.sol";
 import {AdGroup} from "../src/lib/Structs.sol";
 import {CommonAdPool} from "../src/CommonAdPool.sol";
 import {CommonAdGroupAdminFactoryMock} from "./mocks/CommonAdGroupAdminFactoryMock.sol";
+import {SimpleAccountFactory} from "account-abstraction/samples/SimpleAccountFactory.sol";
+import {SimpleAccount, IEntryPoint} from "account-abstraction/samples/SimpleAccount.sol";
 
 contract CommonAdSpacesTest is CommonAdSpacesBase {
     using SuperTokenV1Library for ISuperToken;
@@ -30,8 +32,33 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     string buyerAdURI = "https://www.google.com";
     string buyer2AdURI = "https://www.yahoo.com";
 
+    function testSimpleAccount() public {
+        IEntryPoint entryPoint = IEntryPoint(address(0));
+        SimpleAccountFactory factory = new SimpleAccountFactory(entryPoint);
+
+        address owner = vm.addr(69);
+        uint256 salt = 0;
+        SimpleAccount account = factory.createAccount(owner, salt);
+
+        vm.prank(owner);
+        account.execute(
+            address(commonAds),
+            uint256(0),
+            abi.encodeWithSignature(
+                "createAdGroup(address,(address,uint256,uint256),uint256)",
+                owner,
+                AdSpaceConfig({
+                    currency: CurrencyTransferLib.NATIVE_TOKEN,
+                    initialPrice: initialPrice,
+                    taxRate: baseTaxRateBPS
+                }),
+                3
+            )
+        );
+    }
+
     function testOpenAdPool() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -79,7 +106,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testCannotTransferAsOwnerOfListing() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -113,7 +140,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testCreateAdGroup() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -148,7 +175,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyerCancelsStream() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -191,7 +218,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyListingETH() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -291,7 +318,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyMultipleListings() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -370,7 +397,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     function testBuyListingDAI() public {
         uint256 initialPriceInDai = 100e18; // 100 DAI
         uint256 taxRateBPS = 120; // 1.2% per month
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -407,7 +434,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testSelfAssessListingPrice() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -547,7 +574,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testCancelListing() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -587,7 +614,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testForecloseListing() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({

@@ -29,10 +29,6 @@ interface ICommonAdSpaces {
     );
 
     function createAdGroup(
-        address recipient
-    ) external returns (uint256 adGroupId);
-
-    function createAdGroup(
         address recipient,
         AdSpaceConfig memory initialAdSpaceConfig,
         uint256 numberOfAdSpaces
