@@ -13,7 +13,7 @@ export const handleWriteErrors = (
   error: WriteContractErrorType | Error,
   callback?: (error: BaseError | Error) => void,
 ) => {
-  console.log(error)
+  console.log({ error })
   if (error instanceof BaseError) {
     const revertError = error.walk(
       (err) => err instanceof UserRejectedRequestError,
