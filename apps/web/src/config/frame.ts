@@ -18,7 +18,7 @@ export const frameAdPositions: Record<
 }
 
 export const frameConfig = {
-  initialFrameImageMaxAge: 30 * 60,
+  initialFrameImageMaxAge: 2 * 60,
   height: 1000,
 }
 
