@@ -34,6 +34,8 @@ import {
   Upgraded,
 } from "../generated/schema";
 
+export const NATIVE_CURRENCY = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+
 export function handleAdPoolCreated(event: AdPoolCreatedEvent): void {
   let entity = new AdPool(event.params.pool.toHex());
 
@@ -220,6 +222,9 @@ export function handleTokenXSet(event: TokenXSetEvent): void {
 
   entity.underlyingToken = event.params.underlyingToken;
   entity.superToken = event.params.superToken;
+  entity.isNativeToken =
+    event.params.underlyingToken.toHexString().toLowerCase() ==
+    NATIVE_CURRENCY.toLowerCase();
 
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;

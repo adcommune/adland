@@ -366,6 +366,19 @@ export class TokenX extends Entity {
     this.set("superToken", Value.fromBytes(value));
   }
 
+  get isNativeToken(): boolean {
+    let value = this.get("isNativeToken");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set isNativeToken(value: boolean) {
+    this.set("isNativeToken", Value.fromBoolean(value));
+  }
+
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
     if (!value || value.kind == ValueKind.NULL) {

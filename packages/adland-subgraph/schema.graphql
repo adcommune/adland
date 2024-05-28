@@ -30,6 +30,7 @@ type TokenX @entity(immutable: false) {
   id: Bytes!
   underlyingToken: Bytes! # address
   superToken: Bytes! # address
+  isNativeToken: Boolean! # bool
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
