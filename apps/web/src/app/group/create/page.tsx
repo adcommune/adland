@@ -11,9 +11,7 @@ const CreateAdminGroupPage = () => {
 
   return (
     <Container className="mt-5">
-      <SmartAccountProvider>
-        <CreateAdGroupForm superTokens={data.tokenXs} />
-      </SmartAccountProvider>
+      <CreateAdGroupForm superTokens={data.tokenXs} />
     </Container>
   )
 }

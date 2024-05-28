@@ -9,6 +9,7 @@ import { ModalProvider } from '@/context/ModalContext'
 import AppNavbar from './AppNavbar'
 import { constants } from '@adland/common'
 import { alchemyUrlByChain } from '@/config/constants'
+import { SmartAccountProvider } from '@/context/SmartAccountContext'
 
 export const queryClient = new QueryClient()
 
@@ -40,12 +41,14 @@ const AppProviders = ({ children }: { children: React.ReactNode }) => {
     >
       <QueryClientProvider client={queryClient}>
         <WagmiProvider config={config} reconnectOnMount={true}>
-          <ModalProvider>
-            <div className="h-full antialiased">
-              <AppNavbar />
-              <main className="relative z-0">{children}</main>
-            </div>
-          </ModalProvider>
+          <SmartAccountProvider>
+            <ModalProvider>
+              <div className="h-full antialiased">
+                <AppNavbar />
+                <main className="relative z-0">{children}</main>
+              </div>
+            </ModalProvider>
+          </SmartAccountProvider>
         </WagmiProvider>
       </QueryClientProvider>
     </PrivyProvider>

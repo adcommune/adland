@@ -49,7 +49,7 @@ const AdSpacePageLayout = async ({
           media_url: `${baseURL}/api/billboard/${spaceId}?time=${Date.now()}`,
         }}
       />
-      <SmartAccountProvider>{children}</SmartAccountProvider>
+      {children}
     </Container>
   )
 }
