@@ -301,6 +301,7 @@ export enum AdPool_OrderBy_subgraph {
   AdTokenBlockNumber_subgraph = 'adToken__blockNumber',
   AdTokenBlockTimestamp_subgraph = 'adToken__blockTimestamp',
   AdTokenId_subgraph = 'adToken__id',
+  AdTokenIsNativeToken_subgraph = 'adToken__isNativeToken',
   AdTokenSuperToken_subgraph = 'adToken__superToken',
   AdTokenTransactionHash_subgraph = 'adToken__transactionHash',
   AdTokenUnderlyingToken_subgraph = 'adToken__underlyingToken',
@@ -2725,6 +2726,7 @@ export type TokenX_subgraph = {
   blockNumber: Scalars['BigInt']['output'];
   blockTimestamp: Scalars['BigInt']['output'];
   id: Scalars['Bytes']['output'];
+  isNativeToken: Scalars['Boolean']['output'];
   superToken: Scalars['Bytes']['output'];
   transactionHash: Scalars['Bytes']['output'];
   underlyingToken: Scalars['Bytes']['output'];
@@ -2760,6 +2762,10 @@ export type TokenX_Filter_subgraph = {
   id_not?: InputMaybe<Scalars['Bytes']['input']>;
   id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  isNativeToken?: InputMaybe<Scalars['Boolean']['input']>;
+  isNativeToken_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  isNativeToken_not?: InputMaybe<Scalars['Boolean']['input']>;
+  isNativeToken_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
   or?: InputMaybe<Array<InputMaybe<TokenX_Filter_subgraph>>>;
   superToken?: InputMaybe<Scalars['Bytes']['input']>;
   superToken_contains?: InputMaybe<Scalars['Bytes']['input']>;
@@ -2797,6 +2803,7 @@ export enum TokenX_OrderBy_subgraph {
   BlockNumber_subgraph = 'blockNumber',
   BlockTimestamp_subgraph = 'blockTimestamp',
   Id_subgraph = 'id',
+  IsNativeToken_subgraph = 'isNativeToken',
   SuperToken_subgraph = 'superToken',
   TransactionHash_subgraph = 'transactionHash',
   UnderlyingToken_subgraph = 'underlyingToken'
@@ -3264,7 +3271,7 @@ export type AdGroupQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdGroupQuery_subgraph = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> } | null };
+export type AdGroupQuery_subgraph = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> } | null };
 
 export type AdGroupsQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3286,7 +3293,7 @@ export type AdGroupsQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdGroupsQuery_subgraph = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> }> };
+export type AdGroupsQuery_subgraph = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> }> };
 
 export type AdSpaceQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3299,7 +3306,7 @@ export type AdSpaceQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdSpaceQuery_subgraph = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
+export type AdSpaceQuery_subgraph = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
 
 export type AdSpacesQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3316,7 +3323,7 @@ export type AdSpacesQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdSpacesQuery_subgraph = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
+export type AdSpacesQuery_subgraph = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
 
 export type AdPoolQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3324,7 +3331,7 @@ export type AdPoolQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdPoolQuery_subgraph = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
+export type AdPoolQuery_subgraph = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
 
 export type AdPoolsQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3336,7 +3343,7 @@ export type AdPoolsQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdPoolsQuery_subgraph = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
+export type AdPoolsQuery_subgraph = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
 
 export type TokenXQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3344,7 +3351,7 @@ export type TokenXQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type TokenXQuery_subgraph = { __typename?: 'Query', tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
+export type TokenXQuery_subgraph = { __typename?: 'Query', tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
 
 export type TokenXsQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3356,7 +3363,7 @@ export type TokenXsQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type TokenXsQuery_subgraph = { __typename?: 'Query', tokenXs: Array<{ __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
+export type TokenXsQuery_subgraph = { __typename?: 'Query', tokenXs: Array<{ __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
 
 export type BuyerApprovedForListingQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3745,6 +3752,7 @@ export const AdGroupDocument_subgraph = gql`
           id
           underlyingToken
           superToken
+          isNativeToken
           blockNumber
           blockTimestamp
           transactionHash
@@ -3794,6 +3802,7 @@ export const AdGroupsDocument_subgraph = gql`
           id
           underlyingToken
           superToken
+          isNativeToken
           blockNumber
           blockTimestamp
           transactionHash
@@ -3833,6 +3842,7 @@ export const AdSpaceDocument_subgraph = gql`
         id
         underlyingToken
         superToken
+        isNativeToken
         blockNumber
         blockTimestamp
         transactionHash
@@ -3876,6 +3886,7 @@ export const AdSpacesDocument_subgraph = gql`
         id
         underlyingToken
         superToken
+        isNativeToken
         blockNumber
         blockTimestamp
         transactionHash
@@ -3910,6 +3921,7 @@ export const AdPoolDocument_subgraph = gql`
       id
       underlyingToken
       superToken
+      isNativeToken
       blockNumber
       blockTimestamp
       transactionHash
@@ -3947,6 +3959,7 @@ export const AdPoolsDocument_subgraph = gql`
       id
       underlyingToken
       superToken
+      isNativeToken
       blockNumber
       blockTimestamp
       transactionHash
@@ -3962,6 +3975,7 @@ export const TokenXDocument_subgraph = gql`
     id
     underlyingToken
     superToken
+    isNativeToken
     blockNumber
     blockTimestamp
     transactionHash
@@ -3981,6 +3995,7 @@ export const TokenXsDocument_subgraph = gql`
     id
     underlyingToken
     superToken
+    isNativeToken
     blockNumber
     blockTimestamp
     transactionHash

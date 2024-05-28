@@ -300,6 +300,7 @@ export enum AdPool_OrderBy {
   AdTokenBlockNumber = 'adToken__blockNumber',
   AdTokenBlockTimestamp = 'adToken__blockTimestamp',
   AdTokenId = 'adToken__id',
+  AdTokenIsNativeToken = 'adToken__isNativeToken',
   AdTokenSuperToken = 'adToken__superToken',
   AdTokenTransactionHash = 'adToken__transactionHash',
   AdTokenUnderlyingToken = 'adToken__underlyingToken',
@@ -2724,6 +2725,7 @@ export type TokenX = {
   blockNumber: Scalars['BigInt']['output'];
   blockTimestamp: Scalars['BigInt']['output'];
   id: Scalars['Bytes']['output'];
+  isNativeToken: Scalars['Boolean']['output'];
   superToken: Scalars['Bytes']['output'];
   transactionHash: Scalars['Bytes']['output'];
   underlyingToken: Scalars['Bytes']['output'];
@@ -2759,6 +2761,10 @@ export type TokenX_Filter = {
   id_not?: InputMaybe<Scalars['Bytes']['input']>;
   id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  isNativeToken?: InputMaybe<Scalars['Boolean']['input']>;
+  isNativeToken_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  isNativeToken_not?: InputMaybe<Scalars['Boolean']['input']>;
+  isNativeToken_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
   or?: InputMaybe<Array<InputMaybe<TokenX_Filter>>>;
   superToken?: InputMaybe<Scalars['Bytes']['input']>;
   superToken_contains?: InputMaybe<Scalars['Bytes']['input']>;
@@ -2796,6 +2802,7 @@ export enum TokenX_OrderBy {
   BlockNumber = 'blockNumber',
   BlockTimestamp = 'blockTimestamp',
   Id = 'id',
+  IsNativeToken = 'isNativeToken',
   SuperToken = 'superToken',
   TransactionHash = 'transactionHash',
   UnderlyingToken = 'underlyingToken'
@@ -3263,7 +3270,7 @@ export type AdGroupQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> } | null };
+export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> } | null };
 
 export type AdGroupsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3285,7 +3292,7 @@ export type AdGroupsQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> }> };
+export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> }> };
 
 export type AdSpaceQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3298,7 +3305,7 @@ export type AdSpaceQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
+export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
 
 export type AdSpacesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3315,7 +3322,7 @@ export type AdSpacesQueryVariables = Exact<{
 }>;
 
 
-export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
+export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
 
 export type AdPoolQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3323,7 +3330,7 @@ export type AdPoolQueryVariables = Exact<{
 }>;
 
 
-export type AdPoolQuery = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
+export type AdPoolQuery = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
 
 export type AdPoolsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3335,7 +3342,7 @@ export type AdPoolsQueryVariables = Exact<{
 }>;
 
 
-export type AdPoolsQuery = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
+export type AdPoolsQuery = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
 
 export type TokenXQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3343,7 +3350,7 @@ export type TokenXQueryVariables = Exact<{
 }>;
 
 
-export type TokenXQuery = { __typename?: 'Query', tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
+export type TokenXQuery = { __typename?: 'Query', tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
 
 export type TokenXsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3355,7 +3362,7 @@ export type TokenXsQueryVariables = Exact<{
 }>;
 
 
-export type TokenXsQuery = { __typename?: 'Query', tokenXs: Array<{ __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
+export type TokenXsQuery = { __typename?: 'Query', tokenXs: Array<{ __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
 
 export type BuyerApprovedForListingQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3745,6 +3752,7 @@ export const AdGroupDocument = `
           id
           underlyingToken
           superToken
+          isNativeToken
           blockNumber
           blockTimestamp
           transactionHash
@@ -3811,6 +3819,7 @@ export const AdGroupsDocument = `
           id
           underlyingToken
           superToken
+          isNativeToken
           blockNumber
           blockTimestamp
           transactionHash
@@ -3867,6 +3876,7 @@ export const AdSpaceDocument = `
         id
         underlyingToken
         superToken
+        isNativeToken
         blockNumber
         blockTimestamp
         transactionHash
@@ -3927,6 +3937,7 @@ export const AdSpacesDocument = `
         id
         underlyingToken
         superToken
+        isNativeToken
         blockNumber
         blockTimestamp
         transactionHash
@@ -3978,6 +3989,7 @@ export const AdPoolDocument = `
       id
       underlyingToken
       superToken
+      isNativeToken
       blockNumber
       blockTimestamp
       transactionHash
@@ -4032,6 +4044,7 @@ export const AdPoolsDocument = `
       id
       underlyingToken
       superToken
+      isNativeToken
       blockNumber
       blockTimestamp
       transactionHash
@@ -4064,6 +4077,7 @@ export const TokenXDocument = `
     id
     underlyingToken
     superToken
+    isNativeToken
     blockNumber
     blockTimestamp
     transactionHash
@@ -4100,6 +4114,7 @@ export const TokenXsDocument = `
     id
     underlyingToken
     superToken
+    isNativeToken
     blockNumber
     blockTimestamp
     transactionHash
