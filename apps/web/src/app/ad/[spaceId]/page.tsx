@@ -35,6 +35,7 @@ import AdPropertyList from '@/components/AdSpaces/AdPropertyList'
 import classNames from 'classnames'
 import FarcasterIntegration from '@/components/FarcasterIntegration'
 import ForecloseDropdownItem from '@/components/AdSpaces/ForecloseDropdownItem'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
@@ -47,7 +48,7 @@ const AdSpacePage = ({
   const { acquireLeaseModal, updateAdDataModal, selfAssessmentModal } =
     useContext(ModalContext)
 
-  const { data: adSpace, isLoading } = useQuery({
+  const { data: adSpace } = useQuery({
     queryFn: () => new AdLand().getAdSpace(spaceId),
     queryKey: ['adSpace-', spaceId],
   })
@@ -56,12 +57,9 @@ const AdSpacePage = ({
     'farcaster' | null
   >(null)
 
-  if (!(adSpace && adSpace.tokenX) || isLoading) return null
-
-  const { listing } = adSpace
-
-  const isOwner = listing?.listingOwner === address
-  const isBeneficiarty = listing?.taxBeneficiary === address
+  const listing = adSpace?.listing
+  const isOwner = listing && listing?.listingOwner === address
+  const isBeneficiarty = listing && listing?.taxBeneficiary === address
   const showDropdown = isOwner || isBeneficiarty
 
   return (
@@ -71,11 +69,21 @@ const AdSpacePage = ({
           <div className="flex flex-row items-start gap-8 ">
             <div className="grid gap-0.5">
               <CardTitle className="group flex items-center gap-2 text-lg">
-                AdSpace {Number(listing?.listingId)}
+                AdSpace{' '}
+                {listing?.listingId ? (
+                  Number(listing?.listingId)
+                ) : (
+                  <Skeleton className="h-4 w-9" />
+                )}
               </CardTitle>
               <CardDescription>
                 Opened on{' '}
-                {format(Number(listing?.startTimestamp) * 1000, 'MMMM do')}
+                {listing?.startTimestamp
+                  ? format(
+                      Number(listing?.startTimestamp ?? 0) * 1000,
+                      'MMMM do',
+                    )
+                  : ''}
               </CardDescription>
             </div>
             <div className="ml-auto flex items-center gap-1">
@@ -96,6 +104,7 @@ const AdSpacePage = ({
               ) : (
                 <>
                   <Button
+                    disabled={!listing}
                     size="sm"
                     variant="default"
                     className="h-8 gap-1"
@@ -135,21 +144,16 @@ const AdSpacePage = ({
                           <DropdownMenuItem disabled>Give up</DropdownMenuItem>
                         </>
                       )}
-                      {isBeneficiarty && !isOwner && (
-                        <ForecloseDropdownItem
-                          listingId={adSpace.listing.listingId}
-                        />
+                      {isBeneficiarty && !isOwner && listing && (
+                        <ForecloseDropdownItem listingId={listing?.listingId} />
                       )}
                     </DropdownMenuContent>
                   </DropdownMenu>
-                  <SelfPriceAssementModal adSpace={adSpace} />
-                  <UpdateAdDataDialog adSpace={adSpace} />
+                  {adSpace && <SelfPriceAssementModal adSpace={adSpace} />}
+                  {adSpace && <UpdateAdDataDialog adSpace={adSpace} />}
                 </>
               )}
-              <AcquireLeaseModal
-                listing={listing}
-                superToken={adSpace.tokenX}
-              />
+              {adSpace && <AcquireLeaseModal adSpace={adSpace} />}
             </div>
           </div>
         </CardHeader>
@@ -159,32 +163,48 @@ const AdSpacePage = ({
             <ul className="grid gap-3">
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Price</span>
-                <span>
-                  {formatEther(listing?.pricePerToken)}{' '}
-                  {getTokenSymbol(listing?.currency)}
-                </span>
+                {listing?.pricePerToken ? (
+                  <span>
+                    {formatEther(listing?.pricePerToken ?? BigInt(0))}{' '}
+                    {getTokenSymbol(listing?.currency)}
+                  </span>
+                ) : (
+                  <Skeleton className="h-4 w-9" />
+                )}
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Tax Rate</span>
-                <span>{Number(listing?.taxRate) / 100} %</span>
+                {listing ? (
+                  <span>{Number(listing?.taxRate ?? 0) / 100} %</span>
+                ) : (
+                  <Skeleton className="h-4 w-9" />
+                )}
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Currencry</span>
-                <span>
-                  {getTokenSymbol(listing?.currency) ??
-                    truncateAddress(listing?.currency)}
-                </span>
+                {listing ? (
+                  <span>
+                    {getTokenSymbol(listing?.currency) ??
+                      truncateAddress(listing?.currency)}
+                  </span>
+                ) : (
+                  <Skeleton className="h-4 w-11" />
+                )}
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Owner</span>
-                <span>
-                  {' '}
-                  {isOwner ? (
-                    ' you'
-                  ) : (
-                    <span>{truncateAddress(listing?.listingOwner)}</span>
-                  )}
-                </span>
+                {listing ? (
+                  <span>
+                    {' '}
+                    {isOwner ? (
+                      ' you'
+                    ) : (
+                      <span>{truncateAddress(listing?.listingOwner)}</span>
+                    )}
+                  </span>
+                ) : (
+                  <Skeleton className="h-4 w-9" />
+                )}
               </li>
             </ul>
             <div className="grid gap-3">
@@ -228,11 +248,11 @@ const AdSpacePage = ({
         </CardFooter>
       </Card>{' '}
       {selectedIntegration === null ? (
-        <AdPropertyList metadata={adSpace.metadata} />
+        <AdPropertyList metadata={adSpace?.metadata} />
       ) : (
         (() => {
-          if (selectedIntegration === 'farcaster') {
-            return <FarcasterIntegration groupId={groupId} spaceId={spaceId} />
+          if (selectedIntegration === 'farcaster' && adSpace) {
+            return <FarcasterIntegration groupId={groupId} adSpace={adSpace} />
           }
           return null
         })()

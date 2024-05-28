@@ -1,6 +1,7 @@
 import AdGroupHeader from '@/components/AdGroup/AdGroupHeader'
 import { Container } from '@/components/Container'
 import { FrameAspectRatio, baseURL } from '@/config/constants'
+import { SmartAccountProvider } from '@/context/SmartAccountContext'
 import useAppContracts from '@/hooks/useAppContracts'
 import { AdLand } from '@/lib/adland'
 import { StandartNFTMetadata as HeyCardMetadata } from '@/lib/hey'
@@ -48,7 +49,7 @@ const AdSpacePageLayout = async ({
           media_url: `${baseURL}/api/billboard/${spaceId}?time=${Date.now()}`,
         }}
       />
-      {children}
+      <SmartAccountProvider>{children}</SmartAccountProvider>
     </Container>
   )
 }
