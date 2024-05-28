@@ -1,37 +1,26 @@
 'use client'
 
-import { AdGroup } from '@/lib/types'
 import { useTokenXsQuery } from '@adland/webkit/src/hooks'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../ui/table'
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '../ui/table'
 import SuperTokenBalance from './SuperTokenDynamicBalance'
 
-const SuperTokenTable = ({ adGroup }: { adGroup: AdGroup }) => {
+const SuperTokenTable = () => {
   const { data } = useTokenXsQuery({ first: 5 }, {})
 
   return (
     <Table>
-      <TableCaption>Streaming revenue from AdSpaces</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Symbol</TableHead>
-          <TableHead>Flow Rate</TableHead>
-          <TableHead className="w-[300px]">Balance</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead>Token Balance</TableHead>
+          <TableHead className="w-[300px]">Super Token Balance</TableHead>
+          <TableHead className="text-right"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {data?.tokenXs.map((tokenX) => {
           const { id } = tokenX
-          return (
-            <SuperTokenBalance key={id} tokenX={tokenX} adGroup={adGroup} />
-          )
+          return <SuperTokenBalance key={id} tokenX={tokenX} />
         })}
       </TableBody>
     </Table>

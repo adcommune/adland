@@ -17,7 +17,7 @@ type AdGroupHeaderProps = {
 const AdGroupHeader = ({
   adGroup: { adGroup_subgraph },
 }: AdGroupHeaderProps) => {
-  const { beneficiary, id } = adGroup_subgraph
+  const { id } = adGroup_subgraph
 
   const path = usePathname()
 
@@ -31,18 +31,6 @@ const AdGroupHeader = ({
             Ad Group #{id}
           </CardTitle>
           <div className="flex flex-row gap-2">
-            <Link href={superfluidAccountLink(beneficiary)} target="_blank">
-              <Button variant="outline" className="gap-2">
-                <Image
-                  src="/superfluid.png"
-                  className="h-5 w-5"
-                  width={40}
-                  height={40}
-                  alt=""
-                />
-                Superfluid Dashboard
-              </Button>
-            </Link>
             {isSettingsPage ? (
               <Link href={`/group/${adGroup_subgraph.id}`}>
                 <Button variant="outline">
@@ -50,11 +38,11 @@ const AdGroupHeader = ({
                 </Button>
               </Link>
             ) : (
-              // <Link href={`/group/${adGroup_subgraph.id}/settings`}>
-              <Button variant="outline" disabled>
-                <CogIcon size={24} />
-              </Button>
-              // </Link>
+              <Link href={`/group/${adGroup_subgraph.id}/settings`}>
+                <Button variant="outline">
+                  <CogIcon size={24} />
+                </Button>
+              </Link>
             )}
           </div>
         </CardHeader>
