@@ -1,6 +1,6 @@
 'use client'
 
-import FarcasterIntegration from '@/components/FarcasterIntegration'
+import FarcasterDistribution from '@/components/FarcasterDistribution'
 import { AdLand } from '@/lib/adland'
 import { useQuery } from '@tanstack/react-query'
 
@@ -17,7 +17,7 @@ const FarcasterDistributionPage = ({
 
   if (!adSpace) return null
 
-  return <FarcasterIntegration groupId={groupId} adSpace={adSpace} />
+  return <FarcasterDistribution groupId={groupId} adSpace={adSpace} />
 }
 
 export default FarcasterDistributionPage

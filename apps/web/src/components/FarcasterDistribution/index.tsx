@@ -1,17 +1,17 @@
-import { Input } from './ui/input'
+import { Input } from '../ui/input'
 import {
   MEMBER_UNITS_ADMIN_ROLE,
   baseURL,
   getTokenSymbol,
 } from '@/config/constants'
-import Copiable from './Copiable'
+import Copiable from '../Copiable'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from './ui/card'
+} from '../ui/card'
 import {
   Table,
   TableBody,
@@ -19,7 +19,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from './ui/table'
+} from '../ui/table'
 import { AdSpace } from '@/lib/types'
 import { useContext } from 'react'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
@@ -39,8 +39,8 @@ import {
   formatEther,
   zeroAddress,
 } from 'viem'
-import AdCampaignModal from './AdCampaignModal'
-import { Button } from './ui/button'
+import AdCampaignModal from '../AdCampaignModal'
+import { Button } from '../ui/button'
 import { framePoolAdminAddressPublicKey } from '@/config/frame'
 import useAppContracts from '@/hooks/useAppContracts'
 import { toast } from 'sonner'
@@ -48,10 +48,10 @@ import { Transaction } from '@biconomy/account'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import { useQuery } from '@tanstack/react-query'
 import { ModalContext } from '@/context/ModalContext'
-import FundFlow from './FarcasterDistribution/FundFlow'
+import FundFlow from './FundFlow'
 import { AdLand } from '@/lib/adland'
 
-type FarcasterIntegrationProps = {
+type FarcasterDistributionProps = {
   groupId: string
   adSpace: AdSpace
 }
@@ -61,7 +61,7 @@ type LaunchCampaignProps = {
   amount: bigint
 }
 
-const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
+const FarcasterDistribution = ({ adSpace }: FarcasterDistributionProps) => {
   const { adSpace_subgraph, tokenX } = adSpace
   const { id: spaceId } = adSpace_subgraph
   const { adCommonOwnership, gdaV1Forwarder } = useAppContracts()
@@ -329,4 +329,4 @@ const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
   )
 }
 
-export default FarcasterIntegration
+export default FarcasterDistribution
