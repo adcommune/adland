@@ -8,7 +8,7 @@ import { useCallback, useContext, useState } from 'react'
 import { erc20Abi, formatEther } from 'viem'
 import { useAccount, useBalance, useReadContracts } from 'wagmi'
 import { format, addWeeks } from 'date-fns'
-import { AdSpace, Listing } from '@/lib/types'
+import { AdSpace } from '@/lib/types'
 import {
   cfAv1ForwarderAbi,
   useReadSuperTokenBalanceOf,
@@ -34,11 +34,12 @@ import { TokenX } from '@adland/webkit/src/hooks'
 import { queryClient } from './AppProviders'
 
 type AcquireLeaseModalProps = {
-  listing: Listing
-  superToken: TokenX
+  adSpace: AdSpace
 }
 
-const AcquireLeaseModal = ({ listing, superToken }: AcquireLeaseModalProps) => {
+const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
+  const { listing, tokenX } = adSpace
+
   const { spaceId } = useParams()
   const { listingId, taxRate, pricePerToken } = listing
   const { address } = useAccount()
@@ -46,8 +47,8 @@ const AcquireLeaseModal = ({ listing, superToken }: AcquireLeaseModalProps) => {
   const [numberOfWeeks, setNumberOfWeeks] = useState<number>(1)
   const { acquireLeaseModal } = useContext(ModalContext)
 
-  const isNativeCurrency =
-    superToken.underlyingToken.toLowerCase() === NATIVE_CURRENCY.toLowerCase()
+  const isNativeCurrency = tokenX?.isNativeToken
+  const superToken = tokenX
 
   const {
     data: { superBalance, isEnough } = {
@@ -56,7 +57,7 @@ const AcquireLeaseModal = ({ listing, superToken }: AcquireLeaseModalProps) => {
     },
     refetch: refetchSuperBalance,
   } = useReadSuperTokenBalanceOf({
-    address: superToken.superToken,
+    address: superToken?.superToken,
     args: address && [address],
     query: {
       select: (data) => ({
@@ -79,20 +80,20 @@ const AcquireLeaseModal = ({ listing, superToken }: AcquireLeaseModalProps) => {
       {
         abi: erc20Abi,
         functionName: 'balanceOf',
-        address: superToken.underlyingToken,
+        address: superToken?.underlyingToken,
         args: address && [address],
       },
       {
         abi: erc20Abi,
         functionName: 'allowance',
-        address: superToken.underlyingToken,
+        address: superToken?.underlyingToken,
         args: address && [address, marketplace],
       },
       {
         abi: cfAv1ForwarderAbi,
         functionName: 'getFlowOperatorPermissions',
         address: cfaV1,
-        args: address && [superToken.superToken, address, marketplace],
+        args: address && [superToken?.superToken, address, marketplace],
       },
     ],
     query: {
@@ -118,7 +119,7 @@ const AcquireLeaseModal = ({ listing, superToken }: AcquireLeaseModalProps) => {
 
     callUpgradeByEth(
       {
-        address: superToken.superToken,
+        address: superToken?.superToken,
         args: undefined,
         value: getWeeklyTaxDue(price, taxRate) * BigInt(weeks),
       },
@@ -134,7 +135,7 @@ const AcquireLeaseModal = ({ listing, superToken }: AcquireLeaseModalProps) => {
         listingId,
         address,
         BigInt(1),
-        superToken.underlyingToken,
+        superToken?.underlyingToken,
         pricePerToken,
       ],
       value: isNativeCurrency ? pricePerToken : BigInt(0),
@@ -304,7 +305,7 @@ const AcquireLeaseModal = ({ listing, superToken }: AcquireLeaseModalProps) => {
                       {
                         abi: erc20Abi,
                         functionName: 'approve',
-                        address: superToken.underlyingToken,
+                        address: superToken?.underlyingToken,
                         args: [marketplace, pricePerToken],
                       },
                       {
@@ -329,7 +330,7 @@ const AcquireLeaseModal = ({ listing, superToken }: AcquireLeaseModalProps) => {
                         abi: cfAv1ForwarderAbi,
                         functionName: 'grantPermissions',
                         address: cfaV1,
-                        args: [superToken.superToken, marketplace],
+                        args: [superToken?.superToken, marketplace],
                       },
                       {
                         onError: (error) => handleWriteErrors(error),

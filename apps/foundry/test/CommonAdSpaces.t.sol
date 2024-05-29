@@ -18,8 +18,11 @@ import {AccountV3} from "tokenbound/AccountV3Upgradable.sol";
 
 import {AdSpaceConfig} from "../src/CommonAdSpaces.sol";
 import {CommonAdGroupAdminFactory} from "../src/CommonAdGroupAdminFactory.sol";
-
+import {AdGroup} from "../src/lib/Structs.sol";
+import {CommonAdPool} from "../src/CommonAdPool.sol";
 import {CommonAdGroupAdminFactoryMock} from "./mocks/CommonAdGroupAdminFactoryMock.sol";
+import {SimpleAccountFactory} from "account-abstraction/samples/SimpleAccountFactory.sol";
+import {SimpleAccount, IEntryPoint} from "account-abstraction/samples/SimpleAccount.sol";
 
 contract CommonAdSpacesTest is CommonAdSpacesBase {
     using SuperTokenV1Library for ISuperToken;
@@ -29,8 +32,81 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     string buyerAdURI = "https://www.google.com";
     string buyer2AdURI = "https://www.yahoo.com";
 
+    function testSimpleAccount() public {
+        IEntryPoint entryPoint = IEntryPoint(address(0));
+        SimpleAccountFactory factory = new SimpleAccountFactory(entryPoint);
+
+        address owner = vm.addr(69);
+        uint256 salt = 0;
+        SimpleAccount account = factory.createAccount(owner, salt);
+
+        vm.prank(owner);
+        account.execute(
+            address(commonAds),
+            uint256(0),
+            abi.encodeWithSignature(
+                "createAdGroup(address,(address,uint256,uint256),uint256)",
+                owner,
+                AdSpaceConfig({
+                    currency: CurrencyTransferLib.NATIVE_TOKEN,
+                    initialPrice: initialPrice,
+                    taxRate: baseTaxRateBPS
+                }),
+                3
+            )
+        );
+    }
+
+    function testOpenAdPool() public {
+        vm.prank(recipient);
+        commonAds.createAdGroup(
+            recipient,
+            AdSpaceConfig({
+                currency: CurrencyTransferLib.NATIVE_TOKEN,
+                initialPrice: initialPrice,
+                taxRate: baseTaxRateBPS
+            }),
+            3
+        );
+
+        vm.deal(recipient, 10000 ether);
+        _upgradeETH(ethx, recipient, 100 ether);
+
+        uint256 adId = 0;
+        address frameDistributor = vm.addr(1234);
+        /**
+         * 1 - Create ad pool
+         */
+        vm.prank(recipient);
+        commonAds.createAdPool(adId, address(ethx));
+
+        // Create a flow of 1 ether per month
+        int96 adCampaignFlowRate = int96(int256(uint256(1 ether) / 30 days));
+        CommonAdPool adPool = commonAds.getAdPool(adId, address(ethx));
+
+        /**
+         * 2 - Grant member units admin role to frame distributor
+         */
+        vm.startPrank(recipient);
+        adPool.grantRole(adPool.MEMBER_UNITS_ADMIN_ROLE(), frameDistributor);
+        vm.stopPrank();
+
+        /**
+         * 3 - Grab first member units for frame distributor
+         */
+        vm.prank(recipient);
+        adPool.updateMemberUnits(frameDistributor, 10);
+
+        /**
+         * 4 - Campaign creator initiates pool flow
+         */
+        vm.startPrank(recipient);
+        ethx.distributeFlow(recipient, adPool.pool(), adCampaignFlowRate);
+        vm.stopPrank();
+    }
+
     function testCannotTransferAsOwnerOfListing() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -64,7 +140,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testCreateAdGroup() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -99,7 +175,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyerCancelsStream() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -142,7 +218,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyListingETH() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -242,7 +318,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testBuyMultipleListings() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -321,7 +397,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     function testBuyListingDAI() public {
         uint256 initialPriceInDai = 100e18; // 100 DAI
         uint256 taxRateBPS = 120; // 1.2% per month
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -358,7 +434,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testSelfAssessListingPrice() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -498,7 +574,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testCancelListing() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({
@@ -538,7 +614,7 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     }
 
     function testForecloseListing() public {
-        vm.prank(deployer);
+        vm.prank(recipient);
         commonAds.createAdGroup(
             recipient,
             AdSpaceConfig({

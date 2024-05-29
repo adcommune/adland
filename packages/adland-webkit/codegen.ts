@@ -3,10 +3,10 @@ import { constants } from "@adland/common";
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: [constants.subgraphUrl],
-  documents: "./documents/**/*.graphql",
   generates: {
     "./src/generated.ts": {
+      schema: constants.subgraphUrl,
+      documents: "./documents/adland.graphql",
       plugins: [
         "typescript",
         "typescript-operations",
@@ -17,6 +17,8 @@ const config: CodegenConfig = {
       },
     },
     "./src/hooks.ts": {
+      schema: constants.subgraphUrl,
+      documents: "./documents/adland.graphql",
       plugins: [
         "typescript",
         "typescript-operations",

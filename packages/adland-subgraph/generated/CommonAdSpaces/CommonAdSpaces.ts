@@ -32,6 +32,32 @@ export class AdGroupCreated__Params {
   }
 }
 
+export class AdPoolCreated extends ethereum.Event {
+  get params(): AdPoolCreated__Params {
+    return new AdPoolCreated__Params(this);
+  }
+}
+
+export class AdPoolCreated__Params {
+  _event: AdPoolCreated;
+
+  constructor(event: AdPoolCreated) {
+    this._event = event;
+  }
+
+  get adId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get superToken(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get pool(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+}
+
 export class AdSpaceCreated extends ethereum.Event {
   get params(): AdSpaceCreated__Params {
     return new AdSpaceCreated__Params(this);
@@ -296,6 +322,38 @@ export class Upgraded__Params {
   }
 }
 
+export class CommonAdSpaces__adsResult {
+  value0: BigInt;
+  value1: string;
+  value2: Address;
+
+  constructor(value0: BigInt, value1: string, value2: Address) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
+    map.set("value1", ethereum.Value.fromString(this.value1));
+    map.set("value2", ethereum.Value.fromAddress(this.value2));
+    return map;
+  }
+
+  getAdGroupId(): BigInt {
+    return this.value0;
+  }
+
+  getUri(): string {
+    return this.value1;
+  }
+
+  getStrategy(): Address {
+    return this.value2;
+  }
+}
+
 export class CommonAdSpaces__createAdGroup1InputInitialAdSpaceConfigStruct extends ethereum.Tuple {
   get currency(): Address {
     return this[0].toAddress();
@@ -307,6 +365,12 @@ export class CommonAdSpaces__createAdGroup1InputInitialAdSpaceConfigStruct exten
 
   get taxRate(): BigInt {
     return this[2].toBigInt();
+  }
+}
+
+export class CommonAdSpaces__getGroupResultValue0Struct extends ethereum.Tuple {
+  get owner(): Address {
+    return this[0].toAddress();
   }
 }
 
@@ -353,6 +417,54 @@ export class CommonAdSpaces extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  adGroups(param0: BigInt): Address {
+    let result = super.call("adGroups", "adGroups(uint256):(address)", [
+      ethereum.Value.fromUnsignedBigInt(param0),
+    ]);
+
+    return result[0].toAddress();
+  }
+
+  try_adGroups(param0: BigInt): ethereum.CallResult<Address> {
+    let result = super.tryCall("adGroups", "adGroups(uint256):(address)", [
+      ethereum.Value.fromUnsignedBigInt(param0),
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  ads(param0: BigInt): CommonAdSpaces__adsResult {
+    let result = super.call("ads", "ads(uint256):(uint256,string,address)", [
+      ethereum.Value.fromUnsignedBigInt(param0),
+    ]);
+
+    return new CommonAdSpaces__adsResult(
+      result[0].toBigInt(),
+      result[1].toString(),
+      result[2].toAddress(),
+    );
+  }
+
+  try_ads(param0: BigInt): ethereum.CallResult<CommonAdSpaces__adsResult> {
+    let result = super.tryCall("ads", "ads(uint256):(uint256,string,address)", [
+      ethereum.Value.fromUnsignedBigInt(param0),
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new CommonAdSpaces__adsResult(
+        value[0].toBigInt(),
+        value[1].toString(),
+        value[2].toAddress(),
+      ),
+    );
   }
 
   balanceOf(owner: Address): BigInt {
@@ -436,6 +548,38 @@ export class CommonAdSpaces extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  getAdPool(adId: BigInt, superToken: Address): Address {
+    let result = super.call(
+      "getAdPool",
+      "getAdPool(uint256,address):(address)",
+      [
+        ethereum.Value.fromUnsignedBigInt(adId),
+        ethereum.Value.fromAddress(superToken),
+      ],
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_getAdPool(
+    adId: BigInt,
+    superToken: Address,
+  ): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "getAdPool",
+      "getAdPool(uint256,address):(address)",
+      [
+        ethereum.Value.fromUnsignedBigInt(adId),
+        ethereum.Value.fromAddress(superToken),
+      ],
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   getAdUri(adId: BigInt): string {
     let result = super.call("getAdUri", "getAdUri(uint256):(string)", [
       ethereum.Value.fromUnsignedBigInt(adId),
@@ -474,6 +618,33 @@ export class CommonAdSpaces extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  getGroup(adGroupId: BigInt): CommonAdSpaces__getGroupResultValue0Struct {
+    let result = super.call("getGroup", "getGroup(uint256):((address))", [
+      ethereum.Value.fromUnsignedBigInt(adGroupId),
+    ]);
+
+    return changetype<CommonAdSpaces__getGroupResultValue0Struct>(
+      result[0].toTuple(),
+    );
+  }
+
+  try_getGroup(
+    adGroupId: BigInt,
+  ): ethereum.CallResult<CommonAdSpaces__getGroupResultValue0Struct> {
+    let result = super.tryCall("getGroup", "getGroup(uint256):((address))", [
+      ethereum.Value.fromUnsignedBigInt(adGroupId),
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      changetype<CommonAdSpaces__getGroupResultValue0Struct>(
+        value[0].toTuple(),
+      ),
+    );
   }
 
   getTokenX(underlying: Address): Address {
@@ -883,6 +1054,40 @@ export class CreateAdGroup1CallInitialAdSpaceConfigStruct extends ethereum.Tuple
 
   get taxRate(): BigInt {
     return this[2].toBigInt();
+  }
+}
+
+export class CreateAdPoolCall extends ethereum.Call {
+  get inputs(): CreateAdPoolCall__Inputs {
+    return new CreateAdPoolCall__Inputs(this);
+  }
+
+  get outputs(): CreateAdPoolCall__Outputs {
+    return new CreateAdPoolCall__Outputs(this);
+  }
+}
+
+export class CreateAdPoolCall__Inputs {
+  _call: CreateAdPoolCall;
+
+  constructor(call: CreateAdPoolCall) {
+    this._call = call;
+  }
+
+  get adId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get superToken(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class CreateAdPoolCall__Outputs {
+  _call: CreateAdPoolCall;
+
+  constructor(call: CreateAdPoolCall) {
+    this._call = call;
   }
 }
 

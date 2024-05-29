@@ -22,21 +22,11 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Slider } from '@/components/ui/slider'
-import {
-  Address,
-  GetEventArgs,
-  decodeEventLog,
-  formatEther,
-  parseEther,
-} from 'viem'
-import { useWriteContract } from 'wagmi'
+import { Address, encodeFunctionData, formatEther, parseEther } from 'viem'
 import useAppContracts from '@/hooks/useAppContracts'
-import { commonAdSpacesAbi, directListingsLogicAbi } from '@adland/contracts'
-import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
-import { useCallback } from 'react'
+import { commonAdSpacesAbi } from '@adland/contracts'
+import { useContext } from 'react'
 import { handleWriteErrors } from '@/lib/viem'
-import { toast } from 'sonner'
-import { Checkbox } from '../ui/checkbox'
 import { TokenX } from '@adland/webkit/src/hooks'
 import {
   Select,
@@ -48,10 +38,10 @@ import {
 } from '../ui/select'
 import { truncateAddress } from '@/lib/utils'
 import { getTokenSymbol } from '@/config/constants'
+import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
+import { SmartAccountContext } from '@/context/SmartAccountContext'
 
 const createAdGroupSchema = z.object({
-  recipientIsBeneficiary: z.boolean().default(true),
-  beneficiary: z.string(),
   currency: z.string(),
   initialPrice: z.bigint(),
   taxRate: z.bigint().lte(BigInt(10000)),
@@ -61,54 +51,55 @@ const createAdGroupSchema = z.object({
 type CreateAdGroupFormValues = z.infer<typeof createAdGroupSchema>
 
 type CreateAdGroupFormProps = {
-  beneficiary: Address
   superTokens: TokenX[]
 }
 
-const CreateAdGroupForm = ({
-  beneficiary: rawBeneficiary,
-  superTokens,
-}: CreateAdGroupFormProps) => {
+const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
+  const { adCommonOwnership } = useAppContracts()
+  const { bicoAccountAddress } = useContext(SmartAccountContext)
+
   const form = useForm<CreateAdGroupFormValues>({
     resolver: zodResolver(createAdGroupSchema),
     defaultValues: {
-      beneficiary: rawBeneficiary,
-      recipientIsBeneficiary: true,
       currency: superTokens[0].underlyingToken,
       initialPrice: BigInt(1e16),
       taxRate: BigInt(10),
       size: BigInt(1),
     },
   })
-  const { adCommonOwnership, marketplace } = useAppContracts()
 
-  const {
-    data: hash,
-    writeContract,
-    isPending: confirmPending,
-  } = useWriteContract()
+  const { write, loading } = useSmartAccountTxs({
+    mutationKey: 'createAdGroup',
+  })
 
-  const onSubmit = ({
-    beneficiary,
+  const onSubmit = async ({
     currency,
     initialPrice,
     taxRate,
     size,
-    recipientIsBeneficiary,
   }: CreateAdGroupFormValues) => {
-    writeContract(
+    if (!bicoAccountAddress) return
+
+    write(
       {
-        abi: commonAdSpacesAbi,
-        address: adCommonOwnership,
-        functionName: 'createAdGroup',
-        args: [
-          recipientIsBeneficiary ? rawBeneficiary : (beneficiary as Address),
+        transactions: [
           {
-            currency: currency as Address,
-            initialPrice,
-            taxRate,
+            to: adCommonOwnership,
+            data: encodeFunctionData({
+              abi: commonAdSpacesAbi,
+              functionName: 'createAdGroup',
+              args: [
+                bicoAccountAddress,
+                {
+                  currency: currency as Address,
+                  initialPrice,
+                  taxRate,
+                },
+                size,
+              ],
+            }),
+            value: BigInt(0),
           },
-          size,
         ],
       },
       {
@@ -116,36 +107,6 @@ const CreateAdGroupForm = ({
       },
     )
   }
-
-  const { isLoading } = useWaitForTransactionSuccess(
-    hash,
-    useCallback((logs) => {
-      toast.success('Ad group created successfully')
-      const decodedLogs = logs.map((log) => {
-        if (log.address.toLowerCase() === adCommonOwnership.toLowerCase()) {
-          return decodeEventLog({
-            abi: commonAdSpacesAbi,
-            topics: log.topics,
-            data: log.data,
-          })
-        } else if (log.address.toLowerCase() === marketplace.toLowerCase()) {
-          return decodeEventLog({
-            abi: directListingsLogicAbi,
-            topics: log.topics,
-            data: log.data,
-          })
-        }
-      })
-
-      const newGroupLog = decodedLogs.filter(
-        (log) => log?.eventName === 'AdGroupCreated',
-      )[0]?.args as GetEventArgs<typeof commonAdSpacesAbi, 'AdGroupCreated'>
-
-      // TODO: Wait for indexing to be able to redirect to the new ad group page
-    }, []),
-  )
-
-  const isPending = confirmPending || isLoading
 
   return (
     <Form {...form}>
@@ -187,9 +148,9 @@ const CreateAdGroupForm = ({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
-              name="recipientIsBeneficiary"
+              name="recipientIsCaller"
               render={({ field: { value: checked, onChange } }) => (
                 <>
                   <FormField
@@ -234,7 +195,7 @@ const CreateAdGroupForm = ({
                   </FormDescription>
                 </>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="initialPrice"
@@ -320,7 +281,7 @@ const CreateAdGroupForm = ({
             />
           </CardContent>
           <CardFooter className="justify-end">
-            <Button type="submit" disabled={isPending} loading={isPending}>
+            <Button type="submit" disabled={loading} loading={loading}>
               Create Ad Group
             </Button>
           </CardFooter>

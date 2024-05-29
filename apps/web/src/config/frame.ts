@@ -1,4 +1,9 @@
+import { Address } from 'viem'
+
 type FrameImageType = 'default'
+
+export const framePoolAdminAddressPublicKey =
+  '0xA9BA6fF2879155489454D03b51FaEc4Cf1968315' as Address
 
 export const frameAdPositions: Record<
   FrameImageType,

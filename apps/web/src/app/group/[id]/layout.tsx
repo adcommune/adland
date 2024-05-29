@@ -1,5 +1,6 @@
 import AdGroupHeader from '@/components/AdGroup/AdGroupHeader'
 import { Container } from '@/components/Container'
+import { SmartAccountProvider } from '@/context/SmartAccountContext'
 import { AdLand } from '@/lib/adland'
 
 type GroupPageLayoutProps = {

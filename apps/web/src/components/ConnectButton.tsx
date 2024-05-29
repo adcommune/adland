@@ -1,5 +1,4 @@
 import { Button } from './ui/button'
-import { useAccount } from 'wagmi'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import {
   DropdownMenu,
@@ -19,9 +18,10 @@ export const ConnectButton = () => {
   const { ready, authenticated, login, logout, user, connectWallet } =
     usePrivy()
   const { wallets } = useWallets()
-  const address = user?.wallet?.address ?? zeroAddress
 
-  const wallet = wallets[0]
+  const wallet = wallets.find((w) => w.connectorType !== 'embedded')
+
+  const address = wallet?.address ?? zeroAddress
 
   const disableLogin = !ready || (ready && authenticated)
 

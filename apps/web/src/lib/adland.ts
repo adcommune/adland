@@ -1,5 +1,9 @@
 import { GraphQLClient } from 'graphql-request'
-import { getSdk as getAdLand } from '@adland/webkit'
+import {
+  AdGroup_OrderBy_subgraph,
+  getSdk as getAdLand,
+  OrderDirection_subgraph,
+} from '@adland/webkit'
 import { constants } from '@adland/common'
 import { Market } from './market'
 import { AdGroup, AdSpace, Listing, Metadata } from './types'
@@ -15,9 +19,14 @@ export class AdLand {
   }
 
   async listGroups(): Promise<AdGroup[]> {
-    const groups = await this.adland.adGroups().then((response) => {
-      return response.adGroups
-    })
+    const groups = await this.adland
+      .adGroups({
+        orderBy: AdGroup_OrderBy_subgraph.BlockTimestamp_subgraph,
+        orderDirection: OrderDirection_subgraph.Desc_subgraph,
+      })
+      .then((response) => {
+        return response.adGroups
+      })
 
     return Promise.all(
       groups.map(async (group) => {
@@ -100,8 +109,6 @@ export class AdLand {
     const listing = await new Market().getListing(id)
 
     try {
-      console.log('listing', listing)
-
       // Temporary fix for non coherent listing owner in the direct listing contract
       listing.listingOwner = await client.readContract({
         abi: erc721Abi,
