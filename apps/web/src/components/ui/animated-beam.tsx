@@ -111,6 +111,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
       resizeObserver.disconnect()
     }
   }, [
+    duration,
     containerRef,
     fromRef,
     toRef,
