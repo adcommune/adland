@@ -26,13 +26,16 @@ const MyAdGroups = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      {data?.adGroups?.map(({ id, blockTimestamp, adSpaces }) => (
-        <AdGroupListItem
-          id={id}
-          blockTimestamp={blockTimestamp}
-          adSpaces={adSpaces}
-        />
-      ))}
+      {data?.adGroups?.map(
+        ({ id, blockTimestamp, transactionHash, adSpaces }) => (
+          <AdGroupListItem
+            id={id}
+            key={transactionHash}
+            blockTimestamp={blockTimestamp}
+            adSpaces={adSpaces}
+          />
+        ),
+      )}
     </div>
   )
 }

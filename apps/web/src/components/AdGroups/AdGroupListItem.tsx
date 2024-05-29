@@ -21,9 +21,10 @@ const AdGroupListItem = ({
       <div className="flex flex-row justify-between rounded-md bg-white p-3 hover:bg-gray-100">
         <h1>Ad Group - #{id}</h1>
         <div className="flex flex-row flex-wrap gap-1">
-          {adSpaces.map(({ uri }) => {
+          {adSpaces.map(({ uri, transactionHash }) => {
             return (
               <div
+                key={transactionHash}
                 className={classNames('aspect-square h-4 w-4', {
                   'bg-green-500': Boolean(uri),
                   'bg-gray-300': !Boolean(uri),

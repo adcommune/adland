@@ -373,7 +373,7 @@ const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
             </TableHeader>
             <TableBody>
               {pool?.poolMembers.map(({ id, isConnected, units }) => (
-                <TableRow className="">
+                <TableRow key={id}>
                   <TableCell>{truncateAddress(id, 10)}</TableCell>
                   <TableCell>
                     {isConnected ? 'Connected' : 'Not Connected'}
