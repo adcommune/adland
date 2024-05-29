@@ -40,13 +40,19 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         uint256 salt = 0;
         SimpleAccount account = factory.createAccount(owner, salt);
 
+        label(owner, "Owner");
+        console.log("Owner: ", address(owner));
+
+        label(address(account), "SimpleAccount 1");
+        console.log("Simple Account 1: ", address(account));
+
         vm.prank(owner);
         account.execute(
             address(commonAds),
             uint256(0),
             abi.encodeWithSignature(
                 "createAdGroup(address,(address,uint256,uint256),uint256)",
-                owner,
+                address(account),
                 AdSpaceConfig({
                     currency: CurrencyTransferLib.NATIVE_TOKEN,
                     initialPrice: initialPrice,
@@ -54,6 +60,54 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
                 }),
                 3
             )
+        );
+
+        vm.prank(owner);
+        account.execute(
+            address(commonAds),
+            uint256(0),
+            abi.encodeWithSignature(
+                "createAdPool(uint256,address)",
+                0,
+                address(ethx)
+            )
+        );
+
+        vm.startPrank(owner);
+        account.execute(
+            address(commonAds.getAdPool(0, address(ethx))),
+            uint256(0),
+            abi.encodeWithSignature(
+                "grantRole(bytes32,address)",
+                commonAds.getAdPool(0, address(ethx)).DEFAULT_ADMIN_ROLE(),
+                vm.addr(12345)
+            )
+        );
+        vm.stopPrank();
+
+        vm.startPrank(owner);
+        account.execute(
+            address(sf.gdaV1Forwarder),
+            uint256(0),
+            abi.encodeWithSignature(
+                "distributeFlow(address,address,address,int96,bytes)",
+                ethx,
+                address(account),
+                commonAds.getAdPool(0, address(ethx)).pool(),
+                int96(int256(uint256(1 ether) / 30 days)),
+                ""
+            )
+        );
+        vm.stopPrank();
+
+        assertEq(commonAds.getAdGroupOwner(0), address(account));
+        // Assert account has admin role
+        assertEq(
+            commonAds.getAdPool(0, address(ethx)).hasRole(
+                commonAds.getAdPool(0, address(ethx)).DEFAULT_ADMIN_ROLE(),
+                address(account)
+            ),
+            true
         );
     }
 
@@ -101,7 +155,14 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
          * 4 - Campaign creator initiates pool flow
          */
         vm.startPrank(recipient);
-        ethx.distributeFlow(recipient, adPool.pool(), adCampaignFlowRate);
+        sf.gdaV1Forwarder.distributeFlow(
+            ethx,
+            recipient,
+            adPool.pool(),
+            adCampaignFlowRate,
+            ""
+        );
+        // ethx.distributeFlow(recipient, adPool.pool(), adCampaignFlowRate);
         vm.stopPrank();
     }
 

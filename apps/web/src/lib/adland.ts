@@ -6,16 +6,22 @@ import {
 } from '@adland/webkit'
 import { constants } from '@adland/common'
 import { Market } from './market'
-import { AdGroup, AdSpace, Listing, Metadata } from './types'
+import { AdCampaign, AdGroup, AdSpace, Listing, Metadata } from './types'
 import { fetchJSON, getGatewayUri } from './utils'
 import { client } from './services'
-import { erc721Abi } from 'viem'
+import { Address, erc721Abi, PublicClient, zeroAddress } from 'viem'
+import { publicClient } from './viem'
+import { commonAdPoolAbi, commonAdSpacesAbi } from '@adland/contracts'
+import { appContracts } from '@/hooks/useAppContracts'
+import { Superfluid } from './superfluid-subgraph'
 
 export class AdLand {
   private adland: ReturnType<typeof getAdLand>
+  private c: PublicClient
 
   constructor() {
     this.adland = getAdLand(new GraphQLClient(constants.subgraphUrl, { fetch }))
+    this.c = publicClient
   }
 
   async listGroups(): Promise<AdGroup[]> {
@@ -137,6 +143,43 @@ export class AdLand {
       listing,
       metadata,
       tokenX,
+    }
+  }
+
+  async getAdCampaign(
+    spaceId: string,
+    superToken: Address,
+  ): Promise<AdCampaign> {
+    const commonAdPoolAddress = await this.c
+      .readContract({
+        address: appContracts.adCommonOwnership,
+        abi: commonAdSpacesAbi,
+        functionName: 'getAdPool',
+        args: [BigInt(spaceId), superToken],
+      })
+      .then((addr) => (addr === zeroAddress ? undefined : addr))
+
+    let sfPoolAddress = undefined
+
+    if (commonAdPoolAddress) {
+      sfPoolAddress = await this.c.readContract({
+        address: commonAdPoolAddress,
+        abi: commonAdPoolAbi,
+        functionName: 'pool',
+        args: [],
+      })
+    }
+
+    let sfPool = undefined
+
+    if (sfPoolAddress) {
+      sfPool = await new Superfluid().fetchPool(sfPoolAddress.toLowerCase())
+    }
+
+    return {
+      commonAdPoolAddress,
+      sfPoolAddress,
+      sfPool,
     }
   }
 

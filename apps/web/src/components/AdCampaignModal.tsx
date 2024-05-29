@@ -27,19 +27,19 @@ const fundAdPoolSchema = z.object({
 
 type FunAdPoolFormValues = z.infer<typeof fundAdPoolSchema>
 
-type AdCampaignFormProps = {
+type AdCampaignModalProps = {
   adSpace: AdSpace
   superTokenBalance: BigInt
   onSubmit: (args: { flowRate: bigint; amount: bigint }) => void
   loading: boolean
 }
 
-const AdCampaignForm = ({
+const AdCampaignModal = ({
   adSpace,
   superTokenBalance,
   onSubmit: submit,
   loading,
-}: AdCampaignFormProps) => {
+}: AdCampaignModalProps) => {
   const { fundAdModal } = useContext(ModalContext)
   const form = useForm<FunAdPoolFormValues>({
     resolver: zodResolver(fundAdPoolSchema),
@@ -150,4 +150,4 @@ const AdCampaignForm = ({
   )
 }
 
-export default AdCampaignForm
+export default AdCampaignModal
