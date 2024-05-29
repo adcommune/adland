@@ -28,6 +28,12 @@ import {UUPSProxy} from "../../src/lib/UUPSProxy.sol";
 import {CommonAdSpaces} from "../../src/CommonAdSpaces.sol";
 import {CommonAdGroupAdminFactory} from "../../src/CommonAdGroupAdminFactory.sol";
 
+contract CommonAdSpacesExtended is CommonAdSpaces {
+    function getAdGroupOwner(uint256 adGroupId) public view returns (address) {
+        return adGroups[adGroupId].owner;
+    }
+}
+
 contract CommonAdSpacesBase is DSTestFull, IExtension {
     address wethSepolia = 0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9;
     address cfav1Sepolia = 0x6836F23d6171D74Ef62FcF776655aBcD2bcd62Ef;
@@ -37,7 +43,7 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
     SuperfluidFrameworkDeploymentSteps.Framework sf;
     WETH9 public weth;
     DirectListingsLogic public marketplace;
-    CommonAdSpaces public commonAds;
+    CommonAdSpacesExtended public commonAds;
     CommonAdGroupAdminFactory public commonAdGroupFactory;
     address internal deployer = vm.addr(420);
     address internal recipient = vm.addr(421);
@@ -71,10 +77,10 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
 
         vm.label(address(marketplace), "marketplace");
 
-        commonAds = CommonAdSpaces(
+        commonAds = CommonAdSpacesExtended(
             address(
                 new UUPSProxy(
-                    address(new CommonAdSpaces()),
+                    address(new CommonAdSpacesExtended()),
                     abi.encodeWithSelector(
                         CommonAdSpaces.initialize.selector,
                         address(marketplace),
