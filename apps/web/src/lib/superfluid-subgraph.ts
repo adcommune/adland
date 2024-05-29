@@ -28,6 +28,18 @@ export class Superfluid {
                 isConnected
                 units
               }
+              flowDistributionUpdatedEvents(first: 20) {
+                id
+                adjustmentFlowRate
+                oldFlowRate
+                adjustmentFlowRecipient
+                newDistributorToPoolFlowRate
+                newTotalDistributionFlowRate
+                totalUnits
+                poolDistributor {
+                  id
+                }
+              }
             }
           }
         `,
@@ -51,5 +63,17 @@ export type SuperfluidPool = {
     id: Address
     isConnected: boolean
     units: string
+  }[]
+  flowDistributionUpdatedEvents: {
+    id: Address
+    adjustmentFlowRate: string
+    oldFlowRate: string
+    adjustmentFlowRecipient: Address
+    newDistributorToPoolFlowRate: string
+    newTotalDistributionFlowRate: string
+    totalUnits: string
+    poolDistributor: {
+      id: Address
+    }
   }[]
 }

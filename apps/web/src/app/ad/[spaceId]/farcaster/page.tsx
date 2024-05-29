@@ -15,8 +15,8 @@ import { useQuery } from '@tanstack/react-query'
 
 type AdSpacePageProps = {
   params: { spaceId: string; id: string }
-  children: React.ReactNode
 }
+
 const FarcasterDistributionPage = ({
   params: { spaceId },
 }: AdSpacePageProps) => {
