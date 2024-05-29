@@ -21,7 +21,7 @@ import {
   TableRow,
 } from './ui/table'
 import { AdSpace } from '@/lib/types'
-import { useContext, useRef } from 'react'
+import { useContext } from 'react'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import {
   commonAdPoolAbi,
@@ -29,8 +29,6 @@ import {
   gdAv1ForwarderAbi,
   isethAbi,
   superTokenAbi,
-  useReadCommonAdPoolPool,
-  useReadCommonAdSpacesGetAdPool,
 } from '@adland/contracts'
 import { useBalance, useReadContracts } from 'wagmi'
 import { getExplorerLink, truncateAddress } from '@/lib/utils'
@@ -41,7 +39,7 @@ import {
   formatEther,
   zeroAddress,
 } from 'viem'
-import AdCampaignForm from './AdCampaignForm'
+import AdCampaignModal from './AdCampaignModal'
 import { Button } from './ui/button'
 import { framePoolAdminAddressPublicKey } from '@/config/frame'
 import useAppContracts from '@/hooks/useAppContracts'
@@ -49,11 +47,9 @@ import { toast } from 'sonner'
 import { Transaction } from '@biconomy/account'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import { useQuery } from '@tanstack/react-query'
-import { Superfluid } from '@/lib/superfluid-subgraph'
 import { ModalContext } from '@/context/ModalContext'
-import { UserIcon, UsersIcon } from 'lucide-react'
-import { AnimatedBeam, BeamCircle } from './ui/animated-beam'
-import Link from 'next/link'
+import FundFlow from './FarcasterDistribution/FundFlow'
+import { AdLand } from '@/lib/adland'
 
 type FarcasterIntegrationProps = {
   groupId: string
@@ -66,50 +62,25 @@ type LaunchCampaignProps = {
 }
 
 const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const div1Ref = useRef<HTMLDivElement>(null)
-  const div2Ref = useRef<HTMLDivElement>(null)
   const { adSpace_subgraph, tokenX } = adSpace
   const { id: spaceId } = adSpace_subgraph
   const { adCommonOwnership, gdaV1Forwarder } = useAppContracts()
   const { bicoAccountAddress } = useContext(SmartAccountContext)
   const { fundAdModal } = useContext(ModalContext)
-
   const superToken = tokenX?.superToken
   const isNativeCurrency = tokenX?.isNativeToken
 
-  const { data: commonAdPoolAddress } = useReadCommonAdSpacesGetAdPool({
-    args: [BigInt(spaceId), superToken],
-    query: {
-      select: (poolAddress) => {
-        return poolAddress === zeroAddress ? undefined : poolAddress
-      },
-    },
+  const { data: campaign, refetch } = useQuery({
+    queryKey: ['adCampaign', spaceId],
+    queryFn: async () => new AdLand().getAdCampaign(spaceId, superToken),
   })
-
-  const { data: poolAddress } = useReadCommonAdPoolPool({
-    address: commonAdPoolAddress,
-    query: {
-      enabled: Boolean(commonAdPoolAddress),
-    },
-  })
-
-  const { data: pool, refetch } = useQuery({
-    queryKey: ['fetchPool', poolAddress],
-    queryFn: async () => {
-      return await new Superfluid().fetchPool(poolAddress?.toLowerCase())
-    },
-    enabled: Boolean(poolAddress),
-  })
-
-  const shouldCreateNewAdPoolForSuperToken = !commonAdPoolAddress
 
   const { data: reads } = useReadContracts({
     contracts: [
       {
         abi: commonAdPoolAbi,
         functionName: 'hasRole',
-        address: commonAdPoolAddress && commonAdPoolAddress,
+        address: campaign?.commonAdPoolAddress,
         args: [MEMBER_UNITS_ADMIN_ROLE, framePoolAdminAddressPublicKey],
       },
       {
@@ -120,7 +91,7 @@ const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
       },
     ],
     query: {
-      enabled: Boolean(commonAdPoolAddress),
+      enabled: Boolean(campaign?.commonAdPoolAddress),
       select: (data) => {
         return {
           frameHasMemberUnitsAdminRole: data[0].result,
@@ -153,18 +124,7 @@ const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
   })
 
   const launchCampaign = async ({ flowRate, amount }: LaunchCampaignProps) => {
-    /**
-     * Before:
-     * - Get Needed flow from user
-     */
-
-    /**
-     * 1 - Create Ad Pool
-     * 2 - Grant frame admin account MEMBER_UNITS_ADMIN_ROLE
-     * 3 - Distribute flow to pool
-     */
-
-    if (shouldCreateNewAdPoolForSuperToken) {
+    if (!campaign?.commonAdPoolAddress) {
       toast.error('Must create ad pool first')
       return
     }
@@ -172,19 +132,15 @@ const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
       toast.error('Must have a campaign account')
       return
     }
-    if (!poolAddress) {
+    if (!campaign?.sfPoolAddress) {
       toast.error('Pool not found')
       return
-    }
-
-    let transactions: Transaction[] = []
-
-    if (amount === BigInt(0)) {
-      return console.log('Amount must be greater than 0')
     }
     if (!superToken) {
       return console.log('SuperToken must be defined')
     }
+
+    let transactions: Transaction[] = []
 
     const superTokenAddress = superToken as Address
 
@@ -201,7 +157,7 @@ const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
     if (!reads?.frameHasMemberUnitsAdminRole) {
       console.log('Granting role')
       transactions.push({
-        to: commonAdPoolAddress,
+        to: campaign?.commonAdPoolAddress,
         data: encodeFunctionData({
           abi: commonAdPoolAbi,
           args: [MEMBER_UNITS_ADMIN_ROLE, framePoolAdminAddressPublicKey],
@@ -218,7 +174,7 @@ const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
         args: [
           superTokenAddress,
           bicoAccountAddress,
-          poolAddress,
+          campaign?.sfPoolAddress,
           flowRate,
           zeroAddress,
         ],
@@ -238,9 +194,7 @@ const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
     })
   }
 
-  const flowRate = BigInt(pool?.flowRate ?? '0')
-
-  console.log({ flowRate })
+  const flowRate = BigInt(campaign?.sfPool?.flowRate ?? '0')
 
   return (
     <div className="flex w-full flex-col gap-2">
@@ -272,54 +226,27 @@ const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
             <CardContent className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
                 <div className="text-2xl font-bold">
-                  {pool?.totalMembers} Distributor
+                  {campaign?.sfPool?.totalMembers} Distributor
                 </div>
                 <p className="text-xs text-muted-foreground">
                   +{formatEther(flowRate)}{' '}
                   {getTokenSymbol(tokenX?.underlyingToken)}
                   /week
                 </p>
-                <div className="relative flex w-full" ref={containerRef}>
-                  <div className="flex h-full w-full flex-col items-stretch justify-between gap-10">
-                    <div className="flex flex-row justify-between">
-                      <BeamCircle
-                        ref={div1Ref}
-                        className="hover:cursor-pointer hover:border-2 hover:border-purple-500"
-                      >
-                        {/* <Link
-                        href={getExplorerLink(bicoAccountAddress, 'address')}
-                        target="_blank"
-                      > */}
-                        <UserIcon className="h-6 w-6" />
-                        {/* </Link> */}
-                      </BeamCircle>
-                      <BeamCircle
-                        ref={div2Ref}
-                        className="bg-white hover:cursor-pointer hover:border-2 hover:border-purple-500"
-                      >
-                        <Link
-                          href={getExplorerLink(poolAddress, 'address')}
-                          target="_blank"
-                        >
-                          <UsersIcon className="h-6 w-6" />
-                        </Link>
-                      </BeamCircle>
-                      <AnimatedBeam
-                        duration={flowRate !== BigInt(0) ? 3 : 0}
-                        containerRef={containerRef}
-                        fromRef={div1Ref}
-                        toRef={div2Ref}
-                      />
-                    </div>
-                  </div>
-                </div>
+                <FundFlow
+                  enabled={flowRate !== BigInt(0)}
+                  poolExplorerLink={getExplorerLink(
+                    campaign?.sfPoolAddress,
+                    'address',
+                  )}
+                />
               </div>
               <div className="grid w-full grid-cols-2 gap-2">
                 <Button
                   className="col-span-1"
                   loading={createPoolLoading}
                   disabled={
-                    createPoolLoading || !shouldCreateNewAdPoolForSuperToken
+                    createPoolLoading || Boolean(campaign?.commonAdPoolAddress)
                   }
                   onClick={() => {
                     write({
@@ -340,7 +267,7 @@ const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
                   Open Pool
                 </Button>
                 <Button
-                  disabled={!Boolean(poolAddress)}
+                  disabled={!Boolean(campaign?.sfPool)}
                   className="col-span-1"
                   onClick={() => {
                     fundAdModal.set(true)
@@ -372,21 +299,22 @@ const FarcasterIntegration = ({ adSpace }: FarcasterIntegrationProps) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {pool?.poolMembers.map(({ id, isConnected, units }) => (
-                <TableRow key={id}>
-                  <TableCell>{truncateAddress(id, 10)}</TableCell>
-                  <TableCell>
-                    {isConnected ? 'Connected' : 'Not Connected'}
-                  </TableCell>
-                  <TableCell>{units}</TableCell>
-                </TableRow>
-              ))}
+              {campaign?.sfPool?.poolMembers.map(
+                ({ id, isConnected, units }) => (
+                  <TableRow key={id}>
+                    <TableCell>{truncateAddress(id, 10)}</TableCell>
+                    <TableCell>
+                      {isConnected ? 'Connected' : 'Not Connected'}
+                    </TableCell>
+                    <TableCell>{units}</TableCell>
+                  </TableRow>
+                ),
+              )}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
-
-      <AdCampaignForm
+      <AdCampaignModal
         adSpace={adSpace}
         superTokenBalance={balanceOfAdToken}
         onSubmit={({ flowRate, amount }) => {

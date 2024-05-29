@@ -7,16 +7,18 @@ import {
 
 export type AppChainIds = keyof typeof commonAdSpacesAddress
 
-const useAppContracts = () => {
-  const appChain = constants.chain
+const appChain = constants.chain
 
-  return {
-    cfaV1: superfluidAddresses[appChain.id as AppChainIds].cfaV1,
-    gdaV1Forwarder:
-      superfluidAddresses[appChain.id as AppChainIds].gdaV1Forwarder,
-    marketplace: directListingsLogicAddress[appChain.id as AppChainIds],
-    adCommonOwnership: commonAdSpacesAddress[appChain.id as AppChainIds],
-  }
+export const appContracts = {
+  cfaV1: superfluidAddresses[appChain.id as AppChainIds].cfaV1,
+  gdaV1Forwarder:
+    superfluidAddresses[appChain.id as AppChainIds].gdaV1Forwarder,
+  marketplace: directListingsLogicAddress[appChain.id as AppChainIds],
+  adCommonOwnership: commonAdSpacesAddress[appChain.id as AppChainIds],
+}
+
+const useAppContracts = () => {
+  return appContracts
 }
 
 export default useAppContracts
