@@ -202,3 +202,5 @@ export const BeamCircle = forwardRef<
     </div>
   )
 })
+
+BeamCircle.displayName = 'BeamCircle'

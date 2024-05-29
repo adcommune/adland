@@ -3,7 +3,6 @@ import MyAdGroups from '@/components/AdGroups/MyAdGroups'
 import { Container } from '@/components/Container'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { SmartAccountProvider } from '@/hooks/useSmartAccount'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 
