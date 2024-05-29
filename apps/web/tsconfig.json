@@ -3,6 +3,8 @@
     "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "allowImportingTsExtensions": true,
+    "jsxImportSource": "hono/jsx",
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
