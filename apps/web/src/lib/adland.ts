@@ -109,7 +109,10 @@ export class AdLand {
     return this.getGroup(groupId)
   }
 
-  async getAdSpace(id: string): Promise<AdSpace> {
+  async getAdSpace(
+    id: string,
+    options: { withMetadata: boolean } = { withMetadata: true },
+  ): Promise<AdSpace> {
     const adSpace = (await this.adland.adSpace({ id })).adSpace
 
     const listing = await new Market().getListing(id)
@@ -136,7 +139,11 @@ export class AdLand {
       throw new Error('AdSpace not found')
     }
 
-    const metadata = await this._getAdSpaceMetadata(adSpace.uri)
+    let metadata = undefined
+
+    if (options.withMetadata) {
+      metadata = await this._getAdSpaceMetadata(adSpace.uri)
+    }
 
     return {
       adSpace_subgraph: adSpace,
@@ -149,6 +156,7 @@ export class AdLand {
   async getAdCampaign(
     spaceId: string,
     superToken: Address,
+    options: { withPoolDetails?: boolean } = { withPoolDetails: true },
   ): Promise<AdCampaign> {
     const commonAdPoolAddress = await this.c
       .readContract({
@@ -172,7 +180,7 @@ export class AdLand {
 
     let sfPool = undefined
 
-    if (sfPoolAddress) {
+    if (sfPoolAddress && options?.withPoolDetails) {
       sfPool = await new Superfluid().fetchPool(sfPoolAddress.toLowerCase())
     }
 

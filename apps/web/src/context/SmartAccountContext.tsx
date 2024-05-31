@@ -41,7 +41,8 @@ const SmartAccountProvider = ({ children }: { children: React.ReactNode }) => {
       signer: signer,
       chainId: constants.chain.id,
       bundlerUrl: biconomyBundlerURL,
-      biconomyPaymasterApiKey: 'DxWkzeYwU.f7af5c07-9a5a-448a-94d6-e5cadcd2177a',
+      biconomyPaymasterApiKey:
+        process.env.NEXT_PUBLIC_BICONOMY_PAYMASTER_API_KEY,
     })
 
     const accountAddress = await smartAccount.getAccountAddress()
