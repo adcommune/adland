@@ -1,13 +1,14 @@
 import AdDetailsSidebar from '@/components/Ad/AdDetails'
 import AdGroupHeader from '@/components/AdGroup/AdGroupHeader'
 import { Container } from '@/components/Container'
-import { FrameAspectRatio, baseURL } from '@/config/constants'
+import { baseURL } from '@/config/constants'
 import useAppContracts from '@/hooks/useAppContracts'
 import { AdLand } from '@/lib/adland'
 import { StandartNFTMetadata as HeyCardMetadata } from '@/lib/hey'
+import { AdGroup } from '@/lib/types'
 import { constants } from '@adland/common'
-import { FrameMetadata } from '@coinbase/onchainkit'
-
+import { getFrameMetadata } from 'frog/next'
+import type { Metadata } from 'next'
 type AdSpacePageLayoutProps = {
   children: React.ReactNode
   params: { spaceId: string }
@@ -15,32 +16,30 @@ type AdSpacePageLayoutProps = {
 
 export const dynamic = 'force-dynamic'
 
+export async function generateMetadata({
+  params: { spaceId },
+}: AdSpacePageLayoutProps): Promise<Metadata> {
+  const frameMetadata = await getFrameMetadata(
+    `${baseURL}/api/ad-frame/${spaceId}/landing`,
+  )
+
+  console.log('frameMetadata', { frameMetadata })
+
+  return {
+    other: frameMetadata,
+  }
+}
+
 const AdSpacePageLayout = async ({
   children,
   params: { spaceId },
 }: AdSpacePageLayoutProps) => {
-  const adGroup = await new AdLand().getGoupBySpaceId(spaceId)
+  const adGroup = (await new AdLand().getGoupBySpaceId(spaceId)) as AdGroup
   const { adCommonOwnership } = useAppContracts()
-
-  const postURL = `${baseURL}/api/ad-frame/${spaceId}`
-  const dynamicBillboardURL = `${baseURL}/api/billboard/${spaceId}?time=${Date.now()}`
 
   return (
     <Container className="flex flex-col gap-2 p-4">
-      {adGroup && <AdGroupHeader adGroup={adGroup} />}
-      <FrameMetadata
-        buttons={[
-          {
-            label: 'Learn More',
-            target: postURL,
-          },
-        ]}
-        postUrl={postURL}
-        image={{
-          src: dynamicBillboardURL,
-          aspectRatio: FrameAspectRatio.SQUARE,
-        }}
-      />
+      <AdGroupHeader adGroup={adGroup} />
       <HeyCardMetadata
         {...{
           chain: constants.chain.name,
