@@ -244,8 +244,8 @@ importers:
         specifier: ^11.2.6
         version: 11.2.6(@emotion/is-prop-valid@1.2.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       frog:
-        specifier: ^0.9.3
-        version: 0.9.4(@types/node@20.12.5)(bufferutil@4.0.8)(hono@4.3.4)(terser@5.30.3)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)
+        specifier: ^0.11.5
+        version: 0.11.5(@types/node@20.12.5)(bufferutil@4.0.8)(hono@4.3.4)(terser@5.30.3)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4)
       graphql-request:
         specifier: ^6.1.0
         version: 6.1.0(encoding@0.1.13)(graphql@16.8.1)
@@ -5893,8 +5893,8 @@ packages:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
 
-  frog@0.9.4:
-    resolution: {integrity: sha512-EpU7uPerg2AkBcGu0QsAcMGoKk+3GWEBBUYeF1lv/epjtKMvOz157MiaKMIvvlQqo7rGVkNBYz/q8giXiiFG/A==}
+  frog@0.11.5:
+    resolution: {integrity: sha512-CNNJ9ROXyG38hAigGO1HWWCHII0YKh79k2Y24qoSanbdTzMKU1QY2xy0EmvpOJIYPE/1zwL0bxQbjMqtCtC96Q==}
     hasBin: true
     peerDependencies:
       hono: ^4
@@ -11256,17 +11256,17 @@ snapshots:
 
   '@emotion/memoize@0.8.1': {}
 
-  '@emotion/react@11.11.4(@types/react@18.2.74)(react@18.3.1)':
+  '@emotion/react@11.11.4(@types/react@18.2.74)(react@18.2.0)':
     dependencies:
       '@babel/runtime': 7.24.4
       '@emotion/babel-plugin': 11.11.0
       '@emotion/cache': 11.11.0
       '@emotion/serialize': 1.1.4
-      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.3.1)
+      '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
       '@emotion/utils': 1.2.1
       '@emotion/weak-memoize': 0.3.1
       hoist-non-react-statics: 3.3.2
-      react: 18.3.1
+      react: 18.2.0
     optionalDependencies:
       '@types/react': 18.2.74
 
@@ -11285,7 +11285,7 @@ snapshots:
       '@babel/runtime': 7.24.4
       '@emotion/babel-plugin': 11.11.0
       '@emotion/is-prop-valid': 1.2.2
-      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.3.1)
+      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.2.0)
       '@emotion/serialize': 1.1.4
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.3.1)
       '@emotion/utils': 1.2.1
@@ -11298,6 +11298,10 @@ snapshots:
   '@emotion/unitless@0.7.5': {}
 
   '@emotion/unitless@0.8.1': {}
+
+  '@emotion/use-insertion-effect-with-fallbacks@1.0.1(react@18.2.0)':
+    dependencies:
+      react: 18.2.0
 
   '@emotion/use-insertion-effect-with-fallbacks@1.0.1(react@18.3.1)':
     dependencies:
@@ -12662,7 +12666,7 @@ snapshots:
 
   '@metamask/sdk-install-modal-web@0.14.1(@types/react@18.2.74)(react-native@0.73.6(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@6.0.3))':
     dependencies:
-      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.3.1)
+      '@emotion/react': 11.11.4(@types/react@18.2.74)(react@18.2.0)
       '@emotion/styled': 11.11.5(@emotion/react@11.11.4(@types/react@18.2.74)(react@18.3.1))(@types/react@18.2.74)(react@18.3.1)
       i18next: 22.5.1
       qr-code-styling: 1.6.0-rc.1
@@ -17155,7 +17159,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.4))(eslint-plugin-import@2.29.1)(eslint@8.57.0))(eslint@8.57.0)
       hasown: 2.0.2
       is-core-module: 2.13.1
       is-glob: 4.0.3
@@ -17752,7 +17756,7 @@ snapshots:
 
   fresh@0.5.2: {}
 
-  frog@0.9.4(@types/node@20.12.5)(bufferutil@4.0.8)(hono@4.3.4)(terser@5.30.3)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4):
+  frog@0.11.5(@types/node@20.12.5)(bufferutil@4.0.8)(hono@4.3.4)(terser@5.30.3)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4):
     dependencies:
       '@bufbuild/protobuf': 1.9.0
       '@hono/node-server': 1.9.1
