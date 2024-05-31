@@ -31,11 +31,10 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
     uint256 constant DEFAULT_QUANTITY = 1;
     string buyerAdURI = "https://www.google.com";
     string buyer2AdURI = "https://www.yahoo.com";
+    IEntryPoint entryPoint = IEntryPoint(address(0));
+    SimpleAccountFactory factory = new SimpleAccountFactory(entryPoint);
 
     function testSimpleAccount() public {
-        IEntryPoint entryPoint = IEntryPoint(address(0));
-        SimpleAccountFactory factory = new SimpleAccountFactory(entryPoint);
-
         address owner = vm.addr(69);
         uint256 salt = 0;
         SimpleAccount account = factory.createAccount(owner, salt);
@@ -138,18 +137,31 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         int96 adCampaignFlowRate = int96(int256(uint256(1 ether) / 30 days));
         CommonAdPool adPool = commonAds.getAdPool(adId, address(ethx));
 
+        SimpleAccount smartAccount = factory.createAccount(frameDistributor, 0);
+
         /**
          * 2 - Grant member units admin role to frame distributor
          */
         vm.startPrank(recipient);
-        adPool.grantRole(adPool.MEMBER_UNITS_ADMIN_ROLE(), frameDistributor);
+        adPool.grantRole(
+            adPool.MEMBER_UNITS_ADMIN_ROLE(),
+            address(smartAccount)
+        );
         vm.stopPrank();
 
         /**
          * 3 - Grab first member units for frame distributor
          */
-        vm.prank(recipient);
-        adPool.updateMemberUnits(frameDistributor, 10);
+        vm.prank(frameDistributor);
+        smartAccount.execute(
+            address(adPool),
+            uint256(0),
+            abi.encodeWithSignature(
+                "updateMemberUnits(address,uint128)",
+                vm.addr(109372),
+                1000
+            )
+        );
 
         /**
          * 4 - Campaign creator initiates pool flow
