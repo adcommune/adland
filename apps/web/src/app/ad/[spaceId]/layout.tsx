@@ -9,6 +9,7 @@ import { AdGroup } from '@/lib/types'
 import { constants } from '@adland/common'
 import { getFrameMetadata } from 'frog/next'
 import type { Metadata } from 'next'
+
 type AdSpacePageLayoutProps = {
   children: React.ReactNode
   params: { spaceId: string }
@@ -22,8 +23,6 @@ export async function generateMetadata({
   const frameMetadata = await getFrameMetadata(
     `${baseURL}/api/ad-frame/${spaceId}/landing`,
   )
-
-  console.log('frameMetadata', { frameMetadata })
 
   return {
     other: frameMetadata,
