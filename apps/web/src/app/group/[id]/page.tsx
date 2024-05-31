@@ -1,19 +1,29 @@
+'use client'
+
 import { Container } from '@/components/Container'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AdLand } from '@/lib/adland'
 import { Separator } from '@/components/ui/separator'
-import { AdGroup, AdSpace } from '@/lib/types'
+import { useQuery } from '@tanstack/react-query'
 
 type GroupPageProps = { params: { id: string } }
 
-const GroupPage = async ({ params: { id } }: GroupPageProps) => {
-  const adGroup = (await new AdLand().getGroup(id)) as Omit<
-    AdGroup,
-    'adSpaces'
-  > & {
-    adSpaces: AdSpace[]
+const GroupPage = ({ params: { id } }: GroupPageProps) => {
+  const { data: adGroup, isLoading } = useQuery({
+    queryKey: ['adGroup-', id],
+    queryFn: async () => {
+      return new AdLand().getGroup(id)
+    },
+  })
+
+  if (isLoading) {
+    return (
+      <Container className="flex  h-[400px] w-full flex-row items-center justify-center gap-2 p-4">
+        <p className="font-body text-2xl text-white">Loading...</p>
+      </Container>
+    )
   }
 
   if (!adGroup) {
