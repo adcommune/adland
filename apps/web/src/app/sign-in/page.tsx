@@ -12,10 +12,14 @@ import {
 import { useUserType } from '@/context/UserContext'
 import { usePrivy } from '@privy-io/react-auth'
 import classNames from 'classnames'
+import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 const SignInPage = () => {
-  const { login } = usePrivy()
+  const { login, authenticated, ready } = usePrivy()
+  const { push } = useRouter()
+
   const { userType, setUserType } = useUserType()
 
   const isAdvertiserOrCreator = userType === 'advertiser-or-creator'
@@ -53,22 +57,32 @@ const SignInPage = () => {
               alt="Distributor"
             />
             <Button
-              onClick={login}
+              onClick={authenticated ? () => push('/') : login}
               className="w-full"
               variant={isAdvertiserOrCreator ? 'default' : 'outline'}
-              disabled={!isAdvertiserOrCreator}
+              disabled={!isAdvertiserOrCreator || !ready}
             >
-              Sign In
+              {ready ? (
+                <>
+                  {authenticated ? 'Home' : 'Sign In'}
+                  {authenticated && <ArrowRight className="ml-2 h-4 w-4" />}
+                </>
+              ) : (
+                '...'
+              )}
             </Button>
           </CardContent>
         </Card>
         <Card
-          className={classNames('cursor-pointer ', {
-            'bg-slate-200': isDistributor,
-            'hover:bg-slate-100': !isDistributor,
-          })}
+          className={classNames(
+            'cursor-pointer opacity-30 hover:cursor-not-allowed',
+            {
+              // 'bg-slate-200': isDistributor,
+              // 'hover:bg-slate-100': !isDistributor,
+            },
+          )}
           onClick={() => {
-            setUserType('distributor')
+            // setUserType('distributor')
           }}
         >
           <CardHeader className="text-center">
