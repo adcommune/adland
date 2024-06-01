@@ -341,7 +341,7 @@ app.frame('/ad-frame/:spaceId/landing', async (c) => {
     imageAspectRatio: FrameAspectRatio.SQUARE,
     imageOptions,
     intents: [
-      <Button value="" action={`/ad-frame/${spaceId}`}>
+      <Button key={'landing'} value="" action={`/ad-frame/${spaceId}`}>
         Learn More
       </Button>,
     ],

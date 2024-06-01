@@ -13,10 +13,10 @@ import {
 import { truncateAddress } from '@/lib/utils'
 import { zeroAddress } from 'viem'
 import { constants } from '@adland/common'
+import Link from 'next/link'
 
 export const ConnectButton = () => {
-  const { ready, authenticated, login, logout, user, connectWallet } =
-    usePrivy()
+  const { ready, authenticated, logout, connectWallet } = usePrivy()
   const { wallets } = useWallets()
 
   const wallet = wallets.find((w) => w.connectorType !== 'embedded')
@@ -34,14 +34,11 @@ export const ConnectButton = () => {
 
   if (!authenticated) {
     return (
-      <Button
-        disabled={disableLogin}
-        onClick={login}
-        type="button"
-        className="font-body"
-      >
-        Connect Wallet
-      </Button>
+      <Link href="/sign-in">
+        <Button disabled={disableLogin} type="button" className="font-body">
+          Sign in
+        </Button>
+      </Link>
     )
   }
 
