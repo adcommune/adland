@@ -36,6 +36,9 @@ import { Transaction } from '@biconomy/account'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import { ModalContext } from '@/context/ModalContext'
 import FundFlow from './FundFlow'
+import { Input } from '../ui/input'
+import Copiable from '../Copiable'
+import { constants } from '@adland/common'
 
 type FarcasterDistributionProps = {
   adSpace: AdSpace
@@ -136,12 +139,16 @@ const FarcasterDistribution = ({
       value: isNativeCurrency ? amount : BigInt(0),
     })
 
+    const admin = await fetch('/api/adland/poolAdmin', { method: 'GET' })
+      .then((res) => res.json() as Promise<{ admin: Address }>)
+      .then((res) => res.admin)
+
     if (!reads?.frameHasMemberUnitsAdminRole) {
       transactions.push({
         to: commonAdPoolAddress,
         data: encodeFunctionData({
           abi: commonAdPoolAbi,
-          args: [MEMBER_UNITS_ADMIN_ROLE, framePoolAdminAddressPublicKey],
+          args: [MEMBER_UNITS_ADMIN_ROLE, admin],
           functionName: 'grantRole',
         }),
         value: BigInt(0),
@@ -186,6 +193,19 @@ const FarcasterDistribution = ({
             {getTokenSymbol(tokenX?.underlyingToken)}
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
+            {constants.chain.testnet && (
+              <div className="flex w-full flex-row items-center justify-center gap-2">
+                <Input
+                  className="h-full flex-grow cursor-default text-opacity-100 disabled:opacity-100"
+                  disabled
+                  placeholder={commonAdPoolAddress}
+                />
+                <Copiable
+                  visible
+                  text={commonAdPoolAddress?.toString() ?? ''}
+                />
+              </div>
+            )}
             <div className="flex flex-col gap-2">
               <div className="text-2xl font-bold">
                 {sfPool?.totalMembers} Distributor
