@@ -14,16 +14,19 @@ import { truncateAddress } from '@/lib/utils'
 import { zeroAddress } from 'viem'
 import { constants } from '@adland/common'
 import Link from 'next/link'
+import { UserIcon } from 'lucide-react'
 
 export const ConnectButton = () => {
-  const { ready, authenticated, logout, connectWallet } = usePrivy()
+  const { ready, authenticated, logout, connectWallet, user } = usePrivy()
   const { wallets } = useWallets()
 
-  const wallet = wallets.find((w) => w.connectorType !== 'embedded')
+  const wallet = wallets.find((w) => w.connectorType === 'embedded')
 
   const address = wallet?.address ?? zeroAddress
 
   const disableLogin = !ready || (ready && authenticated)
+
+  const isDistributor = Boolean(user?.farcaster)
 
   if (!ready)
     return (
@@ -67,12 +70,14 @@ export const ConnectButton = () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button type="button" variant="outline" className="h-full font-body">
-            {truncateAddress(address)}
+            {/* {truncateAddress(address)} */}
+            <UserIcon className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>
-            My Account: {truncateAddress(address)}
+            {isDistributor ? 'Distributor' : 'Creator'}:{' '}
+            {truncateAddress(address)}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>

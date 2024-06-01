@@ -17,13 +17,22 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 const SignInPage = () => {
-  const { login, authenticated, ready } = usePrivy()
+  const { login, authenticated, ready, user } = usePrivy()
   const { push } = useRouter()
 
   const { userType, setUserType } = useUserType()
 
-  const isAdvertiserOrCreator = userType === 'advertiser-or-creator'
-  const isDistributor = userType === 'distributor'
+  const selected = {
+    distributor: userType === 'distributor',
+    advertiserOfCreator: userType === 'advertiser-or-creator',
+  }
+
+  const userIs = {
+    distributor: authenticated && Boolean(user?.farcaster),
+    advertiserOfCreator: authenticated && !Boolean(user?.farcaster),
+  }
+
+  console.log({ userIs, selected })
 
   return (
     <Container className="flex flex-col gap-4 p-4">
@@ -34,11 +43,16 @@ const SignInPage = () => {
       </div>
       <div className="flex flex-col justify-center gap-2 md:flex-row">
         <Card
-          className={classNames('cursor-pointer', {
-            'bg-slate-200': isAdvertiserOrCreator,
-            'hover:bg-slate-100': !isAdvertiserOrCreator,
+          className={classNames({
+            'bg-slate-200': !authenticated && selected.advertiserOfCreator,
+            'hover:bg-slate-100':
+              !authenticated && !selected.advertiserOfCreator,
+
+            'opacity-50': authenticated && userIs.distributor,
+            'cursor-pointer': !authenticated,
           })}
           onClick={() => {
+            if (authenticated) return
             setUserType('advertiser-or-creator')
           }}
         >
@@ -59,8 +73,12 @@ const SignInPage = () => {
             <Button
               onClick={authenticated ? () => push('/') : login}
               className="w-full"
-              variant={isAdvertiserOrCreator ? 'default' : 'outline'}
-              disabled={!isAdvertiserOrCreator || !ready}
+              variant={
+                userIs.advertiserOfCreator || selected.advertiserOfCreator
+                  ? 'default'
+                  : 'outline'
+              }
+              disabled={!ready || userIs.distributor || selected.distributor}
             >
               {ready ? (
                 <>
@@ -74,15 +92,15 @@ const SignInPage = () => {
           </CardContent>
         </Card>
         <Card
-          className={classNames(
-            'cursor-pointer opacity-30 hover:cursor-not-allowed',
-            {
-              // 'bg-slate-200': isDistributor,
-              // 'hover:bg-slate-100': !isDistributor,
-            },
-          )}
+          className={classNames({
+            'bg-slate-200': !authenticated && selected.distributor,
+            'hover:bg-slate-100': !authenticated && !selected.distributor,
+            'cursor-pointer': !authenticated,
+            'opacity-50': authenticated && userIs.advertiserOfCreator,
+          })}
           onClick={() => {
-            // setUserType('distributor')
+            if (authenticated) return
+            setUserType('distributor')
           }}
         >
           <CardHeader className="text-center">
@@ -100,12 +118,29 @@ const SignInPage = () => {
               alt="Distributor"
             />
             <Button
-              onClick={login}
+              onClick={userIs.distributor ? () => push('/campaigns') : login}
               className="w-full"
-              variant={isDistributor ? 'default' : 'outline'}
-              disabled={!isDistributor}
+              variant={
+                userIs.distributor || selected.distributor
+                  ? 'default'
+                  : 'outline'
+              }
+              disabled={
+                !ready ||
+                userIs.advertiserOfCreator ||
+                selected.advertiserOfCreator
+              }
             >
-              Sign In
+              {ready ? (
+                <>
+                  {authenticated && userIs.distributor ? 'Home' : 'Sign In'}
+                  {authenticated && userIs.distributor && (
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  )}
+                </>
+              ) : (
+                '...'
+              )}
             </Button>
           </CardContent>
         </Card>
