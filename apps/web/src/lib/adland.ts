@@ -12,8 +12,8 @@ import { client } from './services'
 import { Address, erc721Abi, PublicClient, zeroAddress } from 'viem'
 import { publicClient } from './viem'
 import { commonAdPoolAbi, commonAdSpacesAbi } from '@adland/contracts'
-import { appContracts } from '@/hooks/useAppContracts'
 import { Superfluid } from './superfluid-subgraph'
+import { appContracts } from '@/config/constants'
 
 export class AdLand {
   private adland: ReturnType<typeof getAdLand>
