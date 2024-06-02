@@ -21,6 +21,7 @@ export const ConnectButton = () => {
   const { wallets } = useWallets()
 
   const wallet = wallets.find((w) => w.connectorType === 'embedded')
+  const cryptoWallet = wallets.find((w) => w.connectorType !== 'embedded')
 
   const address = wallet?.address ?? zeroAddress
 
@@ -45,7 +46,7 @@ export const ConnectButton = () => {
     )
   }
 
-  const wrongNetwork = wallet?.chainId !== `eip155:${constants.chain.id}`
+  const wrongNetwork = cryptoWallet?.chainId !== `eip155:${constants.chain.id}`
 
   if (wrongNetwork) {
     return (
@@ -54,7 +55,7 @@ export const ConnectButton = () => {
           if (!wallet) {
             connectWallet()
           } else {
-            wallet.switchChain(constants.chain.id)
+            cryptoWallet?.switchChain(constants.chain.id)
           }
         }}
         className="font-body"
