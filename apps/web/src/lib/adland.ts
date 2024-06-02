@@ -1,6 +1,7 @@
 import { GraphQLClient } from 'graphql-request'
 import {
   AdGroup_OrderBy_subgraph,
+  AdSpace_subgraph,
   getSdk as getAdLand,
   OrderDirection_subgraph,
 } from '@adland/webkit'
@@ -12,12 +13,14 @@ import { client } from './services'
 import { Address, erc721Abi, PublicClient, zeroAddress } from 'viem'
 import { publicClient } from './viem'
 import { commonAdPoolAbi, commonAdSpacesAbi } from '@adland/contracts'
-import { Superfluid } from './superfluid-subgraph'
+import { Superfluid, SuperfluidPool } from './superfluid-subgraph'
 import { appContracts } from '@/config/constants'
+import { AdSpacesQuery } from '@adland/webkit/src/hooks'
 
 export class AdLand {
   private adland: ReturnType<typeof getAdLand>
   private c: PublicClient
+  private sf = new Superfluid()
 
   constructor() {
     this.adland = getAdLand(new GraphQLClient(constants.subgraphUrl, { fetch }))
@@ -181,7 +184,7 @@ export class AdLand {
     let sfPool = undefined
 
     if (sfPoolAddress && options?.withPoolDetails) {
-      sfPool = await new Superfluid().fetchPool(sfPoolAddress.toLowerCase())
+      sfPool = await this.sf.fetchPool(sfPoolAddress.toLowerCase())
     }
 
     return {
@@ -189,6 +192,30 @@ export class AdLand {
       sfPoolAddress,
       sfPool,
     }
+  }
+
+  async listAdCampaigns(): Promise<
+    {
+      adSpace: AdSpacesQuery['adSpaces'][0]
+      sfPool: SuperfluidPool | undefined
+    }[]
+  > {
+    const { adSpaces } = await this.adland.adSpaces({
+      where: {
+        adPools_: {
+          id_gt: '0',
+        },
+      },
+    })
+
+    return Promise.all(
+      adSpaces.map(async (adSpace) => {
+        return {
+          adSpace,
+          sfPool: await this.sf.fetchPool(adSpace.adPools[0].dPool),
+        }
+      }),
+    )
   }
 
   async getAdSpaceMetadata(id: string): Promise<Metadata | undefined> {
