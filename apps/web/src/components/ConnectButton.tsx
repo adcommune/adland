@@ -6,6 +6,7 @@ import { constants } from '@adland/common'
 import Link from 'next/link'
 import { UserIcon } from 'lucide-react'
 import { UserType } from '@/context/UserContext'
+import FarcasterBadge from './FarcasterBadge'
 
 export const useAccountType = (): UserType | undefined => {
   const { user, ready, authenticated } = usePrivy()
@@ -63,9 +64,13 @@ export const ConnectButton = () => {
 
   return (
     <Link href="/profile">
-      <Button type="button" variant="outline" className="h-full font-body">
-        <UserIcon className="h-4 w-4" />
-      </Button>
+      {user?.farcaster ? (
+        <FarcasterBadge className="h-11" />
+      ) : (
+        <Button type="button" variant="outline" className="h-full font-body">
+          <UserIcon className="h-4 w-4" />
+        </Button>
+      )}
     </Link>
   )
 }
