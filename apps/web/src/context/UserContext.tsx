@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from 'react'
 
-type UserType = 'advertiser-or-creator' | 'distributor'
+export type UserType = 'advertiser-or-creator' | 'distributor'
 
 type UserContextType = {
   userType: UserType

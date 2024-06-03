@@ -1,33 +1,28 @@
 import { Button } from './ui/button'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { truncateAddress } from '@/lib/utils'
 import { zeroAddress } from 'viem'
 import { constants } from '@adland/common'
 import Link from 'next/link'
 import { UserIcon } from 'lucide-react'
+import { UserType } from '@/context/UserContext'
+
+export const useAccountType = (): UserType | undefined => {
+  const { user, ready, authenticated } = usePrivy()
+
+  if (!ready || !authenticated || !user) return undefined
+
+  return user?.farcaster ? 'distributor' : 'advertiser-or-creator'
+}
 
 export const ConnectButton = () => {
-  const { ready, authenticated, logout, connectWallet, user } = usePrivy()
+  const { ready, authenticated, connectWallet, user } = usePrivy()
   const { wallets } = useWallets()
 
   const wallet = wallets.find((w) => w.connectorType === 'embedded')
   const cryptoWallet = wallets.find((w) => w.connectorType !== 'embedded')
 
-  const address = wallet?.address ?? zeroAddress
-
   const disableLogin = !ready || (ready && authenticated)
-
-  const isDistributor = Boolean(user?.farcaster)
 
   if (!ready)
     return (
@@ -67,28 +62,10 @@ export const ConnectButton = () => {
   }
 
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button type="button" variant="outline" className="h-full font-body">
-            {/* {truncateAddress(address)} */}
-            <UserIcon className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>
-            {isDistributor ? 'Distributor' : 'Creator'}:{' '}
-            {truncateAddress(address)}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem onClick={logout}>
-              Logout
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+    <Link href="/profile">
+      <Button type="button" variant="outline" className="h-full font-body">
+        <UserIcon className="h-4 w-4" />
+      </Button>
+    </Link>
   )
 }
