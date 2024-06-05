@@ -1,13 +1,5 @@
 import { MEMBER_UNITS_ADMIN_ROLE, getTokenSymbol } from '@/config/constants'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../ui/table'
 import { AdCampaign, AdSpace } from '@/lib/types'
 import { useContext } from 'react'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
@@ -19,7 +11,7 @@ import {
   superTokenAbi,
 } from '@adland/contracts'
 import { useBalance, useReadContracts } from 'wagmi'
-import { getExplorerLink, truncateAddress } from '@/lib/utils'
+import { getExplorerLink } from '@/lib/utils'
 import {
   Address,
   encodeFunctionData,
@@ -39,6 +31,7 @@ import FundFlow from './FundFlow'
 import { Input } from '../ui/input'
 import Copiable from '../Copiable'
 import { constants } from '@adland/common'
+import PoolTable from '../PoolTable'
 
 type FarcasterDistributionProps = {
   adSpace: AdSpace
@@ -256,41 +249,9 @@ const FarcasterDistribution = ({
               </Button>
             </div>
           </CardContent>
-          {/* <CardFooter>
-              <div className="flex w-full flex-row items-center justify-center gap-2">
-                <Input
-                  className="h-full flex-grow cursor-default text-opacity-100 disabled:opacity-100"
-                  disabled
-                  placeholder={poolAddress}
-                />
-                <Copiable visible text={poolAddress ?? ''} />
-              </div>
-            </CardFooter> */}
         </Card>
-
-        <div className="flex flex-row gap-2"></div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="hidden sm:table-cell">Units</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sfPool?.poolMembers.map(({ id, isConnected, units }) => (
-              <TableRow key={id}>
-                <TableCell>{truncateAddress(id, 10)}</TableCell>
-                <TableCell>
-                  {isConnected ? 'Connected' : 'Not Connected'}
-                </TableCell>
-                <TableCell>{units}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <PoolTable pool={sfPool} />
       </CardContent>
-
       <AdCampaignModal
         adSpace={adSpace}
         superTokenBalance={balanceOfAdToken}

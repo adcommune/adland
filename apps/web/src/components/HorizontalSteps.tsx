@@ -1,11 +1,12 @@
 import { CheckIcon } from 'lucide-react'
-import { Button } from './ui/button'
 import { useState } from 'react'
+
+export type StepsUtils = { next: () => void; prev: () => void }
 
 export type Step = {
   id: string
   name: string
-  renderStep: ({}: { next: () => void; prev: () => void }) => () => JSX.Element
+  renderStep: ({}: StepsUtils) => () => JSX.Element
 }
 
 type HorizontalStepsProps = {
@@ -112,12 +113,12 @@ function HorizontalSteps({ steps, renderSuccess }: HorizontalStepsProps) {
           })()}
         {current === steps.length && renderSuccess && renderSuccess()}
       </div>
-      {process.env.NODE_ENV === 'development' && (
+      {/* {process.env.NODE_ENV === 'development' && (
         <div className="flex flex-row justify-between">
           <Button onClick={prev}>Prev</Button>
           <Button onClick={next}>Next</Button>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
