@@ -39,8 +39,20 @@ const useCastAd = (spaceId: string) => {
         return console.error('Farcaster account not linked')
       }
 
+      const url =
+        process.env.NODE_ENV === 'development'
+          ? 'https://testnet.adland.space'
+          : baseURL
+
       const submitCastResponse = await hub.submitCast(
-        { text: baseURL + '/ad/' + spaceId },
+        {
+          text: url + '/ad/' + spaceId,
+          embeds: [
+            {
+              url: url + '/ad/' + spaceId,
+            },
+          ],
+        },
         farcasterAccount?.fid,
         privySigner,
       )
