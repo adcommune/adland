@@ -5,12 +5,18 @@ import { useAccountType } from '@/components/ConnectButton'
 import { Container } from '@/components/Container'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { superfluidAccountLink } from '@/config/constants'
+import { SmartAccountContext } from '@/context/SmartAccountContext'
 import { truncateAddress } from '@/lib/utils'
 import { useExperimentalFarcasterSigner, usePrivy } from '@privy-io/react-auth'
 import { CircleUser, UserX } from 'lucide-react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { useContext } from 'react'
 
 const ProfilePage = () => {
   const accountType = useAccountType()
+  const { bicoAccountAddress } = useContext(SmartAccountContext)
   const { user, logout, authenticated } = usePrivy()
   const { requestFarcasterSignerFromWarpcast } =
     useExperimentalFarcasterSigner()
@@ -77,8 +83,8 @@ const ProfilePage = () => {
               {user?.farcaster?.displayName}
             </h1>
           </div>
-          <div className="my-10">
-            {accountType === 'distributor' && (
+          <div className="my-10 flex flex-col gap-4">
+            {user && accountType === 'distributor' && (
               <div className="flex flex-row items-center justify-between">
                 <div className="flex flex-col">
                   <p className="font-body text-xl font-bold">
@@ -97,6 +103,33 @@ const ProfilePage = () => {
                 >
                   {hasSigner ? 'Signer requested' : 'Request signer'}
                 </Button>
+              </div>
+            )}
+            {user && bicoAccountAddress && (
+              <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-col">
+                  <p className="font-body text-xl font-bold">
+                    Superfluid dashbaord
+                  </p>
+                  <p className="font-sm text-gray-500">
+                    View your superfluid account on the dashboard
+                  </p>
+                </div>
+                <Link
+                  href={superfluidAccountLink(bicoAccountAddress)}
+                  target="_blank"
+                >
+                  <Button variant="outline" className="gap-2">
+                    <Image
+                      src="/superfluid.png"
+                      className="h-5 w-5"
+                      width={40}
+                      height={40}
+                      alt=""
+                    />
+                    Superfluid Dashboard
+                  </Button>
+                </Link>
               </div>
             )}
           </div>
