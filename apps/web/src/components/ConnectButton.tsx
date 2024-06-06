@@ -17,11 +17,10 @@ export const useAccountType = (): UserType | undefined => {
 }
 
 export const ConnectButton = () => {
-  const { ready, authenticated, connectWallet, user } = usePrivy()
+  const { ready, authenticated, user } = usePrivy()
   const { wallets } = useWallets()
 
   const wallet = wallets.find((w) => w.connectorType === 'embedded')
-  const cryptoWallet = wallets.find((w) => w.connectorType !== 'embedded')
 
   const disableLogin = !ready || (ready && authenticated)
 
@@ -39,26 +38,6 @@ export const ConnectButton = () => {
           Sign in
         </Button>
       </Link>
-    )
-  }
-
-  const wrongNetwork = cryptoWallet?.chainId !== `eip155:${constants.chain.id}`
-
-  if (wrongNetwork) {
-    return (
-      <Button
-        onClick={() => {
-          if (!wallet) {
-            connectWallet()
-          } else {
-            cryptoWallet?.switchChain(constants.chain.id)
-          }
-        }}
-        className="font-body"
-        type="button"
-      >
-        Wrong Network
-      </Button>
     )
   }
 
