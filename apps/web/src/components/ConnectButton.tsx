@@ -1,27 +1,27 @@
 import { Button } from './ui/button'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { truncateAddress } from '@/lib/utils'
 import { zeroAddress } from 'viem'
 import { constants } from '@adland/common'
+import Link from 'next/link'
+import { UserIcon } from 'lucide-react'
+import { UserType } from '@/context/UserContext'
+import FarcasterBadge from './FarcasterBadge'
+
+export const useAccountType = (): UserType | undefined => {
+  const { user, ready, authenticated } = usePrivy()
+
+  if (!ready || !authenticated || !user) return undefined
+
+  return user?.farcaster ? 'distributor' : 'advertiser-or-creator'
+}
 
 export const ConnectButton = () => {
-  const { ready, authenticated, login, logout, user, connectWallet } =
-    usePrivy()
+  const { ready, authenticated, connectWallet, user } = usePrivy()
   const { wallets } = useWallets()
 
-  const wallet = wallets.find((w) => w.connectorType !== 'embedded')
-
-  const address = wallet?.address ?? zeroAddress
+  const wallet = wallets.find((w) => w.connectorType === 'embedded')
+  const cryptoWallet = wallets.find((w) => w.connectorType !== 'embedded')
 
   const disableLogin = !ready || (ready && authenticated)
 
@@ -34,18 +34,15 @@ export const ConnectButton = () => {
 
   if (!authenticated) {
     return (
-      <Button
-        disabled={disableLogin}
-        onClick={login}
-        type="button"
-        className="font-body"
-      >
-        Connect Wallet
-      </Button>
+      <Link href="/sign-in">
+        <Button disabled={disableLogin} type="button" className="font-body">
+          Sign in
+        </Button>
+      </Link>
     )
   }
 
-  const wrongNetwork = wallet?.chainId !== `eip155:${constants.chain.id}`
+  const wrongNetwork = cryptoWallet?.chainId !== `eip155:${constants.chain.id}`
 
   if (wrongNetwork) {
     return (
@@ -54,7 +51,7 @@ export const ConnectButton = () => {
           if (!wallet) {
             connectWallet()
           } else {
-            wallet.switchChain(constants.chain.id)
+            cryptoWallet?.switchChain(constants.chain.id)
           }
         }}
         className="font-body"
@@ -66,26 +63,14 @@ export const ConnectButton = () => {
   }
 
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button type="button" variant="outline" className="h-full font-body">
-            {truncateAddress(address)}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>
-            My Account: {truncateAddress(address)}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem onClick={logout}>
-              Logout
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+    <Link href="/profile">
+      {user?.farcaster ? (
+        <FarcasterBadge className="h-11" />
+      ) : (
+        <Button type="button" variant="outline" className="h-full font-body">
+          <UserIcon className="h-4 w-4" />
+        </Button>
+      )}
+    </Link>
   )
 }

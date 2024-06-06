@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from 'sonner'
 import AppProviders from '@/components/AppProviders'
+import { UserTypeProvider } from '@/context/UserContext'
 
 export const metadata: Metadata = {
   title: {
@@ -46,7 +47,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
     >
       <body className="relative z-[2]">
         <div className="">
-          <AppProviders>{children}</AppProviders>
+          <UserTypeProvider>
+            <AppProviders>{children}</AppProviders>
+          </UserTypeProvider>
           <Analytics />
           <Toaster
             toastOptions={{

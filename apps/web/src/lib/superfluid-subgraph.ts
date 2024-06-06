@@ -27,6 +27,9 @@ export class Superfluid {
                 id
                 isConnected
                 units
+                totalAmountClaimed
+                createdAtTimestamp
+                updatedAtTimestamp
               }
               flowDistributionUpdatedEvents(first: 20) {
                 id
@@ -49,6 +52,38 @@ export class Superfluid {
       )
       .then((data) => data.pool)
   }
+
+  async fetchPoolMember(poolAddress: string, memberAddress: string) {
+    const memberId = `poolMember-${poolAddress.toLowerCase()}-${memberAddress.toLowerCase()}`
+    return this.client
+      .request<{ poolMember: SuperfluidPoolMember }>(
+        gql`
+          query FetchPoolMember($memberId: String!) {
+            poolMember(id: $memberId) {
+              id
+              isConnected
+              units
+              totalAmountClaimed
+              createdAtTimestamp
+              updatedAtTimestamp
+            }
+          }
+        `,
+        {
+          memberId,
+        },
+      )
+      .then((data) => data.poolMember)
+  }
+}
+
+export type SuperfluidPoolMember = {
+  id: Address
+  isConnected: boolean
+  units: string
+  totalAmountClaimed: string
+  createdAtTimestamp: string
+  updatedAtTimestamp: string
 }
 
 export type SuperfluidPool = {
@@ -59,11 +94,7 @@ export type SuperfluidPool = {
   perUnitFlowRate: string
   totalConnectedUnits: string
   totalConnectedMembers: string
-  poolMembers: {
-    id: Address
-    isConnected: boolean
-    units: string
-  }[]
+  poolMembers: SuperfluidPoolMember[]
   flowDistributionUpdatedEvents: {
     id: Address
     adjustmentFlowRate: string

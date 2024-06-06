@@ -44,11 +44,7 @@ export const useSmartAccountTxs = ({
         },
       )
 
-      console.log({ userOpHash })
-
       const userOpStatus = await waitForTxHash()
-
-      console.log({ userOpStatus })
 
       const { transactionHash } = userOpStatus
 

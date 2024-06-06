@@ -16,7 +16,6 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
     }
 
     if (metadata.imageGatewayURI) {
-      console.log('metadata.imageGatewayURI', metadata.imageGatewayURI)
       const imageResponse = new ImageResponse(
         (
           <div

@@ -3,6 +3,10 @@ import { alchemyKey, pimlicoKey } from './variables'
 import { Address, keccak256, zeroAddress } from 'viem'
 import { constants } from '@adland/common'
 import { lowerCaseObjectKeys } from '@/lib/utils'
+import {
+  commonAdSpacesAddress,
+  directListingsLogicAddress,
+} from '@adland/contracts'
 
 export const NATIVE_CURRENCY = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 
@@ -112,3 +116,15 @@ export const getTokenSymbol = (tokenAddress?: string) => {
 export const MEMBER_UNITS_ADMIN_ROLE = keccak256(
   Buffer.from('MEMBER_ADMIN_ROLE', 'utf8'),
 )
+
+export type AppChainIds = keyof typeof commonAdSpacesAddress
+
+const appChain = constants.chain
+
+export const appContracts = {
+  cfaV1: superfluidAddresses[appChain.id as AppChainIds].cfaV1,
+  gdaV1Forwarder:
+    superfluidAddresses[appChain.id as AppChainIds].gdaV1Forwarder,
+  marketplace: directListingsLogicAddress[appChain.id as AppChainIds],
+  adCommonOwnership: commonAdSpacesAddress[appChain.id as AppChainIds],
+}

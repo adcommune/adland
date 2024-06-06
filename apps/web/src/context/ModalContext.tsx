@@ -13,6 +13,7 @@ type ModalContextType = {
   updateAdDataModal: ModalProps
   selfAssessmentModal: ModalProps
   fundAdModal: ModalProps
+  userTypeModal: ModalProps
 }
 
 const ModalContext = createContext<ModalContextType>({
@@ -20,6 +21,7 @@ const ModalContext = createContext<ModalContextType>({
   updateAdDataModal: { show: false, set: () => {} },
   selfAssessmentModal: { show: false, set: () => {} },
   fundAdModal: { show: false, set: () => {} },
+  userTypeModal: { show: false, set: () => {} },
 })
 
 const ModalProvider = ({ children }: { children: React.ReactNode }) => {
@@ -27,6 +29,7 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const [updateAdDataModal, setUpdateAdDataModal] = useState(false)
   const [selfAssessmentModal, setSelfAssessmentModal] = useState(false)
   const [fundAdModal, setFundAdModal] = useState(false)
+  const [userTypeModal, setUserTypeModal] = useState(false)
 
   return (
     <ModalContext.Provider
@@ -46,6 +49,10 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
         fundAdModal: {
           show: fundAdModal,
           set: setFundAdModal,
+        },
+        userTypeModal: {
+          show: userTypeModal,
+          set: setUserTypeModal,
         },
       }}
     >

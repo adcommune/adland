@@ -42,7 +42,7 @@ export class CommonAdPool extends CommonPoolAdmin {
     this.client = publicClient
   }
 
-  async addMemeberToGroup(member: Address, units: number) {
+  async updateMemberUnits(member: Address, units: number) {
     const smartAccount = await this.getSmartAccount()
 
     const { waitForTxHash } = await smartAccount.sendTransaction(
