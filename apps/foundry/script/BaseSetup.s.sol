@@ -3,7 +3,6 @@ pragma solidity ^0.8.13;
 
 import {WETH9} from "../test/mocks/WETH9.sol";
 import {ISuperfluid, ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
-import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
 import {BaseScript} from "./Base.s.sol";
 import "@thirdweb-dev/dynamic-contracts/src/interface/IExtension.sol";
 import {DirectListingsLogic} from "contracts/prebuilts/marketplace/direct-listings/DirectListingsLogic.sol";

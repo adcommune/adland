@@ -6,8 +6,8 @@ import {CurrencyTransferLib} from "contracts/lib/CurrencyTransferLib.sol";
 import {ERC721RoyaltyUpgradeable, ERC721Upgradeable} from "@openzeppelin-upgradeable/contracts/token/ERC721/extensions/ERC721RoyaltyUpgradeable.sol";
 import {UUPSUpgradeable} from "@openzeppelin-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {OwnableUpgradeable} from "@openzeppelin-upgradeable/contracts/access/OwnableUpgradeable.sol";
+
 // Local imports
-import {CommonAdGroupAdminFactory} from "./CommonAdGroupAdminFactory.sol";
 import {ICommonAdSpaces} from "./interfaces/ICommonAdSpaces.sol";
 import {IAdStrategy} from "./interfaces/IAdStrategy.sol";
 import {AdGroup, AdSpace, AdSpaceConfig} from "./lib/Structs.sol";
@@ -31,8 +31,6 @@ contract CommonAdSpaces is
     mapping(uint256 => AdSpace) public ads;
 
     mapping(address => address) public tokenXs;
-
-    constructor() {}
 
     function initialize(
         address _marketplace,
