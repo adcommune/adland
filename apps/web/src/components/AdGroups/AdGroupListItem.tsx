@@ -6,6 +6,13 @@ import { formatDistance } from 'date-fns'
 import Link from 'next/link'
 import { queryClient } from '../AppProviders'
 import { AdLand } from '@/lib/adland'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../ui/card'
 
 type AdGroupListItemProps = {
   id: string
@@ -20,7 +27,7 @@ const AdGroupListItem = ({
 }: AdGroupListItemProps) => {
   return (
     <Link href={'/group/' + id} key={id}>
-      <div
+      <Card
         onMouseEnter={() => {
           queryClient
             .prefetchQuery({
@@ -33,27 +40,38 @@ const AdGroupListItem = ({
               console.log('prefetch done')
             })
         }}
-        className="flex flex-row justify-between rounded-md bg-white p-3 hover:bg-gray-100"
+        className=""
       >
-        <h1>Ad Group - #{id}</h1>
-        <div className="flex flex-row flex-wrap gap-1">
-          {adSpaces.map(({ uri, transactionHash }) => {
+        <CardHeader className="p-4">
+          <CardTitle className="text-xl">Ad Group - #{id}</CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-4 gap-2 p-4">
+          {adSpaces.slice(0, 4).map(({ uri, transactionHash }, i) => {
             return (
               <div
                 key={transactionHash}
-                className={classNames('aspect-square h-4 w-4', {
-                  'bg-green-500': Boolean(uri),
-                  'bg-gray-300': !Boolean(uri),
-                })}
-              />
+                className={classNames(
+                  'flex aspect-square w-full flex-col items-center justify-center border',
+                  {
+                    'bg-green-500': Boolean(uri),
+                    'bg-gray-300': !Boolean(uri),
+                  },
+                )}
+              >
+                {i === 3 && <p className="font-bold">+{adSpaces.length - 3}</p>}
+              </div>
             )
           })}
-        </div>
-        <div className="flex flex-wrap">
-          created {formatDistance(parseInt(blockTimestamp) * 1000, Date.now())}{' '}
-          ago
-        </div>
-      </div>
+        </CardContent>
+        <CardFooter className="flex justify-end p-4">
+          <div className="flex flex-wrap">
+            <p className="text-xs text-gray-500">
+              created{' '}
+              {formatDistance(parseInt(blockTimestamp) * 1000, Date.now())} ago
+            </p>
+          </div>
+        </CardFooter>
+      </Card>
     </Link>
   )
 }
