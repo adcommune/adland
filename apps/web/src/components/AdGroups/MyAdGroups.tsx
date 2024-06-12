@@ -7,10 +7,7 @@ import {
 } from '@adland/webkit/src/hooks'
 import { useContext } from 'react'
 import AdGroupListItem from './AdGroupListItem'
-import {
-  SmartAccountContext,
-  SmartAccountProvider,
-} from '@/context/SmartAccountContext'
+import { SmartAccountContext } from '@/context/SmartAccountContext'
 
 const MyAdGroups = () => {
   const { bicoAccountAddress } = useContext(SmartAccountContext)
@@ -25,7 +22,7 @@ const MyAdGroups = () => {
   )
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 md:grid-cols-4">
       {data?.adGroups?.map(
         ({ id, blockTimestamp, transactionHash, adSpaces }) => (
           <AdGroupListItem
