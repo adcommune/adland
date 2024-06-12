@@ -51,7 +51,6 @@ const CastVerificationStep = ({
     })
 
   const { writeAsync } = useSmartAccountTxs({
-    mutationKey: bicoAccountAddress ? 'connectPool-' + bicoAccountAddress : '',
     onSuccess: () => {
       refetchConnected()
     },

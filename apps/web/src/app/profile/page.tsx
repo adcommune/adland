@@ -7,12 +7,14 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { superfluidAccountLink } from '@/config/constants'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
-import { truncateAddress } from '@/lib/utils'
+import { getExplorerLink, truncateAddress } from '@/lib/utils'
 import { useExperimentalFarcasterSigner, usePrivy } from '@privy-io/react-auth'
 import { CircleUser, UserX } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useContext } from 'react'
+import CopiableInput from '@/components/CopiableInput'
+import SuperTokenTable from '@/components/AdGroup/AdGroupTokenTable'
 
 const ProfilePage = () => {
   const accountType = useAccountType()
@@ -49,13 +51,20 @@ const ProfilePage = () => {
             </div>
             <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
               <div className="mt-6 min-w-0 flex-1 sm:hidden md:block">
-                <h1 className="truncate text-2xl font-bold text-gray-900">
-                  {accountType === 'distributor'
-                    ? user?.farcaster?.displayName
-                    : authenticated
-                      ? truncateAddress(user?.wallet?.address)
-                      : '---'}
-                </h1>
+                {bicoAccountAddress && (
+                  <Link
+                    href={getExplorerLink(bicoAccountAddress, 'address')}
+                    target="_blank"
+                  >
+                    <h1 className="truncate text-2xl font-bold text-gray-900 hover:text-blue-700 hover:underline">
+                      {accountType === 'distributor'
+                        ? user?.farcaster?.displayName
+                        : authenticated
+                          ? truncateAddress(bicoAccountAddress)
+                          : '---'}
+                    </h1>
+                  </Link>
+                )}
               </div>
               <div className="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
                 {authenticated && (
@@ -105,6 +114,17 @@ const ProfilePage = () => {
                 </Button>
               </div>
             )}
+            {bicoAccountAddress && (
+              <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-col">
+                  <p className="font-body text-xl font-bold">Account</p>
+                  <p className="font-sm text-gray-500">Your account address</p>
+                </div>
+                <div>
+                  <CopiableInput text={bicoAccountAddress} truncate />
+                </div>
+              </div>
+            )}
             {user && bicoAccountAddress && (
               <div className="flex flex-row items-center justify-between">
                 <div className="flex flex-col">
@@ -130,6 +150,19 @@ const ProfilePage = () => {
                     Superfluid Dashboard
                   </Button>
                 </Link>
+              </div>
+            )}
+            {bicoAccountAddress && (
+              <div className="flex flex-col justify-between">
+                <div className="flex flex-col">
+                  <p className="font-body text-xl font-bold">Token Balances</p>
+                  <p className="font-sm text-gray-500">
+                    View your token balances
+                  </p>
+                </div>
+                <Card className="mt-2">
+                  <SuperTokenTable />
+                </Card>
               </div>
             )}
           </div>

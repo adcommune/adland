@@ -1,13 +1,14 @@
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { formatEther, parseEther } from 'viem'
-import { useContext, useEffect, useState } from 'react'
+import { encodeFunctionData, formatEther, parseEther } from 'viem'
+import { useContext, useState } from 'react'
 import { AdSpace } from '@/lib/types'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import { useSimulateDirectListingsLogicUpdateListing } from '@adland/contracts'
+import { directListingsLogicAbi } from '@adland/contracts'
 import { ModalContext } from '@/context/ModalContext'
 import Modal from './Modal'
 import { queryClient } from './AppProviders'
+import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
+import { appContracts } from '@/config/constants'
 
 type AdSpaceCardProps = { adSpace: AdSpace }
 
@@ -32,59 +33,56 @@ const SelfPriceAssementModal = ({ adSpace }: AdSpaceCardProps) => {
     parseFloat(formatEther(pricePerToken)),
   )
 
-  const { data: selfAssessRequest } =
-    useSimulateDirectListingsLogicUpdateListing({
-      args: [
-        listingId,
-        {
-          tokenId,
-          assetContract,
-          quantity,
-          currency,
-          taxRate,
-          taxBeneficiary,
-          pricePerToken: parseEther(newPricePerToken.toString()),
-          startTimestamp,
-          endTimestamp,
-          reserved,
-        },
-      ],
-    })
-
-  const { data: hash, writeContract, isPending } = useWriteContract()
-
-  const { data: isSuccess, isLoading: selfAssessmentLoading } =
-    useWaitForTransactionReceipt({
-      hash,
-      query: {
-        enabled: Boolean(hash),
-        select: (receipt) => receipt.status === 'success',
-      },
-    })
-
-  useEffect(() => {
-    if (isSuccess) {
-      selfAssessmentModal.set(false)
-      queryClient.setQueryData(
-        ['adSpace-', adSpace?.adSpace_subgraph?.id],
-        (old: AdSpace): AdSpace => {
-          return {
-            ...old,
-            listing: {
-              ...old.listing,
-              pricePerToken: parseEther(newPricePerToken.toString()),
-            },
-          }
-        },
-      )
-    }
-  }, [isSuccess])
+  const { write, loading } = useSmartAccountTxs({})
 
   const selfAssess = async () => {
-    writeContract(selfAssessRequest!.request)
+    write(
+      {
+        transactions: [
+          {
+            to: appContracts.marketplace,
+            data: encodeFunctionData({
+              abi: directListingsLogicAbi,
+              functionName: 'updateListing',
+              args: [
+                listingId,
+                {
+                  tokenId,
+                  assetContract,
+                  quantity,
+                  currency,
+                  taxRate,
+                  taxBeneficiary,
+                  pricePerToken: parseEther(newPricePerToken.toString()),
+                  startTimestamp,
+                  endTimestamp,
+                  reserved,
+                },
+              ],
+            }),
+            value: BigInt(0),
+          },
+        ],
+      },
+      {
+        onSuccess: () => {
+          selfAssessmentModal.set(false)
+          queryClient.setQueryData(
+            ['adSpace-', adSpace?.adSpace_subgraph?.id],
+            (old: AdSpace): AdSpace => {
+              return {
+                ...old,
+                listing: {
+                  ...old.listing,
+                  pricePerToken: parseEther(newPricePerToken.toString()),
+                },
+              }
+            },
+          )
+        },
+      },
+    )
   }
-
-  const assessmentLoading = isPending || selfAssessmentLoading
 
   return (
     <Modal
@@ -97,11 +95,11 @@ const SelfPriceAssementModal = ({ adSpace }: AdSpaceCardProps) => {
       renderConfirm={() => {
         return (
           <Button
-            disabled={!Boolean(selfAssessRequest?.request) || assessmentLoading}
+            disabled={loading}
             onClick={() => {
               selfAssess()
             }}
-            loading={assessmentLoading}
+            loading={loading}
           >
             Reassess
           </Button>

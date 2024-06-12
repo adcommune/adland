@@ -68,9 +68,7 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
     },
   })
 
-  const { write, loading } = useSmartAccountTxs({
-    mutationKey: 'createAdGroup',
-  })
+  const { write, loading } = useSmartAccountTxs({})
 
   const onSubmit = async ({
     currency,
