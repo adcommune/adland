@@ -1,6 +1,4 @@
-<img src="banner.jpg"/>
-
-<br />
+<img src="https://i.imgur.com/O50wMJX.jpg"/>
 
 # AdLand
 
