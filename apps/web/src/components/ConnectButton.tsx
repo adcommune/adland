@@ -1,12 +1,13 @@
 import { Button } from './ui/button'
-import { usePrivy, useWallets } from '@privy-io/react-auth'
+import { usePrivy } from '@privy-io/react-auth'
 import { truncateAddress } from '@/lib/utils'
-import { zeroAddress } from 'viem'
-import { constants } from '@adland/common'
+import { formatEther, zeroAddress } from 'viem'
 import Link from 'next/link'
 import { UserIcon } from 'lucide-react'
 import { UserType } from '@/context/UserContext'
 import FarcasterBadge from './FarcasterBadge'
+import { useContext } from 'react'
+import { SmartAccountContext } from '@/context/SmartAccountContext'
 
 export const useAccountType = (): UserType | undefined => {
   const { user, ready, authenticated } = usePrivy()
@@ -18,9 +19,8 @@ export const useAccountType = (): UserType | undefined => {
 
 export const ConnectButton = () => {
   const { ready, authenticated, user } = usePrivy()
-  const { wallets } = useWallets()
 
-  const wallet = wallets.find((w) => w.connectorType === 'embedded')
+  const { balance } = useContext(SmartAccountContext)
 
   const disableLogin = !ready || (ready && authenticated)
 
@@ -46,9 +46,14 @@ export const ConnectButton = () => {
       {user?.farcaster ? (
         <FarcasterBadge className="h-11" />
       ) : (
-        <Button type="button" variant="outline" className="h-full font-body">
-          <UserIcon className="h-4 w-4" />
-        </Button>
+        <div className="flex h-10 flex-row gap-2">
+          <Button variant="outline" className="h-full">
+            {formatEther(balance)} ETH
+          </Button>
+          <Button type="button" variant="outline" className="h-full font-body">
+            <UserIcon className="h-4 w-4" />
+          </Button>
+        </div>
       )}
     </Link>
   )

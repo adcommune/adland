@@ -93,13 +93,9 @@ const FarcasterDistribution = ({
     (isNativeCurrency ? nativeBalance?.value : reads?.erc20Balance) ?? BigInt(0)
 
   const { write: writeLaunchCampaign, loading: launchCampaignLoading } =
-    useSmartAccountTxs({
-      mutationKey: 'fundCampaign',
-    })
+    useSmartAccountTxs({})
 
-  const { write, loading: createPoolLoading } = useSmartAccountTxs({
-    mutationKey: 'createPool',
-  })
+  const { write, loading: createPoolLoading } = useSmartAccountTxs({})
 
   const launchCampaign = async ({ flowRate, amount }: LaunchCampaignProps) => {
     if (!commonAdPoolAddress) {

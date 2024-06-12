@@ -35,29 +35,22 @@ const GroupPage = ({ params: { id } }: GroupPageProps) => {
   }
 
   const { adSpaces } = adGroup
+
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-      {adSpaces?.map(({ adSpace_subgraph: adSpace, metadata }, index) => {
-        const liveDistribution = adSpace.adPools.length > 0
-
+      {adSpaces?.map(({ adSpace_subgraph: adSpace, metadata }) => {
         return (
           <Link
             key={adSpace?.transactionHash + adSpace?.id}
             href={'/ad/' + adSpace?.id}
           >
-            <Card className="flex flex-col overflow-hidden bg-transparent">
-              <CardHeader className="relative bg-white">
-                <CardTitle className="flex w-full flex-row items-center justify-between font-body font-normal">
-                  <span>AdSpace #{adSpace.id}</span>
-                  {liveDistribution && (
-                    <span className="relative flex h-3 w-3">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
-                    </span>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="relative flex h-[400px] w-full flex-grow flex-col gap-2 bg-white bg-opacity-75 py-4">
+            <div className="relative flex flex-col overflow-hidden rounded-md border border-white">
+              <div className="absolute left-2 top-2 z-10">
+                <div className="rounded-md border border-black px-2">
+                  <p className="text-black">#{adSpace?.id}</p>
+                </div>
+              </div>
+              <div className="relative flex h-[400px] w-full flex-grow flex-col gap-2 bg-white bg-opacity-50 py-4 hover:bg-opacity-60">
                 {!metadata && (
                   <div className="flex h-full w-full flex-col items-center justify-center">
                     <p className="font-display text-2xl">No Ad</p>
@@ -86,8 +79,8 @@ const GroupPage = ({ params: { id } }: GroupPageProps) => {
                     {metadata?.external_url}
                   </p>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </Link>
         )
       })}

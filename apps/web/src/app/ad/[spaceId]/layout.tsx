@@ -38,7 +38,6 @@ const AdSpacePageLayout = async ({
 
   return (
     <Container className="flex flex-col gap-2 p-4">
-      <AdGroupHeader adGroup={adGroup} />
       <HeyCardMetadata
         {...{
           chain: constants.chain.name,
@@ -47,7 +46,9 @@ const AdSpacePageLayout = async ({
           media_url: `${baseURL}/api/billboard/${spaceId}?time=${Date.now()}`,
         }}
       />
-      <AdDetailsSidebar spaceId={spaceId}>{children}</AdDetailsSidebar>
+      <AdGroupHeader adGroup={adGroup}>
+        <AdDetailsSidebar spaceId={spaceId}>{children}</AdDetailsSidebar>
+      </AdGroupHeader>
     </Container>
   )
 }

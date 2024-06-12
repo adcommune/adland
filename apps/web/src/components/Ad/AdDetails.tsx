@@ -4,7 +4,6 @@ import { ModalContext } from '@/context/ModalContext'
 import { AdLand } from '@/lib/adland'
 import { useQuery } from '@tanstack/react-query'
 import { useContext } from 'react'
-import { useAccount } from 'wagmi'
 import {
   Card,
   CardContent,
@@ -35,6 +34,7 @@ import { format } from 'date-fns'
 import { Button } from '../ui/button'
 import { getTokenSymbol } from '@/config/constants'
 import { usePathname } from 'next/navigation'
+import { SmartAccountContext } from '@/context/SmartAccountContext'
 
 type AdDetailsSidebarProps = {
   spaceId: string
@@ -46,7 +46,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
     queryFn: () => new AdLand().getAdSpace(spaceId),
     queryKey: ['adSpace-', spaceId],
   })
-  const { address } = useAccount()
+  const { bicoAccountAddress: address } = useContext(SmartAccountContext)
   const { acquireLeaseModal, updateAdDataModal, selfAssessmentModal } =
     useContext(ModalContext)
   const listing = adSpace?.listing

@@ -92,15 +92,19 @@ const SignInPage = () => {
           </CardContent>
         </Card>
         <Card
-          className={classNames({
-            'bg-slate-200': !authenticated && selected.distributor,
-            'hover:bg-slate-100': !authenticated && !selected.distributor,
-            'cursor-pointer': !authenticated,
-            'opacity-50': authenticated && userIs.advertiserOfCreator,
-          })}
+          className={classNames(
+            {
+              'bg-slate-200': !authenticated && selected.distributor,
+              'hover:bg-slate-100': !authenticated && !selected.distributor,
+              'cursor-pointer': !authenticated,
+              'opacity-50': authenticated && userIs.advertiserOfCreator,
+            },
+            'opacity-30',
+          )}
           onClick={() => {
-            if (authenticated) return
-            setUserType('distributor')
+            return
+            // if (authenticated) return
+            // setUserType('distributor')
           }}
         >
           <CardHeader className="text-center">

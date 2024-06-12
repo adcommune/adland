@@ -1,5 +1,5 @@
 import { PaymasterMode, Transaction } from '@biconomy/account'
-import { useContext } from 'react'
+import { useCallback, useContext } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { handleWriteErrors } from '@/lib/viem'
 import useWaitForTransactionSuccess from './useWaitForTransactionSuccess'
@@ -12,14 +12,10 @@ type SmartAccountBatchWriteParams = {
 }
 
 type UseSmartAccountTxsArgs = {
-  mutationKey: string
   onSuccess?: (logs: Log[]) => void
 }
 
-export const useSmartAccountTxs = ({
-  mutationKey,
-  onSuccess,
-}: UseSmartAccountTxsArgs) => {
+export const useSmartAccountTxs = ({ onSuccess }: UseSmartAccountTxsArgs) => {
   const { bicoAccount } = useContext(SmartAccountContext)
 
   const { data, mutate, mutateAsync, isPending } = useMutation<
@@ -28,7 +24,6 @@ export const useSmartAccountTxs = ({
     SmartAccountBatchWriteParams,
     `0x${string}`
   >({
-    mutationKey: ['smartAccountWriteBatch-' + mutationKey],
     mutationFn: async ({ transactions }: SmartAccountBatchWriteParams) => {
       if (!bicoAccount) return Promise.resolve(undefined)
 
@@ -56,11 +51,14 @@ export const useSmartAccountTxs = ({
       }),
   })
 
-  const { isLoading } = useWaitForTransactionSuccess(data, async (logs) => {
-    if (logs.length) {
-      onSuccess && onSuccess(logs)
-    }
-  })
+  const { isLoading } = useWaitForTransactionSuccess(
+    data,
+    useCallback(async (logs) => {
+      if (logs.length) {
+        onSuccess && onSuccess(logs)
+      }
+    }, []),
+  )
 
   return {
     write: mutate,
