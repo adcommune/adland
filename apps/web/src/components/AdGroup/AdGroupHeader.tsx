@@ -19,7 +19,7 @@ const AdGroupHeader = ({
       <div className="overflow-hidden rounded-tl-md rounded-tr-md">
         <div className="flex flex-col border bg-white pb-5">
           <div className="relative w-full">
-            <div className="h-[100px] w-full bg-gradient-to-b from-gray-200 to-transparent" />
+            <div className="h-[70px] w-full bg-gradient-to-b from-gray-200 to-transparent" />
           </div>
           <div className="mt-2 min-w-0 flex-1 px-4 sm:hidden sm:px-6 md:block lg:px-8">
             <h1 className="truncate text-2xl font-bold text-black">

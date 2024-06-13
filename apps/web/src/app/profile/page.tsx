@@ -1,7 +1,6 @@
 'use client'
 
 import { Alert } from '@/components/Alert'
-import { useAccountType } from '@/components/ConnectButton'
 import { Container } from '@/components/Container'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -15,9 +14,9 @@ import Image from 'next/image'
 import { useContext } from 'react'
 import CopiableInput from '@/components/CopiableInput'
 import SuperTokenTable from '@/components/AdGroup/AdGroupTokenTable'
+import { Separator } from '@/components/ui/separator'
 
 const ProfilePage = () => {
-  const accountType = useAccountType()
   const { bicoAccountAddress } = useContext(SmartAccountContext)
   const { user, logout, authenticated } = usePrivy()
   const { requestFarcasterSignerFromWarpcast } =
@@ -34,8 +33,7 @@ const ProfilePage = () => {
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
             <div className="flex h-32 w-32 flex-col items-center justify-center rounded-full bg-gray-100 p-1 text-gray-400">
-              {accountType === 'advertiser-or-creator' ||
-              !user?.farcaster?.pfp ? (
+              {!user?.farcaster?.pfp ? (
                 authenticated ? (
                   <CircleUser className="h-full w-full stroke-2" />
                 ) : (
@@ -57,7 +55,7 @@ const ProfilePage = () => {
                     target="_blank"
                   >
                     <h1 className="truncate text-2xl font-bold text-gray-900 hover:text-blue-700 hover:underline">
-                      {accountType === 'distributor'
+                      {user?.farcaster
                         ? user?.farcaster?.displayName
                         : authenticated
                           ? truncateAddress(bicoAccountAddress)
@@ -92,8 +90,34 @@ const ProfilePage = () => {
               {user?.farcaster?.displayName}
             </h1>
           </div>
+
           <div className="my-10 flex flex-col gap-4">
-            {user && accountType === 'distributor' && (
+            {bicoAccountAddress && (
+              <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-col">
+                  <p className="font-body text-xl font-bold">Account</p>
+                  <p className="font-sm text-gray-500">Your account address</p>
+                </div>
+                <div>
+                  <CopiableInput text={bicoAccountAddress} truncate />
+                </div>
+              </div>
+            )}
+            {bicoAccountAddress && (
+              <div className="flex flex-col justify-between">
+                <div className="flex flex-col">
+                  <p className="font-body text-xl font-bold">Token Balances</p>
+                  <p className="font-sm text-gray-500">
+                    View your token balances
+                  </p>
+                </div>
+                <Card className="mt-2">
+                  <SuperTokenTable />
+                </Card>
+              </div>
+            )}
+            <Separator className="my-4" />
+            {user?.farcaster && (
               <div className="flex flex-row items-center justify-between">
                 <div className="flex flex-col">
                   <p className="font-body text-xl font-bold">
@@ -114,17 +138,7 @@ const ProfilePage = () => {
                 </Button>
               </div>
             )}
-            {bicoAccountAddress && (
-              <div className="flex flex-row items-center justify-between">
-                <div className="flex flex-col">
-                  <p className="font-body text-xl font-bold">Account</p>
-                  <p className="font-sm text-gray-500">Your account address</p>
-                </div>
-                <div>
-                  <CopiableInput text={bicoAccountAddress} truncate />
-                </div>
-              </div>
-            )}
+
             {user && bicoAccountAddress && (
               <div className="flex flex-row items-center justify-between">
                 <div className="flex flex-col">
@@ -150,19 +164,6 @@ const ProfilePage = () => {
                     Superfluid Dashboard
                   </Button>
                 </Link>
-              </div>
-            )}
-            {bicoAccountAddress && (
-              <div className="flex flex-col justify-between">
-                <div className="flex flex-col">
-                  <p className="font-body text-xl font-bold">Token Balances</p>
-                  <p className="font-sm text-gray-500">
-                    View your token balances
-                  </p>
-                </div>
-                <Card className="mt-2">
-                  <SuperTokenTable />
-                </Card>
               </div>
             )}
           </div>

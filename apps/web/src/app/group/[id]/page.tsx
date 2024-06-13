@@ -1,7 +1,6 @@
 'use client'
 
 import { Container } from '@/components/Container'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AdLand } from '@/lib/adland'
@@ -46,18 +45,18 @@ const GroupPage = ({ params: { id } }: GroupPageProps) => {
           >
             <div className="relative flex flex-col overflow-hidden rounded-md border border-white">
               <div className="absolute left-2 top-2 z-10">
-                <div className="rounded-md border border-black px-2">
+                <div className="rounded-md border border-black bg-white px-2">
                   <p className="text-black">#{adSpace?.id}</p>
                 </div>
               </div>
-              <div className="relative flex h-[400px] w-full flex-grow flex-col gap-2 bg-white bg-opacity-50 py-4 hover:bg-opacity-60">
+              <div className="relative flex h-[400px] w-full flex-grow flex-col gap-2 bg-white bg-opacity-50 p-4 hover:bg-opacity-60">
                 {!metadata && (
                   <div className="flex h-full w-full flex-col items-center justify-center">
                     <p className="font-display text-2xl">No Ad</p>
                   </div>
                 )}
                 {metadata?.imageGatewayURI && (
-                  <div className="flex h-2/3 flex-grow bg-gray-200">
+                  <div className="flex h-2/3 flex-grow bg-gray-200 p-4">
                     <Image
                       width={500}
                       height={500}
