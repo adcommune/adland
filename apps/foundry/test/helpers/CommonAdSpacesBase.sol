@@ -17,16 +17,8 @@ import {ISETH} from "@superfluid-finance/ethereum-contracts/contracts/interfaces
 import {MockERC20} from "../mocks/MockERC20.sol";
 import {CurrencyTransferLib} from "contracts/lib/CurrencyTransferLib.sol";
 import {ERC1820RegistryCompiled} from "@superfluid-finance/ethereum-contracts/contracts/libs/ERC1820RegistryCompiled.sol";
-import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
-import {AccountV3Upgradable, AccountV3} from "tokenbound/AccountV3Upgradable.sol";
-import {AccountProxy} from "tokenbound/AccountProxy.sol";
-import {AccountGuardian} from "tokenbound/AccountGuardian.sol";
-import {Multicall3} from "multicall-authenticated/Multicall3.sol";
-import {AccountCreatorConfig} from "../../src/lib/ERC6551AccountCreator.sol";
 import {UUPSProxy} from "../../src/lib/UUPSProxy.sol";
-
 import {CommonAdSpaces} from "../../src/CommonAdSpaces.sol";
-import {CommonAdGroupAdminFactory} from "../../src/CommonAdGroupAdminFactory.sol";
 
 contract CommonAdSpacesExtended is CommonAdSpaces {
     function getAdGroupOwner(uint256 adGroupId) public view returns (address) {
@@ -44,7 +36,6 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
     WETH9 public weth;
     DirectListingsLogic public marketplace;
     CommonAdSpacesExtended public commonAds;
-    CommonAdGroupAdminFactory public commonAdGroupFactory;
     address internal deployer = vm.addr(420);
     address internal recipient = vm.addr(421);
     uint256 initialPrice = 0.1 ether;
@@ -54,12 +45,6 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
     ISuperToken public ethx;
     ConstantFlowAgreementV1 public cfa;
 
-    ERC6551Registry registry;
-    AccountProxy accountProxy;
-    AccountGuardian guardian;
-    Multicall3 forwarder;
-    AccountV3 implementation;
-
     constructor() {}
 
     function setUp() public virtual {
@@ -67,7 +52,6 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
 
         // vm.createSelectFork("sepolia");
 
-        _deployERC6551();
         _deployWETH();
         _deployStreamingUtils();
 
@@ -266,23 +250,6 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
         );
 
         extensions[0] = extensionDirectListings;
-    }
-
-    function _deployERC6551() internal {
-        registry = new ERC6551Registry();
-        forwarder = new Multicall3();
-        guardian = new AccountGuardian(address(this));
-        implementation = new AccountV3(
-            address(1),
-            address(forwarder),
-            address(registry),
-            address(guardian)
-        );
-
-        accountProxy = new AccountProxy(
-            address(guardian),
-            address(implementation)
-        );
     }
 
     function _grantTaxManagerRole(address to) internal {

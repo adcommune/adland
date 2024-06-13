@@ -7,7 +7,6 @@ import {ERC721RoyaltyUpgradeable, ERC721Upgradeable} from "@openzeppelin-upgrade
 import {UUPSUpgradeable} from "@openzeppelin-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {OwnableUpgradeable} from "@openzeppelin-upgradeable/contracts/access/OwnableUpgradeable.sol";
 // Local imports
-import {CommonAdGroupAdminFactory} from "./CommonAdGroupAdminFactory.sol";
 import {ICommonAdSpaces} from "./interfaces/ICommonAdSpaces.sol";
 import {IAdStrategy} from "./interfaces/IAdStrategy.sol";
 import {AdGroup, AdSpace, AdSpaceConfig} from "./lib/Structs.sol";
