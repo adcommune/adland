@@ -195,7 +195,6 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
         description="Acquire lease for this space."
         isOpen={acquireLeaseModal.show}
         closeModal={() => {
-          console.log('close')
           acquireLeaseModal.set(false)
         }}
         renderConfirm={() => {
@@ -263,7 +262,7 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
               <div className="flex flex-row gap-4">
                 <Slider
                   defaultValue={[0]}
-                  max={10}
+                  max={25}
                   step={1}
                   onValueChange={(value: any) => {
                     setNumberOfWeeks(value[0])

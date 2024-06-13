@@ -10,7 +10,6 @@ import AppNavbar from './AppNavbar'
 import { constants } from '@adland/common'
 import { alchemyUrlByChain } from '@/config/constants'
 import { SmartAccountProvider } from '@/context/SmartAccountContext'
-import { useUserType } from '@/context/UserContext'
 
 export const queryClient = new QueryClient()
 
@@ -23,7 +22,6 @@ export const config = createConfig({
 })
 
 const AppProviders = ({ children }: { children: React.ReactNode }) => {
-  const { userType } = useUserType()
   return (
     <PrivyProvider
       appId={privyAppId}
@@ -34,8 +32,7 @@ const AppProviders = ({ children }: { children: React.ReactNode }) => {
           accentColor: '#4e4e4e',
         },
         defaultChain: constants.chain,
-        loginMethods:
-          userType === 'advertiser-or-creator' ? ['wallet'] : ['farcaster'],
+        loginMethods: ['wallet', 'farcaster'],
         embeddedWallets: {
           createOnLogin: 'all-users',
           noPromptOnSignature: true,
