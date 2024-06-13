@@ -317,6 +317,7 @@ export type AdSpace_subgraph = {
   adPools: Array<AdPool_subgraph>;
   blockTimestamp: Scalars['BigInt']['output'];
   id: Scalars['String']['output'];
+  listing: Listing_subgraph;
   transactionHash: Scalars['Bytes']['output'];
   uri?: Maybe<Scalars['String']['output']>;
 };
@@ -632,6 +633,27 @@ export type AdSpace_Filter_subgraph = {
   id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   id_starts_with?: InputMaybe<Scalars['String']['input']>;
   id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing?: InputMaybe<Scalars['String']['input']>;
+  listing_?: InputMaybe<Listing_Filter_subgraph>;
+  listing_contains?: InputMaybe<Scalars['String']['input']>;
+  listing_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing_ends_with?: InputMaybe<Scalars['String']['input']>;
+  listing_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing_gt?: InputMaybe<Scalars['String']['input']>;
+  listing_gte?: InputMaybe<Scalars['String']['input']>;
+  listing_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  listing_lt?: InputMaybe<Scalars['String']['input']>;
+  listing_lte?: InputMaybe<Scalars['String']['input']>;
+  listing_not?: InputMaybe<Scalars['String']['input']>;
+  listing_not_contains?: InputMaybe<Scalars['String']['input']>;
+  listing_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  listing_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  listing_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  listing_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing_starts_with?: InputMaybe<Scalars['String']['input']>;
+  listing_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   or?: InputMaybe<Array<InputMaybe<AdSpace_Filter_subgraph>>>;
   transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
@@ -674,6 +696,29 @@ export enum AdSpace_OrderBy_subgraph {
   AdPools_subgraph = 'adPools',
   BlockTimestamp_subgraph = 'blockTimestamp',
   Id_subgraph = 'id',
+  Listing_subgraph = 'listing',
+  ListingAssetContract_subgraph = 'listing__assetContract',
+  ListingBlockNumber_subgraph = 'listing__blockNumber',
+  ListingBlockTimestamp_subgraph = 'listing__blockTimestamp',
+  ListingId_subgraph = 'listing__id',
+  ListingListingCreator_subgraph = 'listing__listingCreator',
+  ListingListingId_subgraph = 'listing__listingId',
+  ListingListingAssetContract_subgraph = 'listing__listing_assetContract',
+  ListingListingCurrency_subgraph = 'listing__listing_currency',
+  ListingListingEndTimestamp_subgraph = 'listing__listing_endTimestamp',
+  ListingListingListingCreator_subgraph = 'listing__listing_listingCreator',
+  ListingListingListingId_subgraph = 'listing__listing_listingId',
+  ListingListingListingOwner_subgraph = 'listing__listing_listingOwner',
+  ListingListingPricePerToken_subgraph = 'listing__listing_pricePerToken',
+  ListingListingQuantity_subgraph = 'listing__listing_quantity',
+  ListingListingReserved_subgraph = 'listing__listing_reserved',
+  ListingListingStartTimestamp_subgraph = 'listing__listing_startTimestamp',
+  ListingListingStatus_subgraph = 'listing__listing_status',
+  ListingListingTaxBeneficiary_subgraph = 'listing__listing_taxBeneficiary',
+  ListingListingTaxRate_subgraph = 'listing__listing_taxRate',
+  ListingListingTokenId_subgraph = 'listing__listing_tokenId',
+  ListingListingTokenType_subgraph = 'listing__listing_tokenType',
+  ListingTransactionHash_subgraph = 'listing__transactionHash',
   TransactionHash_subgraph = 'transactionHash',
   Uri_subgraph = 'uri'
 }
@@ -1349,12 +1394,12 @@ export enum Initialized_OrderBy_subgraph {
   Version_subgraph = 'version'
 }
 
-export type NewListing_subgraph = {
-  __typename?: 'NewListing';
+export type Listing_subgraph = {
+  __typename?: 'Listing';
   assetContract: Scalars['Bytes']['output'];
   blockNumber: Scalars['BigInt']['output'];
   blockTimestamp: Scalars['BigInt']['output'];
-  id: Scalars['Bytes']['output'];
+  id: Scalars['String']['output'];
   listingCreator: Scalars['Bytes']['output'];
   listingId: Scalars['BigInt']['output'];
   listing_assetContract: Scalars['Bytes']['output'];
@@ -1375,10 +1420,10 @@ export type NewListing_subgraph = {
   transactionHash: Scalars['Bytes']['output'];
 };
 
-export type NewListing_Filter_subgraph = {
+export type Listing_Filter_subgraph = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter_subgraph>;
-  and?: InputMaybe<Array<InputMaybe<NewListing_Filter_subgraph>>>;
+  and?: InputMaybe<Array<InputMaybe<Listing_Filter_subgraph>>>;
   assetContract?: InputMaybe<Scalars['Bytes']['input']>;
   assetContract_contains?: InputMaybe<Scalars['Bytes']['input']>;
   assetContract_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -1405,16 +1450,26 @@ export type NewListing_Filter_subgraph = {
   blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
   blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id?: InputMaybe<Scalars['Bytes']['input']>;
-  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   listingCreator?: InputMaybe<Scalars['Bytes']['input']>;
   listingCreator_contains?: InputMaybe<Scalars['Bytes']['input']>;
   listingCreator_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -1559,7 +1614,7 @@ export type NewListing_Filter_subgraph = {
   listing_tokenType_lte?: InputMaybe<Scalars['Int']['input']>;
   listing_tokenType_not?: InputMaybe<Scalars['Int']['input']>;
   listing_tokenType_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  or?: InputMaybe<Array<InputMaybe<NewListing_Filter_subgraph>>>;
+  or?: InputMaybe<Array<InputMaybe<Listing_Filter_subgraph>>>;
   transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -1572,7 +1627,7 @@ export type NewListing_Filter_subgraph = {
   transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
 };
 
-export enum NewListing_OrderBy_subgraph {
+export enum Listing_OrderBy_subgraph {
   AssetContract_subgraph = 'assetContract',
   BlockNumber_subgraph = 'blockNumber',
   BlockTimestamp_subgraph = 'blockTimestamp',
@@ -1853,8 +1908,8 @@ export type Query_subgraph = {
   currencyApprovedForListings: Array<CurrencyApprovedForListing_subgraph>;
   initialized?: Maybe<Initialized_subgraph>;
   initializeds: Array<Initialized_subgraph>;
-  newListing?: Maybe<NewListing_subgraph>;
-  newListings: Array<NewListing_subgraph>;
+  listing?: Maybe<Listing_subgraph>;
+  listings: Array<Listing_subgraph>;
   newSale?: Maybe<NewSale_subgraph>;
   newSales: Array<NewSale_subgraph>;
   ownershipTransferred?: Maybe<OwnershipTransferred_subgraph>;
@@ -1863,8 +1918,6 @@ export type Query_subgraph = {
   tokenXs: Array<TokenX_subgraph>;
   transfer?: Maybe<Transfer_subgraph>;
   transfers: Array<Transfer_subgraph>;
-  updatedListing?: Maybe<UpdatedListing_subgraph>;
-  updatedListings: Array<UpdatedListing_subgraph>;
   upgraded?: Maybe<Upgraded_subgraph>;
   upgradeds: Array<Upgraded_subgraph>;
 };
@@ -2145,21 +2198,21 @@ export type QueryInitializedsArgs_subgraph = {
 };
 
 
-export type QueryNewListingArgs_subgraph = {
+export type QueryListingArgs_subgraph = {
   block?: InputMaybe<Block_Height_subgraph>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy__subgraph;
 };
 
 
-export type QueryNewListingsArgs_subgraph = {
+export type QueryListingsArgs_subgraph = {
   block?: InputMaybe<Block_Height_subgraph>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<NewListing_OrderBy_subgraph>;
+  orderBy?: InputMaybe<Listing_OrderBy_subgraph>;
   orderDirection?: InputMaybe<OrderDirection_subgraph>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy__subgraph;
-  where?: InputMaybe<NewListing_Filter_subgraph>;
+  where?: InputMaybe<Listing_Filter_subgraph>;
 };
 
 
@@ -2235,24 +2288,6 @@ export type QueryTransfersArgs_subgraph = {
 };
 
 
-export type QueryUpdatedListingArgs_subgraph = {
-  block?: InputMaybe<Block_Height_subgraph>;
-  id: Scalars['ID']['input'];
-  subgraphError?: _SubgraphErrorPolicy__subgraph;
-};
-
-
-export type QueryUpdatedListingsArgs_subgraph = {
-  block?: InputMaybe<Block_Height_subgraph>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<UpdatedListing_OrderBy_subgraph>;
-  orderDirection?: InputMaybe<OrderDirection_subgraph>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  subgraphError?: _SubgraphErrorPolicy__subgraph;
-  where?: InputMaybe<UpdatedListing_Filter_subgraph>;
-};
-
-
 export type QueryUpgradedArgs_subgraph = {
   block?: InputMaybe<Block_Height_subgraph>;
   id: Scalars['ID']['input'];
@@ -2304,8 +2339,8 @@ export type Subscription_subgraph = {
   currencyApprovedForListings: Array<CurrencyApprovedForListing_subgraph>;
   initialized?: Maybe<Initialized_subgraph>;
   initializeds: Array<Initialized_subgraph>;
-  newListing?: Maybe<NewListing_subgraph>;
-  newListings: Array<NewListing_subgraph>;
+  listing?: Maybe<Listing_subgraph>;
+  listings: Array<Listing_subgraph>;
   newSale?: Maybe<NewSale_subgraph>;
   newSales: Array<NewSale_subgraph>;
   ownershipTransferred?: Maybe<OwnershipTransferred_subgraph>;
@@ -2314,8 +2349,6 @@ export type Subscription_subgraph = {
   tokenXs: Array<TokenX_subgraph>;
   transfer?: Maybe<Transfer_subgraph>;
   transfers: Array<Transfer_subgraph>;
-  updatedListing?: Maybe<UpdatedListing_subgraph>;
-  updatedListings: Array<UpdatedListing_subgraph>;
   upgraded?: Maybe<Upgraded_subgraph>;
   upgradeds: Array<Upgraded_subgraph>;
 };
@@ -2596,21 +2629,21 @@ export type SubscriptionInitializedsArgs_subgraph = {
 };
 
 
-export type SubscriptionNewListingArgs_subgraph = {
+export type SubscriptionListingArgs_subgraph = {
   block?: InputMaybe<Block_Height_subgraph>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy__subgraph;
 };
 
 
-export type SubscriptionNewListingsArgs_subgraph = {
+export type SubscriptionListingsArgs_subgraph = {
   block?: InputMaybe<Block_Height_subgraph>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<NewListing_OrderBy_subgraph>;
+  orderBy?: InputMaybe<Listing_OrderBy_subgraph>;
   orderDirection?: InputMaybe<OrderDirection_subgraph>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy__subgraph;
-  where?: InputMaybe<NewListing_Filter_subgraph>;
+  where?: InputMaybe<Listing_Filter_subgraph>;
 };
 
 
@@ -2683,24 +2716,6 @@ export type SubscriptionTransfersArgs_subgraph = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy__subgraph;
   where?: InputMaybe<Transfer_Filter_subgraph>;
-};
-
-
-export type SubscriptionUpdatedListingArgs_subgraph = {
-  block?: InputMaybe<Block_Height_subgraph>;
-  id: Scalars['ID']['input'];
-  subgraphError?: _SubgraphErrorPolicy__subgraph;
-};
-
-
-export type SubscriptionUpdatedListingsArgs_subgraph = {
-  block?: InputMaybe<Block_Height_subgraph>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<UpdatedListing_OrderBy_subgraph>;
-  orderDirection?: InputMaybe<OrderDirection_subgraph>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  subgraphError?: _SubgraphErrorPolicy__subgraph;
-  where?: InputMaybe<UpdatedListing_Filter_subgraph>;
 };
 
 
@@ -2901,254 +2916,6 @@ export enum Transfer_OrderBy_subgraph {
   TransactionHash_subgraph = 'transactionHash'
 }
 
-export type UpdatedListing_subgraph = {
-  __typename?: 'UpdatedListing';
-  assetContract: Scalars['Bytes']['output'];
-  blockNumber: Scalars['BigInt']['output'];
-  blockTimestamp: Scalars['BigInt']['output'];
-  id: Scalars['Bytes']['output'];
-  listingCreator: Scalars['Bytes']['output'];
-  listingId: Scalars['BigInt']['output'];
-  listing_assetContract: Scalars['Bytes']['output'];
-  listing_currency: Scalars['Bytes']['output'];
-  listing_endTimestamp: Scalars['BigInt']['output'];
-  listing_listingCreator: Scalars['Bytes']['output'];
-  listing_listingId: Scalars['BigInt']['output'];
-  listing_listingOwner: Scalars['Bytes']['output'];
-  listing_pricePerToken: Scalars['BigInt']['output'];
-  listing_quantity: Scalars['BigInt']['output'];
-  listing_reserved: Scalars['Boolean']['output'];
-  listing_startTimestamp: Scalars['BigInt']['output'];
-  listing_status: Scalars['Int']['output'];
-  listing_taxBeneficiary: Scalars['Bytes']['output'];
-  listing_taxRate: Scalars['BigInt']['output'];
-  listing_tokenId: Scalars['BigInt']['output'];
-  listing_tokenType: Scalars['Int']['output'];
-  transactionHash: Scalars['Bytes']['output'];
-};
-
-export type UpdatedListing_Filter_subgraph = {
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter_subgraph>;
-  and?: InputMaybe<Array<InputMaybe<UpdatedListing_Filter_subgraph>>>;
-  assetContract?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  assetContract_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_not?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id?: InputMaybe<Scalars['Bytes']['input']>;
-  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listingCreator?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listingCreator_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listingId?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listingId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_assetContract?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_assetContract_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_currency?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_currency_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_endTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_endTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_listingCreator?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_listingCreator_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_listingId?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_listingId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_listingOwner?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_listingOwner_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_pricePerToken?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_pricePerToken_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_quantity?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_quantity_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_reserved?: InputMaybe<Scalars['Boolean']['input']>;
-  listing_reserved_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
-  listing_reserved_not?: InputMaybe<Scalars['Boolean']['input']>;
-  listing_reserved_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
-  listing_startTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_startTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_status?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_gt?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_gte?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  listing_status_lt?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_lte?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_not?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  listing_taxBeneficiary?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_taxBeneficiary_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_taxRate?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_taxRate_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_tokenId?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_tokenId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_tokenType?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_gt?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_gte?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  listing_tokenType_lt?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_lte?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_not?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  or?: InputMaybe<Array<InputMaybe<UpdatedListing_Filter_subgraph>>>;
-  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-};
-
-export enum UpdatedListing_OrderBy_subgraph {
-  AssetContract_subgraph = 'assetContract',
-  BlockNumber_subgraph = 'blockNumber',
-  BlockTimestamp_subgraph = 'blockTimestamp',
-  Id_subgraph = 'id',
-  ListingCreator_subgraph = 'listingCreator',
-  ListingId_subgraph = 'listingId',
-  ListingAssetContract_subgraph = 'listing_assetContract',
-  ListingCurrency_subgraph = 'listing_currency',
-  ListingEndTimestamp_subgraph = 'listing_endTimestamp',
-  ListingListingCreator_subgraph = 'listing_listingCreator',
-  ListingListingId_subgraph = 'listing_listingId',
-  ListingListingOwner_subgraph = 'listing_listingOwner',
-  ListingPricePerToken_subgraph = 'listing_pricePerToken',
-  ListingQuantity_subgraph = 'listing_quantity',
-  ListingReserved_subgraph = 'listing_reserved',
-  ListingStartTimestamp_subgraph = 'listing_startTimestamp',
-  ListingStatus_subgraph = 'listing_status',
-  ListingTaxBeneficiary_subgraph = 'listing_taxBeneficiary',
-  ListingTaxRate_subgraph = 'listing_taxRate',
-  ListingTokenId_subgraph = 'listing_tokenId',
-  ListingTokenType_subgraph = 'listing_tokenType',
-  TransactionHash_subgraph = 'transactionHash'
-}
-
 export type Upgraded_subgraph = {
   __typename?: 'Upgraded';
   blockNumber: Scalars['BigInt']['output'];
@@ -3271,7 +3038,7 @@ export type AdGroupQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdGroupQuery_subgraph = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> } | null };
+export type AdGroupQuery_subgraph = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
 
 export type AdGroupsQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3293,7 +3060,7 @@ export type AdGroupsQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdGroupsQuery_subgraph = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> }> };
+export type AdGroupsQuery_subgraph = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
 
 export type AdSpaceQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3306,7 +3073,7 @@ export type AdSpaceQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdSpaceQuery_subgraph = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
+export type AdSpaceQuery_subgraph = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
 
 export type AdSpacesQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3323,7 +3090,7 @@ export type AdSpacesQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdSpacesQuery_subgraph = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
+export type AdSpacesQuery_subgraph = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
 
 export type AdPoolQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3331,7 +3098,7 @@ export type AdPoolQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdPoolQuery_subgraph = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
+export type AdPoolQuery_subgraph = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
 
 export type AdPoolsQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3343,7 +3110,7 @@ export type AdPoolsQueryVariables_subgraph = Exact<{
 }>;
 
 
-export type AdPoolsQuery_subgraph = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
+export type AdPoolsQuery_subgraph = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
 
 export type TokenXQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3425,25 +3192,25 @@ export type CurrencyApprovedForListingsQueryVariables_subgraph = Exact<{
 
 export type CurrencyApprovedForListingsQuery_subgraph = { __typename?: 'Query', currencyApprovedForListings: Array<{ __typename?: 'CurrencyApprovedForListing', id: any, listingId: any, currency: any, pricePerToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
 
-export type NewListingQueryVariables_subgraph = Exact<{
+export type ListingQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
   block?: InputMaybe<Block_Height_subgraph>;
 }>;
 
 
-export type NewListingQuery_subgraph = { __typename?: 'Query', newListing?: { __typename?: 'NewListing', id: any, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
+export type ListingQuery_subgraph = { __typename?: 'Query', listing?: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
 
-export type NewListingsQueryVariables_subgraph = Exact<{
+export type ListingsQueryVariables_subgraph = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<NewListing_OrderBy_subgraph>;
+  orderBy?: InputMaybe<Listing_OrderBy_subgraph>;
   orderDirection?: InputMaybe<OrderDirection_subgraph>;
-  where?: InputMaybe<NewListing_Filter_subgraph>;
+  where?: InputMaybe<Listing_Filter_subgraph>;
   block?: InputMaybe<Block_Height_subgraph>;
 }>;
 
 
-export type NewListingsQuery_subgraph = { __typename?: 'Query', newListings: Array<{ __typename?: 'NewListing', id: any, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
+export type ListingsQuery_subgraph = { __typename?: 'Query', listings: Array<{ __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
 
 export type NewSaleQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3464,26 +3231,6 @@ export type NewSalesQueryVariables_subgraph = Exact<{
 
 
 export type NewSalesQuery_subgraph = { __typename?: 'Query', newSales: Array<{ __typename?: 'NewSale', id: any, listingCreator: any, listingId: any, assetContract: any, tokenId: any, buyer: any, quantityBought: any, totalPricePaid: any, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
-
-export type UpdatedListingQueryVariables_subgraph = Exact<{
-  id: Scalars['ID']['input'];
-  block?: InputMaybe<Block_Height_subgraph>;
-}>;
-
-
-export type UpdatedListingQuery_subgraph = { __typename?: 'Query', updatedListing?: { __typename?: 'UpdatedListing', id: any, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
-
-export type UpdatedListingsQueryVariables_subgraph = Exact<{
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<UpdatedListing_OrderBy_subgraph>;
-  orderDirection?: InputMaybe<OrderDirection_subgraph>;
-  where?: InputMaybe<UpdatedListing_Filter_subgraph>;
-  block?: InputMaybe<Block_Height_subgraph>;
-}>;
-
-
-export type UpdatedListingsQuery_subgraph = { __typename?: 'Query', updatedListings: Array<{ __typename?: 'UpdatedListing', id: any, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
 
 export type AdGroupCreatedQueryVariables_subgraph = Exact<{
   id: Scalars['ID']['input'];
@@ -3760,6 +3507,30 @@ export const AdGroupDocument_subgraph = gql`
         blockTimestamp
         transactionHash
       }
+      listing {
+        id
+        listingCreator
+        listingId
+        assetContract
+        listing_listingId
+        listing_tokenId
+        listing_quantity
+        listing_pricePerToken
+        listing_startTimestamp
+        listing_endTimestamp
+        listing_listingCreator
+        listing_listingOwner
+        listing_assetContract
+        listing_currency
+        listing_taxRate
+        listing_taxBeneficiary
+        listing_tokenType
+        listing_status
+        listing_reserved
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -3810,6 +3581,30 @@ export const AdGroupsDocument_subgraph = gql`
         blockTimestamp
         transactionHash
       }
+      listing {
+        id
+        listingCreator
+        listingId
+        assetContract
+        listing_listingId
+        listing_tokenId
+        listing_quantity
+        listing_pricePerToken
+        listing_startTimestamp
+        listing_endTimestamp
+        listing_listingCreator
+        listing_listingOwner
+        listing_assetContract
+        listing_currency
+        listing_taxRate
+        listing_taxBeneficiary
+        listing_tokenType
+        listing_status
+        listing_reserved
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -3847,6 +3642,30 @@ export const AdSpaceDocument_subgraph = gql`
         blockTimestamp
         transactionHash
       }
+      blockTimestamp
+      transactionHash
+    }
+    listing {
+      id
+      listingCreator
+      listingId
+      assetContract
+      listing_listingId
+      listing_tokenId
+      listing_quantity
+      listing_pricePerToken
+      listing_startTimestamp
+      listing_endTimestamp
+      listing_listingCreator
+      listing_listingOwner
+      listing_assetContract
+      listing_currency
+      listing_taxRate
+      listing_taxBeneficiary
+      listing_tokenType
+      listing_status
+      listing_reserved
+      blockNumber
       blockTimestamp
       transactionHash
     }
@@ -3894,6 +3713,30 @@ export const AdSpacesDocument_subgraph = gql`
       blockTimestamp
       transactionHash
     }
+    listing {
+      id
+      listingCreator
+      listingId
+      assetContract
+      listing_listingId
+      listing_tokenId
+      listing_quantity
+      listing_pricePerToken
+      listing_startTimestamp
+      listing_endTimestamp
+      listing_listingCreator
+      listing_listingOwner
+      listing_assetContract
+      listing_currency
+      listing_taxRate
+      listing_taxBeneficiary
+      listing_tokenType
+      listing_status
+      listing_reserved
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
     uri
     blockTimestamp
     transactionHash
@@ -3910,6 +3753,30 @@ export const AdPoolDocument_subgraph = gql`
       adGroup {
         id
         beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      listing {
+        id
+        listingCreator
+        listingId
+        assetContract
+        listing_listingId
+        listing_tokenId
+        listing_quantity
+        listing_pricePerToken
+        listing_startTimestamp
+        listing_endTimestamp
+        listing_listingCreator
+        listing_listingOwner
+        listing_assetContract
+        listing_currency
+        listing_taxRate
+        listing_taxBeneficiary
+        listing_tokenType
+        listing_status
+        listing_reserved
+        blockNumber
         blockTimestamp
         transactionHash
       }
@@ -3948,6 +3815,30 @@ export const AdPoolsDocument_subgraph = gql`
       adGroup {
         id
         beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      listing {
+        id
+        listingCreator
+        listingId
+        assetContract
+        listing_listingId
+        listing_tokenId
+        listing_quantity
+        listing_pricePerToken
+        listing_startTimestamp
+        listing_endTimestamp
+        listing_listingCreator
+        listing_listingOwner
+        listing_assetContract
+        listing_currency
+        listing_taxRate
+        listing_taxBeneficiary
+        listing_tokenType
+        listing_status
+        listing_reserved
+        blockNumber
         blockTimestamp
         transactionHash
       }
@@ -4099,9 +3990,9 @@ export const CurrencyApprovedForListingsDocument_subgraph = gql`
   }
 }
     `;
-export const NewListingDocument_subgraph = gql`
-    query newListing($id: ID!, $block: Block_height) {
-  newListing(id: $id, block: $block) {
+export const ListingDocument_subgraph = gql`
+    query listing($id: ID!, $block: Block_height) {
+  listing(id: $id, block: $block) {
     id
     listingCreator
     listingId
@@ -4127,9 +4018,9 @@ export const NewListingDocument_subgraph = gql`
   }
 }
     `;
-export const NewListingsDocument_subgraph = gql`
-    query newListings($skip: Int, $first: Int, $orderBy: NewListing_orderBy, $orderDirection: OrderDirection, $where: NewListing_filter, $block: Block_height) {
-  newListings(
+export const ListingsDocument_subgraph = gql`
+    query listings($skip: Int, $first: Int, $orderBy: Listing_orderBy, $orderDirection: OrderDirection, $where: Listing_filter, $block: Block_height) {
+  listings(
     skip: $skip
     first: $first
     orderBy: $orderBy
@@ -4197,69 +4088,6 @@ export const NewSalesDocument_subgraph = gql`
     buyer
     quantityBought
     totalPricePaid
-    blockNumber
-    blockTimestamp
-    transactionHash
-  }
-}
-    `;
-export const UpdatedListingDocument_subgraph = gql`
-    query updatedListing($id: ID!, $block: Block_height) {
-  updatedListing(id: $id, block: $block) {
-    id
-    listingCreator
-    listingId
-    assetContract
-    listing_listingId
-    listing_tokenId
-    listing_quantity
-    listing_pricePerToken
-    listing_startTimestamp
-    listing_endTimestamp
-    listing_listingCreator
-    listing_listingOwner
-    listing_assetContract
-    listing_currency
-    listing_taxRate
-    listing_taxBeneficiary
-    listing_tokenType
-    listing_status
-    listing_reserved
-    blockNumber
-    blockTimestamp
-    transactionHash
-  }
-}
-    `;
-export const UpdatedListingsDocument_subgraph = gql`
-    query updatedListings($skip: Int, $first: Int, $orderBy: UpdatedListing_orderBy, $orderDirection: OrderDirection, $where: UpdatedListing_filter, $block: Block_height) {
-  updatedListings(
-    skip: $skip
-    first: $first
-    orderBy: $orderBy
-    orderDirection: $orderDirection
-    where: $where
-    block: $block
-  ) {
-    id
-    listingCreator
-    listingId
-    assetContract
-    listing_listingId
-    listing_tokenId
-    listing_quantity
-    listing_pricePerToken
-    listing_startTimestamp
-    listing_endTimestamp
-    listing_listingCreator
-    listing_listingOwner
-    listing_assetContract
-    listing_currency
-    listing_taxRate
-    listing_taxBeneficiary
-    listing_tokenType
-    listing_status
-    listing_reserved
     blockNumber
     blockTimestamp
     transactionHash
@@ -4688,23 +4516,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     currencyApprovedForListings(variables?: CurrencyApprovedForListingsQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<CurrencyApprovedForListingsQuery_subgraph> {
       return withWrapper((wrappedRequestHeaders) => client.request<CurrencyApprovedForListingsQuery_subgraph>(CurrencyApprovedForListingsDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'currencyApprovedForListings', 'query', variables);
     },
-    newListing(variables: NewListingQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<NewListingQuery_subgraph> {
-      return withWrapper((wrappedRequestHeaders) => client.request<NewListingQuery_subgraph>(NewListingDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'newListing', 'query', variables);
+    listing(variables: ListingQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<ListingQuery_subgraph> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ListingQuery_subgraph>(ListingDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'listing', 'query', variables);
     },
-    newListings(variables?: NewListingsQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<NewListingsQuery_subgraph> {
-      return withWrapper((wrappedRequestHeaders) => client.request<NewListingsQuery_subgraph>(NewListingsDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'newListings', 'query', variables);
+    listings(variables?: ListingsQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<ListingsQuery_subgraph> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ListingsQuery_subgraph>(ListingsDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'listings', 'query', variables);
     },
     newSale(variables: NewSaleQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<NewSaleQuery_subgraph> {
       return withWrapper((wrappedRequestHeaders) => client.request<NewSaleQuery_subgraph>(NewSaleDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'newSale', 'query', variables);
     },
     newSales(variables?: NewSalesQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<NewSalesQuery_subgraph> {
       return withWrapper((wrappedRequestHeaders) => client.request<NewSalesQuery_subgraph>(NewSalesDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'newSales', 'query', variables);
-    },
-    updatedListing(variables: UpdatedListingQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdatedListingQuery_subgraph> {
-      return withWrapper((wrappedRequestHeaders) => client.request<UpdatedListingQuery_subgraph>(UpdatedListingDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updatedListing', 'query', variables);
-    },
-    updatedListings(variables?: UpdatedListingsQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<UpdatedListingsQuery_subgraph> {
-      return withWrapper((wrappedRequestHeaders) => client.request<UpdatedListingsQuery_subgraph>(UpdatedListingsDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updatedListings', 'query', variables);
     },
     adGroupCreated(variables: AdGroupCreatedQueryVariables_subgraph, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdGroupCreatedQuery_subgraph> {
       return withWrapper((wrappedRequestHeaders) => client.request<AdGroupCreatedQuery_subgraph>(AdGroupCreatedDocument_subgraph, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adGroupCreated', 'query', variables);

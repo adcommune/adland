@@ -316,6 +316,7 @@ export type AdSpace = {
   adPools: Array<AdPool>;
   blockTimestamp: Scalars['BigInt']['output'];
   id: Scalars['String']['output'];
+  listing: Listing;
   transactionHash: Scalars['Bytes']['output'];
   uri?: Maybe<Scalars['String']['output']>;
 };
@@ -631,6 +632,27 @@ export type AdSpace_Filter = {
   id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   id_starts_with?: InputMaybe<Scalars['String']['input']>;
   id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing?: InputMaybe<Scalars['String']['input']>;
+  listing_?: InputMaybe<Listing_Filter>;
+  listing_contains?: InputMaybe<Scalars['String']['input']>;
+  listing_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing_ends_with?: InputMaybe<Scalars['String']['input']>;
+  listing_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing_gt?: InputMaybe<Scalars['String']['input']>;
+  listing_gte?: InputMaybe<Scalars['String']['input']>;
+  listing_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  listing_lt?: InputMaybe<Scalars['String']['input']>;
+  listing_lte?: InputMaybe<Scalars['String']['input']>;
+  listing_not?: InputMaybe<Scalars['String']['input']>;
+  listing_not_contains?: InputMaybe<Scalars['String']['input']>;
+  listing_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  listing_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  listing_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  listing_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  listing_starts_with?: InputMaybe<Scalars['String']['input']>;
+  listing_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   or?: InputMaybe<Array<InputMaybe<AdSpace_Filter>>>;
   transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
@@ -673,6 +695,29 @@ export enum AdSpace_OrderBy {
   AdPools = 'adPools',
   BlockTimestamp = 'blockTimestamp',
   Id = 'id',
+  Listing = 'listing',
+  ListingAssetContract = 'listing__assetContract',
+  ListingBlockNumber = 'listing__blockNumber',
+  ListingBlockTimestamp = 'listing__blockTimestamp',
+  ListingId = 'listing__id',
+  ListingListingCreator = 'listing__listingCreator',
+  ListingListingId = 'listing__listingId',
+  ListingListingAssetContract = 'listing__listing_assetContract',
+  ListingListingCurrency = 'listing__listing_currency',
+  ListingListingEndTimestamp = 'listing__listing_endTimestamp',
+  ListingListingListingCreator = 'listing__listing_listingCreator',
+  ListingListingListingId = 'listing__listing_listingId',
+  ListingListingListingOwner = 'listing__listing_listingOwner',
+  ListingListingPricePerToken = 'listing__listing_pricePerToken',
+  ListingListingQuantity = 'listing__listing_quantity',
+  ListingListingReserved = 'listing__listing_reserved',
+  ListingListingStartTimestamp = 'listing__listing_startTimestamp',
+  ListingListingStatus = 'listing__listing_status',
+  ListingListingTaxBeneficiary = 'listing__listing_taxBeneficiary',
+  ListingListingTaxRate = 'listing__listing_taxRate',
+  ListingListingTokenId = 'listing__listing_tokenId',
+  ListingListingTokenType = 'listing__listing_tokenType',
+  ListingTransactionHash = 'listing__transactionHash',
   TransactionHash = 'transactionHash',
   Uri = 'uri'
 }
@@ -1348,12 +1393,12 @@ export enum Initialized_OrderBy {
   Version = 'version'
 }
 
-export type NewListing = {
-  __typename?: 'NewListing';
+export type Listing = {
+  __typename?: 'Listing';
   assetContract: Scalars['Bytes']['output'];
   blockNumber: Scalars['BigInt']['output'];
   blockTimestamp: Scalars['BigInt']['output'];
-  id: Scalars['Bytes']['output'];
+  id: Scalars['String']['output'];
   listingCreator: Scalars['Bytes']['output'];
   listingId: Scalars['BigInt']['output'];
   listing_assetContract: Scalars['Bytes']['output'];
@@ -1374,10 +1419,10 @@ export type NewListing = {
   transactionHash: Scalars['Bytes']['output'];
 };
 
-export type NewListing_Filter = {
+export type Listing_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<NewListing_Filter>>>;
+  and?: InputMaybe<Array<InputMaybe<Listing_Filter>>>;
   assetContract?: InputMaybe<Scalars['Bytes']['input']>;
   assetContract_contains?: InputMaybe<Scalars['Bytes']['input']>;
   assetContract_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -1404,16 +1449,26 @@ export type NewListing_Filter = {
   blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
   blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id?: InputMaybe<Scalars['Bytes']['input']>;
-  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   listingCreator?: InputMaybe<Scalars['Bytes']['input']>;
   listingCreator_contains?: InputMaybe<Scalars['Bytes']['input']>;
   listingCreator_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -1558,7 +1613,7 @@ export type NewListing_Filter = {
   listing_tokenType_lte?: InputMaybe<Scalars['Int']['input']>;
   listing_tokenType_not?: InputMaybe<Scalars['Int']['input']>;
   listing_tokenType_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  or?: InputMaybe<Array<InputMaybe<NewListing_Filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Listing_Filter>>>;
   transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -1571,7 +1626,7 @@ export type NewListing_Filter = {
   transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
 };
 
-export enum NewListing_OrderBy {
+export enum Listing_OrderBy {
   AssetContract = 'assetContract',
   BlockNumber = 'blockNumber',
   BlockTimestamp = 'blockTimestamp',
@@ -1852,8 +1907,8 @@ export type Query = {
   currencyApprovedForListings: Array<CurrencyApprovedForListing>;
   initialized?: Maybe<Initialized>;
   initializeds: Array<Initialized>;
-  newListing?: Maybe<NewListing>;
-  newListings: Array<NewListing>;
+  listing?: Maybe<Listing>;
+  listings: Array<Listing>;
   newSale?: Maybe<NewSale>;
   newSales: Array<NewSale>;
   ownershipTransferred?: Maybe<OwnershipTransferred>;
@@ -1862,8 +1917,6 @@ export type Query = {
   tokenXs: Array<TokenX>;
   transfer?: Maybe<Transfer>;
   transfers: Array<Transfer>;
-  updatedListing?: Maybe<UpdatedListing>;
-  updatedListings: Array<UpdatedListing>;
   upgraded?: Maybe<Upgraded>;
   upgradeds: Array<Upgraded>;
 };
@@ -2144,21 +2197,21 @@ export type QueryInitializedsArgs = {
 };
 
 
-export type QueryNewListingArgs = {
+export type QueryListingArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type QueryNewListingsArgs = {
+export type QueryListingsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<NewListing_OrderBy>;
+  orderBy?: InputMaybe<Listing_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<NewListing_Filter>;
+  where?: InputMaybe<Listing_Filter>;
 };
 
 
@@ -2234,24 +2287,6 @@ export type QueryTransfersArgs = {
 };
 
 
-export type QueryUpdatedListingArgs = {
-  block?: InputMaybe<Block_Height>;
-  id: Scalars['ID']['input'];
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryUpdatedListingsArgs = {
-  block?: InputMaybe<Block_Height>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<UpdatedListing_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<UpdatedListing_Filter>;
-};
-
-
 export type QueryUpgradedArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
@@ -2303,8 +2338,8 @@ export type Subscription = {
   currencyApprovedForListings: Array<CurrencyApprovedForListing>;
   initialized?: Maybe<Initialized>;
   initializeds: Array<Initialized>;
-  newListing?: Maybe<NewListing>;
-  newListings: Array<NewListing>;
+  listing?: Maybe<Listing>;
+  listings: Array<Listing>;
   newSale?: Maybe<NewSale>;
   newSales: Array<NewSale>;
   ownershipTransferred?: Maybe<OwnershipTransferred>;
@@ -2313,8 +2348,6 @@ export type Subscription = {
   tokenXs: Array<TokenX>;
   transfer?: Maybe<Transfer>;
   transfers: Array<Transfer>;
-  updatedListing?: Maybe<UpdatedListing>;
-  updatedListings: Array<UpdatedListing>;
   upgraded?: Maybe<Upgraded>;
   upgradeds: Array<Upgraded>;
 };
@@ -2595,21 +2628,21 @@ export type SubscriptionInitializedsArgs = {
 };
 
 
-export type SubscriptionNewListingArgs = {
+export type SubscriptionListingArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionNewListingsArgs = {
+export type SubscriptionListingsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<NewListing_OrderBy>;
+  orderBy?: InputMaybe<Listing_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<NewListing_Filter>;
+  where?: InputMaybe<Listing_Filter>;
 };
 
 
@@ -2682,24 +2715,6 @@ export type SubscriptionTransfersArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Transfer_Filter>;
-};
-
-
-export type SubscriptionUpdatedListingArgs = {
-  block?: InputMaybe<Block_Height>;
-  id: Scalars['ID']['input'];
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionUpdatedListingsArgs = {
-  block?: InputMaybe<Block_Height>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<UpdatedListing_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<UpdatedListing_Filter>;
 };
 
 
@@ -2900,254 +2915,6 @@ export enum Transfer_OrderBy {
   TransactionHash = 'transactionHash'
 }
 
-export type UpdatedListing = {
-  __typename?: 'UpdatedListing';
-  assetContract: Scalars['Bytes']['output'];
-  blockNumber: Scalars['BigInt']['output'];
-  blockTimestamp: Scalars['BigInt']['output'];
-  id: Scalars['Bytes']['output'];
-  listingCreator: Scalars['Bytes']['output'];
-  listingId: Scalars['BigInt']['output'];
-  listing_assetContract: Scalars['Bytes']['output'];
-  listing_currency: Scalars['Bytes']['output'];
-  listing_endTimestamp: Scalars['BigInt']['output'];
-  listing_listingCreator: Scalars['Bytes']['output'];
-  listing_listingId: Scalars['BigInt']['output'];
-  listing_listingOwner: Scalars['Bytes']['output'];
-  listing_pricePerToken: Scalars['BigInt']['output'];
-  listing_quantity: Scalars['BigInt']['output'];
-  listing_reserved: Scalars['Boolean']['output'];
-  listing_startTimestamp: Scalars['BigInt']['output'];
-  listing_status: Scalars['Int']['output'];
-  listing_taxBeneficiary: Scalars['Bytes']['output'];
-  listing_taxRate: Scalars['BigInt']['output'];
-  listing_tokenId: Scalars['BigInt']['output'];
-  listing_tokenType: Scalars['Int']['output'];
-  transactionHash: Scalars['Bytes']['output'];
-};
-
-export type UpdatedListing_Filter = {
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<UpdatedListing_Filter>>>;
-  assetContract?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  assetContract_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_not?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  assetContract_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id?: InputMaybe<Scalars['Bytes']['input']>;
-  id_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  id_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  id_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listingCreator?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listingCreator_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listingCreator_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listingId?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listingId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listingId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_assetContract?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_assetContract_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_assetContract_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_currency?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_currency_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_currency_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_endTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_endTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_endTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_listingCreator?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_listingCreator_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingCreator_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_listingId?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_listingId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_listingId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_listingOwner?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_listingOwner_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_listingOwner_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_pricePerToken?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_pricePerToken_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_pricePerToken_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_quantity?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_quantity_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_quantity_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_reserved?: InputMaybe<Scalars['Boolean']['input']>;
-  listing_reserved_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
-  listing_reserved_not?: InputMaybe<Scalars['Boolean']['input']>;
-  listing_reserved_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
-  listing_startTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_startTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_startTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_status?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_gt?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_gte?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  listing_status_lt?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_lte?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_not?: InputMaybe<Scalars['Int']['input']>;
-  listing_status_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  listing_taxBeneficiary?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_taxBeneficiary_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_not?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  listing_taxBeneficiary_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  listing_taxRate?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_taxRate_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_taxRate_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_tokenId?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_tokenId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_not?: InputMaybe<Scalars['BigInt']['input']>;
-  listing_tokenId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  listing_tokenType?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_gt?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_gte?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  listing_tokenType_lt?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_lte?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_not?: InputMaybe<Scalars['Int']['input']>;
-  listing_tokenType_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  or?: InputMaybe<Array<InputMaybe<UpdatedListing_Filter>>>;
-  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-};
-
-export enum UpdatedListing_OrderBy {
-  AssetContract = 'assetContract',
-  BlockNumber = 'blockNumber',
-  BlockTimestamp = 'blockTimestamp',
-  Id = 'id',
-  ListingCreator = 'listingCreator',
-  ListingId = 'listingId',
-  ListingAssetContract = 'listing_assetContract',
-  ListingCurrency = 'listing_currency',
-  ListingEndTimestamp = 'listing_endTimestamp',
-  ListingListingCreator = 'listing_listingCreator',
-  ListingListingId = 'listing_listingId',
-  ListingListingOwner = 'listing_listingOwner',
-  ListingPricePerToken = 'listing_pricePerToken',
-  ListingQuantity = 'listing_quantity',
-  ListingReserved = 'listing_reserved',
-  ListingStartTimestamp = 'listing_startTimestamp',
-  ListingStatus = 'listing_status',
-  ListingTaxBeneficiary = 'listing_taxBeneficiary',
-  ListingTaxRate = 'listing_taxRate',
-  ListingTokenId = 'listing_tokenId',
-  ListingTokenType = 'listing_tokenType',
-  TransactionHash = 'transactionHash'
-}
-
 export type Upgraded = {
   __typename?: 'Upgraded';
   blockNumber: Scalars['BigInt']['output'];
@@ -3270,7 +3037,7 @@ export type AdGroupQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> } | null };
+export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
 
 export type AdGroupsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3292,7 +3059,7 @@ export type AdGroupsQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> }> };
+export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
 
 export type AdSpaceQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3305,7 +3072,7 @@ export type AdSpaceQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> } | null };
+export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
 
 export type AdSpacesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3322,7 +3089,7 @@ export type AdSpacesQueryVariables = Exact<{
 }>;
 
 
-export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> }> };
+export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
 
 export type AdPoolQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3330,7 +3097,7 @@ export type AdPoolQueryVariables = Exact<{
 }>;
 
 
-export type AdPoolQuery = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
+export type AdPoolQuery = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
 
 export type AdPoolsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3342,7 +3109,7 @@ export type AdPoolsQueryVariables = Exact<{
 }>;
 
 
-export type AdPoolsQuery = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
+export type AdPoolsQuery = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, blockTimestamp: any, transactionHash: any }, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
 
 export type TokenXQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3424,25 +3191,25 @@ export type CurrencyApprovedForListingsQueryVariables = Exact<{
 
 export type CurrencyApprovedForListingsQuery = { __typename?: 'Query', currencyApprovedForListings: Array<{ __typename?: 'CurrencyApprovedForListing', id: any, listingId: any, currency: any, pricePerToken: any, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
 
-export type NewListingQueryVariables = Exact<{
+export type ListingQueryVariables = Exact<{
   id: Scalars['ID']['input'];
   block?: InputMaybe<Block_Height>;
 }>;
 
 
-export type NewListingQuery = { __typename?: 'Query', newListing?: { __typename?: 'NewListing', id: any, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
+export type ListingQuery = { __typename?: 'Query', listing?: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
 
-export type NewListingsQueryVariables = Exact<{
+export type ListingsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<NewListing_OrderBy>;
+  orderBy?: InputMaybe<Listing_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<NewListing_Filter>;
+  where?: InputMaybe<Listing_Filter>;
   block?: InputMaybe<Block_Height>;
 }>;
 
 
-export type NewListingsQuery = { __typename?: 'Query', newListings: Array<{ __typename?: 'NewListing', id: any, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
+export type ListingsQuery = { __typename?: 'Query', listings: Array<{ __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
 
 export type NewSaleQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3463,26 +3230,6 @@ export type NewSalesQueryVariables = Exact<{
 
 
 export type NewSalesQuery = { __typename?: 'Query', newSales: Array<{ __typename?: 'NewSale', id: any, listingCreator: any, listingId: any, assetContract: any, tokenId: any, buyer: any, quantityBought: any, totalPricePaid: any, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
-
-export type UpdatedListingQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-  block?: InputMaybe<Block_Height>;
-}>;
-
-
-export type UpdatedListingQuery = { __typename?: 'Query', updatedListing?: { __typename?: 'UpdatedListing', id: any, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
-
-export type UpdatedListingsQueryVariables = Exact<{
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<UpdatedListing_OrderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<UpdatedListing_Filter>;
-  block?: InputMaybe<Block_Height>;
-}>;
-
-
-export type UpdatedListingsQuery = { __typename?: 'Query', updatedListings: Array<{ __typename?: 'UpdatedListing', id: any, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
 
 export type AdGroupCreatedQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3760,6 +3507,30 @@ export const AdGroupDocument = `
         blockTimestamp
         transactionHash
       }
+      listing {
+        id
+        listingCreator
+        listingId
+        assetContract
+        listing_listingId
+        listing_tokenId
+        listing_quantity
+        listing_pricePerToken
+        listing_startTimestamp
+        listing_endTimestamp
+        listing_listingCreator
+        listing_listingOwner
+        listing_assetContract
+        listing_currency
+        listing_taxRate
+        listing_taxBeneficiary
+        listing_tokenType
+        listing_status
+        listing_reserved
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -3827,6 +3598,30 @@ export const AdGroupsDocument = `
         blockTimestamp
         transactionHash
       }
+      listing {
+        id
+        listingCreator
+        listingId
+        assetContract
+        listing_listingId
+        listing_tokenId
+        listing_quantity
+        listing_pricePerToken
+        listing_startTimestamp
+        listing_endTimestamp
+        listing_listingCreator
+        listing_listingOwner
+        listing_assetContract
+        listing_currency
+        listing_taxRate
+        listing_taxBeneficiary
+        listing_tokenType
+        listing_status
+        listing_reserved
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -3881,6 +3676,30 @@ export const AdSpaceDocument = `
         blockTimestamp
         transactionHash
       }
+      blockTimestamp
+      transactionHash
+    }
+    listing {
+      id
+      listingCreator
+      listingId
+      assetContract
+      listing_listingId
+      listing_tokenId
+      listing_quantity
+      listing_pricePerToken
+      listing_startTimestamp
+      listing_endTimestamp
+      listing_listingCreator
+      listing_listingOwner
+      listing_assetContract
+      listing_currency
+      listing_taxRate
+      listing_taxBeneficiary
+      listing_tokenType
+      listing_status
+      listing_reserved
+      blockNumber
       blockTimestamp
       transactionHash
     }
@@ -3945,6 +3764,30 @@ export const AdSpacesDocument = `
       blockTimestamp
       transactionHash
     }
+    listing {
+      id
+      listingCreator
+      listingId
+      assetContract
+      listing_listingId
+      listing_tokenId
+      listing_quantity
+      listing_pricePerToken
+      listing_startTimestamp
+      listing_endTimestamp
+      listing_listingCreator
+      listing_listingOwner
+      listing_assetContract
+      listing_currency
+      listing_taxRate
+      listing_taxBeneficiary
+      listing_tokenType
+      listing_status
+      listing_reserved
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
     uri
     blockTimestamp
     transactionHash
@@ -3978,6 +3821,30 @@ export const AdPoolDocument = `
       adGroup {
         id
         beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      listing {
+        id
+        listingCreator
+        listingId
+        assetContract
+        listing_listingId
+        listing_tokenId
+        listing_quantity
+        listing_pricePerToken
+        listing_startTimestamp
+        listing_endTimestamp
+        listing_listingCreator
+        listing_listingOwner
+        listing_assetContract
+        listing_currency
+        listing_taxRate
+        listing_taxBeneficiary
+        listing_tokenType
+        listing_status
+        listing_reserved
+        blockNumber
         blockTimestamp
         transactionHash
       }
@@ -4033,6 +3900,30 @@ export const AdPoolsDocument = `
       adGroup {
         id
         beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      listing {
+        id
+        listingCreator
+        listingId
+        assetContract
+        listing_listingId
+        listing_tokenId
+        listing_quantity
+        listing_pricePerToken
+        listing_startTimestamp
+        listing_endTimestamp
+        listing_listingCreator
+        listing_listingOwner
+        listing_assetContract
+        listing_currency
+        listing_taxRate
+        listing_taxBeneficiary
+        listing_tokenType
+        listing_status
+        listing_reserved
+        blockNumber
         blockTimestamp
         transactionHash
       }
@@ -4337,9 +4228,9 @@ export const useCurrencyApprovedForListingsQuery = <
   }
     )};
 
-export const NewListingDocument = `
-    query newListing($id: ID!, $block: Block_height) {
-  newListing(id: $id, block: $block) {
+export const ListingDocument = `
+    query listing($id: ID!, $block: Block_height) {
+  listing(id: $id, block: $block) {
     id
     listingCreator
     listingId
@@ -4366,25 +4257,25 @@ export const NewListingDocument = `
 }
     `;
 
-export const useNewListingQuery = <
-      TData = NewListingQuery,
+export const useListingQuery = <
+      TData = ListingQuery,
       TError = unknown
     >(
-      variables: NewListingQueryVariables,
-      options?: Omit<UseQueryOptions<NewListingQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<NewListingQuery, TError, TData>['queryKey'] }
+      variables: ListingQueryVariables,
+      options?: Omit<UseQueryOptions<ListingQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<ListingQuery, TError, TData>['queryKey'] }
     ) => {
     
-    return useQuery<NewListingQuery, TError, TData>(
+    return useQuery<ListingQuery, TError, TData>(
       {
-    queryKey: ['newListing', variables],
-    queryFn: fetcher<NewListingQuery, NewListingQueryVariables>(NewListingDocument).bind(null, variables),
+    queryKey: ['listing', variables],
+    queryFn: fetcher<ListingQuery, ListingQueryVariables>(ListingDocument).bind(null, variables),
     ...options
   }
     )};
 
-export const NewListingsDocument = `
-    query newListings($skip: Int, $first: Int, $orderBy: NewListing_orderBy, $orderDirection: OrderDirection, $where: NewListing_filter, $block: Block_height) {
-  newListings(
+export const ListingsDocument = `
+    query listings($skip: Int, $first: Int, $orderBy: Listing_orderBy, $orderDirection: OrderDirection, $where: Listing_filter, $block: Block_height) {
+  listings(
     skip: $skip
     first: $first
     orderBy: $orderBy
@@ -4418,18 +4309,18 @@ export const NewListingsDocument = `
 }
     `;
 
-export const useNewListingsQuery = <
-      TData = NewListingsQuery,
+export const useListingsQuery = <
+      TData = ListingsQuery,
       TError = unknown
     >(
-      variables?: NewListingsQueryVariables,
-      options?: Omit<UseQueryOptions<NewListingsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<NewListingsQuery, TError, TData>['queryKey'] }
+      variables?: ListingsQueryVariables,
+      options?: Omit<UseQueryOptions<ListingsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<ListingsQuery, TError, TData>['queryKey'] }
     ) => {
     
-    return useQuery<NewListingsQuery, TError, TData>(
+    return useQuery<ListingsQuery, TError, TData>(
       {
-    queryKey: variables === undefined ? ['newListings'] : ['newListings', variables],
-    queryFn: fetcher<NewListingsQuery, NewListingsQueryVariables>(NewListingsDocument).bind(null, variables),
+    queryKey: variables === undefined ? ['listings'] : ['listings', variables],
+    queryFn: fetcher<ListingsQuery, ListingsQueryVariables>(ListingsDocument).bind(null, variables),
     ...options
   }
     )};
@@ -4505,103 +4396,6 @@ export const useNewSalesQuery = <
       {
     queryKey: variables === undefined ? ['newSales'] : ['newSales', variables],
     queryFn: fetcher<NewSalesQuery, NewSalesQueryVariables>(NewSalesDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const UpdatedListingDocument = `
-    query updatedListing($id: ID!, $block: Block_height) {
-  updatedListing(id: $id, block: $block) {
-    id
-    listingCreator
-    listingId
-    assetContract
-    listing_listingId
-    listing_tokenId
-    listing_quantity
-    listing_pricePerToken
-    listing_startTimestamp
-    listing_endTimestamp
-    listing_listingCreator
-    listing_listingOwner
-    listing_assetContract
-    listing_currency
-    listing_taxRate
-    listing_taxBeneficiary
-    listing_tokenType
-    listing_status
-    listing_reserved
-    blockNumber
-    blockTimestamp
-    transactionHash
-  }
-}
-    `;
-
-export const useUpdatedListingQuery = <
-      TData = UpdatedListingQuery,
-      TError = unknown
-    >(
-      variables: UpdatedListingQueryVariables,
-      options?: Omit<UseQueryOptions<UpdatedListingQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<UpdatedListingQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<UpdatedListingQuery, TError, TData>(
-      {
-    queryKey: ['updatedListing', variables],
-    queryFn: fetcher<UpdatedListingQuery, UpdatedListingQueryVariables>(UpdatedListingDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const UpdatedListingsDocument = `
-    query updatedListings($skip: Int, $first: Int, $orderBy: UpdatedListing_orderBy, $orderDirection: OrderDirection, $where: UpdatedListing_filter, $block: Block_height) {
-  updatedListings(
-    skip: $skip
-    first: $first
-    orderBy: $orderBy
-    orderDirection: $orderDirection
-    where: $where
-    block: $block
-  ) {
-    id
-    listingCreator
-    listingId
-    assetContract
-    listing_listingId
-    listing_tokenId
-    listing_quantity
-    listing_pricePerToken
-    listing_startTimestamp
-    listing_endTimestamp
-    listing_listingCreator
-    listing_listingOwner
-    listing_assetContract
-    listing_currency
-    listing_taxRate
-    listing_taxBeneficiary
-    listing_tokenType
-    listing_status
-    listing_reserved
-    blockNumber
-    blockTimestamp
-    transactionHash
-  }
-}
-    `;
-
-export const useUpdatedListingsQuery = <
-      TData = UpdatedListingsQuery,
-      TError = unknown
-    >(
-      variables?: UpdatedListingsQueryVariables,
-      options?: Omit<UseQueryOptions<UpdatedListingsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<UpdatedListingsQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<UpdatedListingsQuery, TError, TData>(
-      {
-    queryKey: variables === undefined ? ['updatedListings'] : ['updatedListings', variables],
-    queryFn: fetcher<UpdatedListingsQuery, UpdatedListingsQueryVariables>(UpdatedListingsDocument).bind(null, variables),
     ...options
   }
     )};
