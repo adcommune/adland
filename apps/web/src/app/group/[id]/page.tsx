@@ -1,16 +1,29 @@
+'use client'
+
 import { Container } from '@/components/Container'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AdLand } from '@/lib/adland'
 import { Separator } from '@/components/ui/separator'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import AdGroupActivity from '@/components/AdGroup/AdGroupActivity'
+import { useQuery } from '@tanstack/react-query'
 
 type GroupPageProps = { params: { id: string } }
 
-const GroupPage = async ({ params: { id } }: GroupPageProps) => {
-  const adGroup = await new AdLand().getGroup(id)
+const GroupPage = ({ params: { id } }: GroupPageProps) => {
+  const { data: adGroup, isLoading } = useQuery({
+    queryKey: ['adGroup-', id],
+    queryFn: async () => {
+      return new AdLand().getGroup(id)
+    },
+  })
+
+  if (isLoading) {
+    return (
+      <Container className="flex  h-[400px] w-full flex-row items-center justify-center gap-2 p-4">
+        <p className="font-body text-2xl text-white">Loading...</p>
+      </Container>
+    )
+  }
 
   if (!adGroup) {
     return (
@@ -23,60 +36,54 @@ const GroupPage = async ({ params: { id } }: GroupPageProps) => {
   const { adSpaces } = adGroup
 
   return (
-    <Tabs defaultValue="ad-spaces" className="w-full">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="ad-spaces">Ad Spaces</TabsTrigger>
-        <TabsTrigger value="activity">Activity</TabsTrigger>
-      </TabsList>
-      <TabsContent value="ad-spaces" className="w-full">
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-          {adSpaces?.map(({ adSpace_subgraph: adSpace, metadata }, index) => {
-            return (
-              <Link
-                key={adSpace?.transactionHash + adSpace?.id}
-                href={'/ad/' + adSpace?.id}
-              >
-                <Card className="flex flex-col overflow-hidden">
-                  <CardHeader>
-                    <CardTitle className="font-body font-normal text-gray-500">
-                      AdSpace #{index}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="relative flex h-[400px] w-full flex-grow flex-col gap-2 bg-gray-100 py-4">
-                    {metadata?.imageGatewayURI && (
-                      <div className="flex h-2/3 flex-grow bg-gray-200">
-                        <Image
-                          width={500}
-                          height={500}
-                          alt="AdSpace Image"
-                          className=" w-full object-contain"
-                          src={metadata?.imageGatewayURI}
-                        />
-                      </div>
-                    )}
-                    <Separator />
-                    {metadata?.description && (
-                      <p className="text-left font-body text-sm font-semibold">
-                        {metadata?.description}
-                      </p>
-                    )}
-                    <Separator />
-                    {metadata?.external_url && (
-                      <p className="text-left text-sm font-light">
-                        {metadata?.external_url}
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
-              </Link>
-            )
-          })}
-        </div>
-      </TabsContent>
-      <TabsContent value="activity" className="w-full">
-        <AdGroupActivity adGroup={adGroup} />
-      </TabsContent>
-    </Tabs>
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
+      {adSpaces?.map(({ adSpace_subgraph: adSpace, metadata }) => {
+        return (
+          <Link
+            key={adSpace?.transactionHash + adSpace?.id}
+            href={'/ad/' + adSpace?.id}
+          >
+            <div className="relative flex flex-col overflow-hidden rounded-md border border-white">
+              <div className="absolute left-2 top-2 z-10">
+                <div className="rounded-md border border-black bg-white px-2">
+                  <p className="text-black">#{adSpace?.id}</p>
+                </div>
+              </div>
+              <div className="relative flex h-[400px] w-full flex-grow flex-col gap-2 bg-white bg-opacity-50 p-4 hover:bg-opacity-60">
+                {!metadata && (
+                  <div className="flex h-full w-full flex-col items-center justify-center">
+                    <p className="font-display text-2xl">No Ad</p>
+                  </div>
+                )}
+                {metadata?.imageGatewayURI && (
+                  <div className="flex h-2/3 flex-grow bg-gray-200 p-4">
+                    <Image
+                      width={500}
+                      height={500}
+                      alt="AdSpace Image"
+                      className=" w-full object-contain"
+                      src={metadata?.imageGatewayURI}
+                    />
+                  </div>
+                )}
+                {metadata && <Separator />}
+                {metadata?.description && (
+                  <p className="text-left font-body text-sm font-semibold">
+                    {metadata?.description}
+                  </p>
+                )}
+                {metadata && <Separator />}
+                {metadata?.external_url && (
+                  <p className="text-left text-sm font-light">
+                    {metadata?.external_url}
+                  </p>
+                )}
+              </div>
+            </div>
+          </Link>
+        )
+      })}
+    </div>
   )
 }
 

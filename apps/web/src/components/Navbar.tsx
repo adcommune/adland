@@ -11,7 +11,7 @@ const Navbar = ({ children }: { children: React.ReactNode }) => {
         <nav className="relative flex items-center justify-between">
           <div className="flex flex-row items-end gap-2">
             <div className="h-[20px] md:h-[38px]">
-              <Link href="/">
+              <Link href={'/'}>
                 <AdLandBrand />
               </Link>
             </div>

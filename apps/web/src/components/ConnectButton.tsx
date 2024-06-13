@@ -1,29 +1,17 @@
 import { Button } from './ui/button'
-import { useAccount } from 'wagmi'
-import { usePrivy, useWallets } from '@privy-io/react-auth'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import { usePrivy } from '@privy-io/react-auth'
 import { truncateAddress } from '@/lib/utils'
 import { zeroAddress } from 'viem'
-import { constants } from '@adland/common'
+import Link from 'next/link'
+import { UserIcon } from 'lucide-react'
+import FarcasterBadge from './FarcasterBadge'
+import { useContext } from 'react'
+import { SmartAccountContext } from '@/context/SmartAccountContext'
 
 export const ConnectButton = () => {
-  const { ready, authenticated, login, logout, user, connectWallet } =
-    usePrivy()
-  const { wallets } = useWallets()
-  const address = user?.wallet?.address ?? zeroAddress
+  const { ready, authenticated, user, login } = usePrivy()
 
-  const wallet = wallets[0]
-
-  const disableLogin = !ready || (ready && authenticated)
+  const { balance } = useContext(SmartAccountContext)
 
   if (!ready)
     return (
@@ -34,58 +22,25 @@ export const ConnectButton = () => {
 
   if (!authenticated) {
     return (
-      <Button
-        disabled={disableLogin}
-        onClick={login}
-        type="button"
-        className="font-body"
-      >
-        Connect Wallet
-      </Button>
-    )
-  }
-
-  const wrongNetwork = wallet?.chainId !== `eip155:${constants.chain.id}`
-
-  if (wrongNetwork) {
-    return (
-      <Button
-        onClick={() => {
-          if (!wallet) {
-            connectWallet()
-          } else {
-            wallet.switchChain(constants.chain.id)
-          }
-        }}
-        className="font-body"
-        type="button"
-      >
-        Wrong Network
+      <Button onClick={login} type="button" className="font-body">
+        Sign in
       </Button>
     )
   }
 
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+    <Link href="/profile">
+      {user?.farcaster ? (
+        <div className="flex h-10 flex-row gap-2 font-body">
+          <FarcasterBadge className="h-11" />
+        </div>
+      ) : (
+        <div className="flex h-10 flex-row gap-2">
           <Button type="button" variant="outline" className="h-full font-body">
-            {truncateAddress(address)}
+            <UserIcon className="h-4 w-4" />
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>
-            My Account: {truncateAddress(address)}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem onClick={logout}>
-              Logout
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+        </div>
+      )}
+    </Link>
   )
 }

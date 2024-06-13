@@ -12,6 +12,12 @@ interface ICommonAdSpaces {
 
     event AdSpaceURIUpdated(uint256 indexed adId, string uri);
 
+    event AdPoolCreated(
+        uint256 indexed adId,
+        address indexed superToken,
+        address indexed pool
+    );
+
     event AdSpaceStrategyUpdated(
         uint256 indexed adId,
         IAdStrategy indexed strategy
@@ -21,10 +27,6 @@ interface ICommonAdSpaces {
         address indexed underlyingToken,
         address indexed superToken
     );
-
-    function createAdGroup(
-        address recipient
-    ) external returns (uint256 adGroupId);
 
     function createAdGroup(
         address recipient,

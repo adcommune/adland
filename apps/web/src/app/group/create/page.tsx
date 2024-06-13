@@ -2,20 +2,16 @@
 
 import CreateAdGroupForm from '@/components/AdGroup/AdGroupCreateForm'
 import { Container } from '@/components/Container'
-import { useAccount } from 'wagmi'
 import { useTokenXsQuery } from '@adland/webkit/src/hooks'
-
+import { SmartAccountProvider } from '@/context/SmartAccountContext'
 const CreateAdminGroupPage = () => {
-  const { address } = useAccount()
   const { data } = useTokenXsQuery({ first: 5 })
 
-  console.log(data)
-
-  if (!address || !data) return <></>
+  if (!data) return <></>
 
   return (
     <Container className="mt-5">
-      <CreateAdGroupForm beneficiary={address} superTokens={data.tokenXs} />
+      <CreateAdGroupForm superTokens={data.tokenXs} />
     </Container>
   )
 }

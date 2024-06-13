@@ -1,0 +1,234 @@
+query pool($id: ID!, $block: Block_height, $pool_admin_admin_inflows_skip: Int, $pool_admin_admin_inflows_first: Int, $pool_admin_admin_inflows_orderBy: Stream_orderBy, $pool_admin_admin_inflows_orderDirection: OrderDirection, $pool_admin_admin_inflows_where: Stream_filter, $pool_admin_admin_outflows_skip: Int, $pool_admin_admin_outflows_first: Int, $pool_admin_admin_outflows_orderBy: Stream_orderBy, $pool_admin_admin_outflows_orderDirection: OrderDirection, $pool_admin_admin_outflows_where: Stream_filter, $pool_admin_admin_subscriptions_skip: Int, $pool_admin_admin_subscriptions_first: Int, $pool_admin_admin_subscriptions_orderBy: IndexSubscription_orderBy, $pool_admin_admin_subscriptions_orderDirection: OrderDirection, $pool_admin_admin_subscriptions_where: IndexSubscription_filter, $pool_admin_admin_publishedIndexes_skip: Int, $pool_admin_admin_publishedIndexes_first: Int, $pool_admin_admin_publishedIndexes_orderBy: Index_orderBy, $pool_admin_admin_publishedIndexes_orderDirection: OrderDirection, $pool_admin_admin_publishedIndexes_where: Index_filter, $pool_admin_admin_poolMemberships_skip: Int, $pool_admin_admin_poolMemberships_first: Int, $pool_admin_admin_poolMemberships_orderBy: PoolMember_orderBy, $pool_admin_admin_poolMemberships_orderDirection: OrderDirection, $pool_admin_admin_poolMemberships_where: PoolMember_filter, $pool_admin_admin_sentTransferEvents_skip: Int, $pool_admin_admin_sentTransferEvents_first: Int, $pool_admin_admin_sentTransferEvents_orderBy: TransferEvent_orderBy, $pool_admin_admin_sentTransferEvents_orderDirection: OrderDirection, $pool_admin_admin_sentTransferEvents_where: TransferEvent_filter, $pool_admin_admin_receivedTransferEvents_skip: Int, $pool_admin_admin_receivedTransferEvents_first: Int, $pool_admin_admin_receivedTransferEvents_orderBy: TransferEvent_orderBy, $pool_admin_admin_receivedTransferEvents_orderDirection: OrderDirection, $pool_admin_admin_receivedTransferEvents_where: TransferEvent_filter, $pool_admin_admin_tokenUpgradedEvents_skip: Int, $pool_admin_admin_tokenUpgradedEvents_first: Int, $pool_admin_admin_tokenUpgradedEvents_orderBy: TokenUpgradedEvent_orderBy, $pool_admin_admin_tokenUpgradedEvents_orderDirection: OrderDirection, $pool_admin_admin_tokenUpgradedEvents_where: TokenUpgradedEvent_filter, $pool_admin_admin_tokenDowngradedEvents_skip: Int, $pool_admin_admin_tokenDowngradedEvents_first: Int, $pool_admin_admin_tokenDowngradedEvents_orderBy: TokenDowngradedEvent_orderBy, $pool_admin_admin_tokenDowngradedEvents_orderDirection: OrderDirection, $pool_admin_admin_tokenDowngradedEvents_where: TokenDowngradedEvent_filter, $pool_admin_admin_accountTokenSnapshots_skip: Int, $pool_admin_admin_accountTokenSnapshots_first: Int, $pool_admin_admin_accountTokenSnapshots_orderBy: AccountTokenSnapshot_orderBy, $pool_admin_admin_accountTokenSnapshots_orderDirection: OrderDirection, $pool_admin_admin_accountTokenSnapshots_where: AccountTokenSnapshot_filter, $pool_poolDistributors_skip: Int, $pool_poolDistributors_first: Int, $pool_poolDistributors_orderBy: PoolDistributor_orderBy, $pool_poolDistributors_orderDirection: OrderDirection, $pool_poolDistributors_where: PoolDistributor_filter, $pool_poolDistributors_poolDistributors_bufferAdjustedEvents_skip: Int, $pool_poolDistributors_poolDistributors_bufferAdjustedEvents_first: Int, $pool_poolDistributors_poolDistributors_bufferAdjustedEvents_orderBy: BufferAdjustedEvent_orderBy, $pool_poolDistributors_poolDistributors_bufferAdjustedEvents_orderDirection: OrderDirection, $pool_poolDistributors_poolDistributors_bufferAdjustedEvents_where: BufferAdjustedEvent_filter, $pool_poolDistributors_poolDistributors_instantDistributionUpdatedEvents_skip: Int, $pool_poolDistributors_poolDistributors_instantDistributionUpdatedEvents_first: Int, $pool_poolDistributors_poolDistributors_instantDistributionUpdatedEvents_orderBy: InstantDistributionUpdatedEvent_orderBy, $pool_poolDistributors_poolDistributors_instantDistributionUpdatedEvents_orderDirection: OrderDirection, $pool_poolDistributors_poolDistributors_instantDistributionUpdatedEvents_where: InstantDistributionUpdatedEvent_filter, $pool_poolDistributors_poolDistributors_flowDistributionUpdatedEvents_skip: Int, $pool_poolDistributors_poolDistributors_flowDistributionUpdatedEvents_first: Int, $pool_poolDistributors_poolDistributors_flowDistributionUpdatedEvents_orderBy: FlowDistributionUpdatedEvent_orderBy, $pool_poolDistributors_poolDistributors_flowDistributionUpdatedEvents_orderDirection: OrderDirection, $pool_poolDistributors_poolDistributors_flowDistributionUpdatedEvents_where: FlowDistributionUpdatedEvent_filter, $pool_poolMembers_skip: Int, $pool_poolMembers_first: Int, $pool_poolMembers_orderBy: PoolMember_orderBy, $pool_poolMembers_orderDirection: OrderDirection, $pool_poolMembers_where: PoolMember_filter, $pool_poolMembers_poolMembers_poolConnectionUpdatedEvents_skip: Int, $pool_poolMembers_poolMembers_poolConnectionUpdatedEvents_first: Int, $pool_poolMembers_poolMembers_poolConnectionUpdatedEvents_orderBy: PoolConnectionUpdatedEvent_orderBy, $pool_poolMembers_poolMembers_poolConnectionUpdatedEvents_orderDirection: OrderDirection, $pool_poolMembers_poolMembers_poolConnectionUpdatedEvents_where: PoolConnectionUpdatedEvent_filter, $pool_poolMembers_poolMembers_memberUnitsUpdatedEvents_skip: Int, $pool_poolMembers_poolMembers_memberUnitsUpdatedEvents_first: Int, $pool_poolMembers_poolMembers_memberUnitsUpdatedEvents_orderBy: MemberUnitsUpdatedEvent_orderBy, $pool_poolMembers_poolMembers_memberUnitsUpdatedEvents_orderDirection: OrderDirection, $pool_poolMembers_poolMembers_memberUnitsUpdatedEvents_where: MemberUnitsUpdatedEvent_filter, $pool_poolMembers_poolMembers_distributionClaimedEvents_skip: Int, $pool_poolMembers_poolMembers_distributionClaimedEvents_first: Int, $pool_poolMembers_poolMembers_distributionClaimedEvents_orderBy: DistributionClaimedEvent_orderBy, $pool_poolMembers_poolMembers_distributionClaimedEvents_orderDirection: OrderDirection, $pool_poolMembers_poolMembers_distributionClaimedEvents_where: DistributionClaimedEvent_filter, $pool_poolConnectionUpdatedEvents_skip: Int, $pool_poolConnectionUpdatedEvents_first: Int, $pool_poolConnectionUpdatedEvents_orderBy: PoolConnectionUpdatedEvent_orderBy, $pool_poolConnectionUpdatedEvents_orderDirection: OrderDirection, $pool_poolConnectionUpdatedEvents_where: PoolConnectionUpdatedEvent_filter, $pool_bufferAdjustedEvents_skip: Int, $pool_bufferAdjustedEvents_first: Int, $pool_bufferAdjustedEvents_orderBy: BufferAdjustedEvent_orderBy, $pool_bufferAdjustedEvents_orderDirection: OrderDirection, $pool_bufferAdjustedEvents_where: BufferAdjustedEvent_filter, $pool_instantDistributionUpdatedEvents_skip: Int, $pool_instantDistributionUpdatedEvents_first: Int, $pool_instantDistributionUpdatedEvents_orderBy: InstantDistributionUpdatedEvent_orderBy, $pool_instantDistributionUpdatedEvents_orderDirection: OrderDirection, $pool_instantDistributionUpdatedEvents_where: InstantDistributionUpdatedEvent_filter, $pool_flowDistributionUpdatedEvents_skip: Int, $pool_flowDistributionUpdatedEvents_first: Int, $pool_flowDistributionUpdatedEvents_orderBy: FlowDistributionUpdatedEvent_orderBy, $pool_flowDistributionUpdatedEvents_orderDirection: OrderDirection, $pool_flowDistributionUpdatedEvents_where: FlowDistributionUpdatedEvent_filter, $pool_memberUnitsUpdatedEvents_skip: Int, $pool_memberUnitsUpdatedEvents_first: Int, $pool_memberUnitsUpdatedEvents_orderBy: MemberUnitsUpdatedEvent_orderBy, $pool_memberUnitsUpdatedEvents_orderDirection: OrderDirection, $pool_memberUnitsUpdatedEvents_where: MemberUnitsUpdatedEvent_filter, $pool_distributionClaimedEvents_skip: Int, $pool_distributionClaimedEvents_first: Int, $pool_distributionClaimedEvents_orderBy: DistributionClaimedEvent_orderBy, $pool_distributionClaimedEvents_orderDirection: OrderDirection, $pool_distributionClaimedEvents_where: DistributionClaimedEvent_filter) {
+  pool(id: $id, block: $block) {
+    id
+    createdAtTimestamp
+    createdAtBlockNumber
+    updatedAtTimestamp
+    updatedAtBlockNumber
+    totalUnits
+    totalConnectedUnits
+    totalDisconnectedUnits
+    totalAmountInstantlyDistributedUntilUpdatedAt
+    totalAmountFlowedDistributedUntilUpdatedAt
+    totalAmountDistributedUntilUpdatedAt
+    totalFlowAdjustmentAmountDistributedUntilUpdatedAt
+    perUnitSettledValue
+    perUnitFlowRate
+    totalMembers
+    totalConnectedMembers
+    totalDisconnectedMembers
+    adjustmentFlowRate
+    flowRate
+    totalBuffer
+    token {
+      id
+      createdAtTimestamp
+      createdAtBlockNumber
+      decimals
+      name
+      symbol
+      isSuperToken
+      isNativeAssetSuperToken
+      isListed
+      underlyingAddress
+    }
+    admin {
+      id
+      createdAtTimestamp
+      createdAtBlockNumber
+      updatedAtTimestamp
+      updatedAtBlockNumber
+      isSuperApp
+    }
+    poolDistributors(
+      skip: $pool_poolDistributors_skip
+      first: $pool_poolDistributors_first
+      orderBy: $pool_poolDistributors_orderBy
+      orderDirection: $pool_poolDistributors_orderDirection
+      where: $pool_poolDistributors_where
+    ) {
+      id
+      createdAtTimestamp
+      createdAtBlockNumber
+      updatedAtTimestamp
+      updatedAtBlockNumber
+      totalAmountInstantlyDistributedUntilUpdatedAt
+      totalAmountFlowedDistributedUntilUpdatedAt
+      totalAmountDistributedUntilUpdatedAt
+      totalBuffer
+      flowRate
+    }
+    poolMembers(
+      skip: $pool_poolMembers_skip
+      first: $pool_poolMembers_first
+      orderBy: $pool_poolMembers_orderBy
+      orderDirection: $pool_poolMembers_orderDirection
+      where: $pool_poolMembers_where
+    ) {
+      id
+      createdAtTimestamp
+      createdAtBlockNumber
+      updatedAtTimestamp
+      updatedAtBlockNumber
+      units
+      isConnected
+      totalAmountClaimed
+      poolTotalAmountDistributedUntilUpdatedAt
+      totalAmountReceivedUntilUpdatedAt
+      syncedPerUnitSettledValue
+      syncedPerUnitFlowRate
+    }
+    poolCreatedEvent {
+      id
+      transactionHash
+      gasPrice
+      gasUsed
+      timestamp
+      name
+      addresses
+      blockNumber
+      logIndex
+      order
+      token
+      caller
+      admin
+    }
+    poolConnectionUpdatedEvents(
+      skip: $pool_poolConnectionUpdatedEvents_skip
+      first: $pool_poolConnectionUpdatedEvents_first
+      orderBy: $pool_poolConnectionUpdatedEvents_orderBy
+      orderDirection: $pool_poolConnectionUpdatedEvents_orderDirection
+      where: $pool_poolConnectionUpdatedEvents_where
+    ) {
+      id
+      transactionHash
+      gasPrice
+      gasUsed
+      timestamp
+      name
+      addresses
+      blockNumber
+      logIndex
+      order
+      token
+      connected
+      userData
+    }
+    bufferAdjustedEvents(
+      skip: $pool_bufferAdjustedEvents_skip
+      first: $pool_bufferAdjustedEvents_first
+      orderBy: $pool_bufferAdjustedEvents_orderBy
+      orderDirection: $pool_bufferAdjustedEvents_orderDirection
+      where: $pool_bufferAdjustedEvents_where
+    ) {
+      id
+      transactionHash
+      gasPrice
+      gasUsed
+      timestamp
+      name
+      addresses
+      blockNumber
+      logIndex
+      order
+      token
+      bufferDelta
+      newBufferAmount
+      totalBufferAmount
+    }
+    instantDistributionUpdatedEvents(
+      skip: $pool_instantDistributionUpdatedEvents_skip
+      first: $pool_instantDistributionUpdatedEvents_first
+      orderBy: $pool_instantDistributionUpdatedEvents_orderBy
+      orderDirection: $pool_instantDistributionUpdatedEvents_orderDirection
+      where: $pool_instantDistributionUpdatedEvents_where
+    ) {
+      id
+      transactionHash
+      gasPrice
+      gasUsed
+      timestamp
+      name
+      addresses
+      blockNumber
+      logIndex
+      order
+      token
+      operator
+      requestedAmount
+      actualAmount
+      totalUnits
+      userData
+    }
+    flowDistributionUpdatedEvents(
+      skip: $pool_flowDistributionUpdatedEvents_skip
+      first: $pool_flowDistributionUpdatedEvents_first
+      orderBy: $pool_flowDistributionUpdatedEvents_orderBy
+      orderDirection: $pool_flowDistributionUpdatedEvents_orderDirection
+      where: $pool_flowDistributionUpdatedEvents_where
+    ) {
+      id
+      transactionHash
+      gasPrice
+      gasUsed
+      timestamp
+      name
+      addresses
+      blockNumber
+      logIndex
+      order
+      token
+      operator
+      oldFlowRate
+      newDistributorToPoolFlowRate
+      newTotalDistributionFlowRate
+      adjustmentFlowRecipient
+      adjustmentFlowRate
+      totalUnits
+      userData
+    }
+    memberUnitsUpdatedEvents(
+      skip: $pool_memberUnitsUpdatedEvents_skip
+      first: $pool_memberUnitsUpdatedEvents_first
+      orderBy: $pool_memberUnitsUpdatedEvents_orderBy
+      orderDirection: $pool_memberUnitsUpdatedEvents_orderDirection
+      where: $pool_memberUnitsUpdatedEvents_where
+    ) {
+      id
+      transactionHash
+      gasPrice
+      gasUsed
+      timestamp
+      name
+      addresses
+      blockNumber
+      logIndex
+      order
+      token
+      oldUnits
+      units
+      totalUnits
+    }
+    distributionClaimedEvents(
+      skip: $pool_distributionClaimedEvents_skip
+      first: $pool_distributionClaimedEvents_first
+      orderBy: $pool_distributionClaimedEvents_orderBy
+      orderDirection: $pool_distributionClaimedEvents_orderDirection
+      where: $pool_distributionClaimedEvents_where
+    ) {
+      id
+      transactionHash
+      gasPrice
+      gasUsed
+      timestamp
+      name
+      addresses
+      blockNumber
+      logIndex
+      order
+      token
+      claimedAmount
+      totalClaimed
+    }
+  }
+}

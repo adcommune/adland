@@ -19,8 +19,7 @@ const GroupPageLayout = async ({
 
   return (
     <Container className="flex flex-col gap-2 p-4">
-      <AdGroupHeader adGroup={adGroup} />
-      {children}
+      <AdGroupHeader adGroup={adGroup}>{children}</AdGroupHeader>
     </Container>
   )
 }

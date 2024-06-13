@@ -2,9 +2,11 @@ import { useEffect } from 'react'
 import { Log } from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
 
+export type TxSuccessCallback = (logs: Log<bigint, number, false>[]) => void
+
 const useWaitForTransactionSuccess = (
   hash: `0x${string}` | undefined,
-  callback: (logs: Log<bigint, number, false>[]) => void,
+  callback: TxSuccessCallback,
 ) => {
   const { data, isLoading } = useWaitForTransactionReceipt({
     hash,

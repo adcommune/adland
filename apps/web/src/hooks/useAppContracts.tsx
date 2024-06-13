@@ -1,20 +1,7 @@
-import { superfluidAddresses } from '@/config/constants'
-import { constants } from '@adland/common'
-import {
-  directListingsLogicAddress,
-  commonAdSpacesAddress,
-} from '@adland/contracts'
-
-export type AppChainIds = keyof typeof commonAdSpacesAddress
+import { appContracts } from '@/config/constants'
 
 const useAppContracts = () => {
-  const appChain = constants.chain
-
-  return {
-    cfaV1: superfluidAddresses[appChain.id as AppChainIds].cfaV1,
-    marketplace: directListingsLogicAddress[appChain.id as AppChainIds],
-    adCommonOwnership: commonAdSpacesAddress[appChain.id as AppChainIds],
-  }
+  return appContracts
 }
 
 export default useAppContracts

@@ -3,9 +3,7 @@ import Image from 'next/image'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { useCallback, useContext, useState } from 'react'
-import useAppContracts from '@/hooks/useAppContracts'
 import { getAR, getGatewayUri } from '@/lib/utils'
-import { useWriteContract } from 'wagmi'
 import { omit, isEqual } from 'lodash'
 import {
   Select,
@@ -18,6 +16,7 @@ import {
 import classNames from 'classnames'
 import {
   FrameAspectRatio,
+  appContracts,
   authorizedFileTypes,
   ipfsGateway,
 } from '@/config/constants'
@@ -27,9 +26,9 @@ import { uploadFile } from '@/lib/file'
 import { ModalContext } from '@/context/ModalContext'
 import Modal from './Modal'
 import { toast } from 'sonner'
-import { handleWriteErrors } from '@/lib/viem'
-import useWaitForTransactionSuccess from '@/hooks/useWaitForTransactionSuccess'
 import { queryClient } from './AppProviders'
+import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
+import { encodeFunctionData } from 'viem'
 
 type UpdateAdDataDialogProps = {
   adSpace: AdSpace
@@ -39,8 +38,6 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
   const { listing, metadata } = adSpace
 
   const { updateAdDataModal } = useContext(ModalContext)
-
-  const { adCommonOwnership } = useAppContracts()
 
   const [description, setDescription] = useState<string>(
     metadata?.description ?? '',
@@ -97,13 +94,30 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
     setUploadingImage(false)
   }
 
-  const {
-    data: updateDataTxHash,
-    writeContract,
-    isPending,
-  } = useWriteContract({})
-
   const [uploadingData, setUploadingData] = useState(false)
+
+  const onUpdateSuccess = useCallback(
+    (data: Metadata) => {
+      updateAdDataModal.set(false)
+
+      if (!data) return
+
+      data.imageGatewayURI = getGatewayUri(data?.image)
+
+      queryClient.setQueryData(
+        ['adSpace-', adSpace?.adSpace_subgraph?.id],
+        (old: AdSpace): AdSpace => {
+          return {
+            ...old,
+            metadata: data,
+          }
+        },
+      )
+    },
+    [newMetadata],
+  )
+
+  const { write, loading } = useSmartAccountTxs({})
 
   const submitAdData = async () => {
     if (!image) return
@@ -144,44 +158,29 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
 
     setUploadingData(false)
 
-    writeContract(
+    write(
       {
-        abi: commonAdSpacesAbi,
-        address: adCommonOwnership,
-        functionName: 'updateAdURI',
-        args: [listing?.listingId, adIpfsURI],
+        transactions: [
+          {
+            to: appContracts.adCommonOwnership,
+            data: encodeFunctionData({
+              abi: commonAdSpacesAbi,
+              functionName: 'updateAdURI',
+              args: [listing?.listingId, adIpfsURI],
+            }),
+            value: BigInt(0),
+          },
+        ],
       },
       {
         onSuccess: () => {
-          setNewMetadata(data)
+          onUpdateSuccess(data)
         },
-        onError: (error) => handleWriteErrors(error),
       },
     )
   }
 
-  const { isLoading } = useWaitForTransactionSuccess(
-    updateDataTxHash,
-    useCallback(() => {
-      updateAdDataModal.set(false)
-
-      if (!newMetadata) return
-
-      newMetadata.imageGatewayURI = getGatewayUri(newMetadata?.image)
-
-      queryClient.setQueryData(
-        ['adSpace-', adSpace?.adSpace_subgraph?.id],
-        (old: AdSpace): AdSpace => {
-          return {
-            ...old,
-            metadata: newMetadata,
-          }
-        },
-      )
-    }, [newMetadata]),
-  )
-
-  const contentUpdating = isPending || uploadingData || isLoading
+  const contentUpdating = uploadingData || loading
 
   const contentUpdateDisabled = uploadingImage || contentUpdating
 

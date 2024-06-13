@@ -17,16 +17,14 @@ import {ISETH} from "@superfluid-finance/ethereum-contracts/contracts/interfaces
 import {MockERC20} from "../mocks/MockERC20.sol";
 import {CurrencyTransferLib} from "contracts/lib/CurrencyTransferLib.sol";
 import {ERC1820RegistryCompiled} from "@superfluid-finance/ethereum-contracts/contracts/libs/ERC1820RegistryCompiled.sol";
-import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
-import {AccountV3Upgradable, AccountV3} from "tokenbound/AccountV3Upgradable.sol";
-import {AccountProxy} from "tokenbound/AccountProxy.sol";
-import {AccountGuardian} from "tokenbound/AccountGuardian.sol";
-import {Multicall3} from "multicall-authenticated/Multicall3.sol";
-import {AccountCreatorConfig} from "../../src/lib/ERC6551AccountCreator.sol";
 import {UUPSProxy} from "../../src/lib/UUPSProxy.sol";
-
 import {CommonAdSpaces} from "../../src/CommonAdSpaces.sol";
-import {CommonAdGroupAdminFactory} from "../../src/CommonAdGroupAdminFactory.sol";
+
+contract CommonAdSpacesExtended is CommonAdSpaces {
+    function getAdGroupOwner(uint256 adGroupId) public view returns (address) {
+        return adGroups[adGroupId].owner;
+    }
+}
 
 contract CommonAdSpacesBase is DSTestFull, IExtension {
     address wethSepolia = 0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9;
@@ -37,8 +35,7 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
     SuperfluidFrameworkDeploymentSteps.Framework sf;
     WETH9 public weth;
     DirectListingsLogic public marketplace;
-    CommonAdSpaces public commonAds;
-    CommonAdGroupAdminFactory public commonAdGroupFactory;
+    CommonAdSpacesExtended public commonAds;
     address internal deployer = vm.addr(420);
     address internal recipient = vm.addr(421);
     uint256 initialPrice = 0.1 ether;
@@ -48,12 +45,6 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
     ISuperToken public ethx;
     ConstantFlowAgreementV1 public cfa;
 
-    ERC6551Registry registry;
-    AccountProxy accountProxy;
-    AccountGuardian guardian;
-    Multicall3 forwarder;
-    AccountV3 implementation;
-
     constructor() {}
 
     function setUp() public virtual {
@@ -61,7 +52,6 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
 
         // vm.createSelectFork("sepolia");
 
-        _deployERC6551();
         _deployWETH();
         _deployStreamingUtils();
 
@@ -71,10 +61,10 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
 
         vm.label(address(marketplace), "marketplace");
 
-        commonAds = CommonAdSpaces(
+        commonAds = CommonAdSpacesExtended(
             address(
                 new UUPSProxy(
-                    address(new CommonAdSpaces()),
+                    address(new CommonAdSpacesExtended()),
                     abi.encodeWithSelector(
                         CommonAdSpaces.initialize.selector,
                         address(marketplace),
@@ -109,6 +99,7 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
 
         label(address(commonAds), "commonAds");
         label(recipient, "recipient");
+        label(deployer, "deployer");
 
         vm.stopPrank();
     }
@@ -259,23 +250,6 @@ contract CommonAdSpacesBase is DSTestFull, IExtension {
         );
 
         extensions[0] = extensionDirectListings;
-    }
-
-    function _deployERC6551() internal {
-        registry = new ERC6551Registry();
-        forwarder = new Multicall3();
-        guardian = new AccountGuardian(address(this));
-        implementation = new AccountV3(
-            address(1),
-            address(forwarder),
-            address(registry),
-            address(guardian)
-        );
-
-        accountProxy = new AccountProxy(
-            address(guardian),
-            address(implementation)
-        );
     }
 
     function _grantTaxManagerRole(address to) internal {

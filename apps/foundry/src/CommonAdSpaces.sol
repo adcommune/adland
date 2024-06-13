@@ -7,10 +7,12 @@ import {ERC721RoyaltyUpgradeable, ERC721Upgradeable} from "@openzeppelin-upgrade
 import {UUPSUpgradeable} from "@openzeppelin-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {OwnableUpgradeable} from "@openzeppelin-upgradeable/contracts/access/OwnableUpgradeable.sol";
 // Local imports
-import {CommonAdGroupAdminFactory} from "./CommonAdGroupAdminFactory.sol";
 import {ICommonAdSpaces} from "./interfaces/ICommonAdSpaces.sol";
 import {IAdStrategy} from "./interfaces/IAdStrategy.sol";
 import {AdGroup, AdSpace, AdSpaceConfig} from "./lib/Structs.sol";
+import {CommonAdPool} from "./CommonAdPool.sol";
+import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
+import {console} from "forge-std/Test.sol";
 
 contract CommonAdSpaces is
     ERC721RoyaltyUpgradeable,
@@ -23,9 +25,9 @@ contract CommonAdSpaces is
     IDirectListings marketplace;
     uint256 public adGroupIds;
 
-    mapping(uint256 => AdGroup) adGroups;
+    mapping(uint256 => AdGroup) public adGroups;
 
-    mapping(uint256 => AdSpace) ads;
+    mapping(uint256 => AdSpace) public ads;
 
     mapping(address => address) public tokenXs;
 
@@ -59,17 +61,6 @@ contract CommonAdSpaces is
     }
 
     /**
-     * @dev Creates a new ad group for the specified recipient.
-     * @param recipient The address of the recipient for the ad group.
-     * @return adGroupId The ID of the newly created ad group.
-     */
-    function createAdGroup(
-        address recipient
-    ) external onlyOwner returns (uint256 adGroupId) {
-        return _createdGroup(recipient);
-    }
-
-    /**
      * @dev Creates a new ad group with the specified recipient, initial ad space configuration, and size.
      * @param recipient The address of the recipient for the ad group.
      * @param initialAdSpaceConfig The initial configuration for the ad spaces in the ad group.
@@ -80,10 +71,28 @@ contract CommonAdSpaces is
         address recipient,
         AdSpaceConfig memory initialAdSpaceConfig,
         uint256 size
-    ) external onlyOwner returns (uint256 adGroupId) {
+    ) external returns (uint256 adGroupId) {
         adGroupId = _createdGroup(recipient);
 
         _openAdSpaces(adGroupId, initialAdSpaceConfig, size);
+    }
+
+    function createAdPool(uint256 adId, address superToken) public {
+        require(
+            ads[adId].adPools[ISuperToken(superToken)] ==
+                CommonAdPool(address(0)),
+            "CommonAdSpaces: Ad pool already exists"
+        );
+        CommonAdPool pool = new CommonAdPool(ISuperToken(superToken));
+
+        ads[adId].adPools[ISuperToken(superToken)] = pool;
+
+        ads[adId].adPools[ISuperToken(superToken)].grantRole(
+            pool.DEFAULT_ADMIN_ROLE(),
+            adGroups[ads[adId].adGroupId].owner
+        );
+
+        emit AdPoolCreated(adId, superToken, address(pool));
     }
 
     /**
@@ -148,6 +157,19 @@ contract CommonAdSpaces is
         }
     }
 
+    function getAdPool(
+        uint256 adId,
+        address superToken
+    ) external view returns (CommonAdPool) {
+        return ads[adId].adPools[ISuperToken(superToken)];
+    }
+
+    function getGroup(
+        uint256 adGroupId
+    ) external view returns (AdGroup memory) {
+        return adGroups[adGroupId];
+    }
+
     function getTokenX(address underlying) external view returns (address) {
         return tokenXs[underlying];
     }
@@ -169,11 +191,11 @@ contract CommonAdSpaces is
     function _createdGroup(
         address recipient
     ) internal returns (uint256 adGroupId) {
-        adGroupIds++;
-
         adGroupId = adGroupIds;
 
-        adGroups[adGroupIds] = AdGroup({owner: recipient});
+        adGroups[adGroupId] = AdGroup({owner: recipient});
+
+        adGroupIds++;
 
         emit AdGroupCreated(adGroupId, recipient);
     }

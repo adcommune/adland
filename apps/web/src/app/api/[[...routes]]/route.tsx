@@ -117,24 +117,6 @@ app.frame('/ad-frame/:spaceId', async (c) => {
     imageOptions,
     intents,
   })
-  // }
-
-  // intents.push(<Button value="learn-more">Learn more</Button>)
-
-  // return c.res({
-  //   image: baseURL + '/api/billboard/' + spaceId + '?date=' + Date.now(),
-  //   imageAspectRatio,
-  //   imageOptions: {
-  //     ...imageOptions,
-  //     headers: {
-  //       'Cache-Control':
-  //         'public, max-age=' + frameConfig.initialFrameImageMaxAge,
-  //       'cache-control':
-  //         'public, max-age=' + frameConfig.initialFrameImageMaxAge,
-  //     },
-  //   },
-  //   intents,
-  // })
 })
 
 /**
@@ -349,6 +331,22 @@ app.frame(
     })
   },
 )
+
+app.frame('/ad-frame/:spaceId/landing', async (c) => {
+  const { spaceId } = c.req.param()
+
+  // @ts-ignore
+  return c.res({
+    image: baseURL + '/api/billboard/' + spaceId + '?date=' + Date.now(),
+    imageAspectRatio: FrameAspectRatio.SQUARE,
+    imageOptions,
+    intents: [
+      <Button key={'landing'} value="" action={`/ad-frame/${spaceId}`}>
+        Learn More
+      </Button>,
+    ],
+  })
+})
 
 devtools(app, { serveStatic })
 

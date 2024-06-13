@@ -8,7 +8,7 @@ const PropertyContainer = ({ children }: { children: React.ReactNode }) => {
 }
 
 type AdPropertyListProps = {
-  metadata?: Metadata | null
+  metadata?: Metadata
 }
 
 const emptyMetadata: Metadata = {
@@ -20,8 +20,8 @@ const emptyMetadata: Metadata = {
   aspect_ratio: '',
 }
 
-const AdPropertyList = ({ metadata = emptyMetadata }: AdPropertyListProps) => {
-  if (metadata === null) {
+const AdPropertyList = ({ metadata }: AdPropertyListProps) => {
+  if (!metadata) {
     metadata = emptyMetadata
   }
 

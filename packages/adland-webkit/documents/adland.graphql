@@ -1,0 +1,781 @@
+query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGroup_adSpaces_first: Int, $adGroup_adSpaces_orderBy: AdSpace_orderBy, $adGroup_adSpaces_orderDirection: OrderDirection, $adGroup_adSpaces_where: AdSpace_filter, $adGroup_adSpaces_adSpaces_adPools_skip: Int, $adGroup_adSpaces_adSpaces_adPools_first: Int, $adGroup_adSpaces_adSpaces_adPools_orderBy: AdPool_orderBy, $adGroup_adSpaces_adSpaces_adPools_orderDirection: OrderDirection, $adGroup_adSpaces_adSpaces_adPools_where: AdPool_filter) {
+  adGroup(id: $id, block: $block) {
+    id
+    beneficiary
+    adSpaces(
+      skip: $adGroup_adSpaces_skip
+      first: $adGroup_adSpaces_first
+      orderBy: $adGroup_adSpaces_orderBy
+      orderDirection: $adGroup_adSpaces_orderDirection
+      where: $adGroup_adSpaces_where
+    ) {
+      id
+      adPools(
+        skip: $adGroup_adSpaces_adSpaces_adPools_skip
+        first: $adGroup_adSpaces_adSpaces_adPools_first
+        orderBy: $adGroup_adSpaces_adSpaces_adPools_orderBy
+        orderDirection: $adGroup_adSpaces_adSpaces_adPools_orderDirection
+        where: $adGroup_adSpaces_adSpaces_adPools_where
+      ) {
+        id
+        dPool
+        adToken {
+          id
+          underlyingToken
+          superToken
+          isNativeToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        blockTimestamp
+        transactionHash
+      }
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    blockTimestamp
+    transactionHash
+  }
+}query adGroups($skip: Int, $first: Int, $orderBy: AdGroup_orderBy, $orderDirection: OrderDirection, $where: AdGroup_filter, $block: Block_height, $adGroups_adSpaces_skip: Int, $adGroups_adSpaces_first: Int, $adGroups_adSpaces_orderBy: AdSpace_orderBy, $adGroups_adSpaces_orderDirection: OrderDirection, $adGroups_adSpaces_where: AdSpace_filter, $adGroups_adSpaces_adSpaces_adPools_skip: Int, $adGroups_adSpaces_adSpaces_adPools_first: Int, $adGroups_adSpaces_adSpaces_adPools_orderBy: AdPool_orderBy, $adGroups_adSpaces_adSpaces_adPools_orderDirection: OrderDirection, $adGroups_adSpaces_adSpaces_adPools_where: AdPool_filter) {
+  adGroups(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    beneficiary
+    adSpaces(
+      skip: $adGroups_adSpaces_skip
+      first: $adGroups_adSpaces_first
+      orderBy: $adGroups_adSpaces_orderBy
+      orderDirection: $adGroups_adSpaces_orderDirection
+      where: $adGroups_adSpaces_where
+    ) {
+      id
+      adPools(
+        skip: $adGroups_adSpaces_adSpaces_adPools_skip
+        first: $adGroups_adSpaces_adSpaces_adPools_first
+        orderBy: $adGroups_adSpaces_adSpaces_adPools_orderBy
+        orderDirection: $adGroups_adSpaces_adSpaces_adPools_orderDirection
+        where: $adGroups_adSpaces_adSpaces_adPools_where
+      ) {
+        id
+        dPool
+        adToken {
+          id
+          underlyingToken
+          superToken
+          isNativeToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        blockTimestamp
+        transactionHash
+      }
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    blockTimestamp
+    transactionHash
+  }
+}query adSpace($id: ID!, $block: Block_height, $adSpace_adPools_skip: Int, $adSpace_adPools_first: Int, $adSpace_adPools_orderBy: AdPool_orderBy, $adSpace_adPools_orderDirection: OrderDirection, $adSpace_adPools_where: AdPool_filter) {
+  adSpace(id: $id, block: $block) {
+    id
+    adGroup {
+      id
+      beneficiary
+      blockTimestamp
+      transactionHash
+    }
+    adPools(
+      skip: $adSpace_adPools_skip
+      first: $adSpace_adPools_first
+      orderBy: $adSpace_adPools_orderBy
+      orderDirection: $adSpace_adPools_orderDirection
+      where: $adSpace_adPools_where
+    ) {
+      id
+      dPool
+      adToken {
+        id
+        underlyingToken
+        superToken
+        isNativeToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      blockTimestamp
+      transactionHash
+    }
+    uri
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaces($skip: Int, $first: Int, $orderBy: AdSpace_orderBy, $orderDirection: OrderDirection, $where: AdSpace_filter, $block: Block_height, $adSpaces_adPools_skip: Int, $adSpaces_adPools_first: Int, $adSpaces_adPools_orderBy: AdPool_orderBy, $adSpaces_adPools_orderDirection: OrderDirection, $adSpaces_adPools_where: AdPool_filter) {
+  adSpaces(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    adGroup {
+      id
+      beneficiary
+      blockTimestamp
+      transactionHash
+    }
+    adPools(
+      skip: $adSpaces_adPools_skip
+      first: $adSpaces_adPools_first
+      orderBy: $adSpaces_adPools_orderBy
+      orderDirection: $adSpaces_adPools_orderDirection
+      where: $adSpaces_adPools_where
+    ) {
+      id
+      dPool
+      adToken {
+        id
+        underlyingToken
+        superToken
+        isNativeToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      blockTimestamp
+      transactionHash
+    }
+    uri
+    blockTimestamp
+    transactionHash
+  }
+}query adPool($id: ID!, $block: Block_height) {
+  adPool(id: $id, block: $block) {
+    id
+    dPool
+    adSpace {
+      id
+      adGroup {
+        id
+        beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    adToken {
+      id
+      underlyingToken
+      superToken
+      isNativeToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    blockTimestamp
+    transactionHash
+  }
+}query adPools($skip: Int, $first: Int, $orderBy: AdPool_orderBy, $orderDirection: OrderDirection, $where: AdPool_filter, $block: Block_height) {
+  adPools(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    dPool
+    adSpace {
+      id
+      adGroup {
+        id
+        beneficiary
+        blockTimestamp
+        transactionHash
+      }
+      uri
+      blockTimestamp
+      transactionHash
+    }
+    adToken {
+      id
+      underlyingToken
+      superToken
+      isNativeToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    blockTimestamp
+    transactionHash
+  }
+}query tokenX($id: ID!, $block: Block_height) {
+  tokenX(id: $id, block: $block) {
+    id
+    underlyingToken
+    superToken
+    isNativeToken
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query tokenXs($skip: Int, $first: Int, $orderBy: TokenX_orderBy, $orderDirection: OrderDirection, $where: TokenX_filter, $block: Block_height) {
+  tokenXs(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    underlyingToken
+    superToken
+    isNativeToken
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query buyerApprovedForListing($id: ID!, $block: Block_height) {
+  buyerApprovedForListing(id: $id, block: $block) {
+    id
+    listingId
+    buyer
+    approved
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query buyerApprovedForListings($skip: Int, $first: Int, $orderBy: BuyerApprovedForListing_orderBy, $orderDirection: OrderDirection, $where: BuyerApprovedForListing_filter, $block: Block_height) {
+  buyerApprovedForListings(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    listingId
+    buyer
+    approved
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query cancelledListing($id: ID!, $block: Block_height) {
+  cancelledListing(id: $id, block: $block) {
+    id
+    listingCreator
+    listingId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query cancelledListings($skip: Int, $first: Int, $orderBy: CancelledListing_orderBy, $orderDirection: OrderDirection, $where: CancelledListing_filter, $block: Block_height) {
+  cancelledListings(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    listingCreator
+    listingId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query currencyApprovedForListing($id: ID!, $block: Block_height) {
+  currencyApprovedForListing(id: $id, block: $block) {
+    id
+    listingId
+    currency
+    pricePerToken
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query currencyApprovedForListings($skip: Int, $first: Int, $orderBy: CurrencyApprovedForListing_orderBy, $orderDirection: OrderDirection, $where: CurrencyApprovedForListing_filter, $block: Block_height) {
+  currencyApprovedForListings(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    listingId
+    currency
+    pricePerToken
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query newListing($id: ID!, $block: Block_height) {
+  newListing(id: $id, block: $block) {
+    id
+    listingCreator
+    listingId
+    assetContract
+    listing_listingId
+    listing_tokenId
+    listing_quantity
+    listing_pricePerToken
+    listing_startTimestamp
+    listing_endTimestamp
+    listing_listingCreator
+    listing_listingOwner
+    listing_assetContract
+    listing_currency
+    listing_taxRate
+    listing_taxBeneficiary
+    listing_tokenType
+    listing_status
+    listing_reserved
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query newListings($skip: Int, $first: Int, $orderBy: NewListing_orderBy, $orderDirection: OrderDirection, $where: NewListing_filter, $block: Block_height) {
+  newListings(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    listingCreator
+    listingId
+    assetContract
+    listing_listingId
+    listing_tokenId
+    listing_quantity
+    listing_pricePerToken
+    listing_startTimestamp
+    listing_endTimestamp
+    listing_listingCreator
+    listing_listingOwner
+    listing_assetContract
+    listing_currency
+    listing_taxRate
+    listing_taxBeneficiary
+    listing_tokenType
+    listing_status
+    listing_reserved
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query newSale($id: ID!, $block: Block_height) {
+  newSale(id: $id, block: $block) {
+    id
+    listingCreator
+    listingId
+    assetContract
+    tokenId
+    buyer
+    quantityBought
+    totalPricePaid
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query newSales($skip: Int, $first: Int, $orderBy: NewSale_orderBy, $orderDirection: OrderDirection, $where: NewSale_filter, $block: Block_height) {
+  newSales(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    listingCreator
+    listingId
+    assetContract
+    tokenId
+    buyer
+    quantityBought
+    totalPricePaid
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query updatedListing($id: ID!, $block: Block_height) {
+  updatedListing(id: $id, block: $block) {
+    id
+    listingCreator
+    listingId
+    assetContract
+    listing_listingId
+    listing_tokenId
+    listing_quantity
+    listing_pricePerToken
+    listing_startTimestamp
+    listing_endTimestamp
+    listing_listingCreator
+    listing_listingOwner
+    listing_assetContract
+    listing_currency
+    listing_taxRate
+    listing_taxBeneficiary
+    listing_tokenType
+    listing_status
+    listing_reserved
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query updatedListings($skip: Int, $first: Int, $orderBy: UpdatedListing_orderBy, $orderDirection: OrderDirection, $where: UpdatedListing_filter, $block: Block_height) {
+  updatedListings(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    listingCreator
+    listingId
+    assetContract
+    listing_listingId
+    listing_tokenId
+    listing_quantity
+    listing_pricePerToken
+    listing_startTimestamp
+    listing_endTimestamp
+    listing_listingCreator
+    listing_listingOwner
+    listing_assetContract
+    listing_currency
+    listing_taxRate
+    listing_taxBeneficiary
+    listing_tokenType
+    listing_status
+    listing_reserved
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adGroupCreated($id: ID!, $block: Block_height) {
+  adGroupCreated(id: $id, block: $block) {
+    id
+    groupId
+    beneficiary
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adGroupCreateds($skip: Int, $first: Int, $orderBy: AdGroupCreated_orderBy, $orderDirection: OrderDirection, $where: AdGroupCreated_filter, $block: Block_height) {
+  adGroupCreateds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    groupId
+    beneficiary
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceCreated($id: ID!, $block: Block_height) {
+  adSpaceCreated(id: $id, block: $block) {
+    id
+    groupId
+    adId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceCreateds($skip: Int, $first: Int, $orderBy: AdSpaceCreated_orderBy, $orderDirection: OrderDirection, $where: AdSpaceCreated_filter, $block: Block_height) {
+  adSpaceCreateds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    groupId
+    adId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceStrategyUpdated($id: ID!, $block: Block_height) {
+  adSpaceStrategyUpdated(id: $id, block: $block) {
+    id
+    adId
+    strategy
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceStrategyUpdateds($skip: Int, $first: Int, $orderBy: AdSpaceStrategyUpdated_orderBy, $orderDirection: OrderDirection, $where: AdSpaceStrategyUpdated_filter, $block: Block_height) {
+  adSpaceStrategyUpdateds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    adId
+    strategy
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceURIUpdated($id: ID!, $block: Block_height) {
+  adSpaceURIUpdated(id: $id, block: $block) {
+    id
+    adId
+    uri
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adSpaceURIUpdateds($skip: Int, $first: Int, $orderBy: AdSpaceURIUpdated_orderBy, $orderDirection: OrderDirection, $where: AdSpaceURIUpdated_filter, $block: Block_height) {
+  adSpaceURIUpdateds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    adId
+    uri
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adminChanged($id: ID!, $block: Block_height) {
+  adminChanged(id: $id, block: $block) {
+    id
+    previousAdmin
+    newAdmin
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adminChangeds($skip: Int, $first: Int, $orderBy: AdminChanged_orderBy, $orderDirection: OrderDirection, $where: AdminChanged_filter, $block: Block_height) {
+  adminChangeds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    previousAdmin
+    newAdmin
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query approval($id: ID!, $block: Block_height) {
+  approval(id: $id, block: $block) {
+    id
+    owner
+    approved
+    tokenId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query approvals($skip: Int, $first: Int, $orderBy: Approval_orderBy, $orderDirection: OrderDirection, $where: Approval_filter, $block: Block_height) {
+  approvals(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    owner
+    approved
+    tokenId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query approvalForAll($id: ID!, $block: Block_height) {
+  approvalForAll(id: $id, block: $block) {
+    id
+    owner
+    operator
+    approved
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query approvalForAlls($skip: Int, $first: Int, $orderBy: ApprovalForAll_orderBy, $orderDirection: OrderDirection, $where: ApprovalForAll_filter, $block: Block_height) {
+  approvalForAlls(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    owner
+    operator
+    approved
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query beaconUpgraded($id: ID!, $block: Block_height) {
+  beaconUpgraded(id: $id, block: $block) {
+    id
+    beacon
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query beaconUpgradeds($skip: Int, $first: Int, $orderBy: BeaconUpgraded_orderBy, $orderDirection: OrderDirection, $where: BeaconUpgraded_filter, $block: Block_height) {
+  beaconUpgradeds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    beacon
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query initialized($id: ID!, $block: Block_height) {
+  initialized(id: $id, block: $block) {
+    id
+    version
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query initializeds($skip: Int, $first: Int, $orderBy: Initialized_orderBy, $orderDirection: OrderDirection, $where: Initialized_filter, $block: Block_height) {
+  initializeds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    version
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query ownershipTransferred($id: ID!, $block: Block_height) {
+  ownershipTransferred(id: $id, block: $block) {
+    id
+    previousOwner
+    newOwner
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query ownershipTransferreds($skip: Int, $first: Int, $orderBy: OwnershipTransferred_orderBy, $orderDirection: OrderDirection, $where: OwnershipTransferred_filter, $block: Block_height) {
+  ownershipTransferreds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    previousOwner
+    newOwner
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query transfer($id: ID!, $block: Block_height) {
+  transfer(id: $id, block: $block) {
+    id
+    from
+    to
+    tokenId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query transfers($skip: Int, $first: Int, $orderBy: Transfer_orderBy, $orderDirection: OrderDirection, $where: Transfer_filter, $block: Block_height) {
+  transfers(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    from
+    to
+    tokenId
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query upgraded($id: ID!, $block: Block_height) {
+  upgraded(id: $id, block: $block) {
+    id
+    implementation
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query upgradeds($skip: Int, $first: Int, $orderBy: Upgraded_orderBy, $orderDirection: OrderDirection, $where: Upgraded_filter, $block: Block_height) {
+  upgradeds(
+    skip: $skip
+    first: $first
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: $where
+    block: $block
+  ) {
+    id
+    implementation
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}

@@ -7,6 +7,7 @@ import {BaseSetup} from "./BaseSetup.s.sol";
 import {TWProxy} from "contracts/infra/TWProxy.sol";
 import {MarketplaceV3} from "contracts/prebuilts/marketplace/entrypoint/MarketplaceV3.sol";
 import {DirectListingsLogic} from "contracts/prebuilts/marketplace/direct-listings/DirectListingsLogic.sol";
+import {CurrencyTransferLib} from "contracts/lib/CurrencyTransferLib.sol";
 import "@thirdweb-dev/dynamic-contracts/src/interface/IExtension.sol";
 import {ISuperfluid, ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 import {UUPSProxy} from "../src/lib/UUPSProxy.sol";
@@ -26,7 +27,7 @@ contract AdLandScripts is BaseSetup {
                     abi.encodeWithSelector(
                         CommonAdSpaces.initialize.selector,
                         address(marketplace),
-                        ""
+                        "ipfs://QmcsF6ZVPk1HskHEHPe9eNxw69rtWC1W7WriP6QT9GybMe"
                     )
                 )
             )
@@ -36,7 +37,9 @@ contract AdLandScripts is BaseSetup {
 
         for (uint i = 0; i < superTokens.length; i++) {
             commonAds.setTokenX(
-                superTokens[i].getUnderlyingToken(),
+                superTokens[i].getUnderlyingToken() == address(0)
+                    ? CurrencyTransferLib.NATIVE_TOKEN
+                    : superTokens[i].getUnderlyingToken(),
                 address(superTokens[i])
             );
         }

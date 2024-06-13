@@ -1,64 +1,34 @@
 'use client'
 
 import React from 'react'
-import { Card, CardHeader, CardTitle } from '../ui/card'
 import { AdGroup } from '@/lib/types'
-import { Button } from '../ui/button'
-import Image from 'next/image'
-import Link from 'next/link'
-import { superfluidAccountLink } from '@/config/constants'
-import { CogIcon, HomeIcon } from 'lucide-react'
-import { usePathname } from 'next/navigation'
 
 type AdGroupHeaderProps = {
   adGroup: AdGroup
+  children?: React.ReactNode
 }
 
 const AdGroupHeader = ({
   adGroup: { adGroup_subgraph },
+  children,
 }: AdGroupHeaderProps) => {
-  const { beneficiary, id } = adGroup_subgraph
-
-  const path = usePathname()
-
-  const isSettingsPage = path.includes('settings')
+  const { id } = adGroup_subgraph
 
   return (
-    <div className="grid grid-cols-1 gap-4 font-body md:gap-8">
-      <Card>
-        <CardHeader className="flex w-full flex-col items-center justify-between gap-3 space-y-0 md:flex-row">
-          <CardTitle className="flex gap-4 text-center text-sm font-medium  md:text-2xl">
-            Ad Group #{id}
-          </CardTitle>
-          <div className="flex flex-row gap-2">
-            <Link href={superfluidAccountLink(beneficiary)} target="_blank">
-              <Button variant="outline" className="gap-2">
-                <Image
-                  src="/superfluid.png"
-                  className="h-5 w-5"
-                  width={40}
-                  height={40}
-                  alt=""
-                />
-                Superfluid Dashboard
-              </Button>
-            </Link>
-            {isSettingsPage ? (
-              <Link href={`/group/${adGroup_subgraph.id}`}>
-                <Button variant="outline">
-                  <HomeIcon size={24} />
-                </Button>
-              </Link>
-            ) : (
-              // <Link href={`/group/${adGroup_subgraph.id}/settings`}>
-              <Button variant="outline" disabled>
-                <CogIcon size={24} />
-              </Button>
-              // </Link>
-            )}
+    <div className="font-body">
+      <div className="overflow-hidden rounded-tl-md rounded-tr-md">
+        <div className="flex flex-col border bg-white pb-5">
+          <div className="relative w-full">
+            <div className="h-[70px] w-full bg-gradient-to-b from-gray-200 to-transparent" />
           </div>
-        </CardHeader>
-      </Card>
+          <div className="mt-2 min-w-0 flex-1 px-4 sm:hidden sm:px-6 md:block lg:px-8">
+            <h1 className="truncate text-2xl font-bold text-black">
+              Ad Group #{id}
+            </h1>
+          </div>
+        </div>
+        <div className="pt-2">{children}</div>
+      </div>
     </div>
   )
 }

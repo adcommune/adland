@@ -1,9 +1,14 @@
 import { directListingsLogicAbi } from '@adland/contracts'
-import { AdGroup_subgraph, AdSpace_subgraph } from '@adland/webkit'
+import {
+  AdGroup_subgraph,
+  AdPool_subgraph,
+  AdSpace_subgraph,
+} from '@adland/webkit'
 import { TokenX } from '@adland/webkit/src/hooks'
 import { User } from '@neynar/nodejs-sdk/build/neynar-api/v2'
 import { FrameDistribution } from '@adland/db'
-import { ContractFunctionReturnType } from 'viem'
+import { Address, ContractFunctionReturnType } from 'viem'
+import { SuperfluidPool } from './superfluid-subgraph'
 
 export type Listing = ContractFunctionReturnType<
   typeof directListingsLogicAbi,
@@ -48,7 +53,9 @@ export type Metadata = {
  */
 export type AdSpace = {
   // Omits adGroup from AdSpace_subgraph, query directly the adGroup if needed
-  adSpace_subgraph: Omit<AdSpace_subgraph, 'adGroup'>
+  adSpace_subgraph: Omit<AdSpace_subgraph, 'adGroup' | 'adPools'> & {
+    adPools: Omit<AdPool_subgraph, 'adSpace'>[]
+  }
   listing: Listing
   // undefined if adSpace_subgraph.uri undefined
   metadata?: Metadata
@@ -61,3 +68,12 @@ export type AdGroup = {
 }
 
 export type AppDistributor = FrameDistribution & { caster?: User }
+
+export type AdCampaign = {
+  // Access Controled Adland Pool Wrapper
+  commonAdPoolAddress?: Address
+  // Superfluid Pool Address
+  sfPoolAddress?: Address
+  // Superfluid Pool
+  sfPool?: SuperfluidPool
+}

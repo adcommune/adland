@@ -3,7 +3,6 @@ pragma solidity ^0.8.13;
 
 import {WETH9} from "../test/mocks/WETH9.sol";
 import {ISuperfluid, ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
-import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
 import {BaseScript} from "./Base.s.sol";
 import "@thirdweb-dev/dynamic-contracts/src/interface/IExtension.sol";
 import {DirectListingsLogic} from "contracts/prebuilts/marketplace/direct-listings/DirectListingsLogic.sol";
@@ -25,9 +24,12 @@ contract BaseSetup is BaseScript, IExtension {
     address cfav1Sepolia = 0x6836F23d6171D74Ef62FcF776655aBcD2bcd62Ef;
 
     address wethBase = 0x4200000000000000000000000000000000000006;
-    address ethXBase = 0x46fd5cfB4c12D87acD3a13e92BAa53240C661D93;
+
+    address usdcXBase = 0xD04383398dD2426297da660F9CCA3d439AF9ce1b;
+    address bleuXBase = 0x04fFB9ce95af003A3AA3611be6c6Ca1431151FB5;
     address daiXBase = 0x708169c8C87563Ce904E0a7F3BFC1F3b0b767f41;
     address degenXBase = 0x1efF3Dd78F4A14aBfa9Fa66579bD3Ce9E1B30529;
+
     address cfav1Base = 0x19ba78B9cDB05A877718841c574325fdB53601bb;
     address cfav1FowarderBase = 0xcfA132E353cB4E398080B9700609bb008eceB125;
 
@@ -55,8 +57,9 @@ contract BaseSetup is BaseScript, IExtension {
             cfav1Fowarder = cfav1FowarderOptimismSepolia;
         } else if (currentChain == DeployementChain.Base) {
             weth = WETH9(payable(wethBase));
-            superTokens = new ISuperToken[](3);
-            superTokens[0] = ISuperToken(ethXBase);
+            superTokens = new ISuperToken[](4);
+            superTokens[0] = ISuperToken(bleuXBase);
+            superTokens[3] = ISuperToken(usdcXBase);
             superTokens[1] = ISuperToken(daiXBase);
             superTokens[2] = ISuperToken(degenXBase);
             cfav1 = cfav1Base;

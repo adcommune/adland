@@ -11,17 +11,18 @@ const { constants } = require("@adland/common");
 
 async function getSchemaFromUrl(url) {
   const response = await axios
-    .post(url, { query: getIntrospectionQuery().toString() })
+    .post(url, { query: getIntrospectionQuery({}).toString() })
     .catch((e) => console.log(e));
 
   return buildClientSchema(response.data.data);
 }
 
-const main = async function () {
-  let schemaUrl = constants.subgraphUrl;
-
-  console.log("Using schema from: ", schemaUrl);
-
+const pullSchema = async function ({
+  schemaUrl,
+  fileName,
+  operations,
+  depthLimit,
+}) {
   const schema = await getSchemaFromUrl(schemaUrl);
 
   const operationsDictionary = {
@@ -30,10 +31,11 @@ const main = async function () {
 
   let documentString = "";
   for (const operationKind in operationsDictionary) {
-    // operationsDictionary[operationKind].args = operationsDictionary[operationKind].filter(
-    //   (field) => field.name === 'subgraphError'
-    // )
     for (const operationName in operationsDictionary[operationKind]) {
+      if (operations && !operations.includes(operationName)) {
+        continue;
+      }
+
       // Removing subgraphError argument from the query
       operationsDictionary[operationKind][operationName].args.pop();
 
@@ -48,6 +50,7 @@ const main = async function () {
         schema,
         kind: operationKind,
         field: operationName,
+        depthLimit: depthLimit || 4,
       });
 
       // Hardcoding naming fixes
@@ -58,7 +61,7 @@ const main = async function () {
   }
 
   await fs.writeFile(
-    "./documents/operations.graphql",
+    `./documents/${fileName}.graphql`,
     documentString,
     (err) => {
       if (err) {
@@ -66,6 +69,28 @@ const main = async function () {
       }
     }
   );
+
+  return documentString;
+};
+
+const main = async function () {
+  const urls = [
+    // {
+    //   schemaUrl: constants.superfluidSubgraphUrl,
+    //   fileName: "superfluid",
+    //   operations: ["pool"],
+    // },
+    {
+      schemaUrl: constants.subgraphUrl,
+      fileName: "adland",
+    },
+  ];
+
+  let documentString = "";
+
+  for (const url of urls) {
+    documentString += await pullSchema(url);
+  }
 
   return parse(documentString);
 };
