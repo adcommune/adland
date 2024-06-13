@@ -12,6 +12,7 @@ import { useContext } from 'react'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import { erc20Abi, formatEther, formatUnits } from 'viem'
 import { useBalance, useReadContracts } from 'wagmi'
+import TokenImage from '../TokenImage'
 
 type SuperTokenDynamicBalance = {
   tokenX: TokenX
@@ -76,6 +77,9 @@ const SuperTokenBalance = ({ tokenX }: SuperTokenDynamicBalance) => {
   if (benefBalance !== undefined && benefFlowRate !== undefined) {
     return (
       <TableRow key={tokenX.id}>
+        <TableCell>
+          <TokenImage address={tokenX.underlyingToken} />
+        </TableCell>
         <TableCell>{getTokenSymbol(tokenX.underlyingToken)}x</TableCell>
         <TableCell>
           {isNativeToken ? nativeBalance : balanceOfUnderlying}
