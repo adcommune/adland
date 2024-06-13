@@ -2,7 +2,6 @@ import useAppContracts from '@/hooks/useAppContracts'
 import FlowingBalance from '@/lib/superfluid'
 import {
   useReadCfAv1ForwarderGetAccountFlowrate,
-  useReadErc20BalanceOf,
   useReadSuperTokenBalanceOf,
 } from '@adland/contracts'
 import { TokenX } from '@adland/webkit/src/hooks'
@@ -11,8 +10,9 @@ import { getTokenSymbol } from '@/config/constants'
 import { Button } from '../ui/button'
 import { useContext } from 'react'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
-import { formatEther } from 'viem'
-import { useBalance } from 'wagmi'
+import { erc20Abi, formatEther, formatUnits } from 'viem'
+import { useBalance, useReadContracts } from 'wagmi'
+import TokenImage from '../TokenImage'
 
 type SuperTokenDynamicBalance = {
   tokenX: TokenX
@@ -30,12 +30,25 @@ const SuperTokenBalance = ({ tokenX }: SuperTokenDynamicBalance) => {
     },
   })
 
-  const { data: balanceOfUnderlying } = useReadErc20BalanceOf({
-    address: underlyingToken,
-    args: bicoAccountAddress && [bicoAccountAddress],
+  const { data: balanceOfUnderlying } = useReadContracts({
+    contracts: [
+      {
+        abi: erc20Abi,
+        functionName: 'decimals',
+        address: underlyingToken,
+      },
+      {
+        abi: erc20Abi,
+        functionName: 'balanceOf',
+        address: underlyingToken,
+        args: bicoAccountAddress && [bicoAccountAddress],
+      },
+    ],
     query: {
-      enabled: Boolean(bicoAccountAddress),
-      select: (balance) => formatEther(balance),
+      select: (data) => {
+        const [{ result: decimals }, { result: balanceOf }] = data
+        return formatUnits(balanceOf ?? BigInt(0), decimals ?? 18)
+      },
     },
   })
 
@@ -64,6 +77,9 @@ const SuperTokenBalance = ({ tokenX }: SuperTokenDynamicBalance) => {
   if (benefBalance !== undefined && benefFlowRate !== undefined) {
     return (
       <TableRow key={tokenX.id}>
+        <TableCell>
+          <TokenImage address={tokenX.underlyingToken} />
+        </TableCell>
         <TableCell>{getTokenSymbol(tokenX.underlyingToken)}x</TableCell>
         <TableCell>
           {isNativeToken ? nativeBalance : balanceOfUnderlying}

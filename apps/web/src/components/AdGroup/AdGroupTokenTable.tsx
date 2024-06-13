@@ -11,6 +11,7 @@ const SuperTokenTable = () => {
     <Table>
       <TableHeader>
         <TableRow>
+          <TableHead></TableHead>
           <TableHead>Symbol</TableHead>
           <TableHead>Token Balance</TableHead>
           <TableHead className="w-[300px]">Super Token Balance</TableHead>

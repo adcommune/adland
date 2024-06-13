@@ -32,10 +32,10 @@ const ProfilePage = () => {
         </div>
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
-            <div className="flex h-32 w-32 flex-col items-center justify-center rounded-full bg-gray-100 p-1 text-gray-400">
+            <div className="flex h-28 w-28 flex-col items-center justify-center overflow-hidden rounded-full bg-white p-1 text-black">
               {!user?.farcaster?.pfp ? (
                 authenticated ? (
-                  <CircleUser className="h-full w-full stroke-2" />
+                  <CircleUser className="h-full w-full bg-white stroke-2" />
                 ) : (
                   <UserX className="h-16 w-16" />
                 )

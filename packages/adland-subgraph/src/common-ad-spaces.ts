@@ -33,6 +33,7 @@ import {
   Transfer,
   Upgraded,
 } from "../generated/schema";
+import { Bytes } from "@graphprotocol/graph-ts";
 
 export const NATIVE_CURRENCY = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
@@ -90,6 +91,7 @@ export function handleAdSpaceCreated(event: AdSpaceCreatedEvent): void {
   adSpace.adGroup = event.params.groupId.toString();
   adSpace.blockTimestamp = event.block.timestamp;
   adSpace.transactionHash = event.transaction.hash;
+  adSpace.listing = event.params.adId.toString();
 
   adSpace.save();
 }

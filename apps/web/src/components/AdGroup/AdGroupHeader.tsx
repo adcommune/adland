@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { AdGroup } from '@/lib/types'
+import { truncateAddress } from '@/lib/utils'
 
 type AdGroupHeaderProps = {
   adGroup: AdGroup
@@ -12,7 +13,7 @@ const AdGroupHeader = ({
   adGroup: { adGroup_subgraph },
   children,
 }: AdGroupHeaderProps) => {
-  const { id } = adGroup_subgraph
+  const { id, beneficiary } = adGroup_subgraph
 
   return (
     <div className="font-body">
@@ -25,6 +26,9 @@ const AdGroupHeader = ({
             <h1 className="truncate text-2xl font-bold text-black">
               Ad Group #{id}
             </h1>
+            <p className="font-body text-gray-500">
+              Group Beneficiary: {truncateAddress(beneficiary)}
+            </p>
           </div>
         </div>
         <div className="pt-2">{children}</div>

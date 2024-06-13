@@ -18,16 +18,16 @@ const AppPage = async () => {
             Create Ad Group
           </Button>
         </Link>
-        <Tabs defaultValue="my-ad-groups" className="w-full font-body">
+        <Tabs defaultValue="all-ad-groups" className="w-full font-body">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="my-ad-groups">My Ad Groups</TabsTrigger>
             <TabsTrigger value="all-ad-groups">All</TabsTrigger>
+            <TabsTrigger value="my-ad-groups">My Groups</TabsTrigger>
           </TabsList>
-          <TabsContent value="my-ad-groups" className="w-full">
-            <MyAdGroups />
-          </TabsContent>
           <TabsContent value="all-ad-groups" className="w-full">
             <AllAdGroups />
+          </TabsContent>
+          <TabsContent value="my-ad-groups" className="w-full">
+            <MyAdGroups />
           </TabsContent>
         </Tabs>
       </Container>

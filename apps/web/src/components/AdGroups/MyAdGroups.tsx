@@ -12,7 +12,7 @@ import { SmartAccountContext } from '@/context/SmartAccountContext'
 const MyAdGroups = () => {
   const { bicoAccountAddress } = useContext(SmartAccountContext)
 
-  const { data } = useAdGroupsQuery(
+  const { data, isLoading } = useAdGroupsQuery(
     {
       where: { beneficiary: bicoAccountAddress },
       orderBy: AdGroup_OrderBy.BlockTimestamp,
@@ -37,7 +37,9 @@ const MyAdGroups = () => {
       ) : (
         <div className="col-span-1 flex h-[50vh] w-full flex-col items-center justify-center sm:col-span-3 md:col-span-4">
           <p className="text-lg text-white">
-            You don&apos;t own any ad groups yet. Create one to get started!
+            {isLoading
+              ? 'Loading...'
+              : "You don't own any ad groups yet. Create one to get started!"}
           </p>
         </div>
       )}
