@@ -40,6 +40,7 @@ import { truncateAddress } from '@/lib/utils'
 import { getTokenSymbol } from '@/config/constants'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
+import TokenImage from '../TokenImage'
 
 const createAdGroupSchema = z.object({
   currency: z.string(),
@@ -136,8 +137,16 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
                             key={token.id}
                             value={token.underlyingToken}
                           >
-                            {getTokenSymbol(token.underlyingToken) ??
-                              truncateAddress(token.underlyingToken)}
+                            <div className="flex flex-row items-center gap-2">
+                              <p className="w-16">
+                                {getTokenSymbol(token.underlyingToken) ??
+                                  truncateAddress(token.underlyingToken)}
+                              </p>
+                              <TokenImage
+                                address={token.underlyingToken}
+                                className="h-6 w-6"
+                              />
+                            </div>
                           </SelectItem>
                         ))}
                       </SelectGroup>

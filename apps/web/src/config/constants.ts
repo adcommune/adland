@@ -93,14 +93,17 @@ export const noAdFrameImageCID =
 
 export const tokenSymbolsByChain: Record<number, Record<string, string>> = {
   [optimismSepolia.id]: {
-    '0x4247bA6C3658Fa5C0F523BAcea8D0b97aF1a175e': 'fDAI',
+    '0x4247bA6C3658Fa5C0F523BAcea8D0b97aF1a175e': 'DAI',
     [NATIVE_CURRENCY]: 'ETH',
     [zeroAddress]: 'ETH',
   },
   [base.id]: {
     [zeroAddress]: 'ETH',
+    [NATIVE_CURRENCY]: 'ETH',
     ['0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb']: 'DAI',
     ['0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed']: 'DEGEN',
+    ['0xBf4Db8b7A679F89Ef38125d5F84dd1446AF2ea3B']: 'BLEU',
+    ['0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913']: 'USDC',
   },
 }
 
