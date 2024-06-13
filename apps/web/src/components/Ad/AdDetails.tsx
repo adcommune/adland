@@ -35,6 +35,7 @@ import { Button } from '../ui/button'
 import { getTokenSymbol } from '@/config/constants'
 import { usePathname } from 'next/navigation'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
+import TokenImage from '../TokenImage'
 
 type AdDetailsSidebarProps = {
   spaceId: string
@@ -51,9 +52,12 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
     useContext(ModalContext)
   const listing = adSpace?.listing
   const isOwner = listing && listing?.listingOwner === address
-  const isBeneficiarty = listing && listing?.taxBeneficiary === address
+  const isBeneficiarty =
+    listing?.taxBeneficiary?.toLowerCase() === address?.toLowerCase()
   const showDropdown = isOwner || isBeneficiarty
   const isFarcasterPage = usePathname().includes('/farcaster')
+
+  const taxRatePercentage = Number(listing?.taxRate ?? 0) / 100
 
   return (
     <div className="relative flex min-h-[80vh] flex-col items-start gap-2 md:flex-row">
@@ -80,7 +84,9 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
               </CardDescription>
             </div>
             <div className="ml-auto flex items-center gap-1">
-              {isOwner ? (
+              {isBeneficiarty ? (
+                <></>
+              ) : isOwner ? (
                 <Button
                   size="sm"
                   variant="default"
@@ -97,7 +103,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
               ) : (
                 <>
                   <Button
-                    disabled={!listing}
+                    disabled={!listing || isBeneficiarty}
                     size="sm"
                     variant="default"
                     className="h-8 gap-1"
@@ -124,7 +130,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent align="end">
-                      {isOwner && (
+                      {isOwner && !isBeneficiarty && (
                         <>
                           <DropdownMenuItem
                             onClick={() => {
@@ -157,31 +163,24 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Price</span>
                 {listing?.pricePerToken ? (
-                  <span>
+                  <span className="flex flex-row items-center gap-2">
                     {formatEther(listing?.pricePerToken ?? BigInt(0))}{' '}
                     {getTokenSymbol(listing?.currency)}
+                    <TokenImage
+                      address={listing?.currency}
+                      className="h-5 w-5"
+                    />
                   </span>
                 ) : (
                   <Skeleton className="h-4 w-9" />
                 )}
               </li>
               <li className="flex items-center justify-between">
-                <span className="text-muted-foreground">Tax Rate</span>
+                <span className="text-muted-foreground">Tax Rate (weekly)</span>
                 {listing ? (
-                  <span>{Number(listing?.taxRate ?? 0) / 100} %</span>
+                  <span>{taxRatePercentage} %</span>
                 ) : (
                   <Skeleton className="h-4 w-9" />
-                )}
-              </li>
-              <li className="flex items-center justify-between">
-                <span className="text-muted-foreground">Currencry</span>
-                {listing ? (
-                  <span>
-                    {getTokenSymbol(listing?.currency) ??
-                      truncateAddress(listing?.currency)}
-                  </span>
-                ) : (
-                  <Skeleton className="h-4 w-11" />
                 )}
               </li>
               <li className="flex items-center justify-between">
