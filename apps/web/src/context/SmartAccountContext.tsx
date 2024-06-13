@@ -7,7 +7,7 @@ import {
 import { createContext, useCallback, useEffect, useState } from 'react'
 import { Address } from 'viem'
 import { useWallets } from '@privy-io/react-auth'
-import { biconomyBundlerURL } from '@/config/constants'
+import { biconomyBundlerURL, biconomyPaymasterApiKey } from '@/config/constants'
 import { constants } from '@adland/common'
 import { useBalance } from 'wagmi'
 
@@ -48,8 +48,7 @@ const SmartAccountProvider = ({ children }: { children: React.ReactNode }) => {
       signer: signer,
       chainId: constants.chain.id,
       bundlerUrl: biconomyBundlerURL,
-      biconomyPaymasterApiKey:
-        process.env.NEXT_PUBLIC_BICONOMY_PAYMASTER_API_KEY,
+      biconomyPaymasterApiKey,
     })
 
     const accountAddress = await smartAccount.getAccountAddress()

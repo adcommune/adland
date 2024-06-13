@@ -1,4 +1,8 @@
-import { alchemyUrlByChain, biconomyBundlerURL } from '@/config/constants'
+import {
+  alchemyUrlByChain,
+  biconomyBundlerURL,
+  biconomyPaymasterApiKey,
+} from '@/config/constants'
 import { constants } from '@adland/common'
 import { commonAdPoolAbi } from '@adland/contracts'
 import { PaymasterMode, createSmartAccountClient } from '@biconomy/account'
@@ -15,7 +19,7 @@ import { publicClient } from './viem'
 export class CommonPoolAdmin {
   async getSmartAccount() {
     if (!process.env.FRAME_PK) throw new Error('FRAME_PK not set')
-    if (!process.env.BICONOMY_PAYMASTER_API_KEY)
+    if (biconomyPaymasterApiKey === '')
       throw new Error('BICONOMY_PAYMASTER_API_KEY not set')
 
     return createSmartAccountClient({
@@ -26,7 +30,7 @@ export class CommonPoolAdmin {
       }),
       chainId: constants.chain.id,
       bundlerUrl: biconomyBundlerURL,
-      biconomyPaymasterApiKey: process.env.BICONOMY_PAYMASTER_API_KEY,
+      biconomyPaymasterApiKey,
     })
   }
 }

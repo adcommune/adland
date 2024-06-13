@@ -14,9 +14,16 @@ export const ipfsGateway = `https://${constants.pinataPublicGateway}/ipfs`
 
 export const pimlicoURL = `https://api.pimlico.io/v2/${constants.chain.id}/rpc?apikey=${pimlicoKey}`
 
-export const biconomyBundlerURL = `https://bundler.biconomy.io/api/v2/${constants.chain.id}/nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44`
+export const biconomyBundlerApiKey =
+  process.env.NEXT_PUBLIC_BICONOMY_BUNDLER_API_KEY ??
+  'nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44'
 
-export const biconomyPaymasterURL = `https://paymaster.biconomy.io/api/v1/${constants.chain.id}/DxWkzeYwU.f7af5c07-9a5a-448a-94d6-e5cadcd2177a`
+export const biconomyBundlerURL = `https://bundler.biconomy.io/api/v2/${constants.chain.id}/${biconomyBundlerApiKey}`
+
+export const biconomyPaymasterApiKey =
+  process.env.NEXT_PUBLIC_BICONOMY_PAYMASTER_API_KEY ?? ''
+
+export const biconomyPaymasterURL = `https://paymaster.biconomy.io/api/v1/${constants.chain.id}/${biconomyPaymasterApiKey}`
 
 export const alchemyUrlByChain: Record<number, string> = {
   [sepolia.id]: `https://eth-sepolia.g.alchemy.com/v2/${alchemyKey}`,
