@@ -12,6 +12,7 @@ type AdSpace @entity(immutable: false) {
   id: String!
   adGroup: AdGroup!
   adPools: [AdPool!]! @derivedFrom(field: "adSpace")
+  listing: Listing!
   uri: String
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -67,8 +68,8 @@ type CurrencyApprovedForListing @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type NewListing @entity(immutable: true) {
-  id: Bytes!
+type Listing @entity(immutable: false) {
+  id: String!
   listingCreator: Bytes! # address
   listingId: BigInt! # uint256
   assetContract: Bytes! # address
@@ -105,32 +106,6 @@ type NewSale @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
-
-type UpdatedListing @entity(immutable: true) {
-  id: Bytes!
-  listingCreator: Bytes! # address
-  listingId: BigInt! # uint256
-  assetContract: Bytes! # address
-  listing_listingId: BigInt! # uint256
-  listing_tokenId: BigInt! # uint256
-  listing_quantity: BigInt! # uint256
-  listing_pricePerToken: BigInt! # uint256
-  listing_startTimestamp: BigInt! # uint128
-  listing_endTimestamp: BigInt! # uint128
-  listing_listingCreator: Bytes! # address
-  listing_listingOwner: Bytes! # address
-  listing_assetContract: Bytes! # address
-  listing_currency: Bytes! # address
-  listing_taxRate: BigInt! # uint256
-  listing_taxBeneficiary: Bytes! # address
-  listing_tokenType: Int! # uint8
-  listing_status: Int! # uint8
-  listing_reserved: Boolean! # bool
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
 
 # IMMUTABLE DIRECTLISTING EVENT ENTITIES
 
