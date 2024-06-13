@@ -27,7 +27,7 @@ contract AdLandScripts is BaseSetup {
                     abi.encodeWithSelector(
                         CommonAdSpaces.initialize.selector,
                         address(marketplace),
-                        ""
+                        "ipfs://QmcsF6ZVPk1HskHEHPe9eNxw69rtWC1W7WriP6QT9GybMe"
                     )
                 )
             )

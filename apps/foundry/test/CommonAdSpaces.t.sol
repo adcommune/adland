@@ -13,14 +13,10 @@ import {SuperTokenV1Library} from "@superfluid-finance/ethereum-contracts/contra
 import {ISETH} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/tokens/ISETH.sol";
 import {StreamCreator} from "./mocks/StreamCreator.sol";
 import {TestToken} from "@superfluid-finance/ethereum-contracts/contracts/utils/TestToken.sol";
-import {ERC6551Registry} from "erc6551/ERC6551Registry.sol";
-import {AccountV3} from "tokenbound/AccountV3Upgradable.sol";
 
 import {AdSpaceConfig} from "../src/CommonAdSpaces.sol";
-import {CommonAdGroupAdminFactory} from "../src/CommonAdGroupAdminFactory.sol";
 import {AdGroup} from "../src/lib/Structs.sol";
 import {CommonAdPool} from "../src/CommonAdPool.sol";
-import {CommonAdGroupAdminFactoryMock} from "./mocks/CommonAdGroupAdminFactoryMock.sol";
 import {SimpleAccountFactory} from "account-abstraction/samples/SimpleAccountFactory.sol";
 import {SimpleAccount, IEntryPoint} from "account-abstraction/samples/SimpleAccount.sol";
 
