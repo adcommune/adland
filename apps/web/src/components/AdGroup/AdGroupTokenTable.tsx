@@ -3,9 +3,13 @@
 import { useTokenXsQuery } from '@adland/webkit/src/hooks'
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '../ui/table'
 import SuperTokenBalance from './SuperTokenDynamicBalance'
+import { zeroAddress } from 'viem'
 
 const SuperTokenTable = () => {
-  const { data } = useTokenXsQuery({ first: 5 }, {})
+  const { data } = useTokenXsQuery(
+    { first: 5, where: { superToken_not: zeroAddress } },
+    {},
+  )
 
   return (
     <Table>
