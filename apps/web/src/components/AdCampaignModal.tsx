@@ -1,4 +1,4 @@
-import { formatEther, parseEther } from 'viem'
+import { formatUnits, parseUnits } from 'viem'
 import {
   Form,
   FormControl,
@@ -19,6 +19,7 @@ import { AdSpace } from '@/lib/types'
 import Modal from './Modal'
 import { useContext } from 'react'
 import { ModalContext } from '@/context/ModalContext'
+import { useReadErc20Decimals } from '@adland/contracts'
 
 const fundAdPoolSchema = z.object({
   amount: z.bigint().gt(BigInt(0), 'Amount must be greater than 0'),
@@ -41,6 +42,7 @@ const AdCampaignModal = ({
   loading,
 }: AdCampaignModalProps) => {
   const { fundAdModal } = useContext(ModalContext)
+
   const form = useForm<FunAdPoolFormValues>({
     resolver: zodResolver(fundAdPoolSchema),
     defaultValues: {
@@ -55,6 +57,10 @@ const AdCampaignModal = ({
       amount: amount,
     })
   }
+
+  const { data: decimals } = useReadErc20Decimals({
+    address: adSpace.tokenX?.underlyingToken,
+  })
 
   return (
     <Modal
@@ -92,12 +98,12 @@ const AdCampaignModal = ({
                       type="number"
                       step={0.01}
                       min={0}
-                      value={Number(formatEther(value))}
+                      value={Number(formatUnits(value, decimals ?? 18))}
                       onChange={(e) => {
                         const val = e.target.valueAsNumber
 
                         if (!isNaN(val)) {
-                          onChange(parseEther(val.toString()))
+                          onChange(parseUnits(val.toString(), decimals ?? 18))
                         }
                       }}
                     />
