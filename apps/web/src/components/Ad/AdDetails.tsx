@@ -174,10 +174,11 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 <span className="text-muted-foreground">Price</span>
                 {listing?.pricePerToken ? (
                   <span className="flex flex-row items-center gap-2">
-                    {formatUnits(
-                      listing?.pricePerToken ?? BigInt(0),
-                      decimals ?? 18,
-                    )}{' '}
+                    {decimals &&
+                      formatUnits(
+                        listing?.pricePerToken ?? BigInt(0),
+                        decimals,
+                      )}{' '}
                     {getTokenSymbol(listing?.currency)}
                     <TokenImage
                       address={listing?.currency}
