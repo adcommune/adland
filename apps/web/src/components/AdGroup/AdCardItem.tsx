@@ -24,10 +24,11 @@ const AdCardItem = ({ space }: { space: Omit<AdSpace, 'listing'> }) => {
             <p className="text-black">#{adSpace?.id}</p>
           </div>
           <div className="flex flex-row items-center gap-2 rounded-md border border-black bg-white px-2">
-            {formatUnits(
-              BigInt(adSpace.listing.listing_pricePerToken),
-              decimals ?? 18,
-            )}
+            {decimals &&
+              formatUnits(
+                BigInt(adSpace.listing.listing_pricePerToken),
+                decimals,
+              )}
             <TokenImage
               address={adSpace.listing.listing_currency}
               className="h-4 w-4"
