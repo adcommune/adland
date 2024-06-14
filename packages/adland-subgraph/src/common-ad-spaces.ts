@@ -28,12 +28,12 @@ import {
   ApprovalForAll,
   BeaconUpgraded,
   Initialized,
+  Listing,
   OwnershipTransferred,
   TokenX,
   Transfer,
   Upgraded,
 } from "../generated/schema";
-import { Bytes } from "@graphprotocol/graph-ts";
 
 export const NATIVE_CURRENCY = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
@@ -92,6 +92,11 @@ export function handleAdSpaceCreated(event: AdSpaceCreatedEvent): void {
   adSpace.blockTimestamp = event.block.timestamp;
   adSpace.transactionHash = event.transaction.hash;
   adSpace.listing = event.params.adId.toString();
+  let listing = Listing.load(event.params.adId.toString());
+
+  if (listing) {
+    adSpace.tokenX = listing.listing_currency;
+  }
 
   adSpace.save();
 }
@@ -220,7 +225,11 @@ export function handleOwnershipTransferred(
 }
 
 export function handleTokenXSet(event: TokenXSetEvent): void {
-  let entity = new TokenX(event.params.superToken);
+  let entity = TokenX.load(event.params.underlyingToken);
+
+  if (!entity) {
+    entity = new TokenX(event.params.underlyingToken);
+  }
 
   entity.underlyingToken = event.params.underlyingToken;
   entity.superToken = event.params.superToken;

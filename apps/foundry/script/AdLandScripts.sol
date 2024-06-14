@@ -14,6 +14,16 @@ import {UUPSProxy} from "../src/lib/UUPSProxy.sol";
 import {CommonAdSpaces} from "../src/CommonAdSpaces.sol";
 
 contract AdLandScripts is BaseSetup {
+    function updateTokenX(
+        DeployementChain chain,
+        address commonAdSapceAddress
+    ) public broadcastOn(chain) {
+        CommonAdSpaces(commonAdSapceAddress).setTokenX(
+            ISuperToken(usdcXBase).getUnderlyingToken(),
+            address(0)
+        );
+    }
+
     function deployAdLand(
         DeployementChain chain,
         address marketplace

@@ -1,7 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 import {
   AdGroup_OrderBy_subgraph,
-  AdSpace_subgraph,
   getSdk as getAdLand,
   OrderDirection_subgraph,
 } from '@adland/webkit'
@@ -34,7 +33,9 @@ export class AdLand {
         orderDirection: OrderDirection_subgraph.Desc_subgraph,
       })
       .then((response) => {
-        return response.adGroups
+        return response.adGroups.filter((group) => {
+          return group.adSpaces[0]?.tokenX?.superToken !== zeroAddress
+        })
       })
 
     return Promise.all(

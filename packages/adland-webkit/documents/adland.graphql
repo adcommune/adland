@@ -55,6 +55,15 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
         blockTimestamp
         transactionHash
       }
+      tokenX {
+        id
+        underlyingToken
+        superToken
+        isNativeToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -126,6 +135,15 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
         blockTimestamp
         transactionHash
       }
+      tokenX {
+        id
+        underlyingToken
+        superToken
+        isNativeToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       uri
       blockTimestamp
       transactionHash
@@ -183,6 +201,15 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       listing_tokenType
       listing_status
       listing_reserved
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    tokenX {
+      id
+      underlyingToken
+      superToken
+      isNativeToken
       blockNumber
       blockTimestamp
       transactionHash
@@ -252,6 +279,15 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       blockTimestamp
       transactionHash
     }
+    tokenX {
+      id
+      underlyingToken
+      superToken
+      isNativeToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
     uri
     blockTimestamp
     transactionHash
@@ -288,6 +324,15 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
         listing_tokenType
         listing_status
         listing_reserved
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      tokenX {
+        id
+        underlyingToken
+        superToken
+        isNativeToken
         blockNumber
         blockTimestamp
         transactionHash
@@ -347,6 +392,15 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
         listing_tokenType
         listing_status
         listing_reserved
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      tokenX {
+        id
+        underlyingToken
+        superToken
+        isNativeToken
         blockNumber
         blockTimestamp
         transactionHash
