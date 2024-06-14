@@ -7,14 +7,17 @@ const tokenSources: Record<string, string> = {
   DEGEN: '/tokens/degen.webp',
   BLEU: '/tokens/bleu.webp',
   USDC: '/tokens/usdc.webp',
-  ETH: 'token/eth.png',
+  ETH: '/tokens/eth.png',
 }
 
 const TokenImage = ({
   address,
   className,
 }: { address: Address | string } & React.HTMLAttributes<HTMLImageElement>) => {
-  const symbol = getTokenSymbol(address) ?? 'ETH'
+  const symbol = getTokenSymbol(address)
+
+  if (!symbol) return null
+
   return (
     <Image
       src={tokenSources[symbol]}

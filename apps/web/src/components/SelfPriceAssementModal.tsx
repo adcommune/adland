@@ -1,6 +1,6 @@
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { encodeFunctionData, formatEther, parseEther } from 'viem'
+import { encodeFunctionData, formatUnits, parseUnits } from 'viem'
 import { useContext, useState } from 'react'
 import { AdSpace } from '@/lib/types'
 import { directListingsLogicAbi } from '@adland/contracts'
@@ -10,9 +10,9 @@ import { queryClient } from './AppProviders'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { appContracts } from '@/config/constants'
 
-type AdSpaceCardProps = { adSpace: AdSpace }
+type AdSpaceCardProps = { adSpace: AdSpace; decimals: number }
 
-const SelfPriceAssementModal = ({ adSpace }: AdSpaceCardProps) => {
+const SelfPriceAssementModal = ({ adSpace, decimals }: AdSpaceCardProps) => {
   const { listing } = adSpace
   const { selfAssessmentModal } = useContext(ModalContext)
   const {
@@ -30,7 +30,7 @@ const SelfPriceAssementModal = ({ adSpace }: AdSpaceCardProps) => {
   } = listing
 
   const [newPricePerToken, setNewPricePerToken] = useState<number>(
-    parseFloat(formatEther(pricePerToken)),
+    parseFloat(formatUnits(pricePerToken, decimals)),
   )
 
   const { write, loading } = useSmartAccountTxs({})
@@ -53,7 +53,10 @@ const SelfPriceAssementModal = ({ adSpace }: AdSpaceCardProps) => {
                   currency,
                   taxRate,
                   taxBeneficiary,
-                  pricePerToken: parseEther(newPricePerToken.toString()),
+                  pricePerToken: parseUnits(
+                    newPricePerToken.toString(),
+                    decimals,
+                  ),
                   startTimestamp,
                   endTimestamp,
                   reserved,
@@ -74,7 +77,10 @@ const SelfPriceAssementModal = ({ adSpace }: AdSpaceCardProps) => {
                 ...old,
                 listing: {
                   ...old.listing,
-                  pricePerToken: parseEther(newPricePerToken.toString()),
+                  pricePerToken: parseUnits(
+                    newPricePerToken.toString(),
+                    decimals,
+                  ),
                 },
               }
             },
@@ -110,7 +116,7 @@ const SelfPriceAssementModal = ({ adSpace }: AdSpaceCardProps) => {
         <Input
           type="number"
           value={newPricePerToken}
-          defaultValue={parseFloat(formatEther(pricePerToken))}
+          defaultValue={parseFloat(formatUnits(pricePerToken, decimals))}
           onChange={(e) => setNewPricePerToken(Number(e.target.value))}
         />
       </div>

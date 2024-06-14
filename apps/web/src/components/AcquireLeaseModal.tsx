@@ -5,7 +5,7 @@ import { Slider } from '@/components/ui/slider'
 import useAppContracts from '@/hooks/useAppContracts'
 import { getExplorerLink, getWeeklyTaxDue } from '@/lib/utils'
 import { useContext, useState } from 'react'
-import { encodeFunctionData, erc20Abi, formatEther } from 'viem'
+import { encodeFunctionData, erc20Abi, formatEther, formatUnits } from 'viem'
 import { useBalance, useReadContracts } from 'wagmi'
 import { format, addWeeks } from 'date-fns'
 import { AdSpace } from '@/lib/types'
@@ -96,14 +96,23 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
         address: cfaV1,
         args: address && [superToken?.superToken, address, marketplace],
       },
+      {
+        abi: erc20Abi,
+        functionName: 'decimals',
+        address: superToken?.underlyingToken,
+      },
     ],
     query: {
-      select: (data) => ({
-        currencyBalance: data[0].result,
-        allowance: data[1].result,
-        allowanceIsEnough: (data[1].result ?? BigInt(0)) >= pricePerToken,
-        permissionGranted: data[2].result && data[2].result[0] === 7,
-      }),
+      select: (data) => {
+        const decimals = data[3].result
+        return {
+          currencyBalance: data[0].result,
+          decimals,
+          allowance: data[1].result,
+          allowanceIsEnough: (data[1].result ?? BigInt(0)) >= pricePerToken,
+          permissionGranted: data[2].result && data[2].result[0] === 7,
+        }
+      },
     },
   })
 
@@ -206,7 +215,8 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
               }}
               loading={takeOverLoading}
             >
-              Take over lease ({formatEther(pricePerToken)}{' '}
+              Take over lease (
+              {formatUnits(pricePerToken, reads?.decimals ?? 18)}{' '}
               {getTokenSymbol(listing.currency)})
             </Button>
           )
@@ -232,11 +242,12 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Weekly Tax Due</span>
               <span>
-                {formatEther(
+                {formatUnits(
                   getWeeklyTaxDue(
                     pricePerToken ?? BigInt(0),
                     taxRate ?? BigInt(0),
                   ),
+                  reads?.decimals ?? 18,
                 )}{' '}
                 {getTokenSymbol(listing.currency)}x
               </span>
@@ -330,10 +341,11 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
               <span className="text-muted-foreground">Balance</span>
               <span>
                 {Number(
-                  formatEther(
+                  formatUnits(
                     isNativeCurrency
                       ? ethBalance?.value ?? BigInt(0)
                       : reads?.currencyBalance ?? BigInt(0),
+                    reads?.decimals ?? 18,
                   ),
                 )}
               </span>

@@ -28,7 +28,7 @@ import ForecloseDropdownItem from '@/components/AdSpaces/ForecloseDropdownItem'
 import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
 import UpdateAdDataDialog from '@/components/UpdateAdDataModal'
 import AcquireLeaseModal from '@/components/AcquireLeaseModal'
-import { formatEther } from 'viem'
+import { formatUnits } from 'viem'
 import { truncateAddress } from '@/lib/utils'
 import { format } from 'date-fns'
 import { Button } from '../ui/button'
@@ -36,6 +36,7 @@ import { getTokenSymbol } from '@/config/constants'
 import { usePathname } from 'next/navigation'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import TokenImage from '../TokenImage'
+import { useReadErc20Decimals } from '@adland/contracts'
 
 type AdDetailsSidebarProps = {
   spaceId: string
@@ -58,6 +59,10 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
   const isFarcasterPage = usePathname().includes('/farcaster')
 
   const taxRatePercentage = Number(listing?.taxRate ?? 0) / 100
+
+  const { data: decimals } = useReadErc20Decimals({
+    address: listing?.currency,
+  })
 
   return (
     <div className="relative flex min-h-[80vh] flex-col items-start gap-2 md:flex-row">
@@ -130,7 +135,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent align="end">
-                      {isOwner && !isBeneficiarty && (
+                      {isOwner && (
                         <>
                           <DropdownMenuItem
                             onClick={() => {
@@ -148,7 +153,12 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                       )}
                     </DropdownMenuContent>
                   </DropdownMenu>
-                  {adSpace && <SelfPriceAssementModal adSpace={adSpace} />}
+                  {adSpace && decimals && (
+                    <SelfPriceAssementModal
+                      decimals={decimals}
+                      adSpace={adSpace}
+                    />
+                  )}
                   {adSpace && <UpdateAdDataDialog adSpace={adSpace} />}
                 </>
               )}
@@ -164,7 +174,10 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 <span className="text-muted-foreground">Price</span>
                 {listing?.pricePerToken ? (
                   <span className="flex flex-row items-center gap-2">
-                    {formatEther(listing?.pricePerToken ?? BigInt(0))}{' '}
+                    {formatUnits(
+                      listing?.pricePerToken ?? BigInt(0),
+                      decimals ?? 18,
+                    )}{' '}
                     {getTokenSymbol(listing?.currency)}
                     <TokenImage
                       address={listing?.currency}

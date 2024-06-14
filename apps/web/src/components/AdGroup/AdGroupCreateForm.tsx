@@ -22,7 +22,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Slider } from '@/components/ui/slider'
-import { Address, encodeFunctionData, formatEther, parseEther } from 'viem'
+import { Address, encodeFunctionData, formatUnits, parseUnits } from 'viem'
 import useAppContracts from '@/hooks/useAppContracts'
 import { commonAdSpacesAbi } from '@adland/contracts'
 import { useContext } from 'react'
@@ -37,7 +37,7 @@ import {
   SelectValue,
 } from '../ui/select'
 import { truncateAddress } from '@/lib/utils'
-import { getTokenSymbol } from '@/config/constants'
+import { getDecimals, getTokenSymbol } from '@/config/constants'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import TokenImage from '../TokenImage'
@@ -155,54 +155,6 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
                 </FormItem>
               )}
             />
-            {/* <FormField
-              control={form.control}
-              name="recipientIsCaller"
-              render={({ field: { value: checked, onChange } }) => (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="beneficiary"
-                    render={({
-                      field: {
-                        value: beneficiaryValue,
-                        onChange: onChangeBeneficiary,
-                      },
-                    }) => (
-                      <FormItem>
-                        <FormLabel>Ad Group Recipient</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            disabled={checked}
-                            defaultValue={beneficiaryValue}
-                            onChange={(e) => {
-                              const val = e.target.value
-
-                              onChangeBeneficiary(val)
-                            }}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormDescription>
-                    <FormItem>
-                      <FormControl>
-                        <div className="flex flex-row items-center gap-4">
-                          <Checkbox
-                            checked={checked}
-                            onCheckedChange={onChange}
-                          />
-                          <p className="text-sm">Creating for myself</p>
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  </FormDescription>
-                </>
-              )}
-            /> */}
             <FormField
               control={form.control}
               name="initialPrice"
@@ -213,12 +165,22 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
                     <Input
                       type="number"
                       step={0.01}
-                      defaultValue={Number(formatEther(value))}
+                      defaultValue={Number(
+                        formatUnits(
+                          value,
+                          getDecimals(form.getValues().currency),
+                        ),
+                      )}
                       onChange={(e) => {
                         const val = e.target.valueAsNumber
 
                         if (!isNaN(val)) {
-                          onChange(parseEther(val.toString()))
+                          onChange(
+                            parseUnits(
+                              val.toString(),
+                              getDecimals(form.getValues().currency),
+                            ),
+                          )
                         }
                       }}
                     />

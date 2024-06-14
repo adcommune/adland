@@ -114,6 +114,16 @@ export const tokenSymbolsByChain: Record<number, Record<string, string>> = {
   },
 }
 
+export const getDecimals = (tokenAddress: string) => {
+  if (
+    tokenSymbolsByChain[constants.chain.id][tokenAddress.toLowerCase()] ===
+    'USDC'
+  ) {
+    return 6
+  }
+  return 18
+}
+
 export const getTokenSymbol = (tokenAddress?: string) => {
   if (!tokenAddress) return undefined
   if (!tokenSymbolsByChain[constants.chain.id]) return undefined
