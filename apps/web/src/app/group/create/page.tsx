@@ -3,9 +3,13 @@
 import CreateAdGroupForm from '@/components/AdGroup/AdGroupCreateForm'
 import { Container } from '@/components/Container'
 import { useTokenXsQuery } from '@adland/webkit/src/hooks'
-import { SmartAccountProvider } from '@/context/SmartAccountContext'
+import { zeroAddress } from 'viem'
+
 const CreateAdminGroupPage = () => {
-  const { data } = useTokenXsQuery({ first: 5 })
+  const { data } = useTokenXsQuery({
+    first: 5,
+    where: { superToken_not: zeroAddress },
+  })
 
   if (!data) return <></>
 

@@ -13,6 +13,7 @@ type AdSpace @entity(immutable: false) {
   adGroup: AdGroup!
   adPools: [AdPool!]! @derivedFrom(field: "adSpace")
   listing: Listing!
+  tokenX: TokenX
   uri: String
   blockTimestamp: BigInt!
   transactionHash: Bytes!

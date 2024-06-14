@@ -163,6 +163,23 @@ export class AdSpace extends Entity {
     this.set("listing", Value.fromString(value));
   }
 
+  get tokenX(): Bytes | null {
+    let value = this.get("tokenX");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set tokenX(value: Bytes | null) {
+    if (!value) {
+      this.unset("tokenX");
+    } else {
+      this.set("tokenX", Value.fromBytes(<Bytes>value));
+    }
+  }
+
   get uri(): string | null {
     let value = this.get("uri");
     if (!value || value.kind == ValueKind.NULL) {
