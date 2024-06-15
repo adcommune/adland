@@ -15,6 +15,8 @@ import { commonAdPoolAbi, commonAdSpacesAbi } from '@adland/contracts'
 import { Superfluid, SuperfluidPool } from './superfluid-subgraph'
 import { appContracts } from '@/config/constants'
 import { AdSpacesQuery } from '@adland/webkit/src/hooks'
+import { AdGroupMetadata } from '@adland/db'
+import { getAdGroupMetadataAction } from '@/app/group/[id]/settings/actions'
 
 export class AdLand {
   private adland: ReturnType<typeof getAdLand>
@@ -26,11 +28,12 @@ export class AdLand {
     this.c = publicClient
   }
 
-  async listGroups(): Promise<AdGroup[]> {
+  async listGroups(owner?: Address | string): Promise<AdGroup[]> {
     const groups = await this.adland
       .adGroups({
         orderBy: AdGroup_OrderBy_subgraph.BlockTimestamp_subgraph,
         orderDirection: OrderDirection_subgraph.Desc_subgraph,
+        where: owner ? { beneficiary: owner } : {},
       })
       .then((response) => {
         return response.adGroups.filter((group) => {
@@ -48,6 +51,7 @@ export class AdLand {
               metadata: await this._getAdSpaceMetadata(adSpace.uri),
             })),
           ),
+          metadata: await this.getAdGroupMetadata(group.id),
         }
       }),
     )
@@ -82,6 +86,14 @@ export class AdLand {
         return response.adGroup
       })
 
+    let metadata: AdGroupMetadata | undefined
+
+    try {
+      metadata = await this.getAdGroupMetadata(id)
+    } catch (error) {
+      console.error(error)
+    }
+
     if (!group) {
       return undefined
     } else {
@@ -93,6 +105,7 @@ export class AdLand {
             metadata: await this._getAdSpaceMetadata(adSpace.uri),
           })),
         ),
+        metadata,
       }
     }
   }
@@ -246,5 +259,9 @@ export class AdLand {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  async getAdGroupMetadata(groupId: string) {
+    return getAdGroupMetadataAction(groupId)
   }
 }

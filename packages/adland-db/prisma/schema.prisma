@@ -11,6 +11,17 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+model AdGroupMetadata {
+  // using chainId-adGroupId as ID
+  id          String   @id
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  description String?
+  image       String?
+  banner      String?
+}
+
 model Frame {
   id            String              @id
   createdAt     DateTime            @default(now())

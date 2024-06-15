@@ -6,7 +6,7 @@ import {
 } from '@adland/webkit'
 import { TokenX } from '@adland/webkit/src/hooks'
 import { User } from '@neynar/nodejs-sdk/build/neynar-api/v2'
-import { FrameDistribution } from '@adland/db'
+import { AdGroupMetadata, FrameDistribution } from '@adland/db'
 import { Address, ContractFunctionReturnType } from 'viem'
 import { SuperfluidPool } from './superfluid-subgraph'
 
@@ -65,6 +65,7 @@ export type AdSpace = {
 export type AdGroup = {
   adGroup_subgraph: Omit<AdGroup_subgraph, 'adSpaces'>
   adSpaces: Omit<AdSpace, 'listing'>[]
+  metadata?: AdGroupMetadata
 }
 
 export type AppDistributor = FrameDistribution & { caster?: User }
