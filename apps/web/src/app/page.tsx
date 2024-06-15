@@ -1,14 +1,17 @@
-import AllAdGroups from '@/components/AdGroups/AllAdGroups'
-import MyAdGroups from '@/components/AdGroups/MyAdGroups'
+'use client'
+
+import AdGroupList from '@/components/AdGroups/AdGroupList'
 import { Container } from '@/components/Container'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { SmartAccountContext } from '@/context/SmartAccountContext'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
+import { useContext } from 'react'
 
-export const dynamic = 'force-dynamic'
+const AppPage = () => {
+  const { bicoAccountAddress } = useContext(SmartAccountContext)
 
-const AppPage = async () => {
   return (
     <div className="flex min-h-[79vh] flex-col p-2">
       <Container className="flex w-full flex-col gap-2 p-4">
@@ -24,10 +27,10 @@ const AppPage = async () => {
             <TabsTrigger value="my-ad-groups">My Groups</TabsTrigger>
           </TabsList>
           <TabsContent value="all-ad-groups" className="w-full">
-            <AllAdGroups />
+            <AdGroupList />
           </TabsContent>
           <TabsContent value="my-ad-groups" className="w-full">
-            <MyAdGroups />
+            <AdGroupList owner={bicoAccountAddress} />
           </TabsContent>
         </Tabs>
       </Container>

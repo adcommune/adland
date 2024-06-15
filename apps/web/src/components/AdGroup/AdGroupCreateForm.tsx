@@ -155,54 +155,6 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
                 </FormItem>
               )}
             />
-            {/* <FormField
-              control={form.control}
-              name="recipientIsCaller"
-              render={({ field: { value: checked, onChange } }) => (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="beneficiary"
-                    render={({
-                      field: {
-                        value: beneficiaryValue,
-                        onChange: onChangeBeneficiary,
-                      },
-                    }) => (
-                      <FormItem>
-                        <FormLabel>Ad Group Recipient</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            disabled={checked}
-                            defaultValue={beneficiaryValue}
-                            onChange={(e) => {
-                              const val = e.target.value
-
-                              onChangeBeneficiary(val)
-                            }}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormDescription>
-                    <FormItem>
-                      <FormControl>
-                        <div className="flex flex-row items-center gap-4">
-                          <Checkbox
-                            checked={checked}
-                            onCheckedChange={onChange}
-                          />
-                          <p className="text-sm">Creating for myself</p>
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  </FormDescription>
-                </>
-              )}
-            /> */}
             <FormField
               control={form.control}
               name="initialPrice"
