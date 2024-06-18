@@ -40,6 +40,9 @@ export class AdLand {
           listing_: {
             owner,
           },
+          tokenX_: {
+            superToken_not: zeroAddress,
+          },
         },
       })
       .then((response) => {
@@ -54,15 +57,14 @@ export class AdLand {
       .adGroups({
         orderBy: AdGroup_OrderBy_subgraph.BlockTimestamp_subgraph,
         orderDirection: OrderDirection_subgraph.Desc_subgraph,
-        where: owner ? { beneficiary: owner } : {},
+        where: {
+          ...(owner ? { beneficiary: owner } : {}),
+        },
       })
       .then((response) => {
         return response.adGroups.filter((group) => {
           return group.adSpaces[0]?.tokenX?.superToken !== zeroAddress
         })
-      })
-      .catch((error) => {
-        return []
       })
 
     return Promise.all(
