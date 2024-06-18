@@ -118,12 +118,24 @@ const FarcasterDistribution = ({
 
     const superTokenAddress = superToken as Address
 
+    if (!isNativeCurrency) {
+      transactions.push({
+        to: tokenX?.underlyingToken,
+        data: encodeFunctionData({
+          abi: erc20Abi,
+          functionName: 'approve',
+          args: [superToken, amount],
+        }),
+        value: BigInt(0),
+      })
+    }
+
     transactions.push({
       to: superTokenAddress,
       data: encodeFunctionData({
         abi: isNativeCurrency ? isethAbi : superTokenAbi,
-        args: isNativeCurrency ? [] : [superTokenAddress, amount, '0x0'],
-        functionName: isNativeCurrency ? 'upgradeByETH' : 'upgradeTo',
+        args: isNativeCurrency ? [] : [amount],
+        functionName: isNativeCurrency ? 'upgradeByETH' : 'upgrade',
       }),
       value: isNativeCurrency ? amount : BigInt(0),
     })
@@ -131,6 +143,8 @@ const FarcasterDistribution = ({
     const admin = await fetch('/api/adland/poolAdmin', { method: 'GET' })
       .then((res) => res.json() as Promise<{ admin: Address }>)
       .then((res) => res.admin)
+
+    console.log({ admin })
 
     if (!reads?.frameHasMemberUnitsAdminRole) {
       transactions.push({

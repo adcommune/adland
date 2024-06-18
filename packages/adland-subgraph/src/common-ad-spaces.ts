@@ -2,6 +2,7 @@ import { CommonAdPool } from "./../generated/CommonAdSpaces/CommonAdPool";
 import {
   AdPoolCreated as AdPoolCreatedEvent,
   AdGroupCreated as AdGroupCreatedEvent,
+  AdGroupCreated1 as AdGroupCreated1Event,
   AdSpaceCreated as AdSpaceCreatedEvent,
   AdSpaceStrategyUpdated as AdSpaceStrategyUpdatedEvent,
   AdSpaceURIUpdated as AdSpaceURIUpdatedEvent,
@@ -14,6 +15,7 @@ import {
   TokenXSet as TokenXSetEvent,
   Transfer as TransferEvent,
   Upgraded as UpgradedEvent,
+  AdGroupMetadataUpdated as AdGroupMetadataUpdatedEvent,
 } from "../generated/CommonAdSpaces/CommonAdSpaces";
 import {
   AdGroup,
@@ -34,6 +36,7 @@ import {
   Transfer,
   Upgraded,
 } from "../generated/schema";
+import { Address, Bytes, log } from "@graphprotocol/graph-ts";
 
 export const NATIVE_CURRENCY = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
@@ -43,7 +46,16 @@ export function handleAdPoolCreated(event: AdPoolCreatedEvent): void {
   let commonAdPool = CommonAdPool.bind(event.params.pool);
 
   entity.adSpace = event.params.adId.toString();
-  entity.adToken = event.params.superToken;
+  let adToken = event.params.underlyingToken
+    .toHexString()
+    .includes("0000000000")
+    ? Address.fromHexString(NATIVE_CURRENCY)
+    : event.params.underlyingToken;
+
+  log.info("underlyinga: {}", [event.params.underlyingToken.toHexString()]);
+  log.info("underlyingb: {}", [adToken.toHexString()]);
+
+  entity.adToken = adToken;
   entity.dPool = commonAdPool.pool();
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
@@ -51,6 +63,26 @@ export function handleAdPoolCreated(event: AdPoolCreatedEvent): void {
   entity.save();
 }
 
+export function handleAdGroupCreated1(event: AdGroupCreated1Event): void {
+  let entity = new AdGroupCreated(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  );
+  entity.groupId = event.params.groupId;
+  entity.beneficiary = event.params.recipient;
+
+  entity.blockNumber = event.block.number;
+  entity.blockTimestamp = event.block.timestamp;
+  entity.transactionHash = event.transaction.hash;
+
+  entity.save();
+
+  let adGroup = new AdGroup(event.params.groupId.toString());
+  adGroup.beneficiary = event.params.recipient;
+  adGroup.blockTimestamp = event.block.timestamp;
+  adGroup.transactionHash = event.transaction.hash;
+
+  adGroup.save();
+}
 export function handleAdGroupCreated(event: AdGroupCreatedEvent): void {
   let entity = new AdGroupCreated(
     event.transaction.hash.concatI32(event.logIndex.toI32())
@@ -65,12 +97,23 @@ export function handleAdGroupCreated(event: AdGroupCreatedEvent): void {
   entity.save();
 
   let adGroup = new AdGroup(event.params.groupId.toString());
-
+  adGroup.metadataURI = event.params.metadataURI.toString();
   adGroup.beneficiary = event.params.recipient;
   adGroup.blockTimestamp = event.block.timestamp;
   adGroup.transactionHash = event.transaction.hash;
 
   adGroup.save();
+}
+
+export function handleAdGroupMetadataUpdated(
+  event: AdGroupMetadataUpdatedEvent
+): void {
+  let adGroup = AdGroup.load(event.params.groupId.toString());
+
+  if (adGroup) {
+    adGroup.metadataURI = event.params.metadataURI.toString();
+    adGroup.save();
+  }
 }
 
 export function handleAdSpaceCreated(event: AdSpaceCreatedEvent): void {
@@ -226,6 +269,8 @@ export function handleOwnershipTransferred(
 
 export function handleTokenXSet(event: TokenXSetEvent): void {
   let entity = TokenX.load(event.params.underlyingToken);
+
+  log.info("underlying: {}", [event.params.underlyingToken.toHexString()]);
 
   if (!entity) {
     entity = new TokenX(event.params.underlyingToken);

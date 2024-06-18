@@ -13,17 +13,20 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
+import { AdGroupMetadata } from '@/lib/types'
 
 type AdGroupListItemProps = {
   id: string
   blockTimestamp: string
   adSpaces: AdGroupsQuery['adGroups'][0]['adSpaces']
+  metadata?: AdGroupMetadata
 }
 
 const AdGroupListItem = ({
   id,
   blockTimestamp,
   adSpaces,
+  metadata,
 }: AdGroupListItemProps) => {
   return (
     <Link href={'/group/' + id} key={id}>
@@ -40,12 +43,24 @@ const AdGroupListItem = ({
               console.log('prefetch done')
             })
         }}
-        className=""
+        className="overflow-hidden border-transparent"
       >
-        <CardHeader className="p-4">
-          <CardTitle className="text-xl">Ad Group - #{id}</CardTitle>
+        <CardHeader className="flex flex-row gap-3 p-4">
+          <div className="-mt- h-11 w-11 overflow-hidden rounded-full">
+            {metadata?.image ? (
+              <img
+                className=" h-full w-full object-cover"
+                src={metadata?.image}
+              />
+            ) : (
+              <div className="h-full w-full bg-gray-300" />
+            )}
+          </div>
+          <CardTitle className="-mt-8 text-xl">
+            {metadata?.name || `Ad Group - #${id}`}
+          </CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-4 gap-2 p-4">
+        <CardContent className="grid grid-cols-4 gap-2 p-4 py-0">
           {adSpaces.slice(0, 4).map(({ uri, transactionHash }, i) => {
             return (
               <div

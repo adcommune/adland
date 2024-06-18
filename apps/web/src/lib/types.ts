@@ -16,6 +16,13 @@ export type Listing = ContractFunctionReturnType<
   'getListing'
 >
 
+export type AdGroupMetadata = {
+  name: string
+  description: string
+  image: string
+  banner: string
+}
+
 export type Metadata = {
   name: string
   image: string
@@ -65,6 +72,7 @@ export type AdSpace = {
 export type AdGroup = {
   adGroup_subgraph: Omit<AdGroup_subgraph, 'adSpaces'>
   adSpaces: Omit<AdSpace, 'listing'>[]
+  metadata?: AdGroupMetadata
 }
 
 export type AppDistributor = FrameDistribution & { caster?: User }

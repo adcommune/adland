@@ -4,12 +4,12 @@ pragma solidity ^0.8.13;
 import {console} from "forge-std/Script.sol";
 import {BaseScript} from "./Base.s.sol";
 import {CommonAdSpaces} from "../src/CommonAdSpaces.sol";
+import {AdGroup} from "../src/lib/Structs.sol";
 
-contract UpgradeCommonAdSpacesScript is BaseScript {
-    function upgradeTestnet()
-        public
-        broadcastOn(DeployementChain.OptimismSepolia)
-    {
+contract UpgradeScripts is BaseScript {
+    function upgradeCommonAds(
+        DeployementChain chain
+    ) public broadcastOn(chain) {
         CommonAdSpaces deployCommonAdSpaces = CommonAdSpaces(
             _readDeployment("CommonAdSpaces")
         );

@@ -1,19 +1,25 @@
+'use client'
+
 import AdGroupHeader from '@/components/AdGroup/AdGroupHeader'
 import { Container } from '@/components/Container'
 import { AdLand } from '@/lib/adland'
+import { useQuery } from '@tanstack/react-query'
 
 type GroupPageLayoutProps = {
   children: React.ReactNode
   params: { id: string }
 }
 
-export const dynamic = 'force-dynamic'
-
-const GroupPageLayout = async ({
+const GroupPageLayout = ({
   children,
   params: { id },
 }: GroupPageLayoutProps) => {
-  const adGroup = await new AdLand().getGroup(id)
+  const { data: adGroup } = useQuery({
+    queryKey: ['adGroup-', id],
+    queryFn: async () => {
+      return new AdLand().getGroup(id)
+    },
+  })
 
   if (!adGroup) return null
 

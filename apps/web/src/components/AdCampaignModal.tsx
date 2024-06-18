@@ -102,6 +102,7 @@ const AdCampaignModal = ({
                       }}
                     />
                     <Button
+                      type="button"
                       onClick={() => {
                         onChange(superTokenBalance)
                       }}

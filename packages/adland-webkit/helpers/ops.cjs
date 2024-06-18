@@ -22,6 +22,7 @@ const pullSchema = async function ({
   fileName,
   operations,
   depthLimit,
+  removeLastArg,
 }) {
   const schema = await getSchemaFromUrl(schemaUrl);
 
@@ -37,7 +38,9 @@ const pullSchema = async function ({
       }
 
       // Removing subgraphError argument from the query
-      operationsDictionary[operationKind][operationName].args.pop();
+      if (removeLastArg) {
+        operationsDictionary[operationKind][operationName].args.pop();
+      }
 
       // List of queries to remove
       const exclude = ["_meta"];
@@ -83,7 +86,13 @@ const main = async function () {
     {
       schemaUrl: constants.subgraphUrl,
       fileName: "adland",
+      removeLastArg: true,
     },
+    // {
+    //   schemaUrl: "http://localhost:42069/graphql",
+    //   fileName: "ponder",
+    //   depthLimit: 5,
+    // },
   ];
 
   let documentString = "";

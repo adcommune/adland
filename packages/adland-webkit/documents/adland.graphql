@@ -68,6 +68,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       blockTimestamp
       transactionHash
     }
+    metadataURI
     blockTimestamp
     transactionHash
   }
@@ -148,6 +149,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       blockTimestamp
       transactionHash
     }
+    metadataURI
     blockTimestamp
     transactionHash
   }
@@ -157,6 +159,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
     adGroup {
       id
       beneficiary
+      metadataURI
       blockTimestamp
       transactionHash
     }
@@ -231,6 +234,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
     adGroup {
       id
       beneficiary
+      metadataURI
       blockTimestamp
       transactionHash
     }
@@ -301,6 +305,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       adGroup {
         id
         beneficiary
+        metadataURI
         blockTimestamp
         transactionHash
       }
@@ -369,6 +374,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       adGroup {
         id
         beneficiary
+        metadataURI
         blockTimestamp
         transactionHash
       }

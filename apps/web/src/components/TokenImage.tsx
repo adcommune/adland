@@ -7,7 +7,7 @@ const tokenSources: Record<string, string> = {
   DEGEN: '/tokens/degen.webp',
   BLEU: '/tokens/bleu.webp',
   USDC: '/tokens/usdc.webp',
-  ETH: 'token/eth.png',
+  ETH: '/tokens/eth.png',
 }
 
 const TokenImage = ({

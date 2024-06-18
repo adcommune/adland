@@ -4,6 +4,7 @@ type AdGroup @entity(immutable: false) {
   id: String!
   beneficiary: Bytes!
   adSpaces: [AdSpace!]! @derivedFrom(field: "adGroup")
+  metadataURI: String
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }

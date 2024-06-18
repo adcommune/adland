@@ -6,7 +6,14 @@ import {
 } from '@adland/webkit'
 import { constants } from '@adland/common'
 import { Market } from './market'
-import { AdCampaign, AdGroup, AdSpace, Listing, Metadata } from './types'
+import {
+  AdCampaign,
+  AdGroup,
+  AdGroupMetadata,
+  AdSpace,
+  Listing,
+  Metadata,
+} from './types'
 import { fetchJSON, getGatewayUri } from './utils'
 import { client } from './services'
 import { Address, erc721Abi, PublicClient, zeroAddress } from 'viem'
@@ -26,16 +33,20 @@ export class AdLand {
     this.c = publicClient
   }
 
-  async listGroups(): Promise<AdGroup[]> {
+  async listGroups(owner?: Address | string): Promise<AdGroup[]> {
     const groups = await this.adland
       .adGroups({
         orderBy: AdGroup_OrderBy_subgraph.BlockTimestamp_subgraph,
         orderDirection: OrderDirection_subgraph.Desc_subgraph,
+        where: owner ? { beneficiary: owner } : {},
       })
       .then((response) => {
         return response.adGroups.filter((group) => {
           return group.adSpaces[0]?.tokenX?.superToken !== zeroAddress
         })
+      })
+      .catch((error) => {
+        return []
       })
 
     return Promise.all(
@@ -48,6 +59,7 @@ export class AdLand {
               metadata: await this._getAdSpaceMetadata(adSpace.uri),
             })),
           ),
+          metadata: await this._getAdGroupMetadata(group.metadataURI),
         }
       }),
     )
@@ -93,6 +105,7 @@ export class AdLand {
             metadata: await this._getAdSpaceMetadata(adSpace.uri),
           })),
         ),
+        metadata: await this._getAdGroupMetadata(group.metadataURI),
       }
     }
   }
@@ -241,6 +254,23 @@ export class AdLand {
           ? getGatewayUri(metadata.image)
           : null
       }
+
+      return metadata
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  private async _getAdGroupMetadata(
+    uri: string | undefined | null,
+  ): Promise<AdGroupMetadata | undefined> {
+    if (uri?.includes('undefined')) {
+      throw new Error('Invalid metadata URI')
+    }
+    try {
+      const gatewayURI = uri ? getGatewayUri(uri) : null
+
+      const metadata = gatewayURI ? await fetchJSON(gatewayURI) : null
 
       return metadata
     } catch (error) {
