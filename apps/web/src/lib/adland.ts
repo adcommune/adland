@@ -33,6 +33,22 @@ export class AdLand {
     this.c = publicClient
   }
 
+  async listAdSpacesByOwner(owner: Address | string): Promise<AdSpace[]> {
+    const adSpaces = await this.adland
+      .adSpaces({
+        where: {
+          listing_: {
+            owner,
+          },
+        },
+      })
+      .then((response) => {
+        return response.adSpaces
+      })
+
+    return Promise.all(adSpaces.map((s) => this.getAdSpace(s.id)))
+  }
+
   async listGroups(owner?: Address | string): Promise<AdGroup[]> {
     const groups = await this.adland
       .adGroups({

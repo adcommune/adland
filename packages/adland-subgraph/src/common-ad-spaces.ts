@@ -309,6 +309,13 @@ export function handleTransfer(event: TransferEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let listing = Listing.load(event.params.tokenId.toString());
+
+  if (listing) {
+    listing.owner = event.params.to;
+    listing.save();
+  }
 }
 
 export function handleUpgraded(event: UpgradedEvent): void {

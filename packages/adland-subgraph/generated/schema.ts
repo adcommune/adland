@@ -864,6 +864,23 @@ export class Listing extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get owner(): Bytes | null {
+    let value = this.get("owner");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set owner(value: Bytes | null) {
+    if (!value) {
+      this.unset("owner");
+    } else {
+      this.set("owner", Value.fromBytes(<Bytes>value));
+    }
+  }
+
   get listingCreator(): Bytes {
     let value = this.get("listingCreator");
     if (!value || value.kind == ValueKind.NULL) {

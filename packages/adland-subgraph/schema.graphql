@@ -72,6 +72,7 @@ type CurrencyApprovedForListing @entity(immutable: true) {
 
 type Listing @entity(immutable: false) {
   id: String!
+  owner: Bytes
   listingCreator: Bytes! # address
   listingId: BigInt! # uint256
   assetContract: Bytes! # address
