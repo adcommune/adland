@@ -13,12 +13,12 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
-import { AdGroupMetadata } from '@/lib/types'
+import { AdGroupMetadata, AdSpace } from '@/lib/types'
 
 type AdGroupListItemProps = {
   id: string
   blockTimestamp: string
-  adSpaces: AdGroupsQuery['adGroups'][0]['adSpaces']
+  adSpaces: Omit<AdSpace, 'listing'>[]
   metadata?: AdGroupMetadata
 }
 
@@ -61,18 +61,25 @@ const AdGroupListItem = ({
           </CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-4 gap-2 p-4 py-0">
-          {adSpaces.slice(0, 4).map(({ uri, transactionHash }, i) => {
+          {adSpaces.slice(0, 4).map(({ adSpace_subgraph, metadata }, i) => {
+            const { uri, transactionHash } = adSpace_subgraph
+
             return (
               <div
                 key={transactionHash}
                 className={classNames(
                   'flex aspect-square w-full flex-col items-center justify-center border',
                   {
-                    'bg-green-500': Boolean(uri),
                     'bg-gray-300': !Boolean(uri),
                   },
                 )}
               >
+                {metadata && metadata.imageGatewayURI && i < 3 && (
+                  <img
+                    src={metadata?.imageGatewayURI}
+                    className="h-full w-full object-contain"
+                  />
+                )}
                 {i === 3 && <p className="font-bold">+{adSpaces.length - 3}</p>}
               </div>
             )
