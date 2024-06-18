@@ -1,13 +1,11 @@
 'use client'
 
 import AdGroupList from '@/components/AdGroups/AdGroupList'
-import AdSpaceCard from '@/components/AdSpaceCard'
+import AdSpaceList from '@/components/AdSpaceList'
 import { Container } from '@/components/Container'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
-import { AdLand } from '@/lib/adland'
-import { useQuery } from '@tanstack/react-query'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useContext } from 'react'
@@ -41,37 +39,6 @@ const AppPage = () => {
           </TabsContent>
         </Tabs>
       </Container>
-    </div>
-  )
-}
-
-const AdSpaceList = () => {
-  const { bicoAccountAddress } = useContext(SmartAccountContext)
-
-  const { data } = useQuery({
-    queryFn: () =>
-      bicoAccountAddress &&
-      new AdLand().listAdSpacesByOwner(bicoAccountAddress),
-    queryKey: ['listAdSpaces-' + bicoAccountAddress],
-  })
-
-  return (
-    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-      {data?.map((adSpace) => {
-        return (
-          <AdSpaceCard
-            key={
-              adSpace.adSpace_subgraph.transactionHash +
-              '-' +
-              adSpace.adSpace_subgraph.id
-            }
-            price={adSpace.listing.pricePerToken.toString()}
-            currency={adSpace.listing.currency}
-            metadata={adSpace?.metadata}
-            id={adSpace.adSpace_subgraph.id}
-          />
-        )
-      })}
     </div>
   )
 }

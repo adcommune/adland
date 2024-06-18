@@ -25,7 +25,7 @@ const AdSpaceCard = ({ id, price, currency, metadata }: AdSpaceCardProps) => {
             <TokenImage address={currency} className="h-4 w-4" />
           </div>
         </div>
-        <div className="relative flex h-[400px] w-full flex-grow flex-col gap-2 bg-white bg-opacity-50 p-4 hover:bg-opacity-60">
+        <div className="relative flex h-[350px] w-full flex-grow flex-col gap-2 bg-white bg-opacity-50 p-4 hover:bg-opacity-60">
           {!metadata && (
             <div className="flex h-full w-full flex-col items-center justify-center">
               <p className="font-display text-2xl">No Ad</p>
