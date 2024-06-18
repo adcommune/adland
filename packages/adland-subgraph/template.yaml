@@ -33,11 +33,16 @@ dataSources:
         - name: CommonAdPool
           file: ./abis/CommonAdPool.json
       eventHandlers:
+        - event: AdGroupMetadataUpdated(indexed uint256,string)
+          handler: handleAdGroupMetadataUpdated
         - event: AdGroupCreated(indexed uint256,indexed address)
+          handler: handleAdGroupCreated1
+        # New contract implementation
+        - event: AdGroupCreated(indexed uint256,indexed address,indexed string)
           handler: handleAdGroupCreated
         - event: AdSpaceCreated(indexed uint256,indexed uint256)
           handler: handleAdSpaceCreated
-        - event: AdPoolCreated(indexed uint256,indexed address,indexed address)
+        - event: AdPoolCreated(indexed uint256,indexed address,indexed address,address)
           handler: handleAdPoolCreated
         - event: AdSpaceStrategyUpdated(indexed uint256,indexed address)
           handler: handleAdSpaceStrategyUpdated

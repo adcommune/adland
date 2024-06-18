@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AdGroupMetadata } from '@adland/db'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import {
@@ -18,13 +17,19 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { AdLand } from '@/lib/adland'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { putAdGroupMetadataAction } from './actions'
 import { useState } from 'react'
-import { authorizedFileTypes, ipfsGateway } from '@/config/constants'
+import {
+  appContracts,
+  authorizedFileTypes,
+  ipfsGateway,
+} from '@/config/constants'
 import { toast } from 'sonner'
 import { uploadFile } from '@/lib/file'
 import { queryClient } from '@/components/AppProviders'
-import { AdGroup } from '@/lib/types'
+import { AdGroup, AdGroupMetadata } from '@/lib/types'
+import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
+import { encodeFunctionData } from 'viem'
+import { commonAdSpacesAbi } from '@adland/contracts'
 
 const createAdGrouMetadataSchema = z.object({
   name: z.string({
@@ -48,6 +53,8 @@ const GroupSettingsPage = ({ params: { id } }: GroupPageProps) => {
   if (!adGroup) {
     return null
   }
+
+  console.log('adGroup', adGroup)
 
   return (
     <GroupSettingsForm
@@ -96,8 +103,36 @@ const GroupSettingsForm = ({ data, id }: GroupSettingsFormProps) => {
     setUploadingImage(false)
   }
 
+  const { writeAsync } = useSmartAccountTxs({})
+
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: (args: AdGroupMetadata) => putAdGroupMetadataAction(id, args),
+    mutationFn: async (
+      args: Pick<AdGroupMetadata, 'image' | 'name' | 'description' | 'banner'>,
+    ) => {
+      const metadata: File = new File([JSON.stringify(args)], 'metadata.json')
+      const hash = await uploadFile(metadata)
+      const adIpfsURI = `ipfs://${hash}`
+
+      writeAsync(
+        {
+          transactions: [
+            {
+              to: appContracts.adCommonOwnership,
+              data: encodeFunctionData({
+                abi: commonAdSpacesAbi,
+                functionName: 'updateAdGroupMetadata',
+                args: [BigInt(id), adIpfsURI],
+              }),
+            },
+          ],
+        },
+        {
+          onSuccess: () => {
+            toast.success('Group metadata updated')
+          },
+        },
+      )
+    },
   })
 
   const onSubmit = async (values: AdGroupMetadata) => {

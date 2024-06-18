@@ -1,0 +1,452 @@
+query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adSpaces_orderBy: String, $adGroup_adSpaces_orderDirection: String, $adGroup_adSpaces_before: String, $adGroup_adSpaces_after: String, $adGroup_adSpaces_limit: Int, $adGroup_adSpaces_adSpaces_items_items_metadatas_where: AdSpaceMetadataFilter, $adGroup_adSpaces_adSpaces_items_items_metadatas_orderBy: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_orderDirection: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_before: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_after: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_limit: Int) {
+  adGroup(id: $id) {
+    id
+    beneficiary
+    adSpaces(
+      where: $adGroup_adSpaces_where
+      orderBy: $adGroup_adSpaces_orderBy
+      orderDirection: $adGroup_adSpaces_orderDirection
+      before: $adGroup_adSpaces_before
+      after: $adGroup_adSpaces_after
+      limit: $adGroup_adSpaces_limit
+    ) {
+      items {
+        id
+        adGroupId
+        metadatas(
+          where: $adGroup_adSpaces_adSpaces_items_items_metadatas_where
+          orderBy: $adGroup_adSpaces_adSpaces_items_items_metadatas_orderBy
+          orderDirection: $adGroup_adSpaces_adSpaces_items_items_metadatas_orderDirection
+          before: $adGroup_adSpaces_adSpaces_items_items_metadatas_before
+          after: $adGroup_adSpaces_adSpaces_items_items_metadatas_after
+          limit: $adGroup_adSpaces_adSpaces_items_items_metadatas_limit
+        ) {
+          items {
+            id
+            adSpaceId
+            name
+            description
+            image
+            imageGatewayUri
+            externalUrl
+            aspectRatio
+            frameRedirectUrl
+            blockNumber
+            transactionHash
+          }
+          pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+    metadataId
+    metadata {
+      id
+      name
+      description
+      image
+      banner
+    }
+  }
+}query adGroups($where: AdGroupFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adGroups_items_items_adSpaces_where: AdSpaceFilter, $adGroups_items_items_adSpaces_orderBy: String, $adGroups_items_items_adSpaces_orderDirection: String, $adGroups_items_items_adSpaces_before: String, $adGroups_items_items_adSpaces_after: String, $adGroups_items_items_adSpaces_limit: Int, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_where: AdSpaceMetadataFilter, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_orderBy: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_orderDirection: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_before: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_after: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_limit: Int) {
+  adGroups(
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    before: $before
+    after: $after
+    limit: $limit
+  ) {
+    items {
+      id
+      beneficiary
+      adSpaces(
+        where: $adGroups_items_items_adSpaces_where
+        orderBy: $adGroups_items_items_adSpaces_orderBy
+        orderDirection: $adGroups_items_items_adSpaces_orderDirection
+        before: $adGroups_items_items_adSpaces_before
+        after: $adGroups_items_items_adSpaces_after
+        limit: $adGroups_items_items_adSpaces_limit
+      ) {
+        items {
+          id
+          adGroupId
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+      metadataId
+      metadata {
+        id
+        name
+        description
+        image
+        banner
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}query adGroupMetadata($id: String!) {
+  adGroupMetadata(id: $id) {
+    id
+    name
+    description
+    image
+    banner
+  }
+}query adGroupMetadatas($where: AdGroupMetadataFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int) {
+  adGroupMetadatas(
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    before: $before
+    after: $after
+    limit: $limit
+  ) {
+    items {
+      id
+      name
+      description
+      image
+      banner
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}query adSpace($id: String!, $adSpace_adGroup_adGroup_adSpaces_where: AdSpaceFilter, $adSpace_adGroup_adGroup_adSpaces_orderBy: String, $adSpace_adGroup_adGroup_adSpaces_orderDirection: String, $adSpace_adGroup_adGroup_adSpaces_before: String, $adSpace_adGroup_adGroup_adSpaces_after: String, $adSpace_adGroup_adGroup_adSpaces_limit: Int, $adSpace_metadatas_where: AdSpaceMetadataFilter, $adSpace_metadatas_orderBy: String, $adSpace_metadatas_orderDirection: String, $adSpace_metadatas_before: String, $adSpace_metadatas_after: String, $adSpace_metadatas_limit: Int) {
+  adSpace(id: $id) {
+    id
+    adGroupId
+    adGroup {
+      id
+      beneficiary
+      adSpaces(
+        where: $adSpace_adGroup_adGroup_adSpaces_where
+        orderBy: $adSpace_adGroup_adGroup_adSpaces_orderBy
+        orderDirection: $adSpace_adGroup_adGroup_adSpaces_orderDirection
+        before: $adSpace_adGroup_adGroup_adSpaces_before
+        after: $adSpace_adGroup_adGroup_adSpaces_after
+        limit: $adSpace_adGroup_adGroup_adSpaces_limit
+      ) {
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+      metadataId
+      metadata {
+        id
+        name
+        description
+        image
+        banner
+      }
+    }
+    metadatas(
+      where: $adSpace_metadatas_where
+      orderBy: $adSpace_metadatas_orderBy
+      orderDirection: $adSpace_metadatas_orderDirection
+      before: $adSpace_metadatas_before
+      after: $adSpace_metadatas_after
+      limit: $adSpace_metadatas_limit
+    ) {
+      items {
+        id
+        adSpaceId
+        name
+        description
+        image
+        imageGatewayUri
+        externalUrl
+        aspectRatio
+        frameRedirectUrl
+        blockNumber
+        transactionHash
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+}query adSpaces($where: AdSpaceFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adSpaces_items_items_metadatas_where: AdSpaceMetadataFilter, $adSpaces_items_items_metadatas_orderBy: String, $adSpaces_items_items_metadatas_orderDirection: String, $adSpaces_items_items_metadatas_before: String, $adSpaces_items_items_metadatas_after: String, $adSpaces_items_items_metadatas_limit: Int) {
+  adSpaces(
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    before: $before
+    after: $after
+    limit: $limit
+  ) {
+    items {
+      id
+      adGroupId
+      adGroup {
+        id
+        beneficiary
+        metadataId
+        metadata {
+          id
+          name
+          description
+          image
+          banner
+        }
+      }
+      metadatas(
+        where: $adSpaces_items_items_metadatas_where
+        orderBy: $adSpaces_items_items_metadatas_orderBy
+        orderDirection: $adSpaces_items_items_metadatas_orderDirection
+        before: $adSpaces_items_items_metadatas_before
+        after: $adSpaces_items_items_metadatas_after
+        limit: $adSpaces_items_items_metadatas_limit
+      ) {
+        items {
+          id
+          adSpaceId
+          name
+          description
+          image
+          imageGatewayUri
+          externalUrl
+          aspectRatio
+          frameRedirectUrl
+          blockNumber
+          transactionHash
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}query adSpaceMetadata($id: String!, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_where: AdSpaceFilter, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy: String, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection: String, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_before: String, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_after: String, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_limit: Int, $adSpaceMetadata_adSpace_adSpace_metadatas_where: AdSpaceMetadataFilter, $adSpaceMetadata_adSpace_adSpace_metadatas_orderBy: String, $adSpaceMetadata_adSpace_adSpace_metadatas_orderDirection: String, $adSpaceMetadata_adSpace_adSpace_metadatas_before: String, $adSpaceMetadata_adSpace_adSpace_metadatas_after: String, $adSpaceMetadata_adSpace_adSpace_metadatas_limit: Int) {
+  adSpaceMetadata(id: $id) {
+    id
+    adSpaceId
+    adSpace {
+      id
+      adGroupId
+      adGroup {
+        id
+        beneficiary
+        adSpaces(
+          where: $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_where
+          orderBy: $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy
+          orderDirection: $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection
+          before: $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_before
+          after: $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_after
+          limit: $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_limit
+        ) {
+          pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
+        }
+        metadataId
+        metadata {
+          id
+          name
+          description
+          image
+          banner
+        }
+      }
+      metadatas(
+        where: $adSpaceMetadata_adSpace_adSpace_metadatas_where
+        orderBy: $adSpaceMetadata_adSpace_adSpace_metadatas_orderBy
+        orderDirection: $adSpaceMetadata_adSpace_adSpace_metadatas_orderDirection
+        before: $adSpaceMetadata_adSpace_adSpace_metadatas_before
+        after: $adSpaceMetadata_adSpace_adSpace_metadatas_after
+        limit: $adSpaceMetadata_adSpace_adSpace_metadatas_limit
+      ) {
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+    }
+    name
+    description
+    image
+    imageGatewayUri
+    externalUrl
+    aspectRatio
+    frameRedirectUrl
+    blockNumber
+    transactionHash
+  }
+}query adSpaceMetadatas($where: AdSpaceMetadataFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_where: AdSpaceFilter, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_before: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_after: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_limit: Int) {
+  adSpaceMetadatas(
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    before: $before
+    after: $after
+    limit: $limit
+  ) {
+    items {
+      id
+      adSpaceId
+      adSpace {
+        id
+        adGroupId
+        adGroup {
+          id
+          beneficiary
+          metadataId
+          metadata {
+            id
+            name
+            description
+            image
+            banner
+          }
+        }
+      }
+      name
+      description
+      image
+      imageGatewayUri
+      externalUrl
+      aspectRatio
+      frameRedirectUrl
+      blockNumber
+      transactionHash
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}query tokenX($id: String!) {
+  tokenX(id: $id) {
+    id
+    underlyingToken
+    superToken
+    isNativeToken
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query tokenXs($where: TokenXFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int) {
+  tokenXs(
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    before: $before
+    after: $after
+    limit: $limit
+  ) {
+    items {
+      id
+      underlyingToken
+      superToken
+      isNativeToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}query listing($id: String!) {
+  listing(id: $id) {
+    id
+    listingId
+    tokenId
+    quantity
+    pricePerToken
+    startTimestamp
+    endTimestamp
+    listingCreator
+    listingOwner
+    assetContract
+    currency
+    taxRate
+    taxBeneficiary
+    tokenType
+    status
+    reserved
+  }
+}query listings($where: ListingFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int) {
+  listings(
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    before: $before
+    after: $after
+    limit: $limit
+  ) {
+    items {
+      id
+      listingId
+      tokenId
+      quantity
+      pricePerToken
+      startTimestamp
+      endTimestamp
+      listingCreator
+      listingOwner
+      assetContract
+      currency
+      taxRate
+      taxBeneficiary
+      tokenType
+      status
+      reserved
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}
