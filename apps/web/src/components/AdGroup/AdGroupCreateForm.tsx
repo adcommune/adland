@@ -95,6 +95,7 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
                   taxRate,
                 },
                 size,
+                '',
               ],
             }),
             value: BigInt(0),

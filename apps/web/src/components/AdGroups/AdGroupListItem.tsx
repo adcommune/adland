@@ -13,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
-import { AdGroupMetadata } from '@prisma/client'
+import { AdGroupMetadata } from '@/lib/types'
 
 type AdGroupListItemProps = {
   id: string
