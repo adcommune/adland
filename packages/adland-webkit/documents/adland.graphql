@@ -33,6 +33,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       }
       listing {
         id
+        owner
         listingCreator
         listingId
         assetContract
@@ -114,6 +115,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       }
       listing {
         id
+        owner
         listingCreator
         listingId
         assetContract
@@ -186,6 +188,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
     }
     listing {
       id
+      owner
       listingCreator
       listingId
       assetContract
@@ -261,6 +264,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
     }
     listing {
       id
+      owner
       listingCreator
       listingId
       assetContract
@@ -311,6 +315,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       }
       listing {
         id
+        owner
         listingCreator
         listingId
         assetContract
@@ -380,6 +385,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
       }
       listing {
         id
+        owner
         listingCreator
         listingId
         assetContract
@@ -536,6 +542,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
 }query listing($id: ID!, $block: Block_height) {
   listing(id: $id, block: $block) {
     id
+    owner
     listingCreator
     listingId
     assetContract
@@ -568,6 +575,7 @@ query adGroup($id: ID!, $block: Block_height, $adGroup_adSpaces_skip: Int, $adGr
     block: $block
   ) {
     id
+    owner
     listingCreator
     listingId
     assetContract

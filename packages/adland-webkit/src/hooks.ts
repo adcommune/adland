@@ -762,6 +762,7 @@ export enum AdSpace_OrderBy {
   ListingListingTaxRate = 'listing__listing_taxRate',
   ListingListingTokenId = 'listing__listing_tokenId',
   ListingListingTokenType = 'listing__listing_tokenType',
+  ListingOwner = 'listing__owner',
   ListingTransactionHash = 'listing__transactionHash',
   TokenX = 'tokenX',
   TokenXBlockNumber = 'tokenX__blockNumber',
@@ -1469,6 +1470,7 @@ export type Listing = {
   listing_taxRate: Scalars['BigInt']['output'];
   listing_tokenId: Scalars['BigInt']['output'];
   listing_tokenType: Scalars['Int']['output'];
+  owner?: Maybe<Scalars['Bytes']['output']>;
   transactionHash: Scalars['Bytes']['output'];
 };
 
@@ -1667,6 +1669,16 @@ export type Listing_Filter = {
   listing_tokenType_not?: InputMaybe<Scalars['Int']['input']>;
   listing_tokenType_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   or?: InputMaybe<Array<InputMaybe<Listing_Filter>>>;
+  owner?: InputMaybe<Scalars['Bytes']['input']>;
+  owner_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  owner_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  owner_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  owner_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  owner_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  owner_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  owner_not?: InputMaybe<Scalars['Bytes']['input']>;
+  owner_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  owner_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -1701,6 +1713,7 @@ export enum Listing_OrderBy {
   ListingTaxRate = 'listing_taxRate',
   ListingTokenId = 'listing_tokenId',
   ListingTokenType = 'listing_tokenType',
+  Owner = 'owner',
   TransactionHash = 'transactionHash'
 }
 
@@ -3090,7 +3103,7 @@ export type AdGroupQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null }> } | null };
+export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, owner?: any | null, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null }> } | null };
 
 export type AdGroupsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3112,7 +3125,7 @@ export type AdGroupsQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null }> }> };
+export type AdGroupsQuery = { __typename?: 'Query', adGroups: Array<{ __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any, adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, owner?: any | null, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null }> }> };
 
 export type AdSpaceQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3125,7 +3138,7 @@ export type AdSpaceQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null } | null };
+export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, owner?: any | null, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null } | null };
 
 export type AdSpacesQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3142,7 +3155,7 @@ export type AdSpacesQueryVariables = Exact<{
 }>;
 
 
-export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null }> };
+export type AdSpacesQuery = { __typename?: 'Query', adSpaces: Array<{ __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any }, adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }>, listing: { __typename?: 'Listing', id: string, owner?: any | null, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null }> };
 
 export type AdPoolQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3150,7 +3163,7 @@ export type AdPoolQueryVariables = Exact<{
 }>;
 
 
-export type AdPoolQuery = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any }, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
+export type AdPoolQuery = { __typename?: 'Query', adPool?: { __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any }, listing: { __typename?: 'Listing', id: string, owner?: any | null, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } } | null };
 
 export type AdPoolsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3162,7 +3175,7 @@ export type AdPoolsQueryVariables = Exact<{
 }>;
 
 
-export type AdPoolsQuery = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any }, listing: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
+export type AdPoolsQuery = { __typename?: 'Query', adPools: Array<{ __typename?: 'AdPool', id: string, dPool: any, blockTimestamp: any, transactionHash: any, adSpace: { __typename?: 'AdSpace', id: string, uri?: string | null, blockTimestamp: any, transactionHash: any, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: any, metadataURI?: string | null, blockTimestamp: any, transactionHash: any }, listing: { __typename?: 'Listing', id: string, owner?: any | null, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }, tokenX?: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null }, adToken: { __typename?: 'TokenX', id: any, underlyingToken: any, superToken: any, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } }> };
 
 export type TokenXQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3250,7 +3263,7 @@ export type ListingQueryVariables = Exact<{
 }>;
 
 
-export type ListingQuery = { __typename?: 'Query', listing?: { __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
+export type ListingQuery = { __typename?: 'Query', listing?: { __typename?: 'Listing', id: string, owner?: any | null, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any } | null };
 
 export type ListingsQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -3262,7 +3275,7 @@ export type ListingsQueryVariables = Exact<{
 }>;
 
 
-export type ListingsQuery = { __typename?: 'Query', listings: Array<{ __typename?: 'Listing', id: string, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
+export type ListingsQuery = { __typename?: 'Query', listings: Array<{ __typename?: 'Listing', id: string, owner?: any | null, listingCreator: any, listingId: any, assetContract: any, listing_listingId: any, listing_tokenId: any, listing_quantity: any, listing_pricePerToken: any, listing_startTimestamp: any, listing_endTimestamp: any, listing_listingCreator: any, listing_listingOwner: any, listing_assetContract: any, listing_currency: any, listing_taxRate: any, listing_taxBeneficiary: any, listing_tokenType: number, listing_status: number, listing_reserved: boolean, blockNumber: any, blockTimestamp: any, transactionHash: any }> };
 
 export type NewSaleQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -3562,6 +3575,7 @@ export const AdGroupDocument = `
       }
       listing {
         id
+        owner
         listingCreator
         listingId
         assetContract
@@ -3663,6 +3677,7 @@ export const AdGroupsDocument = `
       }
       listing {
         id
+        owner
         listingCreator
         listingId
         assetContract
@@ -3755,6 +3770,7 @@ export const AdSpaceDocument = `
     }
     listing {
       id
+      owner
       listingCreator
       listingId
       assetContract
@@ -3850,6 +3866,7 @@ export const AdSpacesDocument = `
     }
     listing {
       id
+      owner
       listingCreator
       listingId
       assetContract
@@ -3920,6 +3937,7 @@ export const AdPoolDocument = `
       }
       listing {
         id
+        owner
         listingCreator
         listingId
         assetContract
@@ -4009,6 +4027,7 @@ export const AdPoolsDocument = `
       }
       listing {
         id
+        owner
         listingCreator
         listingId
         assetContract
@@ -4345,6 +4364,7 @@ export const ListingDocument = `
     query listing($id: ID!, $block: Block_height) {
   listing(id: $id, block: $block) {
     id
+    owner
     listingCreator
     listingId
     assetContract
@@ -4397,6 +4417,7 @@ export const ListingsDocument = `
     block: $block
   ) {
     id
+    owner
     listingCreator
     listingId
     assetContract

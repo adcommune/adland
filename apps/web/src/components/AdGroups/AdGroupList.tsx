@@ -23,9 +23,10 @@ const AdGroupList = ({ owner }: { owner?: Address | string }) => {
           ?.filter((group) => {
             return group.adSpaces[0]?.tokenX?.superToken !== zeroAddress
           })
-          .map(({ metadata, adGroup_subgraph }) => {
-            const { id, blockTimestamp, transactionHash, adSpaces } =
+          .map(({ metadata, adGroup_subgraph, adSpaces }) => {
+            const { id, blockTimestamp, transactionHash } =
               adGroup_subgraph as AdGroup_subgraph
+
             return (
               <AdGroupListItem
                 id={id}
