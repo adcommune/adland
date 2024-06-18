@@ -80,6 +80,9 @@ const AdGroupListItem = ({
                     className="h-full w-full object-contain"
                   />
                 )}
+                {!metadata && i < 3 && (
+                  <p className="font-display text-xs">NO AD</p>
+                )}
                 {i === 3 && <p className="font-bold">+{adSpaces.length - 3}</p>}
               </div>
             )

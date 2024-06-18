@@ -1,10 +1,13 @@
 'use client'
 
 import AdGroupList from '@/components/AdGroups/AdGroupList'
+import AdSpaceCard from '@/components/AdSpaceCard'
 import { Container } from '@/components/Container'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
+import { AdLand } from '@/lib/adland'
+import { useQuery } from '@tanstack/react-query'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useContext } from 'react'
@@ -21,19 +24,54 @@ const AppPage = () => {
             Create Ad Group
           </Button>
         </Link>
-        <Tabs defaultValue="all-ad-groups" className="w-full font-body">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="all-ad-groups">All</TabsTrigger>
+        <Tabs defaultValue="my-ad-spaces" className="w-full font-body">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="my-ad-spaces">My Spaces</TabsTrigger>
             <TabsTrigger value="my-ad-groups">My Groups</TabsTrigger>
+            <TabsTrigger value="all-ad-groups">All Groups</TabsTrigger>
           </TabsList>
-          <TabsContent value="all-ad-groups" className="w-full">
-            <AdGroupList />
+          <TabsContent value="my-ad-spaces" className="w-full">
+            <AdSpaceList />
           </TabsContent>
           <TabsContent value="my-ad-groups" className="w-full">
             <AdGroupList owner={bicoAccountAddress} />
           </TabsContent>
+          <TabsContent value="all-ad-groups" className="w-full">
+            <AdGroupList />
+          </TabsContent>
         </Tabs>
       </Container>
+    </div>
+  )
+}
+
+const AdSpaceList = () => {
+  const { bicoAccountAddress } = useContext(SmartAccountContext)
+
+  const { data } = useQuery({
+    queryFn: () =>
+      bicoAccountAddress &&
+      new AdLand().listAdSpacesByOwner(bicoAccountAddress),
+    queryKey: ['listAdSpaces-' + bicoAccountAddress],
+  })
+
+  return (
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
+      {data?.map((adSpace) => {
+        return (
+          <AdSpaceCard
+            key={
+              adSpace.adSpace_subgraph.transactionHash +
+              '-' +
+              adSpace.adSpace_subgraph.id
+            }
+            price={adSpace.listing.pricePerToken.toString()}
+            currency={adSpace.listing.currency}
+            metadata={adSpace?.metadata}
+            id={adSpace.adSpace_subgraph.id}
+          />
+        )
+      })}
     </div>
   )
 }
