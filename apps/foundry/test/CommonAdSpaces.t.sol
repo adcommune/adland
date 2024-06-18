@@ -46,14 +46,15 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             address(commonAds),
             uint256(0),
             abi.encodeWithSignature(
-                "createAdGroup(address,(address,uint256,uint256),uint256)",
+                "createAdGroup(address,(address,uint256,uint256),uint256,string)",
                 address(account),
                 AdSpaceConfig({
                     currency: CurrencyTransferLib.NATIVE_TOKEN,
                     initialPrice: initialPrice,
                     taxRate: baseTaxRateBPS
                 }),
-                3
+                3,
+                ""
             )
         );
 
@@ -115,7 +116,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
                 initialPrice: initialPrice,
                 taxRate: baseTaxRateBPS
             }),
-            3
+            3,
+            ""
         );
 
         vm.deal(recipient, 10000 ether);
@@ -183,7 +185,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
                 initialPrice: initialPrice,
                 taxRate: baseTaxRateBPS
             }),
-            3
+            3,
+            ""
         );
 
         address buyer = _getAccount(69, 1000 ether);
@@ -217,7 +220,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
                 initialPrice: initialPrice,
                 taxRate: baseTaxRateBPS
             }),
-            3
+            3,
+            ""
         );
     }
 
@@ -252,7 +256,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
                 initialPrice: initialPrice,
                 taxRate: baseTaxRateBPS
             }),
-            3
+            3,
+            ""
         );
 
         address buyer = _getAccount(69, 1000 ether);
@@ -295,7 +300,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
                 initialPrice: initialPrice,
                 taxRate: baseTaxRateBPS
             }),
-            3
+            3,
+            ""
         );
 
         address buyer = _getAccount(69, 1000 ether);
@@ -395,7 +401,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
                 initialPrice: initialPrice,
                 taxRate: baseTaxRateBPS
             }),
-            3
+            3,
+            ""
         );
 
         address buyer = _getAccount(69, 1000 ether);
@@ -474,7 +481,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
                 initialPrice: initialPriceInDai,
                 taxRate: taxRateBPS
             }),
-            3
+            3,
+            ""
         );
 
         address buyer = _getAccount(69, 1000 ether);
@@ -511,7 +519,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
                 initialPrice: initialPrice,
                 taxRate: baseTaxRateBPS
             }),
-            3
+            3,
+            ""
         );
 
         IDirectListings.Listing memory listing = marketplace.getListing(1);
@@ -651,7 +660,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
                 initialPrice: initialPrice,
                 taxRate: baseTaxRateBPS
             }),
-            3
+            3,
+            ""
         );
 
         address buyer = _getAccount(69, 1000 ether);
@@ -691,7 +701,8 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
                 initialPrice: initialPrice,
                 taxRate: baseTaxRateBPS
             }),
-            3
+            3,
+            ""
         );
 
         address buyer = _getAccount(69, 1000 ether);

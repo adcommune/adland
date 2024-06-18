@@ -11,6 +11,7 @@ import {ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/inte
  */
 struct AdGroup {
     address owner;
+    string metadataURI;
 }
 
 /**

@@ -70,9 +70,10 @@ contract CommonAdSpaces is
     function createAdGroup(
         address recipient,
         AdSpaceConfig memory initialAdSpaceConfig,
-        uint256 size
+        uint256 size,
+        string memory metadataURI
     ) external returns (uint256 adGroupId) {
-        adGroupId = _createdGroup(recipient);
+        adGroupId = _createdGroup(recipient, metadataURI);
 
         _openAdSpaces(adGroupId, initialAdSpaceConfig, size);
     }
@@ -92,7 +93,12 @@ contract CommonAdSpaces is
             adGroups[ads[adId].adGroupId].owner
         );
 
-        emit AdPoolCreated(adId, superToken, address(pool));
+        emit AdPoolCreated(
+            adId,
+            superToken,
+            address(pool),
+            ISuperToken(superToken).getUnderlyingToken()
+        );
     }
 
     /**
@@ -127,6 +133,15 @@ contract CommonAdSpaces is
         ads[adId].uri = adURI;
 
         emit AdSpaceURIUpdated(adId, adURI);
+    }
+
+    function updateAdGroupMetadata(
+        uint256 adGroupId,
+        string memory metadataURI
+    ) external onlyAdGroupAdmin(adGroupId) {
+        adGroups[adGroupId].metadataURI = metadataURI;
+
+        emit AdGroupMetadataUpdated(adGroupId, metadataURI);
     }
 
     /**
@@ -189,15 +204,19 @@ contract CommonAdSpaces is
      */
 
     function _createdGroup(
-        address recipient
+        address recipient,
+        string memory metadataURI
     ) internal returns (uint256 adGroupId) {
         adGroupId = adGroupIds;
 
-        adGroups[adGroupId] = AdGroup({owner: recipient});
+        adGroups[adGroupId] = AdGroup({
+            owner: recipient,
+            metadataURI: metadataURI
+        });
 
         adGroupIds++;
 
-        emit AdGroupCreated(adGroupId, recipient);
+        emit AdGroupCreated(adGroupId, recipient, metadataURI);
     }
 
     function _openAdSpaces(
