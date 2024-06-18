@@ -6,7 +6,14 @@ import {
 } from '@adland/webkit'
 import { constants } from '@adland/common'
 import { Market } from './market'
-import { AdCampaign, AdGroup, AdSpace, Listing, Metadata } from './types'
+import {
+  AdCampaign,
+  AdGroup,
+  AdGroupMetadata,
+  AdSpace,
+  Listing,
+  Metadata,
+} from './types'
 import { fetchJSON, getGatewayUri } from './utils'
 import { client } from './services'
 import { Address, erc721Abi, PublicClient, zeroAddress } from 'viem'
@@ -15,8 +22,6 @@ import { commonAdPoolAbi, commonAdSpacesAbi } from '@adland/contracts'
 import { Superfluid, SuperfluidPool } from './superfluid-subgraph'
 import { appContracts } from '@/config/constants'
 import { AdSpacesQuery } from '@adland/webkit/src/hooks'
-import { AdGroupMetadata } from '@adland/db'
-import { getAdGroupMetadataAction } from '@/app/group/[id]/settings/actions'
 
 export class AdLand {
   private adland: ReturnType<typeof getAdLand>
@@ -40,6 +45,9 @@ export class AdLand {
           return group.adSpaces[0]?.tokenX?.superToken !== zeroAddress
         })
       })
+      .catch((error) => {
+        return []
+      })
 
     return Promise.all(
       groups.map(async (group) => {
@@ -51,7 +59,7 @@ export class AdLand {
               metadata: await this._getAdSpaceMetadata(adSpace.uri),
             })),
           ),
-          metadata: await this.getAdGroupMetadata(group.id),
+          metadata: await this._getAdGroupMetadata(group.metadataURI),
         }
       }),
     )
@@ -86,14 +94,6 @@ export class AdLand {
         return response.adGroup
       })
 
-    let metadata: AdGroupMetadata | undefined
-
-    try {
-      metadata = await this.getAdGroupMetadata(id)
-    } catch (error) {
-      console.error(error)
-    }
-
     if (!group) {
       return undefined
     } else {
@@ -105,7 +105,7 @@ export class AdLand {
             metadata: await this._getAdSpaceMetadata(adSpace.uri),
           })),
         ),
-        metadata,
+        metadata: await this._getAdGroupMetadata(group.metadataURI),
       }
     }
   }
@@ -261,7 +261,20 @@ export class AdLand {
     }
   }
 
-  async getAdGroupMetadata(groupId: string) {
-    return getAdGroupMetadataAction(groupId)
+  private async _getAdGroupMetadata(
+    uri: string | undefined | null,
+  ): Promise<AdGroupMetadata | undefined> {
+    if (uri?.includes('undefined')) {
+      throw new Error('Invalid metadata URI')
+    }
+    try {
+      const gatewayURI = uri ? getGatewayUri(uri) : null
+
+      const metadata = gatewayURI ? await fetchJSON(gatewayURI) : null
+
+      return metadata
+    } catch (error) {
+      console.error(error)
+    }
   }
 }

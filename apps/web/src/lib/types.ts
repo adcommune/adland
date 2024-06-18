@@ -6,7 +6,7 @@ import {
 } from '@adland/webkit'
 import { TokenX } from '@adland/webkit/src/hooks'
 import { User } from '@neynar/nodejs-sdk/build/neynar-api/v2'
-import { AdGroupMetadata, FrameDistribution } from '@adland/db'
+import { FrameDistribution } from '@adland/db'
 import { Address, ContractFunctionReturnType } from 'viem'
 import { SuperfluidPool } from './superfluid-subgraph'
 
@@ -15,6 +15,13 @@ export type Listing = ContractFunctionReturnType<
   'view',
   'getListing'
 >
+
+export type AdGroupMetadata = {
+  name: string
+  description: string
+  image: string
+  banner: string
+}
 
 export type Metadata = {
   name: string
