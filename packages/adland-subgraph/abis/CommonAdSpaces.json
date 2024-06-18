@@ -12,7 +12,8 @@
     "name": "adGroups",
     "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "outputs": [
-      { "name": "owner", "type": "address", "internalType": "address" }
+      { "name": "owner", "type": "address", "internalType": "address" },
+      { "name": "metadataURI", "type": "string", "internalType": "string" }
     ],
     "stateMutability": "view"
   },
@@ -54,17 +55,6 @@
     "type": "function",
     "name": "createAdGroup",
     "inputs": [
-      { "name": "recipient", "type": "address", "internalType": "address" }
-    ],
-    "outputs": [
-      { "name": "adGroupId", "type": "uint256", "internalType": "uint256" }
-    ],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "createAdGroup",
-    "inputs": [
       { "name": "recipient", "type": "address", "internalType": "address" },
       {
         "name": "initialAdSpaceConfig",
@@ -84,7 +74,8 @@
           { "name": "taxRate", "type": "uint256", "internalType": "uint256" }
         ]
       },
-      { "name": "size", "type": "uint256", "internalType": "uint256" }
+      { "name": "size", "type": "uint256", "internalType": "uint256" },
+      { "name": "metadataURI", "type": "string", "internalType": "string" }
     ],
     "outputs": [
       { "name": "adGroupId", "type": "uint256", "internalType": "uint256" }
@@ -147,7 +138,12 @@
         "type": "tuple",
         "internalType": "struct AdGroup",
         "components": [
-          { "name": "owner", "type": "address", "internalType": "address" }
+          { "name": "owner", "type": "address", "internalType": "address" },
+          {
+            "name": "metadataURI",
+            "type": "string",
+            "internalType": "string"
+          }
         ]
       }
     ],
@@ -385,6 +381,16 @@
   },
   {
     "type": "function",
+    "name": "updateAdGroupMetadata",
+    "inputs": [
+      { "name": "adGroupId", "type": "uint256", "internalType": "uint256" },
+      { "name": "metadataURI", "type": "string", "internalType": "string" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "updateAdStrategy",
     "inputs": [
       { "name": "adId", "type": "uint256", "internalType": "uint256" },
@@ -449,6 +455,50 @@
         "type": "address",
         "indexed": true,
         "internalType": "address"
+      },
+      {
+        "name": "metadataURI",
+        "type": "string",
+        "indexed": true,
+        "internalType": "string"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "AdGroupCreated",
+    "inputs": [
+      {
+        "name": "groupId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "recipient",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "AdGroupMetadataUpdated",
+    "inputs": [
+      {
+        "name": "groupId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "metadataURI",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
       }
     ],
     "anonymous": false
@@ -473,6 +523,12 @@
         "name": "pool",
         "type": "address",
         "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "underlyingToken",
+        "type": "address",
+        "indexed": false,
         "internalType": "address"
       }
     ],

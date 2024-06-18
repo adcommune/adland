@@ -67,6 +67,23 @@ export class AdGroup extends Entity {
     return new AdSpaceLoader("AdGroup", this.get("id")!.toString(), "adSpaces");
   }
 
+  get metadataURI(): string | null {
+    let value = this.get("metadataURI");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set metadataURI(value: string | null) {
+    if (!value) {
+      this.unset("metadataURI");
+    } else {
+      this.set("metadataURI", Value.fromString(<string>value));
+    }
+  }
+
   get blockTimestamp(): BigInt {
     let value = this.get("blockTimestamp");
     if (!value || value.kind == ValueKind.NULL) {

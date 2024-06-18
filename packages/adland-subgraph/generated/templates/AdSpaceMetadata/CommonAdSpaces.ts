@@ -36,28 +36,6 @@ export class AdGroupCreated__Params {
   }
 }
 
-export class AdGroupCreated1 extends ethereum.Event {
-  get params(): AdGroupCreated1__Params {
-    return new AdGroupCreated1__Params(this);
-  }
-}
-
-export class AdGroupCreated1__Params {
-  _event: AdGroupCreated1;
-
-  constructor(event: AdGroupCreated1) {
-    this._event = event;
-  }
-
-  get groupId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get recipient(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
 export class AdGroupMetadataUpdated extends ethereum.Event {
   get params(): AdGroupMetadataUpdated__Params {
     return new AdGroupMetadataUpdated__Params(this);
