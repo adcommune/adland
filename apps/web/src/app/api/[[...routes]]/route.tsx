@@ -36,7 +36,7 @@ const BillboardWithContent = ({
 
   if (imageSrc) {
     billboardContent = (
-      <Image src={imageSrc} objectFit="cover" height="100%" width="100%" />
+      <Image src={imageSrc} objectFit="contain" height="100%" width="100%" />
     )
   }
 
@@ -85,7 +85,6 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   let intents: FrameIntent[] = []
   let imageSrc = metadata?.imageGatewayURI ?? adPlaceholderURL
 
-  // if (buttonValue === 'learn-more') {
   intents.push(
     <Button.Link href={baseURL + '/ad/' + spaceId}>Your ad here</Button.Link>,
   )
