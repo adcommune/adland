@@ -52,22 +52,23 @@ const AdGroupHeader = ({
               <div className="sm:flex sm:space-x-5">
                 <div className="flex-shrink-0">
                   {metadata?.image ? (
-                    <img
-                      className="mx-auto h-20 w-20 rounded-full"
-                      src={metadata?.image}
-                      alt=""
-                    />
+                    <Link href={'/group/' + id}>
+                      <img
+                        className="mx-auto h-20 w-20 rounded-full ring-gray-400 hover:cursor-pointer hover:ring-2"
+                        src={metadata?.image}
+                        alt=""
+                      />
+                    </Link>
                   ) : (
                     <div className="mx-auto h-20 w-20 rounded-full bg-gray-200" />
                   )}
                 </div>
                 <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
-                  {/* <p className="text-sm font-medium text-gray-600">
-                    Welcome to
-                  </p> */}
-                  <p className="text-xl font-bold text-gray-900 sm:text-2xl">
-                    {title}
-                  </p>
+                  <Link href={'/group/' + id}>
+                    <p className="text-xl font-bold text-gray-900 hover:cursor-pointer hover:underline sm:text-2xl">
+                      {title}
+                    </p>
+                  </Link>
                   <p className="text-sm font-medium text-gray-600">
                     {metadata?.description}
                   </p>
