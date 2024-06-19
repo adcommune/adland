@@ -131,7 +131,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent align="end">
-                      {isOwner && !isBeneficiarty && (
+                      {isOwner && (
                         <>
                           <DropdownMenuItem
                             onClick={() => {
