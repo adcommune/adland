@@ -199,7 +199,7 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
             onClick={submitAdData}
             loading={contentUpdating}
           >
-            Upload
+            Save
           </Button>
         )
       }}
