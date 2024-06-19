@@ -62,7 +62,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
 
   return (
     <div className="relative flex min-h-[80vh] flex-col items-start gap-2 md:flex-row">
-      <Card className="overflow-hidden font-body md:min-w-[400px]">
+      <Card className="w-full overflow-hidden font-body md:max-w-[400px]">
         <CardHeader className="flex flex-col gap-2 bg-muted/50">
           <div className="flex flex-row items-start gap-8 ">
             <div className="grid gap-0.5">
