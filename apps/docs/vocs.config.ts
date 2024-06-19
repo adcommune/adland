@@ -58,6 +58,24 @@ export default async () => {
         link: "/what-is-adland",
       },
       {
+        text: "App Guides",
+        collapsed: false,
+        items: [
+          {
+            text: "Sign in",
+            link: "/tutorials/sign-in",
+          },
+          {
+            text: "Acquire an ad space",
+            link: "/tutorials/acquire",
+          },
+          {
+            text: "Put up an ad",
+            link: "/tutorials/put-ad",
+          },
+        ],
+      },
+      {
         text: "Use cases",
         collapsed: true,
         items: [
