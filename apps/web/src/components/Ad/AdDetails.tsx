@@ -56,6 +56,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
     listing?.taxBeneficiary?.toLowerCase() === address?.toLowerCase()
   const showDropdown = isOwner || isBeneficiarty
   const isFarcasterPage = usePathname().includes('/farcaster')
+  const isWebPage = usePathname().includes('/web')
 
   const taxRatePercentage = Number(listing?.taxRate ?? 0) / 100
 
@@ -202,6 +203,26 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
             <div className="grid gap-3">
               <div className="font-semibold">Distribution</div>
               <ul className="grid grid-cols-2 gap-3">
+                <Link
+                  href={isWebPage ? `/ad/${spaceId}` : `/ad/${spaceId}/web`}
+                >
+                  <Button
+                    variant={'outline'}
+                    className={classNames(
+                      'group flex h-12 w-full flex-row items-center justify-start gap-4 p-1 font-body',
+                      {
+                        'bg-slate-200': isWebPage,
+                      },
+                    )}
+                  >
+                    <div className="aspect-square h-full">
+                      <p className="flex h-full w-full scale-[2] flex-row items-center justify-center">
+                        🌐
+                      </p>
+                    </div>
+                    <p>Web</p>
+                  </Button>
+                </Link>
                 <Link
                   href={
                     isFarcasterPage
