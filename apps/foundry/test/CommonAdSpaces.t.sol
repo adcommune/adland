@@ -510,6 +510,46 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         );
     }
 
+    function testBuyListingDAIWithTaxRateZero() public {
+        uint256 initialPriceInDai = 100e18; // 100 DAI
+        uint256 taxRateBPS = 0;
+        vm.prank(recipient);
+        commonAds.createAdGroup(
+            recipient,
+            AdSpaceConfig({
+                currency: address(dai),
+                initialPrice: initialPriceInDai,
+                taxRate: taxRateBPS
+            }),
+            3,
+            ""
+        );
+
+        address buyer = _getAccount(69, 1000 ether);
+
+        _grantMaxFlowPermissions(daix, buyer, address(marketplace));
+
+        // Mint DAI for actual purchase
+        dai.mint(buyer, 1000e18);
+
+        // Mint more DAI & upgrade to DAIx for tax
+        _mintAndUpgradeERC20(daix, buyer, 1000e18);
+
+        assertEq(dai.balanceOf(buyer), 1000e18);
+
+        vm.prank(buyer);
+        dai.approve(address(marketplace), initialPriceInDai);
+
+        vm.prank(buyer);
+        marketplace.buyFromListing(
+            1,
+            buyer,
+            DEFAULT_QUANTITY,
+            address(dai),
+            initialPriceInDai
+        );
+    }
+
     function testSelfAssessListingPrice() public {
         vm.prank(recipient);
         commonAds.createAdGroup(
