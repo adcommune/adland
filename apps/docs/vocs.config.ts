@@ -1,5 +1,10 @@
 import { defineConfig } from "vocs";
 
+const prodBaseURL = "https://app.adland.space";
+const localBaseURL = "http://localhost:3001";
+const baseURL =
+  process.env.NODE_ENV === "production" ? prodBaseURL : localBaseURL;
+
 export default async () => {
   const spaces = [16, 17, 18, 19, 20];
 
@@ -7,8 +12,8 @@ export default async () => {
     spaces.map((id) => {
       return {
         name: `AdLand ${id}`,
-        link: `https://app.adland.space/ad/${id}`,
-        image: `https://app.adland.space/api/ad/${id}/image`,
+        link: `${baseURL}/ad/${id}`,
+        image: `${baseURL}/api/ad/${id}/image`,
       };
     })
   );
@@ -32,9 +37,9 @@ export default async () => {
     },
     sponsors: [
       {
-        name: "AdLand",
-        height: 60,
-        items: [items],
+        name: "AdLand Sponsors",
+        height: 120,
+        items: [items.slice(0, 2), items.slice(2)],
       },
     ],
     socials: [
