@@ -12,7 +12,7 @@ export default async () => {
     spaces.map((id) => {
       return {
         name: `AdLand ${id}`,
-        link: `${baseURL}/ad/${id}`,
+        link: `${baseURL}/api/ad/${id}/link`,
         image: `${baseURL}/api/ad/${id}/image`,
       };
     })
