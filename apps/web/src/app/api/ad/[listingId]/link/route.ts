@@ -14,5 +14,5 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
     }
   }
 
-  return NextResponse.redirect(constants.appUrl + '/ad' + params.listingId)
+  return NextResponse.redirect(constants.appUrl + '/ad/' + params.listingId)
 }
