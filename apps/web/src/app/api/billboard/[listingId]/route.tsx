@@ -64,7 +64,7 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
                     display: 'flex',
                     width: `${billboardWith}px`,
                     height: `${billboardHeight}px`,
-                    objectFit: 'cover',
+                    objectFit: 'contain',
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   }}
                 />
