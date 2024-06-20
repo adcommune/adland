@@ -1,7 +1,7 @@
 import { defineConfig } from "vocs";
 
 const prodBaseURL = "https://app.adland.space";
-const localBaseURL = "http://localhost:3001";
+const localBaseURL = prodBaseURL;
 const baseURL =
   process.env.NODE_ENV === "production" ? prodBaseURL : localBaseURL;
 
@@ -56,6 +56,10 @@ export default async () => {
       {
         text: "What is Adland ?",
         link: "/what-is-adland",
+      },
+      {
+        text: "Distribution",
+        link: "/distribution",
       },
       {
         text: "App Guides",

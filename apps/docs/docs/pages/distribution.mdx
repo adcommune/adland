@@ -1,0 +1,38 @@
+---
+layout: docs
+---
+ 
+# Distribution
+
+There are currently two distribution methods for you ad. You can show your ad through 
+a **billboard frame** on farcaster or integrate you ad anywhere you like with simple **permalinks.**
+
+## Billboard
+
+Frames are small embeddable apps that can injected into social media feeds like farcaster. Here we're leveragin frames to show ads and create interactive ad spaces.
+
+More about it here: [Farcaster Frames](https://docs.farcaster.xyz/reference/frames/spec)
+
+Each billboard represent an ad space. By casting the link to the ad page, the billboard will show up in the farcaster feed as a frame.
+If data has been set for the ad, the billboard will show the ad on it like the image below. The initial image frame is dynamic and will
+update with the ad data.
+
+::::note
+The _Cache-Control_ directive is set to 5 minutes, so your don't worry if your frame doesn't update immediately
+::::
+
+To publish your ad as a cast just copy the ad space page url and cast if on farcaster
+
+`https://app.adland.space/ad/{adId}`
+
+![Frame](/frame.jpg)
+
+## Permalinks
+
+Each onchain ad space has it's own permalink pointing to specific ad properties like the image and external url. You can use these links to integrate your ad anywhere you like.
+
+You can use two links that link to two properties of ads:
+- the _image_ property
+  - `https://app.adland.space/ad/{adId}/image`
+- the _external_url_ property
+  - `https://app.adland.space/ad/{adId}/link`
