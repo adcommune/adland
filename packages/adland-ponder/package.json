@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "start": "ponder start",
     "dev": "ponder dev",
     "codegen": "ponder codegen",
     "lint": "eslint .",
