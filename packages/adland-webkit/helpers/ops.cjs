@@ -59,6 +59,30 @@ const pullSchema = async function ({
       // Hardcoding naming fixes
       operationAST.name.value = operationAST.name.value.replace("_query", "");
 
+      // Ensure all variables used in the selection set are defined
+      const usedVariables = new Set();
+      const collectVariables = (selectionSet) => {
+        if (!selectionSet || !selectionSet.selections) return;
+        selectionSet.selections.forEach((selection) => {
+          if (selection.arguments) {
+            selection.arguments.forEach((arg) => {
+              if (arg.value.kind === "Variable") {
+                usedVariables.add(arg.value.name.value);
+              }
+            });
+          }
+          if (selection.selectionSet) {
+            collectVariables(selection.selectionSet);
+          }
+        });
+      };
+      collectVariables(operationAST.selectionSet);
+
+      operationAST.variableDefinitions =
+        operationAST.variableDefinitions.filter((v) =>
+          usedVariables.has(v.variable.name.value)
+        );
+
       documentString += print(operationAST);
     }
   }
@@ -88,11 +112,11 @@ const main = async function () {
       fileName: "adland",
       removeLastArg: true,
     },
-    // {
-    //   schemaUrl: "http://localhost:42069/graphql",
-    //   fileName: "ponder",
-    //   depthLimit: 5,
-    // },
+    {
+      schemaUrl: "http://localhost:42069/graphql",
+      fileName: "ponder",
+      depthLimit: 5,
+    },
   ];
 
   let documentString = "";

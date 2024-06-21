@@ -32,22 +32,23 @@ const config: CodegenConfig = {
         },
       },
     },
-    // "./src/ponder.ts": {
-    //   schema: "http://localhost:42069/graphql",
-    //   documents: "./documents/ponder.graphql",
-    //   plugins: [
-    //     "typescript",
-    //     "typescript-operations",
-    //     "typescript-react-query",
-    //   ],
-    //   config: {
-    //     reactQueryVersion: 5,
-    //     fetcher: {
-    //       func: "./fetcher#fetcher",
-    //       isReactHook: true,
-    //     },
-    //   },
-    // },
+    "./src/ponder.ts": {
+      schema: "http://localhost:42069/graphql",
+      documents: "./documents/ponder.graphql",
+      plugins: [
+        "typescript",
+        "typescript-operations",
+        // "typescript-react-query",
+        "typescript-graphql-request",
+      ],
+      config: {
+        reactQueryVersion: 5,
+        fetcher: {
+          func: "./fetcher#fetcher",
+          isReactHook: true,
+        },
+      },
+    },
   },
 };
 
