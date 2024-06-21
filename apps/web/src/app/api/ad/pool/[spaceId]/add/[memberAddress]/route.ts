@@ -39,17 +39,21 @@ export const POST = async (
     withMetadata: false,
   })
 
-  if (!adSpace.tokenX) {
+  if (!adSpace?.tokenX) {
     return NextResponse.json({ error: 'Invalid super token' })
   }
 
   const campaign = await new AdLand().getAdCampaign(
     spaceId,
-    adSpace.tokenX?.superToken,
+    adSpace?.tokenX?.superToken as Address | undefined,
     {
       withPoolDetails: false,
     },
   )
+
+  if (!campaign) {
+    return NextResponse.json({ error: 'Invalid campaign' })
+  }
 
   const poolAddress = campaign.commonAdPoolAddress
 

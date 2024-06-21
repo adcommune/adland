@@ -1,6 +1,6 @@
 'use client'
 
-import { AdGroupsQuery } from '@adland/webkit/src/hooks'
+import { AdGroupsQuery } from '@adland/webkit/src/ponder'
 import classNames from 'classnames'
 import { formatDistance } from 'date-fns'
 import Link from 'next/link'
@@ -13,21 +13,10 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
-import { AdGroupMetadata, AdSpace } from '@/lib/types'
 
-type AdGroupListItemProps = {
-  id: string
-  blockTimestamp: string
-  adSpaces: Omit<AdSpace, 'listing'>[]
-  metadata?: AdGroupMetadata
-}
+const AdGroupListItem = (group: AdGroupsQuery['adGroups']['items'][0]) => {
+  const { id, blockTimestamp, adSpaces, metadata } = group
 
-const AdGroupListItem = ({
-  id,
-  blockTimestamp,
-  adSpaces,
-  metadata,
-}: AdGroupListItemProps) => {
   return (
     <Link href={'/group/' + id} key={id}>
       <Card
@@ -61,32 +50,35 @@ const AdGroupListItem = ({
           </CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-4 gap-2 p-4 py-0">
-          {adSpaces.slice(0, 4).map(({ adSpace_subgraph, metadata }, i) => {
-            const { uri, transactionHash } = adSpace_subgraph
-
-            return (
-              <div
-                key={transactionHash}
-                className={classNames(
-                  'flex aspect-square w-full flex-col items-center justify-center border',
-                  {
-                    'bg-gray-300': !Boolean(uri),
-                  },
-                )}
-              >
-                {metadata && metadata.imageGatewayURI && i < 3 && (
-                  <img
-                    src={metadata?.imageGatewayURI}
-                    className="h-full w-full object-contain"
-                  />
-                )}
-                {!metadata && i < 3 && (
-                  <p className="font-display text-xs">NO AD</p>
-                )}
-                {i === 3 && <p className="font-bold">+{adSpaces.length - 3}</p>}
-              </div>
-            )
-          })}
+          {adSpaces?.items
+            ?.slice(0, 4)
+            .map(({ id, transactionHash, currentMetadata: metadata }, i) => {
+              console.log({ adData: metadata })
+              return (
+                <div
+                  key={transactionHash + '-' + id}
+                  className={classNames(
+                    'flex aspect-square w-full flex-col items-center justify-center border',
+                    {
+                      'bg-gray-300': !Boolean(metadata),
+                    },
+                  )}
+                >
+                  {metadata && metadata.imageGatewayUri && i < 3 && (
+                    <img
+                      src={metadata?.imageGatewayUri}
+                      className="h-full w-full object-contain"
+                    />
+                  )}
+                  {!metadata && i < 3 && (
+                    <p className="font-display text-xs">NO AD</p>
+                  )}
+                  {i === 3 && (
+                    <p className="font-bold">+{adSpaces.items.length - 3}</p>
+                  )}
+                </div>
+              )
+            })}
         </CardContent>
         <CardFooter className="flex justify-end p-4">
           <div className="flex flex-wrap">

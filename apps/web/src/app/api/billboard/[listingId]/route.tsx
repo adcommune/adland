@@ -26,7 +26,7 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
     const { billboardTop, billboardLeft, billboardHeight, billboardWith } =
       applyRatios(frameAdPositions.default, frameWidth)
 
-    if (metadata.imageGatewayURI) {
+    if (metadata.imageGatewayUri) {
       imageResponse = new ImageResponse(
         (
           <div
@@ -59,7 +59,7 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
                 }}
               >
                 <img
-                  src={metadata.imageGatewayURI}
+                  src={metadata.imageGatewayUri}
                   style={{
                     display: 'flex',
                     width: `${billboardWith}px`,

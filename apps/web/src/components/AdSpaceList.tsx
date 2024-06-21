@@ -21,20 +21,10 @@ const AdSpaceList = () => {
           <p className="text-lg text-white">Loading...</p>
         </div>
       ) : (
-        data?.map((adSpace) => {
-          return (
-            <AdSpaceCard
-              key={
-                adSpace.adSpace_subgraph.transactionHash +
-                '-' +
-                adSpace.adSpace_subgraph.id
-              }
-              price={adSpace.listing.pricePerToken.toString()}
-              currency={adSpace.listing.currency}
-              metadata={adSpace?.metadata}
-              id={adSpace.adSpace_subgraph.id}
-            />
-          )
+        data?.adSpaces.items.map((adSpace) => {
+          const { transactionHash, id } = adSpace
+
+          return <AdSpaceCard key={transactionHash + '-' + id} {...adSpace} />
         })
       )}
     </div>

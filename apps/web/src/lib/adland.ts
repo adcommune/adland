@@ -1,198 +1,78 @@
 import { GraphQLClient } from 'graphql-request'
+
 import {
-  AdGroup_OrderBy_subgraph,
-  getSdk as getAdLand,
-  OrderDirection_subgraph,
-} from '@adland/webkit'
+  getSdk as getPonder,
+  AdGroupsQuery,
+  AdSpacesQuery,
+  AdGroupQuery,
+  AdSpaceQuery,
+  AdSpaceMetadata,
+} from '@adland/webkit/src/ponder'
 import { constants } from '@adland/common'
-import { Market } from './market'
-import {
-  AdCampaign,
-  AdGroup,
-  AdGroupMetadata,
-  AdSpace,
-  Listing,
-  Metadata,
-} from './types'
+import { AdCampaign, AdGroupMetadata, Metadata } from './types'
 import { fetchJSON, getGatewayUri } from './utils'
-import { client } from './services'
-import { Address, erc721Abi, PublicClient, zeroAddress } from 'viem'
+import { Address, PublicClient, zeroAddress } from 'viem'
 import { publicClient } from './viem'
 import { commonAdPoolAbi, commonAdSpacesAbi } from '@adland/contracts'
-import { Superfluid, SuperfluidPool } from './superfluid-subgraph'
+import { Superfluid } from './superfluid-subgraph'
 import { appContracts } from '@/config/constants'
-import { AdSpacesQuery } from '@adland/webkit/src/hooks'
 
 export class AdLand {
-  private adland: ReturnType<typeof getAdLand>
+  private ponder: ReturnType<typeof getPonder>
   private c: PublicClient
   private sf = new Superfluid()
 
   constructor() {
-    this.adland = getAdLand(new GraphQLClient(constants.subgraphUrl, { fetch }))
+    this.ponder = getPonder(new GraphQLClient(constants.ponderUrl, { fetch }))
     this.c = publicClient
   }
 
-  async listAdSpacesByOwner(owner: Address | string): Promise<AdSpace[]> {
-    const adSpaces = await this.adland
-      .adSpaces({
-        where: {
-          listing_: {
-            owner,
-          },
-          tokenX_: {
-            superToken_not: zeroAddress,
-          },
-        },
-      })
-      .then((response) => {
-        return response.adSpaces
-      })
-
-    return Promise.all(adSpaces.map((s) => this.getAdSpace(s.id)))
+  async listAdSpacesByOwner(owner: Address | string): Promise<AdSpacesQuery> {
+    return this.ponder.adSpaces({
+      where: {
+        owner,
+      },
+    })
   }
 
-  async listGroups(owner?: Address | string): Promise<AdGroup[]> {
-    const groups = await this.adland
-      .adGroups({
-        orderBy: AdGroup_OrderBy_subgraph.BlockTimestamp_subgraph,
-        orderDirection: OrderDirection_subgraph.Desc_subgraph,
-        where: {
-          ...(owner ? { beneficiary: owner } : {}),
-        },
-      })
-      .then((response) => {
-        return response.adGroups.filter((group) => {
-          return group.adSpaces[0]?.tokenX?.superToken !== zeroAddress
-        })
-      })
-
-    return Promise.all(
-      groups.map(async (group) => {
-        return {
-          adGroup_subgraph: group,
-          adSpaces: await Promise.all(
-            group.adSpaces.map(async (adSpace) => ({
-              adSpace_subgraph: adSpace,
-              metadata: await this._getAdSpaceMetadata(adSpace.uri),
-            })),
-          ),
-          metadata: await this._getAdGroupMetadata(group.metadataURI),
-        }
-      }),
-    )
+  async listGroups(owner?: Address | string): Promise<AdGroupsQuery> {
+    return this.ponder.adGroups({
+      orderBy: 'blockTimestamp',
+      orderDirection: 'desc',
+      where: {
+        ...(owner ? { beneficiary: owner } : {}),
+      },
+    })
   }
 
-  async listGroupListings(id: string): Promise<Listing[]> {
-    const group = await this.adland
+  async getGroup(id?: string): Promise<AdGroupQuery['adGroup'] | undefined> {
+    if (!id) {
+      return undefined
+    }
+    return this.ponder
       .adGroup({
         id,
       })
-      .then((response) => {
-        return response.adGroup
-      })
-
-    if (!group) {
-      throw new Error('Group not found')
-    }
-
-    return Promise.all(
-      group.adSpaces.map(async (adSpace) => {
-        return await new Market().getListing(adSpace.id)
-      }),
-    )
-  }
-
-  async getGroup(id: string): Promise<AdGroup | undefined> {
-    const group = await this.adland
-      .adGroup({
-        id,
-      })
-      .then((response) => {
-        return response.adGroup
-      })
-
-    if (!group) {
-      return undefined
-    } else {
-      return {
-        adGroup_subgraph: group,
-        adSpaces: await Promise.all(
-          group.adSpaces.map(async (adSpace) => ({
-            adSpace_subgraph: adSpace,
-            metadata: await this._getAdSpaceMetadata(adSpace.uri),
-          })),
-        ),
-        metadata: await this._getAdGroupMetadata(group.metadataURI),
-      }
-    }
-  }
-
-  async getGoupBySpaceId(spaceId: string): Promise<AdGroup | undefined> {
-    const groupId = await this.adland
-      .adSpace({
-        id: spaceId,
-      })
-      .then((response) => {
-        return response.adSpace?.adGroup.id
-      })
-
-    if (!groupId) {
-      return undefined
-    }
-
-    return this.getGroup(groupId)
+      .then((res) => res.adGroup)
   }
 
   async getAdSpace(
     id: string,
     options: { withMetadata: boolean } = { withMetadata: true },
-  ): Promise<AdSpace> {
-    const adSpace = (await this.adland.adSpace({ id })).adSpace
-
-    const listing = await new Market().getListing(id)
-
-    try {
-      // Temporary fix for non coherent listing owner in the direct listing contract
-      listing.listingOwner = await client.readContract({
-        abi: erc721Abi,
-        functionName: 'ownerOf',
-        address: listing.assetContract,
-        args: [listing.listingId],
-      })
-    } catch (error) {
-      console.error(error)
-    }
-
-    const tokenX = await this.adland
-      .tokenXs({
-        where: { underlyingToken: listing?.currency },
-      })
-      .then((res) => res.tokenXs[0])
-
-    if (!adSpace) {
-      throw new Error('AdSpace not found')
-    }
-
-    let metadata = undefined
-
-    if (options.withMetadata) {
-      metadata = await this._getAdSpaceMetadata(adSpace.uri)
-    }
-
-    return {
-      adSpace_subgraph: adSpace,
-      listing,
-      metadata,
-      tokenX,
-    }
+  ): Promise<AdSpaceQuery['adSpace']> {
+    return this.ponder.adSpace({ id }).then(async (res) => {
+      return res.adSpace
+    })
   }
 
   async getAdCampaign(
     spaceId: string,
-    superToken: Address,
+    superToken?: Address,
     options: { withPoolDetails?: boolean } = { withPoolDetails: true },
-  ): Promise<AdCampaign> {
+  ): Promise<AdCampaign | undefined> {
+    if (!superToken) {
+      return undefined
+    }
     const commonAdPoolAddress = await this.c
       .readContract({
         address: appContracts.adCommonOwnership,
@@ -226,73 +106,75 @@ export class AdLand {
     }
   }
 
-  async listAdCampaigns(): Promise<
-    {
-      adSpace: AdSpacesQuery['adSpaces'][0]
-      sfPool: SuperfluidPool | undefined
-    }[]
-  > {
-    const { adSpaces } = await this.adland.adSpaces({
-      where: {
-        adPools_: {
-          id_gt: '0',
-        },
-      },
-    })
+  // async listAdCampaigns(): Promise<
+  //   {
+  //     adSpace: AdSpacesQuerySub['adSpaces'][0]
+  //     sfPool: SuperfluidPool | undefined
+  //   }[]
+  // > {
+  //   const { adSpaces } = await this.adland.adSpaces({
+  //     where: {
+  //       adPools_: {
+  //         id_gt: '0',
+  //       },
+  //     },
+  //   })
 
-    return Promise.all(
-      adSpaces.map(async (adSpace) => {
-        return {
-          adSpace,
-          sfPool: await this.sf.fetchPool(adSpace.adPools[0].dPool),
-        }
-      }),
-    )
+  //   return Promise.all(
+  //     adSpaces.map(async (adSpace) => {
+  //       return {
+  //         adSpace,
+  //         sfPool: await this.sf.fetchPool(adSpace.adPools[0].dPool),
+  //       }
+  //     }),
+  //   )
+  // }
+
+  async getAdSpaceMetadata(
+    id: string,
+  ): Promise<Omit<AdSpaceMetadata, 'adSpace'> | null> {
+    const adSpace = (await this.ponder.adSpace({ id })).adSpace?.currentMetadata
+
+    return adSpace ?? null
   }
 
-  async getAdSpaceMetadata(id: string): Promise<Metadata | undefined> {
-    const adSpace = (await this.adland.adSpace({ id })).adSpace
+  // private async _getAdSpaceMetadata(
+  //   uri: string | undefined | null,
+  // ): Promise<Metadata | undefined> {
+  //   if (uri?.includes('undefined')) {
+  //     throw new Error('Invalid metadata URI')
+  //   }
+  //   try {
+  //     const gatewayURI = uri ? getGatewayUri(uri) : null
 
-    return this._getAdSpaceMetadata(adSpace?.uri)
-  }
+  //     const metadata = gatewayURI ? await fetchJSON(gatewayURI) : null
 
-  private async _getAdSpaceMetadata(
-    uri: string | undefined | null,
-  ): Promise<Metadata | undefined> {
-    if (uri?.includes('undefined')) {
-      throw new Error('Invalid metadata URI')
-    }
-    try {
-      const gatewayURI = uri ? getGatewayUri(uri) : null
+  //     if (metadata) {
+  //       metadata.imageGatewayURI = metadata.image
+  //         ? getGatewayUri(metadata.image)
+  //         : null
+  //     }
 
-      const metadata = gatewayURI ? await fetchJSON(gatewayURI) : null
+  //     return metadata
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 
-      if (metadata) {
-        metadata.imageGatewayURI = metadata.image
-          ? getGatewayUri(metadata.image)
-          : null
-      }
+  // private async _getAdGroupMetadata(
+  //   uri: string | undefined | null,
+  // ): Promise<AdGroupMetadata | undefined> {
+  //   if (uri?.includes('undefined')) {
+  //     throw new Error('Invalid metadata URI')
+  //   }
+  //   try {
+  //     const gatewayURI = uri ? getGatewayUri(uri) : null
 
-      return metadata
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  //     const metadata = gatewayURI ? await fetchJSON(gatewayURI) : null
 
-  private async _getAdGroupMetadata(
-    uri: string | undefined | null,
-  ): Promise<AdGroupMetadata | undefined> {
-    if (uri?.includes('undefined')) {
-      throw new Error('Invalid metadata URI')
-    }
-    try {
-      const gatewayURI = uri ? getGatewayUri(uri) : null
-
-      const metadata = gatewayURI ? await fetchJSON(gatewayURI) : null
-
-      return metadata
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  //     return metadata
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 }

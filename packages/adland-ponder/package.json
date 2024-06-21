@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "ponder start",
-    "dev": "ponder dev",
+    "dev:local": "ponder dev",
     "codegen": "ponder codegen",
     "lint": "eslint .",
     "typecheck": "tsc"

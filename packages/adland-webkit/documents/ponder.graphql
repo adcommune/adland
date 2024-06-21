@@ -12,6 +12,26 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     ) {
       items {
         id
+        owner
+        listingId
+        listing {
+          id
+          listingId
+          tokenId
+          quantity
+          pricePerToken
+          startTimestamp
+          endTimestamp
+          listingCreator
+          listingOwner
+          assetContract
+          currency
+          taxRate
+          taxBeneficiary
+          tokenType
+          status
+          reserved
+        }
         adGroupId
         currentMetadataId
         currentMetadata {
@@ -21,6 +41,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           description
           image
           imageGatewayUri
+          animationUrl
           externalUrl
           aspectRatio
           frameRedirectUrl
@@ -42,6 +63,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
             description
             image
             imageGatewayUri
+            animationUrl
             externalUrl
             aspectRatio
             frameRedirectUrl
@@ -106,6 +128,26 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       ) {
         items {
           id
+          owner
+          listingId
+          listing {
+            id
+            listingId
+            tokenId
+            quantity
+            pricePerToken
+            startTimestamp
+            endTimestamp
+            listingCreator
+            listingOwner
+            assetContract
+            currency
+            taxRate
+            taxBeneficiary
+            tokenType
+            status
+            reserved
+          }
           adGroupId
           currentMetadataId
           currentMetadata {
@@ -115,6 +157,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
             description
             image
             imageGatewayUri
+            animationUrl
             externalUrl
             aspectRatio
             frameRedirectUrl
@@ -191,6 +234,26 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
 }query adSpace($id: String!, $adSpace_adGroup_adGroup_adSpaces_where: AdSpaceFilter, $adSpace_adGroup_adGroup_adSpaces_orderBy: String, $adSpace_adGroup_adGroup_adSpaces_orderDirection: String, $adSpace_adGroup_adGroup_adSpaces_before: String, $adSpace_adGroup_adGroup_adSpaces_after: String, $adSpace_adGroup_adGroup_adSpaces_limit: Int, $adSpace_metadatas_where: AdSpaceMetadataFilter, $adSpace_metadatas_orderBy: String, $adSpace_metadatas_orderDirection: String, $adSpace_metadatas_before: String, $adSpace_metadatas_after: String, $adSpace_metadatas_limit: Int) {
   adSpace(id: $id) {
     id
+    owner
+    listingId
+    listing {
+      id
+      listingId
+      tokenId
+      quantity
+      pricePerToken
+      startTimestamp
+      endTimestamp
+      listingCreator
+      listingOwner
+      assetContract
+      currency
+      taxRate
+      taxBeneficiary
+      tokenType
+      status
+      reserved
+    }
     adGroupId
     adGroup {
       id
@@ -228,6 +291,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       description
       image
       imageGatewayUri
+      animationUrl
       externalUrl
       aspectRatio
       frameRedirectUrl
@@ -249,6 +313,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         description
         image
         imageGatewayUri
+        animationUrl
         externalUrl
         aspectRatio
         frameRedirectUrl
@@ -285,6 +350,26 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
   ) {
     items {
       id
+      owner
+      listingId
+      listing {
+        id
+        listingId
+        tokenId
+        quantity
+        pricePerToken
+        startTimestamp
+        endTimestamp
+        listingCreator
+        listingOwner
+        assetContract
+        currency
+        taxRate
+        taxBeneficiary
+        tokenType
+        status
+        reserved
+      }
       adGroupId
       adGroup {
         id
@@ -307,6 +392,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         description
         image
         imageGatewayUri
+        animationUrl
         externalUrl
         aspectRatio
         frameRedirectUrl
@@ -328,6 +414,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           description
           image
           imageGatewayUri
+          animationUrl
           externalUrl
           aspectRatio
           frameRedirectUrl
@@ -366,6 +453,26 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     adSpaceId
     adSpace {
       id
+      owner
+      listingId
+      listing {
+        id
+        listingId
+        tokenId
+        quantity
+        pricePerToken
+        startTimestamp
+        endTimestamp
+        listingCreator
+        listingOwner
+        assetContract
+        currency
+        taxRate
+        taxBeneficiary
+        tokenType
+        status
+        reserved
+      }
       adGroupId
       adGroup {
         id
@@ -427,6 +534,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     description
     image
     imageGatewayUri
+    animationUrl
     externalUrl
     aspectRatio
     frameRedirectUrl
@@ -447,6 +555,26 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       adSpaceId
       adSpace {
         id
+        owner
+        listingId
+        listing {
+          id
+          listingId
+          tokenId
+          quantity
+          pricePerToken
+          startTimestamp
+          endTimestamp
+          listingCreator
+          listingOwner
+          assetContract
+          currency
+          taxRate
+          taxBeneficiary
+          tokenType
+          status
+          reserved
+        }
         adGroupId
         adGroup {
           id
@@ -478,6 +606,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       description
       image
       imageGatewayUri
+      animationUrl
       externalUrl
       aspectRatio
       frameRedirectUrl

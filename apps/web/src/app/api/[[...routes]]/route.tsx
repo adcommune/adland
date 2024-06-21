@@ -83,15 +83,15 @@ app.frame('/ad-frame/:spaceId', async (c) => {
 
   let imageAspectRatio: FrameAspectRatio = FrameAspectRatio.SQUARE
   let intents: FrameIntent[] = []
-  let imageSrc = metadata?.imageGatewayURI ?? adPlaceholderURL
+  let imageSrc = metadata?.imageGatewayUri ?? adPlaceholderURL
 
   intents.push(
     <Button.Link href={baseURL + '/ad/' + spaceId}>Your ad here</Button.Link>,
   )
 
-  if (metadata?.external_url) {
+  if (metadata?.externalUrl) {
     intents.push(
-      <Button.Link href={metadata.external_url}>
+      <Button.Link href={metadata.externalUrl}>
         {metadata?.description}
       </Button.Link>,
     )

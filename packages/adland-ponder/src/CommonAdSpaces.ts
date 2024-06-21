@@ -6,8 +6,6 @@ export const NATIVE_CURRENCY = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 ponder.on("CommonAdSpaces:AdGroupCreated", async ({ event, context }) => {
   const { AdGroup } = context.db;
 
-  console.log(event.args);
-
   const url = event.args.metadataURI;
 
   await AdGroup.create({
@@ -54,13 +52,18 @@ ponder.on("CommonAdSpaces:AdPoolCreated", async ({ event, context }) => {
 ponder.on("CommonAdSpaces:AdSpaceCreated", async ({ event, context }) => {
   console.log(event.args);
 
-  const { AdSpace, Listing } = context.db;
+  const { AdSpace, Listing, AdGroup } = context.db;
 
   const listing = await Listing.findUnique({ id: event.args.adId.toString() });
+  const group = await AdGroup.findUnique({
+    id: event.args.groupId.toString(),
+  });
 
   await AdSpace.create({
     id: event.args.adId.toString(),
     data: {
+      owner: group?.beneficiary ?? zeroAddress,
+      listingId: event.args.adId.toString(),
       adGroupId: event.args.groupId.toString(),
       tokenXId: listing?.currency || zeroAddress,
       transactionHash: event.transaction.hash,
@@ -69,12 +72,13 @@ ponder.on("CommonAdSpaces:AdSpaceCreated", async ({ event, context }) => {
 });
 
 ponder.on("CommonAdSpaces:AdSpaceURIUpdated", async ({ event, context }) => {
-  const { AdSpaceMetadata } = context.db;
+  const { AdSpaceMetadata, AdSpace } = context.db;
   const isIPFS = event.args.uri.startsWith("ipfs://");
   const adId = event.args.adId.toString();
 
   if (isIPFS) {
     const cid = event.args.uri.replace("ipfs://", "");
+
     const data = (await fetch(
       `https://amethyst-representative-mandrill-369.mypinata.cloud/ipfs/${cid}`
     ).then((res) => res.json())) as {
@@ -86,25 +90,34 @@ ponder.on("CommonAdSpaces:AdSpaceURIUpdated", async ({ event, context }) => {
       frame_redirect_url?: string;
     };
 
-    console.log({ data });
+    const adSpaceMetadataId = cid + "/" + adId;
 
-    await AdSpaceMetadata.create({
-      id: cid + "/" + adId,
+    if (!(await AdSpaceMetadata.findUnique({ id: adSpaceMetadataId }))) {
+      await AdSpaceMetadata.create({
+        id: adSpaceMetadataId,
+        data: {
+          adSpaceId: adId,
+          name: data.name,
+          description: data.description,
+          image: data.image,
+          imageGatewayUri: data.image.startsWith("ipfs://")
+            ? `https://amethyst-representative-mandrill-369.mypinata.cloud/ipfs/${data.image.split("//")[1]}`
+            : "",
+          externalUrl: data.external_url || "",
+          aspectRatio: data.aspect_ratio,
+          frameRedirectUrl: data.frame_redirect_url,
+          blockNumber: event.block.number,
+          transactionHash: event.transaction.hash,
+        },
+      });
+    }
+
+    await AdSpace.update({
+      id: adId,
       data: {
-        adSpaceId: adId,
-        name: data.name,
-        description: data.description,
-        image: data.image,
-        imageGatewayUri: `https://amethyst-representative-mandrill-369.mypinata.cloud/ipfs/${cid}`,
-        externalUrl: data.external_url || "",
-        aspectRatio: data.aspect_ratio,
-        frameRedirectUrl: data.frame_redirect_url,
-        blockNumber: event.block.number,
-        transactionHash: event.transaction.hash,
+        currentMetadataId: adSpaceMetadataId,
       },
     });
-
-    console.log(data);
   }
 });
 
@@ -151,3 +164,15 @@ ponder.on(
     }
   }
 );
+
+ponder.on("CommonAdSpaces:Transfer", async ({ event, context }) => {
+  const { AdSpace } = context.db;
+  if (await AdSpace.findUnique({ id: event.args.tokenId.toString() })) {
+    await AdSpace.update({
+      id: event.args.tokenId.toString(),
+      data: {
+        owner: event.args.to,
+      },
+    });
+  }
+});

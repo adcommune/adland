@@ -1,5 +1,6 @@
 import { AdLand } from '@/lib/adland'
 import { useQuery } from '@tanstack/react-query'
+import { Address } from 'viem'
 
 const useAd = (spaceId: string) => {
   const { data: adSpace } = useQuery({
@@ -10,7 +11,10 @@ const useAd = (spaceId: string) => {
   const { data: adCampaign } = useQuery({
     queryKey: ['adCampaign-', spaceId],
     queryFn: async () =>
-      new AdLand().getAdCampaign(spaceId, adSpace?.tokenX?.superToken),
+      new AdLand().getAdCampaign(
+        spaceId,
+        adSpace?.tokenX?.superToken as Address | undefined,
+      ),
     enabled: Boolean(adSpace?.tokenX?.superToken),
   })
 

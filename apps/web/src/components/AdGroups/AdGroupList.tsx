@@ -4,36 +4,29 @@ import AdGroupListItem from './AdGroupListItem'
 import { Address, zeroAddress } from 'viem'
 import { useQuery } from '@tanstack/react-query'
 import { AdLand } from '@/lib/adland'
-import { AdGroup_subgraph } from '@adland/webkit'
 
 const AdGroupList = ({ owner }: { owner?: Address | string }) => {
-  const { data, isLoading } = useQuery({
-    queryKey: ['adGroups-', owner],
+  const { data: ponderData, isLoading } = useQuery({
+    queryKey: ['ponderAdGroups-', owner],
     queryFn: async () => {
       return new AdLand().listGroups(owner)
     },
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
   })
+
+  console.log({ ponderData })
 
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-      {data?.length ? (
-        data
-          ?.filter((group) => {
-            return group.adSpaces[0]?.tokenX?.superToken !== zeroAddress
+      {ponderData?.adGroups?.items?.length ? (
+        ponderData?.adGroups?.items
+          ?.filter(({ adSpaces }) => {
+            return adSpaces?.items[0]?.tokenX?.superToken !== zeroAddress
           })
-          .map(({ metadata, adGroup_subgraph, adSpaces }) => {
-            const { id, blockTimestamp, transactionHash } =
-              adGroup_subgraph as AdGroup_subgraph
-
+          .map((group) => {
             return (
               <AdGroupListItem
-                id={id}
-                key={transactionHash}
-                blockTimestamp={blockTimestamp}
-                adSpaces={adSpaces}
-                metadata={metadata}
+                key={group.blockTimestamp + group.id}
+                {...group}
               />
             )
           })

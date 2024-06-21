@@ -26,15 +26,13 @@ import {
 import { toast } from 'sonner'
 import { uploadFile } from '@/lib/file'
 import { queryClient } from '@/components/AppProviders'
-import { AdGroup, AdGroupMetadata } from '@/lib/types'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { encodeFunctionData } from 'viem'
 import { commonAdSpacesAbi } from '@adland/contracts'
+import { AdGroupMetadata, AdGroupQuery } from '@adland/webkit/src/ponder'
 
 const createAdGrouMetadataSchema = z.object({
-  name: z.string({
-    required_error: 'Name is required',
-  }),
+  name: z.string({}).nullable(),
   description: z.string().optional().nullable(),
   image: z.string().optional().nullable(),
   banner: z.string().optional().nullable(),
@@ -54,18 +52,11 @@ const GroupSettingsPage = ({ params: { id } }: GroupPageProps) => {
     return null
   }
 
-  console.log('adGroup', adGroup)
-
-  return (
-    <GroupSettingsForm
-      data={adGroup?.metadata}
-      id={adGroup?.adGroup_subgraph.id}
-    />
-  )
+  return <GroupSettingsForm data={adGroup?.metadata} id={adGroup.id} />
 }
 
 type GroupSettingsFormProps = {
-  data?: AdGroupMetadata
+  data?: AdGroupMetadata | null
   id: string
 }
 
@@ -138,12 +129,15 @@ const GroupSettingsForm = ({ data, id }: GroupSettingsFormProps) => {
   const onSubmit = async (values: AdGroupMetadata) => {
     mutateAsync(values).then(() => {
       toast.success('Group metadata updated')
-      queryClient.setQueryData(['adGroup-', id], (old: AdGroup) => {
-        return {
-          ...old,
-          metadata: values,
-        }
-      })
+      queryClient.setQueryData(
+        ['adGroup-', id],
+        (old: AdGroupQuery['adGroup']) => {
+          return {
+            ...old,
+            metadata: values,
+          }
+        },
+      )
     })
   }
 
@@ -192,6 +186,7 @@ const GroupSettingsForm = ({ data, id }: GroupSettingsFormProps) => {
                   <FormControl>
                     <Input
                       type="text"
+                      // @ts-ignore
                       defaultValue={value}
                       onChange={(e) => {
                         onChange(e.target.value)

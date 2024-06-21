@@ -18,6 +18,9 @@ export default createSchema((p) => ({
   }),
   AdSpace: p.createTable({
     id: p.string(),
+    owner: p.string(),
+    listingId: p.string().references("Listing.id"),
+    listing: p.one("listingId"),
     adGroupId: p.string().references("AdGroup.id"),
     adGroup: p.one("adGroupId"),
     currentMetadataId: p.string().references("AdSpaceMetadata.id").optional(),
@@ -35,6 +38,7 @@ export default createSchema((p) => ({
     description: p.string(),
     image: p.string(),
     imageGatewayUri: p.string(),
+    animationUrl: p.string().optional(),
     externalUrl: p.string().optional(),
     aspectRatio: p.string(),
     frameRedirectUrl: p.string().optional(),

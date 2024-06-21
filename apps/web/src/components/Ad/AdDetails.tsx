@@ -51,7 +51,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
   const { acquireLeaseModal, updateAdDataModal, selfAssessmentModal } =
     useContext(ModalContext)
   const listing = adSpace?.listing
-  const isOwner = listing && listing?.listingOwner === address
+  const isOwner = adSpace?.owner.toLowerCase() === address?.toLowerCase()
   const isBeneficiarty =
     listing?.taxBeneficiary?.toLowerCase() === address?.toLowerCase()
   const showDropdown = isOwner || isBeneficiarty
@@ -149,11 +149,23 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                       )}
                     </DropdownMenuContent>
                   </DropdownMenu>
-                  {adSpace && <SelfPriceAssementModal adSpace={adSpace} />}
-                  {adSpace && <UpdateAdDataDialog adSpace={adSpace} />}
+                  {adSpace && (
+                    <SelfPriceAssementModal listing={adSpace.listing} />
+                  )}
+                  {adSpace && (
+                    <UpdateAdDataDialog
+                      listing={adSpace.listing}
+                      metadata={adSpace.currentMetadata}
+                    />
+                  )}
                 </>
               )}
-              {adSpace && <AcquireLeaseModal adSpace={adSpace} />}
+              {adSpace && (
+                <AcquireLeaseModal
+                  listing={adSpace?.listing}
+                  tokenX={adSpace?.tokenX}
+                />
+              )}
             </div>
           </div>
         </CardHeader>

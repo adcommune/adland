@@ -5,7 +5,7 @@ import { Slider } from '@/components/ui/slider'
 import useAppContracts from '@/hooks/useAppContracts'
 import { getExplorerLink, getWeeklyTaxDue } from '@/lib/utils'
 import { useContext, useState } from 'react'
-import { encodeFunctionData, erc20Abi, formatEther } from 'viem'
+import { Address, encodeFunctionData, erc20Abi, formatEther } from 'viem'
 import { useBalance, useReadContracts } from 'wagmi'
 import { format, addWeeks } from 'date-fns'
 import { AdSpace } from '@/lib/types'
@@ -32,14 +32,14 @@ import { queryClient } from './AppProviders'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { Transaction } from '@biconomy/account'
+import { AdSpaceQuery, Listing, TokenX } from '@adland/webkit/src/ponder'
 
 type AcquireLeaseModalProps = {
-  adSpace: AdSpace
+  listing: Listing
+  tokenX: TokenX
 }
 
-const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
-  const { listing, tokenX } = adSpace
-
+const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
   const { spaceId } = useParams()
   const { listingId, taxRate, pricePerToken } = listing
   const { marketplace, cfaV1 } = useAppContracts()
@@ -49,7 +49,8 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
   const { bicoAccountAddress: address } = useContext(SmartAccountContext)
 
   const isNativeCurrency = tokenX?.isNativeToken
-  const superToken = tokenX
+  const superTokenAddress = tokenX?.superToken as Address
+  const underlyingTokenAddress = tokenX?.underlyingToken as Address
 
   const {
     data: { superBalance, isEnough } = {
@@ -58,7 +59,7 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
     },
     refetch: refetchSuperBalance,
   } = useReadSuperTokenBalanceOf({
-    address: superToken?.superToken,
+    address: superTokenAddress,
     args: address && [address],
     query: {
       select: (data) => ({
@@ -81,20 +82,20 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
       {
         abi: erc20Abi,
         functionName: 'balanceOf',
-        address: superToken?.underlyingToken,
+        address: underlyingTokenAddress,
         args: address && [address],
       },
       {
         abi: erc20Abi,
         functionName: 'allowance',
-        address: superToken?.underlyingToken,
+        address: underlyingTokenAddress,
         args: address && [address, marketplace],
       },
       {
         abi: cfAv1ForwarderAbi,
         functionName: 'getFlowOperatorPermissions',
         address: cfaV1,
-        args: address && [superToken?.superToken, address, marketplace],
+        args: address && [superTokenAddress, address, marketplace],
       },
     ],
     query: {
@@ -124,7 +125,7 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
     if (!isNativeCurrency) {
       if (!reads?.allowanceIsEnough) {
         transactions.push({
-          to: superToken?.underlyingToken,
+          to: underlyingTokenAddress,
           data: encodeFunctionData({
             abi: erc20Abi,
             functionName: 'approve',
@@ -141,7 +142,7 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
         data: encodeFunctionData({
           abi: cfAv1ForwarderAbi,
           functionName: 'grantPermissions',
-          args: [superToken?.superToken, marketplace],
+          args: [superTokenAddress, marketplace],
         }),
         value: BigInt(0),
       })
@@ -156,7 +157,7 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
           listingId,
           address,
           BigInt(1),
-          superToken?.underlyingToken,
+          underlyingTokenAddress,
           pricePerToken,
         ],
       }),
@@ -171,14 +172,10 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
             acquireLeaseModal.set(false)
             queryClient.setQueryData(
               ['adSpace-', spaceId],
-              (old: AdSpace): AdSpace => {
-                return {
-                  ...old,
-                  listing: {
-                    ...old.listing,
-                    listingOwner: address,
-                  },
-                }
+              (old: AdSpaceQuery['adSpace']): AdSpaceQuery['adSpace'] => {
+                return Object.assign({}, old, {
+                  owner: address,
+                })
               },
             )
           }
@@ -281,7 +278,7 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
                       upgradeCall({
                         transactions: [
                           {
-                            to: superToken?.superToken,
+                            to: superTokenAddress,
                             data: encodeFunctionData({
                               abi: isethAbi,
                               functionName: 'upgradeByETH',
@@ -295,16 +292,16 @@ const AcquireLeaseModal = ({ adSpace }: AcquireLeaseModalProps) => {
                       upgradeCall({
                         transactions: [
                           {
-                            to: superToken?.underlyingToken,
+                            to: underlyingTokenAddress,
                             data: encodeFunctionData({
                               abi: erc20Abi,
                               functionName: 'approve',
-                              args: [superToken?.superToken, value],
+                              args: [superTokenAddress, value],
                             }),
                             value: BigInt(0),
                           },
                           {
-                            to: superToken?.superToken,
+                            to: superTokenAddress,
                             data: encodeFunctionData({
                               abi: superTokenAbi,
                               functionName: 'upgrade',

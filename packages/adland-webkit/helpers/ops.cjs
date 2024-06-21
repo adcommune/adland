@@ -113,7 +113,7 @@ const main = async function () {
       removeLastArg: true,
     },
     {
-      schemaUrl: "http://localhost:42069/graphql",
+      schemaUrl: constants.ponderUrl,
       fileName: "ponder",
       depthLimit: 5,
     },

@@ -1,43 +1,52 @@
 'use client'
 
 import React, { useContext } from 'react'
-import { AdGroup } from '@/lib/types'
 import { getExplorerLink, truncateAddress } from '@/lib/utils'
+import { AdLand } from '@/lib/adland'
 import { CogIcon } from 'lucide-react'
 import Link from 'next/link'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
+import { useQuery } from '@tanstack/react-query'
 
 type AdGroupHeaderProps = {
-  adGroup: AdGroup
+  adGroupId?: string
   children?: React.ReactNode
 }
 
-const AdGroupHeader = ({
-  adGroup: { adGroup_subgraph, metadata, adSpaces },
-  children,
-}: AdGroupHeaderProps) => {
-  const { id, beneficiary } = adGroup_subgraph
+const AdGroupHeader = ({ adGroupId, children }: AdGroupHeaderProps) => {
+  const { data: adGroup, error } = useQuery({
+    queryKey: ['adGroup-', adGroupId],
+    queryFn: async () => {
+      return new AdLand().getGroup(adGroupId)
+    },
+    enabled: !!adGroupId,
+  })
+
+  console.log({ adGroup, error })
+
   const { bicoAccountAddress } = useContext(SmartAccountContext)
 
   const isBeneficiary =
-    bicoAccountAddress?.toLowerCase() === beneficiary?.toLowerCase()
+    bicoAccountAddress?.toLowerCase() === adGroup?.beneficiary?.toLowerCase()
 
-  const title = metadata?.name || `Ad Group #${id}`
+  const title = !adGroupId
+    ? ''
+    : adGroup?.metadata?.name || `Ad Group #${adGroupId}`
 
   const stats: { label: string; value: number | React.ReactNode }[] = [
     {
       label: 'Admin: ',
       value: (
         <Link
-          href={getExplorerLink(beneficiary, 'address')}
+          href={getExplorerLink(adGroup?.beneficiary, 'address')}
           className="underline"
           target="_blank"
         >
-          {truncateAddress(beneficiary)}
+          {truncateAddress(adGroup?.beneficiary)}
         </Link>
       ),
     },
-    { label: 'Ad Spaces: ', value: adSpaces.length },
+    // { label: 'Ad Spaces: ', value: adSpaces.length },
   ]
 
   return (
@@ -51,11 +60,11 @@ const AdGroupHeader = ({
             <div className="sm:flex sm:items-center sm:justify-between">
               <div className="sm:flex sm:space-x-5">
                 <div className="flex-shrink-0">
-                  {metadata?.image ? (
-                    <Link href={'/group/' + id}>
+                  {adGroup?.metadata?.image ? (
+                    <Link href={'/group/' + adGroupId}>
                       <img
                         className="mx-auto h-20 w-20 rounded-full ring-gray-400 hover:cursor-pointer hover:ring-2"
-                        src={metadata?.image}
+                        src={adGroup?.metadata?.image}
                         alt=""
                       />
                     </Link>
@@ -64,20 +73,20 @@ const AdGroupHeader = ({
                   )}
                 </div>
                 <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
-                  <Link href={'/group/' + id}>
+                  <Link href={'/group/' + adGroupId}>
                     <p className="text-xl font-bold text-gray-900 hover:cursor-pointer hover:underline sm:text-2xl">
                       {title}
                     </p>
                   </Link>
                   <p className="text-sm font-medium text-gray-600">
-                    {metadata?.description}
+                    {adGroup?.metadata?.description}
                   </p>
                 </div>
               </div>
               <div className="mt-5 flex justify-center sm:mt-0">
                 {isBeneficiary && (
                   <Link
-                    href={`/group/${id}/settings`}
+                    href={`/group/${adGroupId}/settings`}
                     className="flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     <CogIcon className="h-5 w-5 " />

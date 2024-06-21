@@ -1,6 +1,6 @@
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { encodeFunctionData, formatEther, parseEther } from 'viem'
+import { Address, encodeFunctionData, formatEther, parseEther } from 'viem'
 import { useContext, useState } from 'react'
 import { AdSpace } from '@/lib/types'
 import { directListingsLogicAbi } from '@adland/contracts'
@@ -9,11 +9,11 @@ import Modal from './Modal'
 import { queryClient } from './AppProviders'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { appContracts } from '@/config/constants'
+import { AdSpaceQuery, Listing } from '@adland/webkit/src/ponder'
 
-type AdSpaceCardProps = { adSpace: AdSpace }
+type AdSpaceCardProps = { listing: Listing }
 
-const SelfPriceAssementModal = ({ adSpace }: AdSpaceCardProps) => {
-  const { listing } = adSpace
+const SelfPriceAssementModal = ({ listing }: AdSpaceCardProps) => {
   const { selfAssessmentModal } = useContext(ModalContext)
   const {
     assetContract,
@@ -48,11 +48,11 @@ const SelfPriceAssementModal = ({ adSpace }: AdSpaceCardProps) => {
                 listingId,
                 {
                   tokenId,
-                  assetContract,
+                  assetContract: assetContract as Address,
                   quantity,
-                  currency,
+                  currency: currency as Address,
                   taxRate,
-                  taxBeneficiary,
+                  taxBeneficiary: taxBeneficiary as Address,
                   pricePerToken: parseEther(newPricePerToken.toString()),
                   startTimestamp,
                   endTimestamp,
@@ -68,15 +68,14 @@ const SelfPriceAssementModal = ({ adSpace }: AdSpaceCardProps) => {
         onSuccess: () => {
           selfAssessmentModal.set(false)
           queryClient.setQueryData(
-            ['adSpace-', adSpace?.adSpace_subgraph?.id],
-            (old: AdSpace): AdSpace => {
-              return {
-                ...old,
+            ['adSpace-', listingId],
+            (old: AdSpaceQuery['adSpace']): AdSpaceQuery['adSpace'] => {
+              return Object.assign({}, old, {
                 listing: {
-                  ...old.listing,
+                  ...old?.listing,
                   pricePerToken: parseEther(newPricePerToken.toString()),
                 },
-              }
+              })
             },
           )
         },

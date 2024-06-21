@@ -14,7 +14,7 @@ const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
     queryKey: ['adSpace-', spaceId],
   })
 
-  return <AdPropertyList metadata={adSpace?.metadata} />
+  return <AdPropertyList metadata={adSpace?.currentMetadata} />
 }
 
 export default AdSpacePage

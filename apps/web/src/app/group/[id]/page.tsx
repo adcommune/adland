@@ -35,16 +35,9 @@ const GroupPage = ({ params: { id } }: GroupPageProps) => {
 
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-      {adSpaces?.map(({ adSpace_subgraph: adSpace, metadata }) => {
-        return (
-          <AdSpaceCard
-            key={adSpace.transactionHash + '-' + adSpace.id}
-            id={adSpace.id}
-            price={adSpace.listing.listing_pricePerToken}
-            currency={adSpace.listing.listing_currency}
-            metadata={metadata}
-          />
-        )
+      {adSpaces?.items?.map((adSpace) => {
+        const { transactionHash, id } = adSpace
+        return <AdSpaceCard key={transactionHash + '-' + id} {...adSpace} />
       })}
     </div>
   )
