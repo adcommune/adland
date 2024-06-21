@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "start": "ponder start",
+    "dev:local": "ponder dev",
     "codegen": "ponder codegen",
     "lint": "eslint .",
     "typecheck": "tsc"

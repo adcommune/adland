@@ -29,39 +29,48 @@ import { toast } from 'sonner'
 import { queryClient } from './AppProviders'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { encodeFunctionData } from 'viem'
+import {
+  AdSpaceMetadata,
+  AdSpaceQuery,
+  Listing,
+} from '@adland/webkit/src/ponder'
 
 type UpdateAdDataDialogProps = {
-  adSpace: AdSpace
+  listing: Listing
+  metadata?: Omit<AdSpaceMetadata, 'adSpace'> | null
 }
 
-const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
-  const { listing, metadata } = adSpace
-
+const UpdateAdDataDialog = ({
+  listing,
+  metadata: initialMetadata,
+}: UpdateAdDataDialogProps) => {
   const { updateAdDataModal } = useContext(ModalContext)
 
   const [description, setDescription] = useState<string>(
-    metadata?.description ?? '',
+    initialMetadata?.description ?? '',
   )
   const [externalUrl, setExternalUrl] = useState<string>(
-    metadata?.external_url ?? '',
+    initialMetadata?.externalUrl ?? '',
   )
   const [aspectRatio, setAspectRatio] = useState<FrameAspectRatio>(
-    getAR(metadata?.aspect_ratio),
+    getAR(initialMetadata?.aspectRatio),
   )
   const [frameRedirectUrl, setFrameRedirectUrl] = useState<string>(
-    metadata?.frame_redirect_url ?? '',
+    initialMetadata?.frameRedirectUrl ?? '',
   )
 
   const [image, setImage] = useState<{
     url: string
     type: 'video' | 'image'
   } | null>(
-    metadata?.image
+    initialMetadata?.image
       ? {
           url: getGatewayUri(
-            metadata?.animation_url ? metadata?.animation_url : metadata?.image,
+            initialMetadata?.animationUrl
+              ? initialMetadata?.animationUrl
+              : initialMetadata?.image,
           ),
-          type: metadata?.animation_url ? 'video' : 'image',
+          type: initialMetadata?.animationUrl ? 'video' : 'image',
         }
       : null,
   )
@@ -97,20 +106,17 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
   const [uploadingData, setUploadingData] = useState(false)
 
   const onUpdateSuccess = useCallback(
-    (data: Metadata) => {
+    (data: Partial<AdSpaceMetadata>) => {
       updateAdDataModal.set(false)
 
       if (!data) return
 
-      data.imageGatewayURI = getGatewayUri(data?.image)
-
       queryClient.setQueryData(
-        ['adSpace-', adSpace?.adSpace_subgraph?.id],
-        (old: AdSpace): AdSpace => {
-          return {
-            ...old,
-            metadata: data,
-          }
+        ['adSpace-', listing.listingId],
+        (old: AdSpaceQuery['adSpace']): AdSpaceQuery['adSpace'] => {
+          return Object.assign({}, old, {
+            currentMetadata: data,
+          })
         },
       )
     },
@@ -132,19 +138,30 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
       image: `ipfs://${imageHash}`,
     }
 
+    const localMetadata: Partial<AdSpaceMetadata> = {
+      name: `Ad Space #${Number(listing?.listingId)}`,
+      description,
+      image: `ipfs://${imageHash}`,
+      imageGatewayUri: getGatewayUri(`ipfs://${imageHash}`),
+    }
+
     if (image.type === 'video') {
       data.animation_url = `ipfs://${imageHash}`
+      localMetadata.animationUrl = `ipfs://${imageHash}`
     }
     if (externalUrl !== '') {
       data.external_url = externalUrl
+      localMetadata.externalUrl = externalUrl
     }
     if (frameRedirectUrl !== '') {
       data.frame_redirect_url = frameRedirectUrl
+      localMetadata.frameRedirectUrl = frameRedirectUrl
     }
     data.aspect_ratio = aspectRatio
+    localMetadata.aspectRatio = aspectRatio
 
-    if (adSpace.metadata) {
-      const oldMetadata = omit(adSpace.metadata, ['imageGatewayURI'])
+    if (initialMetadata) {
+      const oldMetadata = omit(initialMetadata, ['imageGatewayURI'])
 
       if (isEqual(data, oldMetadata)) {
         setUploadingData(false)
@@ -174,7 +191,7 @@ const UpdateAdDataDialog = ({ adSpace }: UpdateAdDataDialogProps) => {
       },
       {
         onSuccess: () => {
-          onUpdateSuccess(data)
+          onUpdateSuccess(localMetadata)
         },
       },
     )

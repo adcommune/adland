@@ -33,7 +33,7 @@ const AdSpacePageLayout = async ({
   children,
   params: { spaceId },
 }: AdSpacePageLayoutProps) => {
-  const adGroup = (await new AdLand().getGoupBySpaceId(spaceId)) as AdGroup
+  const adSpace = await new AdLand().getAdSpace(spaceId)
   const { adCommonOwnership } = useAppContracts()
 
   return (
@@ -46,7 +46,7 @@ const AdSpacePageLayout = async ({
           media_url: `${baseURL}/api/billboard/${spaceId}?time=${Date.now()}`,
         }}
       />
-      <AdGroupHeader adGroup={adGroup}>
+      <AdGroupHeader adGroupId={adSpace?.adGroup.id}>
         <AdDetailsSidebar spaceId={spaceId}>{children}</AdDetailsSidebar>
       </AdGroupHeader>
     </Container>

@@ -8,15 +8,15 @@ import Link from 'next/link'
 import { formatEther } from 'viem'
 
 const CampaignsPage = () => {
-  const { data: campaigns } = useQuery({
-    queryKey: ['liveAdCampaigns'],
-    queryFn: () => new AdLand().listAdCampaigns(),
-  })
+  // const { data: campaigns } = useQuery({
+  //   queryKey: ['liveAdCampaigns'],
+  //   queryFn: () => new AdLand().listAdCampaigns(),
+  // })
 
   return (
     <Container className="p-4">
       <div className="grid grid-cols-4 gap-2">
-        {campaigns?.map(({ adSpace, sfPool }) => {
+        {/* {campaigns?.map(({ adSpace, sfPool }) => {
           return (
             <Link
               key={adSpace?.transactionHash + adSpace?.id}
@@ -43,7 +43,7 @@ const CampaignsPage = () => {
               </Card>
             </Link>
           )
-        })}
+        })} */}
       </div>
     </Container>
   )

@@ -1,5 +1,5 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { fetcher } from './fetcher';
+import { GraphQLClient, RequestOptions } from 'graphql-request';
+import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -7,6 +7,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+type GraphQLClientRequestHeaders = RequestOptions['requestHeaders'];
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -21,6 +22,7 @@ export type AdGroup = {
   __typename?: 'AdGroup';
   adSpaces?: Maybe<AdSpacePage>;
   beneficiary: Scalars['String']['output'];
+  blockTimestamp: Scalars['BigInt']['output'];
   id: Scalars['String']['output'];
   metadata?: Maybe<AdGroupMetadata>;
   metadataId?: Maybe<Scalars['String']['output']>;
@@ -49,6 +51,14 @@ export type AdGroupFilter = {
   beneficiary_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   beneficiary_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   beneficiary_starts_with?: InputMaybe<Scalars['String']['input']>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_in?: InputMaybe<Array<InputMaybe<Scalars['BigInt']['input']>>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not_in?: InputMaybe<Array<InputMaybe<Scalars['BigInt']['input']>>>;
   id?: InputMaybe<Scalars['String']['input']>;
   id_contains?: InputMaybe<Scalars['String']['input']>;
   id_ends_with?: InputMaybe<Scalars['String']['input']>;
@@ -151,8 +161,16 @@ export type AdSpace = {
   __typename?: 'AdSpace';
   adGroup: AdGroup;
   adGroupId: Scalars['String']['output'];
+  currentMetadata?: Maybe<AdSpaceMetadata>;
+  currentMetadataId?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
+  listing: Listing;
+  listingId: Scalars['String']['output'];
   metadatas?: Maybe<AdSpaceMetadataPage>;
+  owner: Scalars['String']['output'];
+  tokenX: TokenX;
+  tokenXId: Scalars['String']['output'];
+  transactionHash: Scalars['String']['output'];
 };
 
 
@@ -178,6 +196,16 @@ export type AdSpaceFilter = {
   adGroupId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   adGroupId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   adGroupId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  currentMetadataId?: InputMaybe<Scalars['String']['input']>;
+  currentMetadataId_contains?: InputMaybe<Scalars['String']['input']>;
+  currentMetadataId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  currentMetadataId_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  currentMetadataId_not?: InputMaybe<Scalars['String']['input']>;
+  currentMetadataId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  currentMetadataId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  currentMetadataId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  currentMetadataId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  currentMetadataId_starts_with?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   id_contains?: InputMaybe<Scalars['String']['input']>;
   id_ends_with?: InputMaybe<Scalars['String']['input']>;
@@ -188,12 +216,53 @@ export type AdSpaceFilter = {
   id_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   id_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   id_starts_with?: InputMaybe<Scalars['String']['input']>;
+  listingId?: InputMaybe<Scalars['String']['input']>;
+  listingId_contains?: InputMaybe<Scalars['String']['input']>;
+  listingId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  listingId_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  listingId_not?: InputMaybe<Scalars['String']['input']>;
+  listingId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  listingId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  listingId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  listingId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  listingId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  owner?: InputMaybe<Scalars['String']['input']>;
+  owner_contains?: InputMaybe<Scalars['String']['input']>;
+  owner_ends_with?: InputMaybe<Scalars['String']['input']>;
+  owner_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  owner_not?: InputMaybe<Scalars['String']['input']>;
+  owner_not_contains?: InputMaybe<Scalars['String']['input']>;
+  owner_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  owner_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  owner_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  owner_starts_with?: InputMaybe<Scalars['String']['input']>;
+  tokenXId?: InputMaybe<Scalars['String']['input']>;
+  tokenXId_contains?: InputMaybe<Scalars['String']['input']>;
+  tokenXId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  tokenXId_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  tokenXId_not?: InputMaybe<Scalars['String']['input']>;
+  tokenXId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  tokenXId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  tokenXId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  tokenXId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  tokenXId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  transactionHash?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_contains?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_ends_with?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  transactionHash_not?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  transactionHash_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_starts_with?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type AdSpaceMetadata = {
   __typename?: 'AdSpaceMetadata';
   adSpace: AdSpace;
   adSpaceId: Scalars['String']['output'];
+  animationUrl?: Maybe<Scalars['String']['output']>;
   aspectRatio: Scalars['String']['output'];
   blockNumber: Scalars['BigInt']['output'];
   description: Scalars['String']['output'];
@@ -219,6 +288,16 @@ export type AdSpaceMetadataFilter = {
   adSpaceId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   adSpaceId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   adSpaceId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  animationUrl?: InputMaybe<Scalars['String']['input']>;
+  animationUrl_contains?: InputMaybe<Scalars['String']['input']>;
+  animationUrl_ends_with?: InputMaybe<Scalars['String']['input']>;
+  animationUrl_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  animationUrl_not?: InputMaybe<Scalars['String']['input']>;
+  animationUrl_not_contains?: InputMaybe<Scalars['String']['input']>;
+  animationUrl_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  animationUrl_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  animationUrl_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  animationUrl_starts_with?: InputMaybe<Scalars['String']['input']>;
   aspectRatio?: InputMaybe<Scalars['String']['input']>;
   aspectRatio_contains?: InputMaybe<Scalars['String']['input']>;
   aspectRatio_ends_with?: InputMaybe<Scalars['String']['input']>;
@@ -711,7 +790,7 @@ export type AdGroupQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, adSpaces?: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, adGroupId: string, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null } | null };
+export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, superToken: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null } | null };
 
 export type AdGroupsQueryVariables = Exact<{
   where?: InputMaybe<AdGroupFilter>;
@@ -726,16 +805,10 @@ export type AdGroupsQueryVariables = Exact<{
   adGroups_items_items_adSpaces_before?: InputMaybe<Scalars['String']['input']>;
   adGroups_items_items_adSpaces_after?: InputMaybe<Scalars['String']['input']>;
   adGroups_items_items_adSpaces_limit?: InputMaybe<Scalars['Int']['input']>;
-  adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_where?: InputMaybe<AdSpaceMetadataFilter>;
-  adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_orderBy?: InputMaybe<Scalars['String']['input']>;
-  adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_orderDirection?: InputMaybe<Scalars['String']['input']>;
-  adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_before?: InputMaybe<Scalars['String']['input']>;
-  adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_after?: InputMaybe<Scalars['String']['input']>;
-  adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_limit?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type AdGroupsQuery = { __typename?: 'Query', adGroups: { __typename?: 'AdGroupPage', items: Array<{ __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, adSpaces?: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, adGroupId: string }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+export type AdGroupsQuery = { __typename?: 'Query', adGroups: { __typename?: 'AdGroupPage', items: Array<{ __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, superToken: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
 
 export type AdGroupMetadataQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -773,7 +846,7 @@ export type AdSpaceQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, adGroupId: string, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, adSpaces?: { __typename?: 'AdSpacePage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null } | null };
+export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, superToken: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } } | null };
 
 export type AdSpacesQueryVariables = Exact<{
   where?: InputMaybe<AdSpaceFilter>;
@@ -791,7 +864,7 @@ export type AdSpacesQueryVariables = Exact<{
 }>;
 
 
-export type AdSpacesQuery = { __typename?: 'Query', adSpaces: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, adGroupId: string, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+export type AdSpacesQuery = { __typename?: 'Query', adSpaces: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, superToken: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
 
 export type AdSpaceMetadataQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -810,7 +883,7 @@ export type AdSpaceMetadataQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceMetadataQuery = { __typename?: 'Query', adSpaceMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string, adSpace: { __typename?: 'AdSpace', id: string, adGroupId: string, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, adSpaces?: { __typename?: 'AdSpacePage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, metadatas?: { __typename?: 'AdSpaceMetadataPage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null } } | null };
+export type AdSpaceMetadataQuery = { __typename?: 'Query', adSpaceMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string, adSpace: { __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, metadatas?: { __typename?: 'AdSpaceMetadataPage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, superToken: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } } } | null };
 
 export type AdSpaceMetadatasQueryVariables = Exact<{
   where?: InputMaybe<AdSpaceMetadataFilter>;
@@ -819,16 +892,10 @@ export type AdSpaceMetadatasQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
-  adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_where?: InputMaybe<AdSpaceFilter>;
-  adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy?: InputMaybe<Scalars['String']['input']>;
-  adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection?: InputMaybe<Scalars['String']['input']>;
-  adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_before?: InputMaybe<Scalars['String']['input']>;
-  adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_after?: InputMaybe<Scalars['String']['input']>;
-  adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_limit?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type AdSpaceMetadatasQuery = { __typename?: 'Query', adSpaceMetadatas: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string, adSpace: { __typename?: 'AdSpace', id: string, adGroupId: string, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null } } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+export type AdSpaceMetadatasQuery = { __typename?: 'Query', adSpaceMetadatas: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, blockNumber: any, transactionHash: string, adSpace: { __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, superToken: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
 
 export type TokenXQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -869,8 +936,7 @@ export type ListingsQueryVariables = Exact<{
 export type ListingsQuery = { __typename?: 'Query', listings: { __typename?: 'ListingPage', items: Array<{ __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
 
 
-
-export const AdGroupDocument = `
+export const AdGroupDocument = gql`
     query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adSpaces_orderBy: String, $adGroup_adSpaces_orderDirection: String, $adGroup_adSpaces_before: String, $adGroup_adSpaces_after: String, $adGroup_adSpaces_limit: Int, $adGroup_adSpaces_adSpaces_items_items_metadatas_where: AdSpaceMetadataFilter, $adGroup_adSpaces_adSpaces_items_items_metadatas_orderBy: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_orderDirection: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_before: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_after: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_limit: Int) {
   adGroup(id: $id) {
     id
@@ -885,7 +951,42 @@ export const AdGroupDocument = `
     ) {
       items {
         id
+        owner
+        listingId
+        listing {
+          id
+          listingId
+          tokenId
+          quantity
+          pricePerToken
+          startTimestamp
+          endTimestamp
+          listingCreator
+          listingOwner
+          assetContract
+          currency
+          taxRate
+          taxBeneficiary
+          tokenType
+          status
+          reserved
+        }
         adGroupId
+        currentMetadataId
+        currentMetadata {
+          id
+          adSpaceId
+          name
+          description
+          image
+          imageGatewayUri
+          animationUrl
+          externalUrl
+          aspectRatio
+          frameRedirectUrl
+          blockNumber
+          transactionHash
+        }
         metadatas(
           where: $adGroup_adSpaces_adSpaces_items_items_metadatas_where
           orderBy: $adGroup_adSpaces_adSpaces_items_items_metadatas_orderBy
@@ -901,6 +1002,7 @@ export const AdGroupDocument = `
             description
             image
             imageGatewayUri
+            animationUrl
             externalUrl
             aspectRatio
             frameRedirectUrl
@@ -914,6 +1016,17 @@ export const AdGroupDocument = `
             endCursor
           }
         }
+        tokenXId
+        tokenX {
+          id
+          underlyingToken
+          superToken
+          isNativeToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        transactionHash
       }
       pageInfo {
         hasNextPage
@@ -930,28 +1043,12 @@ export const AdGroupDocument = `
       image
       banner
     }
+    blockTimestamp
   }
 }
     `;
-
-export const useAdGroupQuery = <
-      TData = AdGroupQuery,
-      TError = unknown
-    >(
-      variables: AdGroupQueryVariables,
-      options?: Omit<UseQueryOptions<AdGroupQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdGroupQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<AdGroupQuery, TError, TData>(
-      {
-    queryKey: ['adGroup', variables],
-    queryFn: fetcher<AdGroupQuery, AdGroupQueryVariables>(AdGroupDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const AdGroupsDocument = `
-    query adGroups($where: AdGroupFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adGroups_items_items_adSpaces_where: AdSpaceFilter, $adGroups_items_items_adSpaces_orderBy: String, $adGroups_items_items_adSpaces_orderDirection: String, $adGroups_items_items_adSpaces_before: String, $adGroups_items_items_adSpaces_after: String, $adGroups_items_items_adSpaces_limit: Int, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_where: AdSpaceMetadataFilter, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_orderBy: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_orderDirection: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_before: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_after: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_limit: Int) {
+export const AdGroupsDocument = gql`
+    query adGroups($where: AdGroupFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adGroups_items_items_adSpaces_where: AdSpaceFilter, $adGroups_items_items_adSpaces_orderBy: String, $adGroups_items_items_adSpaces_orderDirection: String, $adGroups_items_items_adSpaces_before: String, $adGroups_items_items_adSpaces_after: String, $adGroups_items_items_adSpaces_limit: Int) {
   adGroups(
     where: $where
     orderBy: $orderBy
@@ -973,7 +1070,53 @@ export const AdGroupsDocument = `
       ) {
         items {
           id
+          owner
+          listingId
+          listing {
+            id
+            listingId
+            tokenId
+            quantity
+            pricePerToken
+            startTimestamp
+            endTimestamp
+            listingCreator
+            listingOwner
+            assetContract
+            currency
+            taxRate
+            taxBeneficiary
+            tokenType
+            status
+            reserved
+          }
           adGroupId
+          currentMetadataId
+          currentMetadata {
+            id
+            adSpaceId
+            name
+            description
+            image
+            imageGatewayUri
+            animationUrl
+            externalUrl
+            aspectRatio
+            frameRedirectUrl
+            blockNumber
+            transactionHash
+          }
+          tokenXId
+          tokenX {
+            id
+            underlyingToken
+            superToken
+            isNativeToken
+            blockNumber
+            blockTimestamp
+            transactionHash
+          }
+          transactionHash
         }
         pageInfo {
           hasNextPage
@@ -990,6 +1133,7 @@ export const AdGroupsDocument = `
         image
         banner
       }
+      blockTimestamp
     }
     pageInfo {
       hasNextPage
@@ -1000,24 +1144,7 @@ export const AdGroupsDocument = `
   }
 }
     `;
-
-export const useAdGroupsQuery = <
-      TData = AdGroupsQuery,
-      TError = unknown
-    >(
-      variables?: AdGroupsQueryVariables,
-      options?: Omit<UseQueryOptions<AdGroupsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdGroupsQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<AdGroupsQuery, TError, TData>(
-      {
-    queryKey: variables === undefined ? ['adGroups'] : ['adGroups', variables],
-    queryFn: fetcher<AdGroupsQuery, AdGroupsQueryVariables>(AdGroupsDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const AdGroupMetadataDocument = `
+export const AdGroupMetadataDocument = gql`
     query adGroupMetadata($id: String!) {
   adGroupMetadata(id: $id) {
     id
@@ -1028,24 +1155,7 @@ export const AdGroupMetadataDocument = `
   }
 }
     `;
-
-export const useAdGroupMetadataQuery = <
-      TData = AdGroupMetadataQuery,
-      TError = unknown
-    >(
-      variables: AdGroupMetadataQueryVariables,
-      options?: Omit<UseQueryOptions<AdGroupMetadataQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdGroupMetadataQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<AdGroupMetadataQuery, TError, TData>(
-      {
-    queryKey: ['adGroupMetadata', variables],
-    queryFn: fetcher<AdGroupMetadataQuery, AdGroupMetadataQueryVariables>(AdGroupMetadataDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const AdGroupMetadatasDocument = `
+export const AdGroupMetadatasDocument = gql`
     query adGroupMetadatas($where: AdGroupMetadataFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int) {
   adGroupMetadatas(
     where: $where
@@ -1071,27 +1181,30 @@ export const AdGroupMetadatasDocument = `
   }
 }
     `;
-
-export const useAdGroupMetadatasQuery = <
-      TData = AdGroupMetadatasQuery,
-      TError = unknown
-    >(
-      variables?: AdGroupMetadatasQueryVariables,
-      options?: Omit<UseQueryOptions<AdGroupMetadatasQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdGroupMetadatasQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<AdGroupMetadatasQuery, TError, TData>(
-      {
-    queryKey: variables === undefined ? ['adGroupMetadatas'] : ['adGroupMetadatas', variables],
-    queryFn: fetcher<AdGroupMetadatasQuery, AdGroupMetadatasQueryVariables>(AdGroupMetadatasDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const AdSpaceDocument = `
+export const AdSpaceDocument = gql`
     query adSpace($id: String!, $adSpace_adGroup_adGroup_adSpaces_where: AdSpaceFilter, $adSpace_adGroup_adGroup_adSpaces_orderBy: String, $adSpace_adGroup_adGroup_adSpaces_orderDirection: String, $adSpace_adGroup_adGroup_adSpaces_before: String, $adSpace_adGroup_adGroup_adSpaces_after: String, $adSpace_adGroup_adGroup_adSpaces_limit: Int, $adSpace_metadatas_where: AdSpaceMetadataFilter, $adSpace_metadatas_orderBy: String, $adSpace_metadatas_orderDirection: String, $adSpace_metadatas_before: String, $adSpace_metadatas_after: String, $adSpace_metadatas_limit: Int) {
   adSpace(id: $id) {
     id
+    owner
+    listingId
+    listing {
+      id
+      listingId
+      tokenId
+      quantity
+      pricePerToken
+      startTimestamp
+      endTimestamp
+      listingCreator
+      listingOwner
+      assetContract
+      currency
+      taxRate
+      taxBeneficiary
+      tokenType
+      status
+      reserved
+    }
     adGroupId
     adGroup {
       id
@@ -1119,6 +1232,22 @@ export const AdSpaceDocument = `
         image
         banner
       }
+      blockTimestamp
+    }
+    currentMetadataId
+    currentMetadata {
+      id
+      adSpaceId
+      name
+      description
+      image
+      imageGatewayUri
+      animationUrl
+      externalUrl
+      aspectRatio
+      frameRedirectUrl
+      blockNumber
+      transactionHash
     }
     metadatas(
       where: $adSpace_metadatas_where
@@ -1135,6 +1264,7 @@ export const AdSpaceDocument = `
         description
         image
         imageGatewayUri
+        animationUrl
         externalUrl
         aspectRatio
         frameRedirectUrl
@@ -1148,27 +1278,21 @@ export const AdSpaceDocument = `
         endCursor
       }
     }
+    tokenXId
+    tokenX {
+      id
+      underlyingToken
+      superToken
+      isNativeToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    transactionHash
   }
 }
     `;
-
-export const useAdSpaceQuery = <
-      TData = AdSpaceQuery,
-      TError = unknown
-    >(
-      variables: AdSpaceQueryVariables,
-      options?: Omit<UseQueryOptions<AdSpaceQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdSpaceQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<AdSpaceQuery, TError, TData>(
-      {
-    queryKey: ['adSpace', variables],
-    queryFn: fetcher<AdSpaceQuery, AdSpaceQueryVariables>(AdSpaceDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const AdSpacesDocument = `
+export const AdSpacesDocument = gql`
     query adSpaces($where: AdSpaceFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adSpaces_items_items_metadatas_where: AdSpaceMetadataFilter, $adSpaces_items_items_metadatas_orderBy: String, $adSpaces_items_items_metadatas_orderDirection: String, $adSpaces_items_items_metadatas_before: String, $adSpaces_items_items_metadatas_after: String, $adSpaces_items_items_metadatas_limit: Int) {
   adSpaces(
     where: $where
@@ -1180,6 +1304,26 @@ export const AdSpacesDocument = `
   ) {
     items {
       id
+      owner
+      listingId
+      listing {
+        id
+        listingId
+        tokenId
+        quantity
+        pricePerToken
+        startTimestamp
+        endTimestamp
+        listingCreator
+        listingOwner
+        assetContract
+        currency
+        taxRate
+        taxBeneficiary
+        tokenType
+        status
+        reserved
+      }
       adGroupId
       adGroup {
         id
@@ -1192,6 +1336,22 @@ export const AdSpacesDocument = `
           image
           banner
         }
+        blockTimestamp
+      }
+      currentMetadataId
+      currentMetadata {
+        id
+        adSpaceId
+        name
+        description
+        image
+        imageGatewayUri
+        animationUrl
+        externalUrl
+        aspectRatio
+        frameRedirectUrl
+        blockNumber
+        transactionHash
       }
       metadatas(
         where: $adSpaces_items_items_metadatas_where
@@ -1208,6 +1368,7 @@ export const AdSpacesDocument = `
           description
           image
           imageGatewayUri
+          animationUrl
           externalUrl
           aspectRatio
           frameRedirectUrl
@@ -1221,6 +1382,17 @@ export const AdSpacesDocument = `
           endCursor
         }
       }
+      tokenXId
+      tokenX {
+        id
+        underlyingToken
+        superToken
+        isNativeToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      transactionHash
     }
     pageInfo {
       hasNextPage
@@ -1231,30 +1403,33 @@ export const AdSpacesDocument = `
   }
 }
     `;
-
-export const useAdSpacesQuery = <
-      TData = AdSpacesQuery,
-      TError = unknown
-    >(
-      variables?: AdSpacesQueryVariables,
-      options?: Omit<UseQueryOptions<AdSpacesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdSpacesQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<AdSpacesQuery, TError, TData>(
-      {
-    queryKey: variables === undefined ? ['adSpaces'] : ['adSpaces', variables],
-    queryFn: fetcher<AdSpacesQuery, AdSpacesQueryVariables>(AdSpacesDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const AdSpaceMetadataDocument = `
+export const AdSpaceMetadataDocument = gql`
     query adSpaceMetadata($id: String!, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_where: AdSpaceFilter, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy: String, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection: String, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_before: String, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_after: String, $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_limit: Int, $adSpaceMetadata_adSpace_adSpace_metadatas_where: AdSpaceMetadataFilter, $adSpaceMetadata_adSpace_adSpace_metadatas_orderBy: String, $adSpaceMetadata_adSpace_adSpace_metadatas_orderDirection: String, $adSpaceMetadata_adSpace_adSpace_metadatas_before: String, $adSpaceMetadata_adSpace_adSpace_metadatas_after: String, $adSpaceMetadata_adSpace_adSpace_metadatas_limit: Int) {
   adSpaceMetadata(id: $id) {
     id
     adSpaceId
     adSpace {
       id
+      owner
+      listingId
+      listing {
+        id
+        listingId
+        tokenId
+        quantity
+        pricePerToken
+        startTimestamp
+        endTimestamp
+        listingCreator
+        listingOwner
+        assetContract
+        currency
+        taxRate
+        taxBeneficiary
+        tokenType
+        status
+        reserved
+      }
       adGroupId
       adGroup {
         id
@@ -1282,7 +1457,9 @@ export const AdSpaceMetadataDocument = `
           image
           banner
         }
+        blockTimestamp
       }
+      currentMetadataId
       metadatas(
         where: $adSpaceMetadata_adSpace_adSpace_metadatas_where
         orderBy: $adSpaceMetadata_adSpace_adSpace_metadatas_orderBy
@@ -1298,11 +1475,23 @@ export const AdSpaceMetadataDocument = `
           endCursor
         }
       }
+      tokenXId
+      tokenX {
+        id
+        underlyingToken
+        superToken
+        isNativeToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      transactionHash
     }
     name
     description
     image
     imageGatewayUri
+    animationUrl
     externalUrl
     aspectRatio
     frameRedirectUrl
@@ -1311,25 +1500,8 @@ export const AdSpaceMetadataDocument = `
   }
 }
     `;
-
-export const useAdSpaceMetadataQuery = <
-      TData = AdSpaceMetadataQuery,
-      TError = unknown
-    >(
-      variables: AdSpaceMetadataQueryVariables,
-      options?: Omit<UseQueryOptions<AdSpaceMetadataQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdSpaceMetadataQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<AdSpaceMetadataQuery, TError, TData>(
-      {
-    queryKey: ['adSpaceMetadata', variables],
-    queryFn: fetcher<AdSpaceMetadataQuery, AdSpaceMetadataQueryVariables>(AdSpaceMetadataDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const AdSpaceMetadatasDocument = `
-    query adSpaceMetadatas($where: AdSpaceMetadataFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_where: AdSpaceFilter, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_before: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_after: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_limit: Int) {
+export const AdSpaceMetadatasDocument = gql`
+    query adSpaceMetadatas($where: AdSpaceMetadataFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int) {
   adSpaceMetadatas(
     where: $where
     orderBy: $orderBy
@@ -1343,6 +1515,26 @@ export const AdSpaceMetadatasDocument = `
       adSpaceId
       adSpace {
         id
+        owner
+        listingId
+        listing {
+          id
+          listingId
+          tokenId
+          quantity
+          pricePerToken
+          startTimestamp
+          endTimestamp
+          listingCreator
+          listingOwner
+          assetContract
+          currency
+          taxRate
+          taxBeneficiary
+          tokenType
+          status
+          reserved
+        }
         adGroupId
         adGroup {
           id
@@ -1355,12 +1547,26 @@ export const AdSpaceMetadatasDocument = `
             image
             banner
           }
+          blockTimestamp
         }
+        currentMetadataId
+        tokenXId
+        tokenX {
+          id
+          underlyingToken
+          superToken
+          isNativeToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        transactionHash
       }
       name
       description
       image
       imageGatewayUri
+      animationUrl
       externalUrl
       aspectRatio
       frameRedirectUrl
@@ -1376,24 +1582,7 @@ export const AdSpaceMetadatasDocument = `
   }
 }
     `;
-
-export const useAdSpaceMetadatasQuery = <
-      TData = AdSpaceMetadatasQuery,
-      TError = unknown
-    >(
-      variables?: AdSpaceMetadatasQueryVariables,
-      options?: Omit<UseQueryOptions<AdSpaceMetadatasQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AdSpaceMetadatasQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<AdSpaceMetadatasQuery, TError, TData>(
-      {
-    queryKey: variables === undefined ? ['adSpaceMetadatas'] : ['adSpaceMetadatas', variables],
-    queryFn: fetcher<AdSpaceMetadatasQuery, AdSpaceMetadatasQueryVariables>(AdSpaceMetadatasDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const TokenXDocument = `
+export const TokenXDocument = gql`
     query tokenX($id: String!) {
   tokenX(id: $id) {
     id
@@ -1406,24 +1595,7 @@ export const TokenXDocument = `
   }
 }
     `;
-
-export const useTokenXQuery = <
-      TData = TokenXQuery,
-      TError = unknown
-    >(
-      variables: TokenXQueryVariables,
-      options?: Omit<UseQueryOptions<TokenXQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<TokenXQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<TokenXQuery, TError, TData>(
-      {
-    queryKey: ['tokenX', variables],
-    queryFn: fetcher<TokenXQuery, TokenXQueryVariables>(TokenXDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const TokenXsDocument = `
+export const TokenXsDocument = gql`
     query tokenXs($where: TokenXFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int) {
   tokenXs(
     where: $where
@@ -1451,24 +1623,7 @@ export const TokenXsDocument = `
   }
 }
     `;
-
-export const useTokenXsQuery = <
-      TData = TokenXsQuery,
-      TError = unknown
-    >(
-      variables?: TokenXsQueryVariables,
-      options?: Omit<UseQueryOptions<TokenXsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<TokenXsQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<TokenXsQuery, TError, TData>(
-      {
-    queryKey: variables === undefined ? ['tokenXs'] : ['tokenXs', variables],
-    queryFn: fetcher<TokenXsQuery, TokenXsQueryVariables>(TokenXsDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const ListingDocument = `
+export const ListingDocument = gql`
     query listing($id: String!) {
   listing(id: $id) {
     id
@@ -1490,24 +1645,7 @@ export const ListingDocument = `
   }
 }
     `;
-
-export const useListingQuery = <
-      TData = ListingQuery,
-      TError = unknown
-    >(
-      variables: ListingQueryVariables,
-      options?: Omit<UseQueryOptions<ListingQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<ListingQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<ListingQuery, TError, TData>(
-      {
-    queryKey: ['listing', variables],
-    queryFn: fetcher<ListingQuery, ListingQueryVariables>(ListingDocument).bind(null, variables),
-    ...options
-  }
-    )};
-
-export const ListingsDocument = `
+export const ListingsDocument = gql`
     query listings($where: ListingFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int) {
   listings(
     where: $where
@@ -1545,18 +1683,49 @@ export const ListingsDocument = `
 }
     `;
 
-export const useListingsQuery = <
-      TData = ListingsQuery,
-      TError = unknown
-    >(
-      variables?: ListingsQueryVariables,
-      options?: Omit<UseQueryOptions<ListingsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<ListingsQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<ListingsQuery, TError, TData>(
-      {
-    queryKey: variables === undefined ? ['listings'] : ['listings', variables],
-    queryFn: fetcher<ListingsQuery, ListingsQueryVariables>(ListingsDocument).bind(null, variables),
-    ...options
-  }
-    )};
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
+
+
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
+
+export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
+  return {
+    adGroup(variables: AdGroupQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdGroupQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdGroupQuery>(AdGroupDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adGroup', 'query', variables);
+    },
+    adGroups(variables?: AdGroupsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdGroupsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdGroupsQuery>(AdGroupsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adGroups', 'query', variables);
+    },
+    adGroupMetadata(variables: AdGroupMetadataQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdGroupMetadataQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdGroupMetadataQuery>(AdGroupMetadataDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adGroupMetadata', 'query', variables);
+    },
+    adGroupMetadatas(variables?: AdGroupMetadatasQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdGroupMetadatasQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdGroupMetadatasQuery>(AdGroupMetadatasDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adGroupMetadatas', 'query', variables);
+    },
+    adSpace(variables: AdSpaceQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdSpaceQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdSpaceQuery>(AdSpaceDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adSpace', 'query', variables);
+    },
+    adSpaces(variables?: AdSpacesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdSpacesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdSpacesQuery>(AdSpacesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adSpaces', 'query', variables);
+    },
+    adSpaceMetadata(variables: AdSpaceMetadataQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdSpaceMetadataQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdSpaceMetadataQuery>(AdSpaceMetadataDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adSpaceMetadata', 'query', variables);
+    },
+    adSpaceMetadatas(variables?: AdSpaceMetadatasQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdSpaceMetadatasQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdSpaceMetadatasQuery>(AdSpaceMetadatasDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adSpaceMetadatas', 'query', variables);
+    },
+    tokenX(variables: TokenXQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<TokenXQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<TokenXQuery>(TokenXDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'tokenX', 'query', variables);
+    },
+    tokenXs(variables?: TokenXsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<TokenXsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<TokenXsQuery>(TokenXsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'tokenXs', 'query', variables);
+    },
+    listing(variables: ListingQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ListingQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ListingQuery>(ListingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'listing', 'query', variables);
+    },
+    listings(variables?: ListingsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ListingsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ListingsQuery>(ListingsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'listings', 'query', variables);
+    }
+  };
+}
+export type Sdk = ReturnType<typeof getSdk>;

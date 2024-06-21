@@ -7,6 +7,7 @@ export default createSchema((p) => ({
     adSpaces: p.many("AdSpace.adGroupId"),
     metadataId: p.string().references("AdGroupMetadata.id").optional(),
     metadata: p.one("metadataId"),
+    blockTimestamp: p.bigint(),
   }),
   AdGroupMetadata: p.createTable({
     id: p.string(),
@@ -17,9 +18,17 @@ export default createSchema((p) => ({
   }),
   AdSpace: p.createTable({
     id: p.string(),
+    owner: p.string(),
+    listingId: p.string().references("Listing.id"),
+    listing: p.one("listingId"),
     adGroupId: p.string().references("AdGroup.id"),
     adGroup: p.one("adGroupId"),
+    currentMetadataId: p.string().references("AdSpaceMetadata.id").optional(),
+    currentMetadata: p.one("currentMetadataId"),
     metadatas: p.many("AdSpaceMetadata.adSpaceId"),
+    tokenXId: p.string().references("TokenX.id"),
+    tokenX: p.one("tokenXId"),
+    transactionHash: p.string(),
   }),
   AdSpaceMetadata: p.createTable({
     id: p.string(),
@@ -29,6 +38,7 @@ export default createSchema((p) => ({
     description: p.string(),
     image: p.string(),
     imageGatewayUri: p.string(),
+    animationUrl: p.string().optional(),
     externalUrl: p.string().optional(),
     aspectRatio: p.string(),
     frameRedirectUrl: p.string().optional(),

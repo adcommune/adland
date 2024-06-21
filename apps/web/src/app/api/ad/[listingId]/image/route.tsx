@@ -9,8 +9,8 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
   const metadata = await new AdLand().getAdSpaceMetadata(params.listingId)
 
   if (metadata) {
-    if (metadata.imageGatewayURI) {
-      return NextResponse.redirect(metadata.imageGatewayURI)
+    if (metadata.imageGatewayUri) {
+      return NextResponse.redirect(metadata.imageGatewayUri)
     }
   }
 

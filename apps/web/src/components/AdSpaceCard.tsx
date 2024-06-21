@@ -3,16 +3,19 @@ import Image from 'next/image'
 import { Separator } from '@/components/ui/separator'
 import { formatEther } from 'viem'
 import TokenImage from '@/components/TokenImage'
-import { Metadata } from '@/lib/types'
+import { AdSpace, AdSpaceMetadata, Listing } from '@adland/webkit/src/ponder'
 
-type AdSpaceCardProps = {
+const AdSpaceCard = ({
+  id,
+  listing,
+  currentMetadata: metadata,
+}: {
+  listing: Listing
   id: string
-  price: string
-  currency: string
-  metadata?: Metadata
-}
+  currentMetadata?: Omit<AdSpaceMetadata, 'adSpace'> | null
+}) => {
+  const { pricePerToken, currency } = listing
 
-const AdSpaceCard = ({ id, price, currency, metadata }: AdSpaceCardProps) => {
   return (
     <Link href={'/ad/' + id}>
       <div className="relative flex flex-col overflow-hidden rounded-md border border-white">
@@ -21,7 +24,7 @@ const AdSpaceCard = ({ id, price, currency, metadata }: AdSpaceCardProps) => {
             <p className="text-black">#{id}</p>
           </div>
           <div className="flex flex-row items-center gap-2 rounded-md border border-black bg-white px-2">
-            {formatEther(BigInt(price))}
+            {formatEther(BigInt(pricePerToken))}
             <TokenImage address={currency} className="h-4 w-4" />
           </div>
         </div>
@@ -31,14 +34,14 @@ const AdSpaceCard = ({ id, price, currency, metadata }: AdSpaceCardProps) => {
               <p className="font-display text-2xl">No Ad</p>
             </div>
           )}
-          {metadata?.imageGatewayURI && (
+          {metadata?.imageGatewayUri && (
             <div className="flex h-2/3 flex-grow bg-gray-200 p-4">
               <Image
                 width={500}
                 height={500}
                 alt="AdSpace Image"
                 className=" w-full object-contain"
-                src={metadata?.imageGatewayURI}
+                src={metadata?.imageGatewayUri}
               />
             </div>
           )}
@@ -49,9 +52,9 @@ const AdSpaceCard = ({ id, price, currency, metadata }: AdSpaceCardProps) => {
             </p>
           )}
           {metadata && <Separator />}
-          {metadata?.external_url && (
+          {metadata?.externalUrl && (
             <p className="text-left text-sm font-light">
-              {metadata?.external_url}
+              {metadata?.externalUrl}
             </p>
           )}
         </div>

@@ -2,22 +2,32 @@ import { Metadata } from '@/lib/types'
 import { Badge } from '../ui/badge'
 import Image from 'next/image'
 import Link from 'next/link'
+import { AdSpaceMetadata } from '@adland/webkit/src/ponder'
 
 const PropertyContainer = ({ children }: { children: React.ReactNode }) => {
   return <div className="w-full px-4 md:w-1/2">{children}</div>
 }
 
+type PropertyListMetadata = Pick<
+  Omit<AdSpaceMetadata, 'adSpace'>,
+  | 'image'
+  | 'imageGatewayUri'
+  | 'externalUrl'
+  | 'description'
+  | 'aspectRatio'
+  | 'frameRedirectUrl'
+>
+
 type AdPropertyListProps = {
-  metadata?: Metadata
+  metadata?: PropertyListMetadata | null
 }
 
-const emptyMetadata: Metadata = {
-  name: '',
+const emptyMetadata: PropertyListMetadata = {
   image: '',
-  imageGatewayURI: '',
-  external_url: '',
+  imageGatewayUri: '',
+  externalUrl: '',
   description: '',
-  aspect_ratio: '',
+  aspectRatio: '',
 }
 
 const AdPropertyList = ({ metadata }: AdPropertyListProps) => {
@@ -26,11 +36,11 @@ const AdPropertyList = ({ metadata }: AdPropertyListProps) => {
   }
 
   const {
-    imageGatewayURI,
-    external_url,
+    imageGatewayUri,
+    externalUrl,
     description,
-    aspect_ratio,
-    frame_redirect_url,
+    aspectRatio,
+    frameRedirectUrl,
   } = metadata
 
   return (
@@ -38,9 +48,9 @@ const AdPropertyList = ({ metadata }: AdPropertyListProps) => {
       <div className="relative flex min-h-[300px] w-full flex-row justify-center rounded-md border bg-white bg-opacity-20">
         <Badge className="absolute right-2 top-2">image</Badge>
         <PropertyContainer>
-          {imageGatewayURI ? (
+          {imageGatewayUri ? (
             <Image
-              src={imageGatewayURI}
+              src={imageGatewayUri}
               alt="AdSpace Image"
               className="h-full w-full object-contain"
               width={500}
@@ -62,20 +72,20 @@ const AdPropertyList = ({ metadata }: AdPropertyListProps) => {
       <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
         <Badge className="absolute right-2 top-2">external_url</Badge>
         <PropertyContainer>
-          {external_url && (
-            <Link href={external_url}>
-              <p className="text-white underline">{external_url}</p>
+          {externalUrl && (
+            <Link href={externalUrl}>
+              <p className="text-white underline">{externalUrl}</p>
             </Link>
           )}
         </PropertyContainer>
       </div>
-      {frame_redirect_url && (
+      {frameRedirectUrl && (
         <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
           <Badge className="absolute right-2 top-2">frame_redirect_url</Badge>
           <PropertyContainer>
-            {frame_redirect_url && (
-              <Link href={frame_redirect_url}>
-                <p className="text-white underline">{frame_redirect_url}</p>
+            {frameRedirectUrl && (
+              <Link href={frameRedirectUrl}>
+                <p className="text-white underline">{frameRedirectUrl}</p>
               </Link>
             )}
           </PropertyContainer>
@@ -84,7 +94,7 @@ const AdPropertyList = ({ metadata }: AdPropertyListProps) => {
       <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
         <Badge className="absolute right-2 top-2">aspect_ratio</Badge>
         <PropertyContainer>
-          {aspect_ratio && <p className="text-white">{aspect_ratio}</p>}
+          {aspectRatio && <p className="text-white">{aspectRatio}</p>}
         </PropertyContainer>
       </div>
     </div>

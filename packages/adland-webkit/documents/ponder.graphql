@@ -12,7 +12,42 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     ) {
       items {
         id
+        owner
+        listingId
+        listing {
+          id
+          listingId
+          tokenId
+          quantity
+          pricePerToken
+          startTimestamp
+          endTimestamp
+          listingCreator
+          listingOwner
+          assetContract
+          currency
+          taxRate
+          taxBeneficiary
+          tokenType
+          status
+          reserved
+        }
         adGroupId
+        currentMetadataId
+        currentMetadata {
+          id
+          adSpaceId
+          name
+          description
+          image
+          imageGatewayUri
+          animationUrl
+          externalUrl
+          aspectRatio
+          frameRedirectUrl
+          blockNumber
+          transactionHash
+        }
         metadatas(
           where: $adGroup_adSpaces_adSpaces_items_items_metadatas_where
           orderBy: $adGroup_adSpaces_adSpaces_items_items_metadatas_orderBy
@@ -28,6 +63,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
             description
             image
             imageGatewayUri
+            animationUrl
             externalUrl
             aspectRatio
             frameRedirectUrl
@@ -41,6 +77,17 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
             endCursor
           }
         }
+        tokenXId
+        tokenX {
+          id
+          underlyingToken
+          superToken
+          isNativeToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        transactionHash
       }
       pageInfo {
         hasNextPage
@@ -57,8 +104,9 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       image
       banner
     }
+    blockTimestamp
   }
-}query adGroups($where: AdGroupFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adGroups_items_items_adSpaces_where: AdSpaceFilter, $adGroups_items_items_adSpaces_orderBy: String, $adGroups_items_items_adSpaces_orderDirection: String, $adGroups_items_items_adSpaces_before: String, $adGroups_items_items_adSpaces_after: String, $adGroups_items_items_adSpaces_limit: Int, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_where: AdSpaceMetadataFilter, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_orderBy: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_orderDirection: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_before: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_after: String, $adGroups_items_items_adSpaces_adSpaces_items_items_metadatas_limit: Int) {
+}query adGroups($where: AdGroupFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adGroups_items_items_adSpaces_where: AdSpaceFilter, $adGroups_items_items_adSpaces_orderBy: String, $adGroups_items_items_adSpaces_orderDirection: String, $adGroups_items_items_adSpaces_before: String, $adGroups_items_items_adSpaces_after: String, $adGroups_items_items_adSpaces_limit: Int) {
   adGroups(
     where: $where
     orderBy: $orderBy
@@ -80,7 +128,53 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       ) {
         items {
           id
+          owner
+          listingId
+          listing {
+            id
+            listingId
+            tokenId
+            quantity
+            pricePerToken
+            startTimestamp
+            endTimestamp
+            listingCreator
+            listingOwner
+            assetContract
+            currency
+            taxRate
+            taxBeneficiary
+            tokenType
+            status
+            reserved
+          }
           adGroupId
+          currentMetadataId
+          currentMetadata {
+            id
+            adSpaceId
+            name
+            description
+            image
+            imageGatewayUri
+            animationUrl
+            externalUrl
+            aspectRatio
+            frameRedirectUrl
+            blockNumber
+            transactionHash
+          }
+          tokenXId
+          tokenX {
+            id
+            underlyingToken
+            superToken
+            isNativeToken
+            blockNumber
+            blockTimestamp
+            transactionHash
+          }
+          transactionHash
         }
         pageInfo {
           hasNextPage
@@ -97,6 +191,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         image
         banner
       }
+      blockTimestamp
     }
     pageInfo {
       hasNextPage
@@ -139,6 +234,26 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
 }query adSpace($id: String!, $adSpace_adGroup_adGroup_adSpaces_where: AdSpaceFilter, $adSpace_adGroup_adGroup_adSpaces_orderBy: String, $adSpace_adGroup_adGroup_adSpaces_orderDirection: String, $adSpace_adGroup_adGroup_adSpaces_before: String, $adSpace_adGroup_adGroup_adSpaces_after: String, $adSpace_adGroup_adGroup_adSpaces_limit: Int, $adSpace_metadatas_where: AdSpaceMetadataFilter, $adSpace_metadatas_orderBy: String, $adSpace_metadatas_orderDirection: String, $adSpace_metadatas_before: String, $adSpace_metadatas_after: String, $adSpace_metadatas_limit: Int) {
   adSpace(id: $id) {
     id
+    owner
+    listingId
+    listing {
+      id
+      listingId
+      tokenId
+      quantity
+      pricePerToken
+      startTimestamp
+      endTimestamp
+      listingCreator
+      listingOwner
+      assetContract
+      currency
+      taxRate
+      taxBeneficiary
+      tokenType
+      status
+      reserved
+    }
     adGroupId
     adGroup {
       id
@@ -166,6 +281,22 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         image
         banner
       }
+      blockTimestamp
+    }
+    currentMetadataId
+    currentMetadata {
+      id
+      adSpaceId
+      name
+      description
+      image
+      imageGatewayUri
+      animationUrl
+      externalUrl
+      aspectRatio
+      frameRedirectUrl
+      blockNumber
+      transactionHash
     }
     metadatas(
       where: $adSpace_metadatas_where
@@ -182,6 +313,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         description
         image
         imageGatewayUri
+        animationUrl
         externalUrl
         aspectRatio
         frameRedirectUrl
@@ -195,6 +327,17 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         endCursor
       }
     }
+    tokenXId
+    tokenX {
+      id
+      underlyingToken
+      superToken
+      isNativeToken
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    transactionHash
   }
 }query adSpaces($where: AdSpaceFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adSpaces_items_items_metadatas_where: AdSpaceMetadataFilter, $adSpaces_items_items_metadatas_orderBy: String, $adSpaces_items_items_metadatas_orderDirection: String, $adSpaces_items_items_metadatas_before: String, $adSpaces_items_items_metadatas_after: String, $adSpaces_items_items_metadatas_limit: Int) {
   adSpaces(
@@ -207,6 +350,26 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
   ) {
     items {
       id
+      owner
+      listingId
+      listing {
+        id
+        listingId
+        tokenId
+        quantity
+        pricePerToken
+        startTimestamp
+        endTimestamp
+        listingCreator
+        listingOwner
+        assetContract
+        currency
+        taxRate
+        taxBeneficiary
+        tokenType
+        status
+        reserved
+      }
       adGroupId
       adGroup {
         id
@@ -219,6 +382,22 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           image
           banner
         }
+        blockTimestamp
+      }
+      currentMetadataId
+      currentMetadata {
+        id
+        adSpaceId
+        name
+        description
+        image
+        imageGatewayUri
+        animationUrl
+        externalUrl
+        aspectRatio
+        frameRedirectUrl
+        blockNumber
+        transactionHash
       }
       metadatas(
         where: $adSpaces_items_items_metadatas_where
@@ -235,6 +414,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           description
           image
           imageGatewayUri
+          animationUrl
           externalUrl
           aspectRatio
           frameRedirectUrl
@@ -248,6 +428,17 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           endCursor
         }
       }
+      tokenXId
+      tokenX {
+        id
+        underlyingToken
+        superToken
+        isNativeToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      transactionHash
     }
     pageInfo {
       hasNextPage
@@ -262,6 +453,26 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     adSpaceId
     adSpace {
       id
+      owner
+      listingId
+      listing {
+        id
+        listingId
+        tokenId
+        quantity
+        pricePerToken
+        startTimestamp
+        endTimestamp
+        listingCreator
+        listingOwner
+        assetContract
+        currency
+        taxRate
+        taxBeneficiary
+        tokenType
+        status
+        reserved
+      }
       adGroupId
       adGroup {
         id
@@ -289,7 +500,9 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           image
           banner
         }
+        blockTimestamp
       }
+      currentMetadataId
       metadatas(
         where: $adSpaceMetadata_adSpace_adSpace_metadatas_where
         orderBy: $adSpaceMetadata_adSpace_adSpace_metadatas_orderBy
@@ -305,18 +518,30 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           endCursor
         }
       }
+      tokenXId
+      tokenX {
+        id
+        underlyingToken
+        superToken
+        isNativeToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      transactionHash
     }
     name
     description
     image
     imageGatewayUri
+    animationUrl
     externalUrl
     aspectRatio
     frameRedirectUrl
     blockNumber
     transactionHash
   }
-}query adSpaceMetadatas($where: AdSpaceMetadataFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_where: AdSpaceFilter, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_before: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_after: String, $adSpaceMetadatas_items_items_adSpace_adSpace_adGroup_adGroup_adSpaces_limit: Int) {
+}query adSpaceMetadatas($where: AdSpaceMetadataFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int) {
   adSpaceMetadatas(
     where: $where
     orderBy: $orderBy
@@ -330,6 +555,26 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       adSpaceId
       adSpace {
         id
+        owner
+        listingId
+        listing {
+          id
+          listingId
+          tokenId
+          quantity
+          pricePerToken
+          startTimestamp
+          endTimestamp
+          listingCreator
+          listingOwner
+          assetContract
+          currency
+          taxRate
+          taxBeneficiary
+          tokenType
+          status
+          reserved
+        }
         adGroupId
         adGroup {
           id
@@ -342,12 +587,26 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
             image
             banner
           }
+          blockTimestamp
         }
+        currentMetadataId
+        tokenXId
+        tokenX {
+          id
+          underlyingToken
+          superToken
+          isNativeToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        transactionHash
       }
       name
       description
       image
       imageGatewayUri
+      animationUrl
       externalUrl
       aspectRatio
       frameRedirectUrl

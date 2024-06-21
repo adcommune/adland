@@ -9,8 +9,8 @@ export async function GET(_req: NextRequest, { params }: GetAdsRouteParams) {
   const metadata = await new AdLand().getAdSpaceMetadata(params.listingId)
 
   if (metadata) {
-    if (metadata.external_url) {
-      return NextResponse.redirect(metadata.external_url)
+    if (metadata.externalUrl) {
+      return NextResponse.redirect(metadata.externalUrl)
     }
   }
 

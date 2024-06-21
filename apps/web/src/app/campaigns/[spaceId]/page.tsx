@@ -16,7 +16,7 @@ import { baseURL, getTokenSymbol } from '@/config/constants'
 import { AdLand } from '@/lib/adland'
 import { getExplorerLink } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
-import { formatEther } from 'viem'
+import { Address, formatEther } from 'viem'
 
 type AdSpacePageProps = {
   params: { spaceId: string }
@@ -33,7 +33,10 @@ const FarcasterDistributionPage = ({
   const { data: adCampaign } = useQuery({
     queryKey: ['adCampaign-', spaceId],
     queryFn: async () =>
-      new AdLand().getAdCampaign(spaceId, adSpace?.tokenX?.superToken),
+      new AdLand().getAdCampaign(
+        spaceId,
+        adSpace?.tokenX?.superToken as Address | undefined,
+      ),
     enabled: Boolean(adSpace?.tokenX?.superToken),
   })
 
