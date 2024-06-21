@@ -1,4 +1,5 @@
 import { ponder } from "@/generated";
+import { zeroAddress } from "viem";
 
 export const NATIVE_CURRENCY = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
@@ -13,6 +14,7 @@ ponder.on("CommonAdSpaces:AdGroupCreated", async ({ event, context }) => {
     id: event.args.groupId.toString(),
     data: {
       beneficiary: event.args.recipient,
+      blockTimestamp: event.block.timestamp,
     },
   });
 });
@@ -52,12 +54,16 @@ ponder.on("CommonAdSpaces:AdPoolCreated", async ({ event, context }) => {
 ponder.on("CommonAdSpaces:AdSpaceCreated", async ({ event, context }) => {
   console.log(event.args);
 
-  const { AdSpace } = context.db;
+  const { AdSpace, Listing } = context.db;
+
+  const listing = await Listing.findUnique({ id: event.args.adId.toString() });
 
   await AdSpace.create({
     id: event.args.adId.toString(),
     data: {
       adGroupId: event.args.groupId.toString(),
+      tokenXId: listing?.currency || zeroAddress,
+      transactionHash: event.transaction.hash,
     },
   });
 });
