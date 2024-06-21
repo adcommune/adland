@@ -7,6 +7,7 @@ export default createSchema((p) => ({
     adSpaces: p.many("AdSpace.adGroupId"),
     metadataId: p.string().references("AdGroupMetadata.id").optional(),
     metadata: p.one("metadataId"),
+    blockTimestamp: p.bigint(),
   }),
   AdGroupMetadata: p.createTable({
     id: p.string(),
@@ -19,7 +20,12 @@ export default createSchema((p) => ({
     id: p.string(),
     adGroupId: p.string().references("AdGroup.id"),
     adGroup: p.one("adGroupId"),
+    currentMetadataId: p.string().references("AdSpaceMetadata.id").optional(),
+    currentMetadata: p.one("currentMetadataId"),
     metadatas: p.many("AdSpaceMetadata.adSpaceId"),
+    tokenXId: p.string().references("TokenX.id"),
+    tokenX: p.one("tokenXId"),
+    transactionHash: p.string(),
   }),
   AdSpaceMetadata: p.createTable({
     id: p.string(),
