@@ -449,6 +449,25 @@ export const CommonAdSpacesAbi = [
   },
   {
     type: "event",
+    name: "AdGroupCreated",
+    inputs: [
+      {
+        name: "groupId",
+        type: "uint256",
+        indexed: true,
+        internalType: "uint256",
+      },
+      {
+        name: "recipient",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "AdGroupMetadataUpdated",
     inputs: [
       {

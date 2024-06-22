@@ -3,17 +3,67 @@ import { zeroAddress } from "viem";
 
 export const NATIVE_CURRENCY = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
-ponder.on("CommonAdSpaces:AdGroupCreated", async ({ event, context }) => {
-  const { AdGroup } = context.db;
+ponder.on(
+  "CommonAdSpaces:AdGroupCreated(uint256 indexed groupId, address indexed recipient)",
+  async ({ event, context }) => {
+    const { AdGroup } = context.db;
 
-  await AdGroup.create({
-    id: event.args.groupId.toString(),
-    data: {
-      beneficiary: event.args.recipient,
-      blockTimestamp: event.block.timestamp,
-    },
-  });
-});
+    await AdGroup.create({
+      id: event.args.groupId.toString(),
+      data: {
+        beneficiary: event.args.recipient,
+        blockTimestamp: event.block.timestamp,
+      },
+    });
+  }
+);
+
+ponder.on(
+  "CommonAdSpaces:AdGroupCreated(uint256 indexed groupId, address indexed recipient, string indexed metadataURI)",
+  async ({ event, context }) => {
+    const { AdGroup, AdGroupMetadata } = context.db;
+
+    const metadataURI = event.args.metadataURI;
+
+    if (metadataURI.startsWith("ipfs://")) {
+      const cid = metadataURI.replace("ipfs://", "");
+
+      const data = (await fetch(
+        `https://amethyst-representative-mandrill-369.mypinata.cloud/ipfs/${cid}`
+      ).then((res) => res.json())) as {
+        name?: string;
+        description?: string;
+        image?: string;
+        banner?: string;
+      };
+
+      const metadataId = cid;
+
+      await AdGroupMetadata.upsert({
+        id: metadataId,
+        create: {
+          name: data.name,
+          description: data.description,
+          image: data.image,
+          banner: data.banner,
+        },
+        update: {
+          name: data.name,
+          description: data.description,
+          image: data.image,
+          banner: data.banner,
+        },
+      });
+
+      await AdGroup.update({
+        id: event.args.groupId.toString(),
+        data: {
+          metadataId,
+        },
+      });
+    }
+  }
+);
 
 ponder.on("CommonAdSpaces:TokenXSet", async ({ event, context }) => {
   const { TokenX } = context.db;
