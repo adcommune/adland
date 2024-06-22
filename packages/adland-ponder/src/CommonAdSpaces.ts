@@ -6,8 +6,6 @@ export const NATIVE_CURRENCY = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 ponder.on("CommonAdSpaces:AdGroupCreated", async ({ event, context }) => {
   const { AdGroup } = context.db;
 
-  const url = event.args.metadataURI;
-
   await AdGroup.create({
     id: event.args.groupId.toString(),
     data: {
@@ -130,6 +128,7 @@ ponder.on(
 
     if (uri.startsWith("ipfs://")) {
       const cid = uri.replace("ipfs://", "");
+
       const data = (await fetch(
         `https://amethyst-representative-mandrill-369.mypinata.cloud/ipfs/${cid}`
       ).then((res) => res.json())) as {
@@ -139,15 +138,14 @@ ponder.on(
         banner?: string;
       };
 
-      console.log({ data });
-      await AdGroup.update({
-        id: event.args.groupId.toString(),
-        data: {
-          metadataId: event.args.groupId.toString(),
-        },
+      const metadataId = cid;
+
+      console.log({
+        metadataId,
       });
+
       await AdGroupMetadata.upsert({
-        id: event.args.groupId.toString(),
+        id: metadataId,
         create: {
           name: data.name,
           description: data.description,
@@ -161,6 +159,15 @@ ponder.on(
           banner: data.banner,
         },
       });
+
+      if (await AdGroup.findUnique({ id: event.args.groupId.toString() })) {
+        await AdGroup.update({
+          id: event.args.groupId.toString(),
+          data: {
+            metadataId,
+          },
+        });
+      }
     }
   }
 );
