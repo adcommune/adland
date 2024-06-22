@@ -3,6 +3,7 @@ import { AdLand } from '@/lib/adland'
 import { useQuery } from '@tanstack/react-query'
 import { useContext } from 'react'
 import AdSpaceCard from './AdSpaceCard'
+import { zeroAddress } from 'viem'
 
 const AdSpaceList = () => {
   const { bicoAccountAddress } = useContext(SmartAccountContext)
@@ -21,11 +22,15 @@ const AdSpaceList = () => {
           <p className="text-lg text-white">Loading...</p>
         </div>
       ) : (
-        data?.adSpaces.items.map((adSpace) => {
-          const { transactionHash, id } = adSpace
+        data?.adSpaces.items
+          .filter((space) => {
+            return space.tokenX.superToken !== zeroAddress
+          })
+          .map((adSpace) => {
+            const { transactionHash, id } = adSpace
 
-          return <AdSpaceCard key={transactionHash + '-' + id} {...adSpace} />
-        })
+            return <AdSpaceCard key={transactionHash + '-' + id} {...adSpace} />
+          })
       )}
     </div>
   )
