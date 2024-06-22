@@ -25,6 +25,8 @@ ponder.on(
 
     const metadataURI = event.args.metadataURI;
 
+    let metadataId: string | undefined;
+
     if (metadataURI.startsWith("ipfs://")) {
       const cid = metadataURI.replace("ipfs://", "");
 
@@ -37,7 +39,7 @@ ponder.on(
         banner?: string;
       };
 
-      const metadataId = cid;
+      metadataId = cid;
 
       await AdGroupMetadata.upsert({
         id: metadataId,
@@ -54,14 +56,16 @@ ponder.on(
           banner: data.banner,
         },
       });
-
-      await AdGroup.update({
-        id: event.args.groupId.toString(),
-        data: {
-          metadataId,
-        },
-      });
     }
+
+    await AdGroup.create({
+      id: event.args.groupId.toString(),
+      data: {
+        beneficiary: event.args.recipient,
+        metadataId,
+        blockTimestamp: event.block.timestamp,
+      },
+    });
   }
 );
 
