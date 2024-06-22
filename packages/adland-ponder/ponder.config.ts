@@ -26,7 +26,7 @@ export default createConfig({
           network: "base",
           address: "0x56324569b301CdA15AFb3F9E9A853b6a5cD1ca57",
           abi: CommonAdSpacesAbi,
-          startBlock: 15741119,
+          startBlock: 13846869,
         },
         DirectListing: {
           network: "base",
