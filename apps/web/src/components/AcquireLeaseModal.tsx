@@ -51,6 +51,7 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
   const isNativeCurrency = tokenX?.isNativeToken
   const superTokenAddress = tokenX?.superToken as Address
   const underlyingTokenAddress = tokenX?.underlyingToken as Address
+  const dueWeekly = getWeeklyTaxDue(pricePerToken, taxRate)
 
   const {
     data: { superBalance, isEnough } = {
@@ -64,14 +65,14 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
     query: {
       select: (data) => ({
         superBalance: data,
-        isEnough: data >= getWeeklyTaxDue(pricePerToken, taxRate),
+        isEnough: data >= dueWeekly,
       }),
     },
   })
 
-  const numberOfWeeksAvailable = Number(
-    superBalance / getWeeklyTaxDue(pricePerToken, taxRate) ?? 0,
-  )
+  const numberOfWeeksAvailable = dueWeekly
+    ? Number(superBalance / dueWeekly ?? 0)
+    : 0
 
   const { data: ethBalance } = useBalance({
     address: address,
@@ -243,13 +244,7 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Weekly Tax Due</span>
               <span>
-                {formatEther(
-                  getWeeklyTaxDue(
-                    pricePerToken ?? BigInt(0),
-                    taxRate ?? BigInt(0),
-                  ),
-                )}{' '}
-                {getTokenSymbol(listing.currency)}x
+                {formatEther(dueWeekly)} {getTokenSymbol(listing.currency)}x
               </span>
             </li>
             <li className="flex items-center justify-between">
@@ -285,9 +280,7 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
                   onClick={() => {
                     if (!taxRate || pricePerToken === undefined) return
 
-                    const value =
-                      getWeeklyTaxDue(pricePerToken, taxRate) *
-                      BigInt(numberOfWeeks)
+                    const value = dueWeekly * BigInt(numberOfWeeks)
                     if (isNativeCurrency) {
                       upgradeCall({
                         transactions: [

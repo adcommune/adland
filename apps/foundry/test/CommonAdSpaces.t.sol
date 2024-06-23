@@ -548,6 +548,27 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
             address(dai),
             initialPriceInDai
         );
+
+        IDirectListings.Listing memory listing = marketplace.getListing(1);
+
+        uint256 newPrice = 200e18;
+
+        IDirectListings.ListingParameters
+            memory priceChangeParams = IDirectListings.ListingParameters(
+                listing.assetContract,
+                listing.tokenId,
+                listing.quantity,
+                listing.currency,
+                listing.taxRate,
+                listing.taxBeneficiary,
+                newPrice,
+                listing.startTimestamp,
+                listing.endTimestamp,
+                listing.reserved
+            );
+
+        vm.prank(buyer);
+        marketplace.updateListing(listing.listingId, priceChangeParams);
     }
 
     function testSelfAssessListingPrice() public {
