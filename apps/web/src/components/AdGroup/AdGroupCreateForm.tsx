@@ -241,7 +241,11 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
             />
           </CardContent>
           <CardFooter className="justify-end">
-            <Button type="submit" disabled={loading} loading={loading}>
+            <Button
+              type="submit"
+              disabled={loading || !bicoAccountAddress}
+              loading={loading}
+            >
               Create Ad Group
             </Button>
           </CardFooter>

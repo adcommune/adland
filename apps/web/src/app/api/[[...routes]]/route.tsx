@@ -11,7 +11,10 @@ import { AdLand } from '@/lib/adland'
 import {
   distributorBillboardBackground,
   errorDistributorBillboardBackground,
+  frameConfig,
   learnMoreBillboardBackground,
+  noAdBillboardBackground,
+  squareBillboardBackground,
   successDistributorBillboardBackground,
 } from '@/config/frame'
 import { distributionEnabled, shouldRecastDistributor } from './env'
@@ -65,6 +68,7 @@ const BillboardWithContent = ({
 
 const app = new Frog<{ State: DistributorFrameState }>({
   basePath: '/api',
+  title: 'Adland',
   ui: { vars },
   initialState: {
     labels: {},
@@ -85,10 +89,6 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   let intents: FrameIntent[] = []
   let imageSrc = metadata?.imageGatewayUri ?? adPlaceholderURL
 
-  intents.push(
-    <Button.Link href={baseURL + '/ad/' + spaceId}>Your ad here</Button.Link>,
-  )
-
   if (metadata?.externalUrl) {
     intents.push(
       <Button.Link href={metadata.externalUrl}>
@@ -96,6 +96,10 @@ app.frame('/ad-frame/:spaceId', async (c) => {
       </Button.Link>,
     )
   }
+
+  intents.push(
+    <Button.Link href={baseURL + '/ad/' + spaceId}>Buy this space</Button.Link>,
+  )
 
   if (await distributionEnabled()) {
     intents.push(
@@ -334,15 +338,35 @@ app.frame(
 app.frame('/ad-frame/:spaceId/landing', async (c) => {
   const { spaceId } = c.req.param()
 
-  // @ts-ignore
+  // Fetch metadata
+  const metadata = await new AdLand().getAdSpaceMetadata(spaceId)
+
   return c.res({
-    image: baseURL + '/api/billboard/' + spaceId + '?date=' + Date.now(),
+    image: (
+      <BillboardWithContent
+        backgroundImage={
+          metadata ? squareBillboardBackground : noAdBillboardBackground
+        }
+        imageSrc={
+          metadata?.imageGatewayUri
+            ? metadata?.imageGatewayUri
+            : adPlaceholderURL
+        }
+      />
+    ),
     imageAspectRatio: FrameAspectRatio.SQUARE,
     imageOptions,
+    headers: {
+      'Cache-Control': 'public, max-age=' + frameConfig.initialFrameImageMaxAge,
+      'cache-control': 'public, max-age=' + frameConfig.initialFrameImageMaxAge,
+    },
     intents: [
       <Button.Link key={'landing'} href={`${baseURL}/api/ad/${spaceId}/link`}>
-        Open
+        Open Ad Link
       </Button.Link>,
+      <Button key={'landing'} value="" action={`/ad-frame/${spaceId}`}>
+        More info
+      </Button>,
     ],
   })
 })

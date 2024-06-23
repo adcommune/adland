@@ -29,7 +29,7 @@ import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
 import UpdateAdDataDialog from '@/components/UpdateAdDataModal'
 import AcquireLeaseModal from '@/components/AcquireLeaseModal'
 import { formatEther } from 'viem'
-import { truncateAddress } from '@/lib/utils'
+import { getExplorerLink, truncateAddress } from '@/lib/utils'
 import { format } from 'date-fns'
 import { Button } from '../ui/button'
 import { getTokenSymbol } from '@/config/constants'
@@ -178,7 +178,13 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 {listing?.pricePerToken ? (
                   <span className="flex flex-row items-center gap-2">
                     {formatEther(listing?.pricePerToken ?? BigInt(0))}{' '}
-                    {getTokenSymbol(listing?.currency)}
+                    <Link
+                      href={getExplorerLink(listing.currency, 'address')}
+                      className="underline"
+                      target="_blank"
+                    >
+                      {getTokenSymbol(listing?.currency)}
+                    </Link>
                     <TokenImage
                       address={listing?.currency}
                       className="h-5 w-5"
