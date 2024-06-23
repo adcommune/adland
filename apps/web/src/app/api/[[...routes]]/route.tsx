@@ -364,7 +364,7 @@ app.frame('/ad-frame/:spaceId/landing', async (c) => {
       <Button.Link key={'landing'} href={`${baseURL}/api/ad/${spaceId}/link`}>
         Open Ad Link
       </Button.Link>,
-      <Button key={'landing'} value="" action={`/ad-frame/${spaceId}`}>
+      <Button key={'more-info'} value="" action={`/ad-frame/${spaceId}`}>
         More info
       </Button>,
     ],
