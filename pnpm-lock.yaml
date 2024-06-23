@@ -145,8 +145,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/adland-webkit
       '@biconomy/account':
-        specifier: ^4.4.2
-        version: 4.4.2(typescript@5.4.4)(viem@2.9.23(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4))
+        specifier: ^4.4.6
+        version: 4.4.6(typescript@5.4.4)(viem@2.9.23(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4))
       '@headlessui/react':
         specifier: ^1.7.18
         version: 1.7.18(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1215,8 +1215,8 @@ packages:
     resolution: {integrity: sha512-+j7a5c253RfKh8iABBhywc8NSfP5LURe7Uh4qpsh6jc+aLJguvmIUBdjSdEMQv2bENrCR5MfRdjGo7vzS/ob7w==}
     engines: {node: '>=6.9.0'}
 
-  '@biconomy/account@4.4.2':
-    resolution: {integrity: sha512-AWyxHnfLe5oyXMzek5l2uOLLHZTeXZsh/RUSeYh0fYIu9scBvtrwt3TkrdPKxnJ5CVBYaBJnYnwcQeR5RDi2cw==}
+  '@biconomy/account@4.4.6':
+    resolution: {integrity: sha512-ipCisN2+qs7ma1gyJwkWaeuF3B7g497ZP+PKJAzA2VjFCaxxz5fYQzYckIGiVv1eiKjSb+7bM7VQ76UU0d/uCg==}
     peerDependencies:
       typescript: ^5
       viem: ^2
@@ -11614,7 +11614,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
 
-  '@biconomy/account@4.4.2(typescript@5.4.4)(viem@2.9.23(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4))':
+  '@biconomy/account@4.4.6(typescript@5.4.4)(viem@2.9.23(bufferutil@4.0.8)(typescript@5.4.4)(utf-8-validate@6.0.3)(zod@3.22.4))':
     dependencies:
       merkletreejs: 0.3.11
       typescript: 5.4.4
