@@ -49,7 +49,7 @@
     "clsx": "^2.1.0",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.2.6",
-    "frog": "^0.11.5",
+    "frog": "^0.12.0",
     "graphql-request": "^6.1.0",
     "hono": "^4.3.4",
     "lodash": "^4.17.21",
