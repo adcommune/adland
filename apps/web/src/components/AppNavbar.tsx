@@ -17,7 +17,7 @@ const AppNavbar = () => {
           <Link className="hidden sm:flex" href={'/group/create'}>
             <Button className="h-full w-full gap-2">
               <PlusIcon size={16} />
-              Create Ads
+              Create
             </Button>
           </Link>
         )}

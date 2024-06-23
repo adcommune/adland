@@ -85,10 +85,6 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   let intents: FrameIntent[] = []
   let imageSrc = metadata?.imageGatewayUri ?? adPlaceholderURL
 
-  intents.push(
-    <Button.Link href={baseURL + '/ad/' + spaceId}>Your ad here</Button.Link>,
-  )
-
   if (metadata?.externalUrl) {
     intents.push(
       <Button.Link href={metadata.externalUrl}>
@@ -96,6 +92,10 @@ app.frame('/ad-frame/:spaceId', async (c) => {
       </Button.Link>,
     )
   }
+
+  intents.push(
+    <Button.Link href={baseURL + '/ad/' + spaceId}>Buy this space</Button.Link>,
+  )
 
   if (await distributionEnabled()) {
     intents.push(
@@ -341,8 +341,11 @@ app.frame('/ad-frame/:spaceId/landing', async (c) => {
     imageOptions,
     intents: [
       <Button.Link key={'landing'} href={`${baseURL}/api/ad/${spaceId}/link`}>
-        Open
+        Open Ad
       </Button.Link>,
+      <Button key={'landing'} value="" action={`/ad-frame/${spaceId}`}>
+        More info
+      </Button>,
     ],
   })
 })

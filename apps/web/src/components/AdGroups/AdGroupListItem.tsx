@@ -53,7 +53,6 @@ const AdGroupListItem = (group: AdGroupsQuery['adGroups']['items'][0]) => {
           {adSpaces?.items
             ?.slice(0, 4)
             .map(({ id, transactionHash, currentMetadata: metadata }, i) => {
-              console.log({ adData: metadata })
               return (
                 <div
                   key={transactionHash + '-' + id}
