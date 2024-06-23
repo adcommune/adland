@@ -4,11 +4,10 @@ import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import useAppContracts from '@/hooks/useAppContracts'
 import { getExplorerLink, getWeeklyTaxDue } from '@/lib/utils'
-import { useContext, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { Address, encodeFunctionData, erc20Abi, formatEther } from 'viem'
 import { useBalance, useReadContracts } from 'wagmi'
 import { format, addWeeks } from 'date-fns'
-import { AdSpace } from '@/lib/types'
 import {
   cfAv1ForwarderAbi,
   directListingsLogicAbi,
@@ -33,6 +32,7 @@ import { SmartAccountContext } from '@/context/SmartAccountContext'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { Transaction } from '@biconomy/account'
 import { AdSpaceQuery, Listing, TokenX } from '@adland/webkit/src/ponder'
+import classNames from 'classnames'
 
 type AcquireLeaseModalProps = {
   listing: Listing
@@ -185,6 +185,18 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
     )
   }
 
+  const notEnoughBalanceForPurchase = useMemo(() => {
+    if (isNativeCurrency) {
+      if (ethBalance?.value !== undefined) {
+        return ethBalance.value < pricePerToken
+      }
+    } else {
+      if (reads?.currencyBalance !== undefined) {
+        return reads.currencyBalance < pricePerToken
+      }
+    }
+  }, [ethBalance, reads, pricePerToken])
+
   return (
     <>
       <Modal
@@ -197,7 +209,9 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
         renderConfirm={() => {
           return (
             <Button
-              disabled={!isEnough || takeOverLoading}
+              disabled={
+                !isEnough || takeOverLoading || notEnoughBalanceForPurchase
+              }
               onClick={() => {
                 takeOverLeaseCall()
               }}
@@ -323,8 +337,18 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
             {getTokenSymbol(listing.currency)} Info
           </div>
           <ul className="grid gap-3">
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">Balance</span>
+            <li
+              className={classNames('flex items-center justify-between', {
+                'text-red-500': notEnoughBalanceForPurchase,
+              })}
+            >
+              <span
+                className={classNames('text-muted-foreground', {
+                  'text-red-500': notEnoughBalanceForPurchase,
+                })}
+              >
+                Balance
+              </span>
               <span>
                 {Number(
                   formatEther(
