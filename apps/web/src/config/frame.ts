@@ -27,6 +27,7 @@ export const frameConfig = {
   height: 1000,
 }
 
+export const noAdBillboardBackground = 'https://i.imgur.com/Utb4w8A.jpg'
 export const squareBillboardBackground = 'https://i.imgur.com/vvNJpNf.jpg'
 export const learnMoreBillboardBackground = 'https://i.imgur.com/jABvz51.jpg'
 export const distributorBillboardBackground = 'https://i.imgur.com/FoJusWv.jpg'

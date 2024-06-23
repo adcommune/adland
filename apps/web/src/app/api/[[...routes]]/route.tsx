@@ -341,7 +341,7 @@ app.frame('/ad-frame/:spaceId/landing', async (c) => {
     imageOptions,
     intents: [
       <Button.Link key={'landing'} href={`${baseURL}/api/ad/${spaceId}/link`}>
-        Open Ad
+        Open Ad Link
       </Button.Link>,
       <Button key={'landing'} value="" action={`/ad-frame/${spaceId}`}>
         More info
