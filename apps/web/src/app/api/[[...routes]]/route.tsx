@@ -70,6 +70,7 @@ const app = new Frog<{ State: DistributorFrameState }>({
   basePath: '/api',
   title: 'Adland',
   ui: { vars },
+  headers: {},
   initialState: {
     labels: {},
   },
@@ -338,6 +339,24 @@ app.frame(
 app.frame('/ad-frame/:spaceId/landing', async (c) => {
   const { spaceId } = c.req.param()
 
+  return c.res({
+    image: `/initialImage/${spaceId}`,
+    imageAspectRatio: FrameAspectRatio.SQUARE,
+    imageOptions,
+    intents: [
+      <Button.Link key={'landing'} href={`${baseURL}/api/ad/${spaceId}/link`}>
+        Open Ad Link
+      </Button.Link>,
+      <Button key={'more-info'} value="" action={`/ad-frame/${spaceId}`}>
+        More info
+      </Button>,
+    ],
+  })
+})
+
+app.image('/initialImage/:spaceId', async (c) => {
+  const { spaceId } = c.req.param()
+
   // Fetch metadata
   const metadata = await new AdLand().getAdSpaceMetadata(spaceId)
 
@@ -354,20 +373,13 @@ app.frame('/ad-frame/:spaceId/landing', async (c) => {
         }
       />
     ),
-    imageAspectRatio: FrameAspectRatio.SQUARE,
-    imageOptions,
-    headers: {
-      'Cache-Control': 'public, max-age=' + frameConfig.initialFrameImageMaxAge,
-      'cache-control': 'public, max-age=' + frameConfig.initialFrameImageMaxAge,
+    imageOptions: {
+      ...imageOptions,
+      headers: {
+        'Cache-Control': 'public, max-age=60',
+        'cache-control': 'public, max-age=60',
+      },
     },
-    intents: [
-      <Button.Link key={'landing'} href={`${baseURL}/api/ad/${spaceId}/link`}>
-        Open Ad Link
-      </Button.Link>,
-      <Button key={'more-info'} value="" action={`/ad-frame/${spaceId}`}>
-        More info
-      </Button>,
-    ],
   })
 })
 
