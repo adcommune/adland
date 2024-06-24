@@ -3,7 +3,8 @@ import Image from 'next/image'
 import { Separator } from '@/components/ui/separator'
 import { formatEther } from 'viem'
 import TokenImage from '@/components/TokenImage'
-import { AdSpace, AdSpaceMetadata, Listing } from '@adland/webkit/src/ponder'
+import { AdSpaceMetadata, Listing } from '@adland/webkit/src/ponder'
+import { formatAmount } from '@/lib/helpers'
 
 const AdSpaceCard = ({
   id,
@@ -24,7 +25,7 @@ const AdSpaceCard = ({
             <p className="text-black">#{id}</p>
           </div>
           <div className="flex flex-row items-center gap-2 rounded-md border border-black bg-white px-2">
-            {formatEther(BigInt(pricePerToken))}
+            {formatAmount(formatEther(BigInt(pricePerToken)))}
             <TokenImage address={currency} className="h-4 w-4" />
           </div>
         </div>

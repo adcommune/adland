@@ -35,6 +35,7 @@ import { getTokenSymbol } from '@/config/constants'
 import { usePathname } from 'next/navigation'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import TokenImage from '../TokenImage'
+import { formatAmount } from '@/lib/helpers'
 
 type AdDetailsSidebarProps = {
   spaceId: string
@@ -168,7 +169,9 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 <span className="text-muted-foreground">Price</span>
                 {listing?.pricePerToken ? (
                   <span className="flex flex-row items-center gap-2">
-                    {formatEther(listing?.pricePerToken ?? BigInt(0))}{' '}
+                    {formatAmount(
+                      formatEther(listing?.pricePerToken ?? BigInt(0)),
+                    )}{' '}
                     <Link
                       href={getExplorerLink(listing.currency, 'address')}
                       className="underline"

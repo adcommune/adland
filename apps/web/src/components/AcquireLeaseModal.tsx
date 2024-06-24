@@ -33,6 +33,7 @@ import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { Transaction } from '@biconomy/account'
 import { AdSpaceQuery, Listing, TokenX } from '@adland/webkit/src/ponder'
 import classNames from 'classnames'
+import { formatAmount } from '@/lib/helpers'
 
 type AcquireLeaseModalProps = {
   listing: Listing
@@ -218,7 +219,7 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
               }}
               loading={takeOverLoading}
             >
-              Take over lease ({formatEther(pricePerToken)}{' '}
+              Take over lease ({formatAmount(formatEther(pricePerToken))}{' '}
               {getTokenSymbol(listing.currency)})
             </Button>
           )
@@ -343,7 +344,7 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
                 Balance
               </span>
               <span>
-                {Number(
+                {formatAmount(
                   formatEther(
                     isNativeCurrency
                       ? ethBalance?.value ?? BigInt(0)
