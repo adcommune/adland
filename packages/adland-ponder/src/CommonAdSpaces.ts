@@ -140,6 +140,7 @@ ponder.on("CommonAdSpaces:AdSpaceURIUpdated", async ({ event, context }) => {
       external_url?: string;
       aspect_ratio: string;
       frame_redirect_url?: string;
+      noBillboard?: boolean;
     };
 
     const adSpaceMetadataId = cid + "/" + adId;
@@ -158,6 +159,7 @@ ponder.on("CommonAdSpaces:AdSpaceURIUpdated", async ({ event, context }) => {
           externalUrl: data.external_url || "",
           aspectRatio: data.aspect_ratio,
           frameRedirectUrl: data.frame_redirect_url,
+          noBillboard: data?.noBillboard,
           blockNumber: event.block.number,
           transactionHash: event.transaction.hash,
         },

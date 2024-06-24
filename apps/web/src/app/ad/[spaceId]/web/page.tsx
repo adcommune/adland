@@ -10,7 +10,7 @@ import {
 import { baseURL } from '@/config/constants'
 
 type AdSpacePageProps = {
-  params: { spaceId: string; id: string }
+  params: { spaceId: string }
 }
 
 const FarcasterDistributionPage = ({

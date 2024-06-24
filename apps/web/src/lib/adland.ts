@@ -9,8 +9,7 @@ import {
   AdSpaceMetadata,
 } from '@adland/webkit/src/ponder'
 import { constants } from '@adland/common'
-import { AdCampaign, AdGroupMetadata, Metadata } from './types'
-import { fetchJSON, getGatewayUri } from './utils'
+import { AdCampaign } from './types'
 import { Address, PublicClient, zeroAddress } from 'viem'
 import { publicClient } from './viem'
 import { commonAdPoolAbi, commonAdSpacesAbi } from '@adland/contracts'

@@ -6,27 +6,36 @@ import { devtools } from 'frog/dev'
 import { neynar } from 'frog/middlewares'
 import { serveStatic } from 'frog/serve-static'
 import { FrameAspectRatio, adPlaceholderURL, baseURL } from '@/config/constants'
-import { Box, Image, vars, imageOptions, Text } from './utils'
+import { Box, Image, vars, imageOptions, Text, Rows, Row } from './utils'
 import { AdLand } from '@/lib/adland'
 import {
   distributorBillboardBackground,
   errorDistributorBillboardBackground,
+  frameConfig,
   learnMoreBillboardBackground,
+  noAdBillboardBackground,
+  squareBillboardBackground,
   successDistributorBillboardBackground,
 } from '@/config/frame'
 import { distributionEnabled, shouldRecastDistributor } from './env'
 import { Namespace } from '@/lib/namespace'
 
 type BillboardWithContentProps = {
+  id?: string
   text?: string
   imageSrc?: string
   backgroundImage: string
+  noBillboard?: boolean | null
+  description?: string
 }
 
 const BillboardWithContent = ({
+  id,
   text,
   imageSrc,
   backgroundImage,
+  noBillboard,
+  description,
 }: BillboardWithContentProps) => {
   let billboardContent = (
     <Text color="background200" align="center" size="24" weight="700">
@@ -35,6 +44,65 @@ const BillboardWithContent = ({
   )
 
   if (imageSrc) {
+    if (noBillboard) {
+      let footer = null
+
+      if (description) {
+        footer = (
+          <Row
+            height="1/7"
+            alignItems="center"
+            alignContent="center"
+            textAlign="center"
+            justifyContent="center"
+            borderWidth="2"
+            borderColor="black"
+          >
+            <Text size="20" font="default" weight="700">
+              {description}
+            </Text>
+          </Row>
+        )
+      }
+      return (
+        <Box grow backgroundColor="background200">
+          <Rows grow padding="10" gap="12">
+            <Row grow borderColor="black" borderWidth="3">
+              <Image
+                src={imageSrc}
+                objectFit="contain"
+                height="100%"
+                width="100%"
+              />
+              <Box position="absolute" top="6" left="6">
+                <Image
+                  src="https://i.imgur.com/Livurui.png"
+                  height="24"
+                  objectFit="contain"
+                />
+              </Box>
+              <Box position="absolute" top="6" right="6">
+                <Box
+                  borderWidth="2"
+                  borderColor="black"
+                  backgroundColor="white"
+                  paddingRight="10"
+                  paddingLeft="10"
+                  paddingTop={'3'}
+                  paddingBottom={'3'}
+                >
+                  <Text size={'14'} font="default" weight="700">
+                    #{id}
+                  </Text>
+                </Box>
+              </Box>
+            </Row>
+            {footer}
+          </Rows>
+        </Box>
+      )
+    }
+
     billboardContent = (
       <Image src={imageSrc} objectFit="contain" height="100%" width="100%" />
     )
@@ -47,6 +115,13 @@ const BillboardWithContent = ({
       backgroundRepeat="no-repeat"
       backgroundSize={imageOptions.width + 'px ' + imageOptions.height + 'px'}
     >
+      <Box position="absolute" top="6" left="6">
+        <Image
+          src="https://i.imgur.com/Livurui.png"
+          height="24"
+          objectFit="contain"
+        />
+      </Box>
       <Box
         top="billboard-top"
         left="billboard-left"
@@ -65,7 +140,9 @@ const BillboardWithContent = ({
 
 const app = new Frog<{ State: DistributorFrameState }>({
   basePath: '/api',
+  title: 'Adland',
   ui: { vars },
+  headers: {},
   initialState: {
     labels: {},
   },
@@ -85,10 +162,6 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   let intents: FrameIntent[] = []
   let imageSrc = metadata?.imageGatewayUri ?? adPlaceholderURL
 
-  intents.push(
-    <Button.Link href={baseURL + '/ad/' + spaceId}>Your ad here</Button.Link>,
-  )
-
   if (metadata?.externalUrl) {
     intents.push(
       <Button.Link href={metadata.externalUrl}>
@@ -96,6 +169,10 @@ app.frame('/ad-frame/:spaceId', async (c) => {
       </Button.Link>,
     )
   }
+
+  intents.push(
+    <Button.Link href={baseURL + '/ad/' + spaceId}>Buy this space</Button.Link>,
+  )
 
   if (await distributionEnabled()) {
     intents.push(
@@ -108,8 +185,11 @@ app.frame('/ad-frame/:spaceId', async (c) => {
   return c.res({
     image: (
       <BillboardWithContent
+        noBillboard={metadata?.noBillboard}
         backgroundImage={learnMoreBillboardBackground}
         imageSrc={imageSrc}
+        description={metadata?.description}
+        id={spaceId}
       />
     ),
     imageAspectRatio,
@@ -334,16 +414,50 @@ app.frame(
 app.frame('/ad-frame/:spaceId/landing', async (c) => {
   const { spaceId } = c.req.param()
 
-  // @ts-ignore
   return c.res({
-    image: baseURL + '/api/billboard/' + spaceId + '?date=' + Date.now(),
+    image: `/initialImage/${spaceId}`,
     imageAspectRatio: FrameAspectRatio.SQUARE,
     imageOptions,
     intents: [
       <Button.Link key={'landing'} href={`${baseURL}/api/ad/${spaceId}/link`}>
-        Open
+        Open Ad Link
       </Button.Link>,
+      <Button key={'more-info'} value="" action={`/ad-frame/${spaceId}`}>
+        More info
+      </Button>,
     ],
+  })
+})
+
+app.image('/initialImage/:spaceId', async (c) => {
+  const { spaceId } = c.req.param()
+
+  // Fetch metadata
+  const metadata = await new AdLand().getAdSpaceMetadata(spaceId)
+
+  return c.res({
+    image: (
+      <BillboardWithContent
+        noBillboard={metadata?.noBillboard}
+        backgroundImage={
+          metadata ? squareBillboardBackground : noAdBillboardBackground
+        }
+        id={spaceId}
+        imageSrc={
+          metadata?.imageGatewayUri
+            ? metadata?.imageGatewayUri
+            : adPlaceholderURL
+        }
+        description={metadata?.description}
+      />
+    ),
+    imageOptions: {
+      ...imageOptions,
+      headers: {
+        'Cache-Control': `public, max-age=${frameConfig.initialFrameImageMaxAge}`,
+        'cache-control': `public, max-age=${frameConfig.initialFrameImageMaxAge}`,
+      },
+    },
   })
 })
 

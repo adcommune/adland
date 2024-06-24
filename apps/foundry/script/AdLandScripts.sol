@@ -110,8 +110,9 @@ contract AdLandScripts is BaseSetup {
     }
 
     function replaceWithNewDirectListingLogic(
+        DeployementChain chain,
         address marketplace
-    ) public broadcastOn(DeployementChain.OptimismSepolia) {
+    ) public broadcastOn(chain) {
         Extension[] memory extensions = _setupExtensions();
 
         MarketplaceV3(payable(address(marketplace))).replaceExtension(

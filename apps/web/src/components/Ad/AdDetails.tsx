@@ -26,10 +26,9 @@ import {
 } from '@/components/ui/dropdown-menu'
 import ForecloseDropdownItem from '@/components/AdSpaces/ForecloseDropdownItem'
 import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
-import UpdateAdDataDialog from '@/components/UpdateAdDataModal'
 import AcquireLeaseModal from '@/components/AcquireLeaseModal'
 import { formatEther } from 'viem'
-import { truncateAddress } from '@/lib/utils'
+import { getExplorerLink, truncateAddress } from '@/lib/utils'
 import { format } from 'date-fns'
 import { Button } from '../ui/button'
 import { getTokenSymbol } from '@/config/constants'
@@ -52,9 +51,9 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
     useContext(ModalContext)
   const listing = adSpace?.listing
   const isOwner = adSpace?.owner.toLowerCase() === address?.toLowerCase()
-  const isBeneficiarty =
+  const isBeneficiary =
     listing?.taxBeneficiary?.toLowerCase() === address?.toLowerCase()
-  const showDropdown = isOwner || isBeneficiarty
+  const showDropdown = isOwner || isBeneficiary
   const isFarcasterPage = usePathname().includes('/farcaster')
   const isWebPage = usePathname().includes('/web')
 
@@ -85,26 +84,21 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
               </CardDescription>
             </div>
             <div className="ml-auto flex items-center gap-1">
-              {isBeneficiarty ? (
+              {isBeneficiary ? (
                 <></>
               ) : isOwner ? (
-                <Button
-                  size="sm"
-                  variant="default"
-                  className="h-8 gap-1"
-                  onClick={() => {
-                    updateAdDataModal.set(true)
-                  }}
-                >
-                  <ImageIcon className="h-3.5 w-3.5" />
-                  <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                    Edit Ad
-                  </span>
-                </Button>
+                <Link href={`/ad/${spaceId}/edit`}>
+                  <Button size="sm" variant="default" className="h-8 gap-1">
+                    <ImageIcon className="h-3.5 w-3.5" />
+                    <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
+                      Edit Ad
+                    </span>
+                  </Button>
+                </Link>
               ) : (
                 <>
                   <Button
-                    disabled={!listing || isBeneficiarty}
+                    disabled={!listing || isBeneficiary}
                     size="sm"
                     variant="default"
                     className="h-8 gap-1"
@@ -140,23 +134,20 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                           >
                             Self Assess
                           </DropdownMenuItem>
+                          <Link href={`/ad/${spaceId}/upgrade`}>
+                            <DropdownMenuItem>Deposit</DropdownMenuItem>
+                          </Link>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem disabled>Give up</DropdownMenuItem>
                         </>
                       )}
-                      {isBeneficiarty && !isOwner && listing && (
+                      {isBeneficiary && !isOwner && listing && (
                         <ForecloseDropdownItem listingId={listing?.listingId} />
                       )}
                     </DropdownMenuContent>
                   </DropdownMenu>
                   {adSpace && (
                     <SelfPriceAssementModal listing={adSpace.listing} />
-                  )}
-                  {adSpace && (
-                    <UpdateAdDataDialog
-                      listing={adSpace.listing}
-                      metadata={adSpace.currentMetadata}
-                    />
                   )}
                 </>
               )}
@@ -178,7 +169,13 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 {listing?.pricePerToken ? (
                   <span className="flex flex-row items-center gap-2">
                     {formatEther(listing?.pricePerToken ?? BigInt(0))}{' '}
-                    {getTokenSymbol(listing?.currency)}
+                    <Link
+                      href={getExplorerLink(listing.currency, 'address')}
+                      className="underline"
+                      target="_blank"
+                    >
+                      {getTokenSymbol(listing?.currency)}
+                    </Link>
                     <TokenImage
                       address={listing?.currency}
                       className="h-5 w-5"

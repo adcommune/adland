@@ -6,6 +6,7 @@ import { Container } from '@/components/Container'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
+import classNames from 'classnames'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useContext } from 'react'
@@ -16,24 +17,41 @@ const AppPage = () => {
   return (
     <div className="flex min-h-[79vh] flex-col p-2">
       <Container className="flex w-full flex-col gap-2 p-4">
-        <Link href={'/group/create'}>
-          <Button className="w-full gap-2">
-            <PlusIcon size={16} />
-            Create Ad Group
-          </Button>
-        </Link>
-        <Tabs defaultValue="my-ad-spaces" className="w-full font-body">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="my-ad-spaces">My Spaces</TabsTrigger>
-            <TabsTrigger value="my-ad-groups">My Groups</TabsTrigger>
+        {bicoAccountAddress && (
+          <Link href={'/group/create'} className="flex sm:hidden">
+            <Button className="w-full gap-2">
+              <PlusIcon size={16} />
+              Create Ad Group
+            </Button>
+          </Link>
+        )}
+        <Tabs
+          defaultValue={bicoAccountAddress ? 'my-ad-spaces' : 'all-ad-groups'}
+          className="w-full font-body"
+        >
+          <TabsList
+            className={classNames('grid w-full grid-cols-3', {
+              'grid-cols-1': !bicoAccountAddress,
+            })}
+          >
+            {bicoAccountAddress && (
+              <>
+                <TabsTrigger value="my-ad-spaces">My Spaces</TabsTrigger>
+                <TabsTrigger value="my-ad-groups">My Groups</TabsTrigger>
+              </>
+            )}
             <TabsTrigger value="all-ad-groups">All Groups</TabsTrigger>
           </TabsList>
-          <TabsContent value="my-ad-spaces" className="w-full">
-            <AdSpaceList />
-          </TabsContent>
-          <TabsContent value="my-ad-groups" className="w-full">
-            <AdGroupList owner={bicoAccountAddress} />
-          </TabsContent>
+          {bicoAccountAddress && (
+            <>
+              <TabsContent value="my-ad-spaces" className="w-full">
+                <AdSpaceList />
+              </TabsContent>
+              <TabsContent value="my-ad-groups" className="w-full">
+                <AdGroupList owner={bicoAccountAddress} />
+              </TabsContent>
+            </>
+          )}
           <TabsContent value="all-ad-groups" className="w-full">
             <AdGroupList />
           </TabsContent>

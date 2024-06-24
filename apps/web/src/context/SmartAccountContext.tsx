@@ -39,7 +39,11 @@ const SmartAccountProvider = ({ children }: { children: React.ReactNode }) => {
   const buildBiconomySmartAccountClient = useCallback(async () => {
     const embeddedWallet = wallets.find((w) => w.walletClientType === 'privy')
 
-    if (!embeddedWallet) return
+    if (!embeddedWallet) {
+      setBicoAccount(undefined)
+      setBicoAccountAddress(undefined)
+      return
+    }
 
     const provider = await embeddedWallet.getEthersProvider()
     const signer = provider.getSigner()

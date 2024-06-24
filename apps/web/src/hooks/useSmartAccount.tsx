@@ -29,7 +29,7 @@ export const useSmartAccountTxs = ({ onSuccess }: UseSmartAccountTxsArgs) => {
 
       // Call bicoAccount.encodeExecute & simulate in tenderly manually if execution
       // reverts. Could automate logs with tenderly as well.
-      const { waitForTxHash, userOpHash } = await bicoAccount.sendTransaction(
+      const { waitForTxHash } = await bicoAccount.sendTransaction(
         transactions,
         {
           paymasterServiceData: {
