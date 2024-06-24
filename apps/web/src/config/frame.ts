@@ -23,8 +23,8 @@ export const frameAdPositions: Record<
 }
 
 export const frameConfig = {
-  initialFrameImageMaxAge: 1 * 60,
-  height: 1000,
+  initialFrameImageMaxAge: 5 * 60,
+  height: 800,
 }
 
 export const noAdBillboardBackground = 'https://i.imgur.com/Utb4w8A.jpg'

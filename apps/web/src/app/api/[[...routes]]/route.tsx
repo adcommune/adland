@@ -376,8 +376,8 @@ app.image('/initialImage/:spaceId', async (c) => {
     imageOptions: {
       ...imageOptions,
       headers: {
-        'Cache-Control': 'public, max-age=60',
-        'cache-control': 'public, max-age=60',
+        'Cache-Control': `public, max-age=${frameConfig.initialFrameImageMaxAge}`,
+        'cache-control': `public, max-age=${frameConfig.initialFrameImageMaxAge}`,
       },
     },
   })
