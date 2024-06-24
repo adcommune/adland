@@ -134,6 +134,9 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                           >
                             Self Assess
                           </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Link href={`/ad/${spaceId}/upgrade`}>Deposit</Link>
+                          </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem disabled>Give up</DropdownMenuItem>
                         </>
