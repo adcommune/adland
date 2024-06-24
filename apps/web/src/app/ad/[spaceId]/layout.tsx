@@ -5,7 +5,6 @@ import { baseURL } from '@/config/constants'
 import useAppContracts from '@/hooks/useAppContracts'
 import { AdLand } from '@/lib/adland'
 import { StandartNFTMetadata as HeyCardMetadata } from '@/lib/hey'
-import { AdGroup } from '@/lib/types'
 import { constants } from '@adland/common'
 import { getFrameMetadata } from 'frog/next'
 import type { Metadata } from 'next'
@@ -25,6 +24,10 @@ export async function generateMetadata({
   )
 
   return {
+    openGraph: {
+      title: 'AdLand - Ad Space #' + spaceId,
+      description: "This is a rentable ad space on AdLand's platform.",
+    },
     other: frameMetadata,
   }
 }
