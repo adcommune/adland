@@ -32,6 +32,7 @@ export type Metadata = {
   external_url?: string
   aspect_ratio?: string
   frame_redirect_url?: string
+  noBillboard?: boolean
 }
 
 /**

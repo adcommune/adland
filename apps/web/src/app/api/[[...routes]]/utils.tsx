@@ -14,6 +14,7 @@ const {
   Text,
   VStack,
   Image,
+  Divider,
   vars,
 } = createSystem({
   fonts: {
@@ -30,7 +31,11 @@ const {
       },
     ],
   },
-  colors: colors.light,
+  colors: {
+    ...colors.light,
+    black: '#000000',
+    white: '#ffffff',
+  },
   units: {
     ...units,
     'billboard-top': frameAdPositions.default.top,
@@ -59,5 +64,6 @@ export {
   Text,
   VStack,
   Image,
+  Divider,
   vars,
 }

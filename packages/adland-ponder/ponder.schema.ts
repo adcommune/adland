@@ -42,6 +42,8 @@ export default createSchema((p) => ({
     externalUrl: p.string().optional(),
     aspectRatio: p.string(),
     frameRedirectUrl: p.string().optional(),
+    noBillboard: p.boolean().optional(),
+    //
     blockNumber: p.bigint(),
     transactionHash: p.string(),
   }),

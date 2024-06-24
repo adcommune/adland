@@ -16,6 +16,7 @@ type PropertyListMetadata = Pick<
   | 'description'
   | 'aspectRatio'
   | 'frameRedirectUrl'
+  | 'noBillboard'
 >
 
 type AdPropertyListProps = {
@@ -28,6 +29,7 @@ const emptyMetadata: PropertyListMetadata = {
   externalUrl: '',
   description: '',
   aspectRatio: '',
+  noBillboard: false,
 }
 
 const AdPropertyList = ({ metadata }: AdPropertyListProps) => {
@@ -41,7 +43,10 @@ const AdPropertyList = ({ metadata }: AdPropertyListProps) => {
     description,
     aspectRatio,
     frameRedirectUrl,
+    noBillboard,
   } = metadata
+
+  console.log({ noBillboard })
 
   return (
     <div className="flex flex-grow flex-col justify-center gap-2 rounded-md">
@@ -95,6 +100,12 @@ const AdPropertyList = ({ metadata }: AdPropertyListProps) => {
         <Badge className="absolute right-2 top-2">aspect_ratio</Badge>
         <PropertyContainer>
           {aspectRatio && <p className="text-white">{aspectRatio}</p>}
+        </PropertyContainer>
+      </div>
+      <div className="relative flex min-h-[50px] w-full flex-row items-center justify-center rounded-md border bg-white bg-opacity-20">
+        <Badge className="absolute right-2 top-2">fc:show_billboard</Badge>
+        <PropertyContainer>
+          <p className="text-white">{noBillboard ? 'no' : 'yes'}</p>
         </PropertyContainer>
       </div>
     </div>

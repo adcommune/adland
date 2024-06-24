@@ -45,6 +45,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           externalUrl
           aspectRatio
           frameRedirectUrl
+          noBillboard
           blockNumber
           transactionHash
         }
@@ -67,6 +68,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
             externalUrl
             aspectRatio
             frameRedirectUrl
+            noBillboard
             blockNumber
             transactionHash
           }
@@ -161,6 +163,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
             externalUrl
             aspectRatio
             frameRedirectUrl
+            noBillboard
             blockNumber
             transactionHash
           }
@@ -295,6 +298,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       externalUrl
       aspectRatio
       frameRedirectUrl
+      noBillboard
       blockNumber
       transactionHash
     }
@@ -317,6 +321,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         externalUrl
         aspectRatio
         frameRedirectUrl
+        noBillboard
         blockNumber
         transactionHash
       }
@@ -396,6 +401,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         externalUrl
         aspectRatio
         frameRedirectUrl
+        noBillboard
         blockNumber
         transactionHash
       }
@@ -418,6 +424,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           externalUrl
           aspectRatio
           frameRedirectUrl
+          noBillboard
           blockNumber
           transactionHash
         }
@@ -538,6 +545,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     externalUrl
     aspectRatio
     frameRedirectUrl
+    noBillboard
     blockNumber
     transactionHash
   }
@@ -610,6 +618,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       externalUrl
       aspectRatio
       frameRedirectUrl
+      noBillboard
       blockNumber
       transactionHash
     }
