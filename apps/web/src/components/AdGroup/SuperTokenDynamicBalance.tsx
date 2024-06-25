@@ -13,6 +13,7 @@ import { SmartAccountContext } from '@/context/SmartAccountContext'
 import { erc20Abi, formatEther, formatUnits } from 'viem'
 import { useBalance, useReadContracts } from 'wagmi'
 import TokenImage from '../TokenImage'
+import { formatAmount } from '@/lib/helpers'
 
 type SuperTokenDynamicBalance = {
   tokenX: TokenX
@@ -47,7 +48,7 @@ const SuperTokenBalance = ({ tokenX }: SuperTokenDynamicBalance) => {
     query: {
       select: (data) => {
         const [{ result: decimals }, { result: balanceOf }] = data
-        return formatUnits(balanceOf ?? BigInt(0), decimals ?? 18)
+        return formatAmount(formatUnits(balanceOf ?? BigInt(0), decimals ?? 18))
       },
     },
   })
