@@ -32,6 +32,8 @@ export default defineConfig(async () => {
           "GDAv1Forwarder.sol/*.json",
           "SuperTokenV1Library.sol/*.json",
           "GeneralDistributionAgreementV1.sol/*.json",
+          "CommonAdValidator.sol/*.json",
+          "IEAS.sol/*.json",
         ],
       }),
       react({}),

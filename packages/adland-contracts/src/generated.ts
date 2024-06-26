@@ -1037,6 +1037,254 @@ export const commonAdSpacesConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CommonAdValidator
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const commonAdValidatorAbi = [
+  {
+    type: 'constructor',
+    inputs: [{ name: '_eas', internalType: 'contract IEAS', type: 'address' }],
+    stateMutability: 'nonpayable',
+  },
+  { type: 'receive', stateMutability: 'payable' },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'attestation',
+        internalType: 'struct Attestation',
+        type: 'tuple',
+        components: [
+          { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'time', internalType: 'uint64', type: 'uint64' },
+          { name: 'expirationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'revocationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'recipient', internalType: 'address', type: 'address' },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'revocable', internalType: 'bool', type: 'bool' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    name: 'attest',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'commonAdSpaces',
+    outputs: [
+      { name: '', internalType: 'contract CommonAdSpaces', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'isPayable',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'attestations',
+        internalType: 'struct Attestation[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'time', internalType: 'uint64', type: 'uint64' },
+          { name: 'expirationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'revocationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'recipient', internalType: 'address', type: 'address' },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'revocable', internalType: 'bool', type: 'bool' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
+    ],
+    name: 'multiAttest',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'attestations',
+        internalType: 'struct Attestation[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'time', internalType: 'uint64', type: 'uint64' },
+          { name: 'expirationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'revocationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'recipient', internalType: 'address', type: 'address' },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'revocable', internalType: 'bool', type: 'bool' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
+    ],
+    name: 'multiRevoke',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'attestation',
+        internalType: 'struct Attestation',
+        type: 'tuple',
+        components: [
+          { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'time', internalType: 'uint64', type: 'uint64' },
+          { name: 'expirationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'revocationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'recipient', internalType: 'address', type: 'address' },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'revocable', internalType: 'bool', type: 'bool' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    name: 'revoke',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: '_commonAdSpaces',
+        internalType: 'contract CommonAdSpaces',
+        type: 'address',
+      },
+    ],
+    name: 'setCommonAdSpaces',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'version',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'uid', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'adSpaceId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      { name: 'cid', internalType: 'string', type: 'string', indexed: false },
+    ],
+    name: 'AttestAd',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'OwnershipTransferred',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'uid', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'adSpaceId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      { name: 'cid', internalType: 'string', type: 'string', indexed: false },
+    ],
+    name: 'RevokeAd',
+  },
+  { type: 'error', inputs: [], name: 'AccessDenied' },
+  { type: 'error', inputs: [], name: 'InsufficientValue' },
+  { type: 'error', inputs: [], name: 'InvalidEAS' },
+  { type: 'error', inputs: [], name: 'InvalidLength' },
+  { type: 'error', inputs: [], name: 'NotPayable' },
+] as const
+
+/**
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const commonAdValidatorAddress = {
+  8453: '0x72782806d96536E968AD564ea8aB71BEeD2ceC5A',
+  11155420: '0x4B346185c3c26d8F99336155035226655D2ADBe1',
+} as const
+
+/**
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const commonAdValidatorConfig = {
+  address: commonAdValidatorAddress,
+  abi: commonAdValidatorAbi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // DirectListingsLogic
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2888,6 +3136,472 @@ export const generalDistributionAgreementV1Abi = [
   { type: 'error', inputs: [], name: 'GDA_NO_ZERO_ADDRESS_ADMIN' },
   { type: 'error', inputs: [], name: 'GDA_ONLY_SUPER_TOKEN_POOL' },
   { type: 'error', inputs: [], name: 'OUT_OF_GAS' },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// IEAS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const ieasAbi = [
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'request',
+        internalType: 'struct AttestationRequest',
+        type: 'tuple',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct AttestationRequestData',
+            type: 'tuple',
+            components: [
+              { name: 'recipient', internalType: 'address', type: 'address' },
+              {
+                name: 'expirationTime',
+                internalType: 'uint64',
+                type: 'uint64',
+              },
+              { name: 'revocable', internalType: 'bool', type: 'bool' },
+              { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'data', internalType: 'bytes', type: 'bytes' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+        ],
+      },
+    ],
+    name: 'attest',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'delegatedRequest',
+        internalType: 'struct DelegatedAttestationRequest',
+        type: 'tuple',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct AttestationRequestData',
+            type: 'tuple',
+            components: [
+              { name: 'recipient', internalType: 'address', type: 'address' },
+              {
+                name: 'expirationTime',
+                internalType: 'uint64',
+                type: 'uint64',
+              },
+              { name: 'revocable', internalType: 'bool', type: 'bool' },
+              { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'data', internalType: 'bytes', type: 'bytes' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+          {
+            name: 'signature',
+            internalType: 'struct Signature',
+            type: 'tuple',
+            components: [
+              { name: 'v', internalType: 'uint8', type: 'uint8' },
+              { name: 'r', internalType: 'bytes32', type: 'bytes32' },
+              { name: 's', internalType: 'bytes32', type: 'bytes32' },
+            ],
+          },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'deadline', internalType: 'uint64', type: 'uint64' },
+        ],
+      },
+    ],
+    name: 'attestByDelegation',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'uid', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'getAttestation',
+    outputs: [
+      {
+        name: '',
+        internalType: 'struct Attestation',
+        type: 'tuple',
+        components: [
+          { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'time', internalType: 'uint64', type: 'uint64' },
+          { name: 'expirationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'revocationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'recipient', internalType: 'address', type: 'address' },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'revocable', internalType: 'bool', type: 'bool' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'revoker', internalType: 'address', type: 'address' },
+      { name: 'data', internalType: 'bytes32', type: 'bytes32' },
+    ],
+    name: 'getRevokeOffchain',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'getSchemaRegistry',
+    outputs: [
+      { name: '', internalType: 'contract ISchemaRegistry', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'getTimestamp',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'uid', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'isAttestationValid',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'multiRequests',
+        internalType: 'struct MultiAttestationRequest[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct AttestationRequestData[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'recipient', internalType: 'address', type: 'address' },
+              {
+                name: 'expirationTime',
+                internalType: 'uint64',
+                type: 'uint64',
+              },
+              { name: 'revocable', internalType: 'bool', type: 'bool' },
+              { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'data', internalType: 'bytes', type: 'bytes' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+        ],
+      },
+    ],
+    name: 'multiAttest',
+    outputs: [{ name: '', internalType: 'bytes32[]', type: 'bytes32[]' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'multiDelegatedRequests',
+        internalType: 'struct MultiDelegatedAttestationRequest[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct AttestationRequestData[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'recipient', internalType: 'address', type: 'address' },
+              {
+                name: 'expirationTime',
+                internalType: 'uint64',
+                type: 'uint64',
+              },
+              { name: 'revocable', internalType: 'bool', type: 'bool' },
+              { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'data', internalType: 'bytes', type: 'bytes' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+          {
+            name: 'signatures',
+            internalType: 'struct Signature[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'v', internalType: 'uint8', type: 'uint8' },
+              { name: 'r', internalType: 'bytes32', type: 'bytes32' },
+              { name: 's', internalType: 'bytes32', type: 'bytes32' },
+            ],
+          },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'deadline', internalType: 'uint64', type: 'uint64' },
+        ],
+      },
+    ],
+    name: 'multiAttestByDelegation',
+    outputs: [{ name: '', internalType: 'bytes32[]', type: 'bytes32[]' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'multiRequests',
+        internalType: 'struct MultiRevocationRequest[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct RevocationRequestData[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+        ],
+      },
+    ],
+    name: 'multiRevoke',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'multiDelegatedRequests',
+        internalType: 'struct MultiDelegatedRevocationRequest[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct RevocationRequestData[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+          {
+            name: 'signatures',
+            internalType: 'struct Signature[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'v', internalType: 'uint8', type: 'uint8' },
+              { name: 'r', internalType: 'bytes32', type: 'bytes32' },
+              { name: 's', internalType: 'bytes32', type: 'bytes32' },
+            ],
+          },
+          { name: 'revoker', internalType: 'address', type: 'address' },
+          { name: 'deadline', internalType: 'uint64', type: 'uint64' },
+        ],
+      },
+    ],
+    name: 'multiRevokeByDelegation',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes32[]', type: 'bytes32[]' }],
+    name: 'multiRevokeOffchain',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes32[]', type: 'bytes32[]' }],
+    name: 'multiTimestamp',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'request',
+        internalType: 'struct RevocationRequest',
+        type: 'tuple',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct RevocationRequestData',
+            type: 'tuple',
+            components: [
+              { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+        ],
+      },
+    ],
+    name: 'revoke',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'delegatedRequest',
+        internalType: 'struct DelegatedRevocationRequest',
+        type: 'tuple',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct RevocationRequestData',
+            type: 'tuple',
+            components: [
+              { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+          {
+            name: 'signature',
+            internalType: 'struct Signature',
+            type: 'tuple',
+            components: [
+              { name: 'v', internalType: 'uint8', type: 'uint8' },
+              { name: 'r', internalType: 'bytes32', type: 'bytes32' },
+              { name: 's', internalType: 'bytes32', type: 'bytes32' },
+            ],
+          },
+          { name: 'revoker', internalType: 'address', type: 'address' },
+          { name: 'deadline', internalType: 'uint64', type: 'uint64' },
+        ],
+      },
+    ],
+    name: 'revokeByDelegation',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'revokeOffchain',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'timestamp',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'version',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'recipient',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'attester',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'uid', internalType: 'bytes32', type: 'bytes32', indexed: false },
+      {
+        name: 'schemaUID',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+    ],
+    name: 'Attested',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'recipient',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'attester',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'uid', internalType: 'bytes32', type: 'bytes32', indexed: false },
+      {
+        name: 'schemaUID',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+    ],
+    name: 'Revoked',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'revoker',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'data', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'timestamp',
+        internalType: 'uint64',
+        type: 'uint64',
+        indexed: true,
+      },
+    ],
+    name: 'RevokedOffchain',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'data', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'timestamp',
+        internalType: 'uint64',
+        type: 'uint64',
+        indexed: true,
+      },
+    ],
+    name: 'Timestamped',
+  },
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -6724,6 +7438,325 @@ export const useWatchCommonAdSpacesUpgradedEvent =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdValidatorAbi}__
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useReadCommonAdValidator = /*#__PURE__*/ createUseReadContract({
+  abi: commonAdValidatorAbi,
+  address: commonAdValidatorAddress,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"commonAdSpaces"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useReadCommonAdValidatorCommonAdSpaces =
+  /*#__PURE__*/ createUseReadContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'commonAdSpaces',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"isPayable"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useReadCommonAdValidatorIsPayable =
+  /*#__PURE__*/ createUseReadContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'isPayable',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"owner"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useReadCommonAdValidatorOwner =
+  /*#__PURE__*/ createUseReadContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'owner',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"version"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useReadCommonAdValidatorVersion =
+  /*#__PURE__*/ createUseReadContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'version',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidator = /*#__PURE__*/ createUseWriteContract({
+  abi: commonAdValidatorAbi,
+  address: commonAdValidatorAddress,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"attest"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorAttest =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'attest',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"multiAttest"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorMultiAttest =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'multiAttest',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"multiRevoke"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorMultiRevoke =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'multiRevoke',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"renounceOwnership"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorRenounceOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"revoke"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorRevoke =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'revoke',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"setCommonAdSpaces"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorSetCommonAdSpaces =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'setCommonAdSpaces',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"transferOwnership"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorTransferOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidator =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"attest"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorAttest =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'attest',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"multiAttest"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorMultiAttest =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'multiAttest',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"multiRevoke"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorMultiRevoke =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'multiRevoke',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"renounceOwnership"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorRenounceOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"revoke"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorRevoke =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'revoke',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"setCommonAdSpaces"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorSetCommonAdSpaces =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'setCommonAdSpaces',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"transferOwnership"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorTransferOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdValidatorAbi}__
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWatchCommonAdValidatorEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `eventName` set to `"AttestAd"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWatchCommonAdValidatorAttestAdEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    eventName: 'AttestAd',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `eventName` set to `"OwnershipTransferred"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWatchCommonAdValidatorOwnershipTransferredEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    eventName: 'OwnershipTransferred',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `eventName` set to `"RevokeAd"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x72782806d96536E968AD564ea8aB71BEeD2ceC5A)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWatchCommonAdValidatorRevokeAdEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    eventName: 'RevokeAd',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link directListingsLogicAbi}__
  *
  * -
@@ -8237,6 +9270,320 @@ export const useWatchGeneralDistributionAgreementV1PoolCreatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: generalDistributionAgreementV1Abi,
     eventName: 'PoolCreated',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__
+ */
+export const useReadIeas = /*#__PURE__*/ createUseReadContract({ abi: ieasAbi })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"getAttestation"`
+ */
+export const useReadIeasGetAttestation = /*#__PURE__*/ createUseReadContract({
+  abi: ieasAbi,
+  functionName: 'getAttestation',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"getRevokeOffchain"`
+ */
+export const useReadIeasGetRevokeOffchain = /*#__PURE__*/ createUseReadContract(
+  { abi: ieasAbi, functionName: 'getRevokeOffchain' },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"getSchemaRegistry"`
+ */
+export const useReadIeasGetSchemaRegistry = /*#__PURE__*/ createUseReadContract(
+  { abi: ieasAbi, functionName: 'getSchemaRegistry' },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"getTimestamp"`
+ */
+export const useReadIeasGetTimestamp = /*#__PURE__*/ createUseReadContract({
+  abi: ieasAbi,
+  functionName: 'getTimestamp',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"isAttestationValid"`
+ */
+export const useReadIeasIsAttestationValid =
+  /*#__PURE__*/ createUseReadContract({
+    abi: ieasAbi,
+    functionName: 'isAttestationValid',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"version"`
+ */
+export const useReadIeasVersion = /*#__PURE__*/ createUseReadContract({
+  abi: ieasAbi,
+  functionName: 'version',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__
+ */
+export const useWriteIeas = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"attest"`
+ */
+export const useWriteIeasAttest = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'attest',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"attestByDelegation"`
+ */
+export const useWriteIeasAttestByDelegation =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ieasAbi,
+    functionName: 'attestByDelegation',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiAttest"`
+ */
+export const useWriteIeasMultiAttest = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'multiAttest',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiAttestByDelegation"`
+ */
+export const useWriteIeasMultiAttestByDelegation =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ieasAbi,
+    functionName: 'multiAttestByDelegation',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevoke"`
+ */
+export const useWriteIeasMultiRevoke = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'multiRevoke',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevokeByDelegation"`
+ */
+export const useWriteIeasMultiRevokeByDelegation =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ieasAbi,
+    functionName: 'multiRevokeByDelegation',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevokeOffchain"`
+ */
+export const useWriteIeasMultiRevokeOffchain =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ieasAbi,
+    functionName: 'multiRevokeOffchain',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiTimestamp"`
+ */
+export const useWriteIeasMultiTimestamp = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'multiTimestamp',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revoke"`
+ */
+export const useWriteIeasRevoke = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'revoke',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revokeByDelegation"`
+ */
+export const useWriteIeasRevokeByDelegation =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ieasAbi,
+    functionName: 'revokeByDelegation',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revokeOffchain"`
+ */
+export const useWriteIeasRevokeOffchain = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'revokeOffchain',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"timestamp"`
+ */
+export const useWriteIeasTimestamp = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'timestamp',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__
+ */
+export const useSimulateIeas = /*#__PURE__*/ createUseSimulateContract({
+  abi: ieasAbi,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"attest"`
+ */
+export const useSimulateIeasAttest = /*#__PURE__*/ createUseSimulateContract({
+  abi: ieasAbi,
+  functionName: 'attest',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"attestByDelegation"`
+ */
+export const useSimulateIeasAttestByDelegation =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'attestByDelegation',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiAttest"`
+ */
+export const useSimulateIeasMultiAttest =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiAttest',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiAttestByDelegation"`
+ */
+export const useSimulateIeasMultiAttestByDelegation =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiAttestByDelegation',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevoke"`
+ */
+export const useSimulateIeasMultiRevoke =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiRevoke',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevokeByDelegation"`
+ */
+export const useSimulateIeasMultiRevokeByDelegation =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiRevokeByDelegation',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevokeOffchain"`
+ */
+export const useSimulateIeasMultiRevokeOffchain =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiRevokeOffchain',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiTimestamp"`
+ */
+export const useSimulateIeasMultiTimestamp =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiTimestamp',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revoke"`
+ */
+export const useSimulateIeasRevoke = /*#__PURE__*/ createUseSimulateContract({
+  abi: ieasAbi,
+  functionName: 'revoke',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revokeByDelegation"`
+ */
+export const useSimulateIeasRevokeByDelegation =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'revokeByDelegation',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revokeOffchain"`
+ */
+export const useSimulateIeasRevokeOffchain =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'revokeOffchain',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"timestamp"`
+ */
+export const useSimulateIeasTimestamp = /*#__PURE__*/ createUseSimulateContract(
+  { abi: ieasAbi, functionName: 'timestamp' },
+)
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ieasAbi}__
+ */
+export const useWatchIeasEvent = /*#__PURE__*/ createUseWatchContractEvent({
+  abi: ieasAbi,
+})
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ieasAbi}__ and `eventName` set to `"Attested"`
+ */
+export const useWatchIeasAttestedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ieasAbi,
+    eventName: 'Attested',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ieasAbi}__ and `eventName` set to `"Revoked"`
+ */
+export const useWatchIeasRevokedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ieasAbi,
+    eventName: 'Revoked',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ieasAbi}__ and `eventName` set to `"RevokedOffchain"`
+ */
+export const useWatchIeasRevokedOffchainEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ieasAbi,
+    eventName: 'RevokedOffchain',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ieasAbi}__ and `eventName` set to `"Timestamped"`
+ */
+export const useWatchIeasTimestampedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ieasAbi,
+    eventName: 'Timestamped',
   })
 
 /**
