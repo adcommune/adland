@@ -1,12 +1,11 @@
-import { SmartAccountContext } from '@/context/SmartAccountContext'
+import { useBiconomyAccount } from '@/context/SmartAccountContext'
 import { AdLand } from '@/lib/adland'
 import { useQuery } from '@tanstack/react-query'
-import { useContext } from 'react'
 import AdSpaceCard from './AdSpaceCard'
 import { zeroAddress } from 'viem'
 
 const AdSpaceList = () => {
-  const { bicoAccountAddress } = useContext(SmartAccountContext)
+  const { bicoAccountAddress } = useBiconomyAccount()
 
   const { data, isLoading } = useQuery({
     queryFn: () =>
