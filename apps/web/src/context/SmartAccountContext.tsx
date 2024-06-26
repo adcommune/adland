@@ -4,7 +4,13 @@ import {
   BiconomySmartAccountV2,
   createSmartAccountClient,
 } from '@biconomy/account'
-import { createContext, useCallback, useEffect, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { Address } from 'viem'
 import { useWallets } from '@privy-io/react-auth'
 import { biconomyBundlerURL, biconomyPaymasterApiKey } from '@/config/constants'
@@ -76,6 +82,18 @@ const SmartAccountProvider = ({ children }: { children: React.ReactNode }) => {
       {children}
     </SmartAccountContext.Provider>
   )
+}
+
+export const useBiconomyAccount = () => {
+  const context = useContext(SmartAccountContext)
+
+  if (context === undefined) {
+    throw new Error(
+      'useBiconomyAccount must be used within a SmartAccountProvider',
+    )
+  }
+
+  return context
 }
 
 export { SmartAccountProvider, SmartAccountContext }
