@@ -5,6 +5,7 @@
     "private-vars-leading-underscore": "off",
     "max-line-length": "off",
     "const-name-snakecase": "off",
-    "var-name-mixedcase": "off"
+    "var-name-mixedcase": "off",
+    "func-name-mixedcase": "off"
   }
 }

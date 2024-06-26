@@ -12,8 +12,34 @@ import "@thirdweb-dev/dynamic-contracts/src/interface/IExtension.sol";
 import {ISuperfluid, ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 import {UUPSProxy} from "../src/lib/UUPSProxy.sol";
 import {CommonAdSpaces} from "../src/CommonAdSpaces.sol";
+import {CommonAdValidator} from "../src/CommonAdValidator.sol";
+import {IEAS, ISchemaRegistry} from "eas/IEAS.sol";
 
 contract AdLandScripts is BaseSetup {
+    function deployAdSpaceValidator(
+        DeployementChain chain
+    ) public broadcastOn(chain) {
+        _initialize();
+
+        CommonAdValidator validator = new CommonAdValidator(
+            IEAS(0x4200000000000000000000000000000000000021)
+        );
+
+        validator.setCommonAdSpaces(
+            CommonAdSpaces(_readDeployment("CommonAdSpaces"))
+        );
+
+        bytes32 schema = ISchemaRegistry(
+            0x4200000000000000000000000000000000000020
+        ).register(
+                "uint256 adGroupId,uint256 adSpaceId,string cid,string reason",
+                validator,
+                true
+            );
+
+        _saveDeployment(address(validator), "CommonAdValidator");
+    }
+
     function updateTokenX(
         DeployementChain chain,
         address commonAdSapceAddress

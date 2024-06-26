@@ -891,43 +891,12 @@ contract CommonAdSpacesTest is CommonAdSpacesBase {
         return (price * taxRateBPS) / MAX_BPS;
     }
 
-    function _getAccount(uint256 pk, uint256 deal) internal returns (address) {
-        address tester = vm.addr(pk);
-        vm.deal(tester, deal);
-        return tester;
-    }
-
     function _grantAssetRole(address tokenContract) internal {
         vm.prank(deployer);
         MarketplaceV3(payable(address(marketplace))).grantRole(
             keccak256("ASSET_ROLE"),
             tokenContract
         );
-    }
-
-    function _grantMaxFlowPermissions(
-        ISuperToken x,
-        address from,
-        address to
-    ) internal {
-        vm.prank(from);
-        sf.cfaV1Forwarder.grantPermissions(x, to);
-    }
-
-    function _mintAndUpgradeERC20(
-        ISuperToken tokenX,
-        address to,
-        uint256 amount
-    ) internal {
-        TestToken token = TestToken(tokenX.getUnderlyingToken());
-
-        token.mint(to, amount);
-
-        vm.prank(to);
-        dai.approve(address(tokenX), amount);
-
-        vm.prank(to);
-        daix.upgrade(amount);
     }
 
     function _upgradeETH(
