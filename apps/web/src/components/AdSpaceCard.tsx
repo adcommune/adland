@@ -6,27 +6,42 @@ import TokenImage from '@/components/TokenImage'
 import { AdSpaceMetadata, Listing } from '@adland/webkit/src/ponder'
 import { formatAmount } from '@/lib/helpers'
 
+type AdSpaceCardProps = {
+  listing: Listing
+  id: string
+  currentMetadata?: Omit<AdSpaceMetadata, 'adSpace'> | null
+}
+
 const AdSpaceCard = ({
   id,
   listing,
   currentMetadata: metadata,
-}: {
-  listing: Listing
-  id: string
-  currentMetadata?: Omit<AdSpaceMetadata, 'adSpace'> | null
-}) => {
-  const { pricePerToken, currency } = listing
+}: AdSpaceCardProps) => {
+  const { pricePerToken, currency, taxRate } = listing
 
   return (
     <Link href={'/ad/' + id}>
       <div className="relative flex flex-col overflow-hidden rounded-md border border-white">
-        <div className="absolute left-0 top-0 z-10 flex w-full flex-row justify-between p-2">
-          <div className="rounded-md border border-black bg-white px-2">
-            <p className="text-black">#{id}</p>
+        <div className="white flex w-full flex-row justify-between bg-white p-2 text-sm text-black">
+          <div className="px-2">
+            <p className="font-bold">#{id}</p>
           </div>
-          <div className="flex flex-row items-center gap-2 rounded-md border border-black bg-white px-2">
-            {formatAmount(formatEther(BigInt(pricePerToken)))}
-            <TokenImage address={currency} className="h-4 w-4" />
+          <Separator
+            orientation="vertical"
+            className="h-full border-red-500 bg-red-600"
+          />
+          <div className="flex flex-row items-center gap-1 text-sm">
+            <div className="flex flex-row items-center gap-2 px-2">
+              <p className="text-xs">Price</p>
+              <p className="font-bold">
+                {formatAmount(formatEther(BigInt(pricePerToken)))}
+              </p>
+              <TokenImage address={currency} className="h-4 w-4" />
+            </div>
+            <div className="flex flex-row items-center gap-2 px-2">
+              <p className="text-xs">Tax Rate</p>
+              <p className="font-bold">{Number(taxRate ?? 0) / 100}% weekly</p>
+            </div>
           </div>
         </div>
         <div className="relative flex h-[350px] w-full flex-grow flex-col gap-2 bg-white bg-opacity-50 p-4 hover:bg-opacity-60">
