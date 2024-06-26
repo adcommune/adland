@@ -9,12 +9,14 @@ type AdSpacePageProps = {
 }
 
 const AdSpacePage = ({ params: { spaceId } }: AdSpacePageProps) => {
-  const { data: adSpace } = useQuery({
+  const { data: adSpace, isLoading } = useQuery({
     queryFn: () => new AdLand().getAdSpace(spaceId),
     queryKey: ['adSpace-', spaceId],
   })
 
-  return <AdPropertyList metadata={adSpace?.currentMetadata} />
+  return (
+    <AdPropertyList isLoading={isLoading} metadata={adSpace?.currentMetadata} />
+  )
 }
 
 export default AdSpacePage

@@ -9,6 +9,10 @@ export class Superfluid {
     this.client = new GraphQLClient(constants.superfluidSubgraphUrl)
   }
 
+  // TODO: fetch all group inflows
+  // 1 - fetch ad group owners
+  // 2 - fetch all their existing flows with group owner as recipient
+
   async fetchPool(poolAddress?: string): Promise<SuperfluidPool | undefined> {
     if (!poolAddress) return Promise.resolve(undefined)
     return this.client

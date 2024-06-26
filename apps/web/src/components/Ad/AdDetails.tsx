@@ -36,6 +36,7 @@ import { usePathname } from 'next/navigation'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import TokenImage from '../TokenImage'
 import { formatAmount } from '@/lib/helpers'
+import AdAttestationSection from './AdAttestationSection'
 
 type AdDetailsSidebarProps = {
   spaceId: string
@@ -43,13 +44,12 @@ type AdDetailsSidebarProps = {
 }
 
 const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
-  const { data: adSpace } = useQuery({
+  const { data: adSpace, isLoading } = useQuery({
     queryFn: () => new AdLand().getAdSpace(spaceId),
     queryKey: ['adSpace-', spaceId],
   })
   const { bicoAccountAddress: address } = useContext(SmartAccountContext)
-  const { acquireLeaseModal, updateAdDataModal, selfAssessmentModal } =
-    useContext(ModalContext)
+  const { acquireLeaseModal, selfAssessmentModal } = useContext(ModalContext)
   const listing = adSpace?.listing
   const isOwner = adSpace?.owner.toLowerCase() === address?.toLowerCase()
   const isBeneficiary =
@@ -190,7 +190,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Tax Rate (weekly)</span>
-                {listing ? (
+                {listing || !isLoading ? (
                   <span>{taxRatePercentage} %</span>
                 ) : (
                   <Skeleton className="h-4 w-9" />
@@ -198,7 +198,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Owner</span>
-                {listing ? (
+                {listing || !isLoading ? (
                   <span>
                     {' '}
                     {isOwner ? (
@@ -212,6 +212,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 )}
               </li>
             </ul>
+            {adSpace && <AdAttestationSection adSpace={adSpace} />}
             <div className="grid gap-3">
               <div className="font-semibold">Distribution</div>
               <ul className="grid grid-cols-2 gap-3">
