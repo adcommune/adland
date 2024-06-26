@@ -1,5 +1,5 @@
 import { ponder } from "@/generated";
-import { zeroAddress } from "viem";
+import { Address, zeroAddress } from "viem";
 
 export const NATIVE_CURRENCY = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
@@ -230,6 +230,7 @@ ponder.on(
 
 ponder.on("CommonAdSpaces:Transfer", async ({ event, context }) => {
   const { AdSpace } = context.db;
+
   if (await AdSpace.findUnique({ id: event.args.tokenId.toString() })) {
     await AdSpace.update({
       id: event.args.tokenId.toString(),
@@ -238,4 +239,61 @@ ponder.on("CommonAdSpaces:Transfer", async ({ event, context }) => {
       },
     });
   }
+});
+
+ponder.on("CommonAdValidator:AttestAd", async ({ event, context }) => {
+  const { Attestation, AdSpaceMetadata } = context.db;
+
+  let { uid, adSpaceId, cid } = event.args as {
+    uid: string;
+    adSpaceId: bigint;
+    cid: Address;
+  };
+
+  const adSpaceMetadataId = cid + "/" + adSpaceId.toString();
+
+  if (
+    await AdSpaceMetadata.findUnique({
+      id: adSpaceMetadataId,
+    })
+  ) {
+    await Attestation.upsert({
+      id: uid,
+      create: {
+        revoked: undefined,
+        timestamp: event.block.timestamp,
+        transactionHash: event.transaction.hash,
+      },
+      update: {
+        revoked: false,
+        timestamp: event.block.timestamp,
+        transactionHash: event.transaction.hash,
+      },
+    });
+
+    // Link attestation to ad space metadata
+    await AdSpaceMetadata.update({
+      id: adSpaceMetadataId,
+      data: {
+        attestationId: uid,
+      },
+    });
+  }
+});
+
+ponder.on("CommonAdValidator:RevokeAd", async ({ event, context }) => {
+  const { Attestation } = context.db;
+
+  const { uid } = event.args as {
+    uid: string;
+    adSpaceId: bigint;
+    cid: Address;
+  };
+
+  await Attestation.update({
+    id: uid,
+    data: {
+      revoked: true,
+    },
+  });
 });

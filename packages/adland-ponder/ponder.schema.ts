@@ -34,6 +34,8 @@ export default createSchema((p) => ({
     id: p.string(),
     adSpaceId: p.string().references("AdSpace.id"),
     adSpace: p.one("adSpaceId"),
+    attestationId: p.string().references("Attestation.id").optional(),
+    attestation: p.one("attestationId"),
     name: p.string(),
     description: p.string(),
     image: p.string(),
@@ -45,6 +47,12 @@ export default createSchema((p) => ({
     noBillboard: p.boolean().optional(),
     //
     blockNumber: p.bigint(),
+    transactionHash: p.string(),
+  }),
+  Attestation: p.createTable({
+    id: p.string(), // uid
+    revoked: p.boolean().optional(),
+    timestamp: p.bigint(),
     transactionHash: p.string(),
   }),
   TokenX: p.createTable({

@@ -33,12 +33,11 @@ const config: CodegenConfig = {
       },
     },
     "./src/ponder.ts": {
-      schema: "http://localhost:42069/graphql",
+      schema: constants.ponderUrl,
       documents: "./documents/ponder.graphql",
       plugins: [
         "typescript",
         "typescript-operations",
-        // "typescript-react-query",
         "typescript-graphql-request",
       ],
       config: {

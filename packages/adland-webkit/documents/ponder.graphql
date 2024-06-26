@@ -37,6 +37,13 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         currentMetadata {
           id
           adSpaceId
+          attestationId
+          attestation {
+            id
+            revoked
+            timestamp
+            transactionHash
+          }
           name
           description
           image
@@ -60,6 +67,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           items {
             id
             adSpaceId
+            attestationId
             name
             description
             image
@@ -155,6 +163,7 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           currentMetadata {
             id
             adSpaceId
+            attestationId
             name
             description
             image
@@ -290,6 +299,13 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     currentMetadata {
       id
       adSpaceId
+      attestationId
+      attestation {
+        id
+        revoked
+        timestamp
+        transactionHash
+      }
       name
       description
       image
@@ -313,6 +329,13 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       items {
         id
         adSpaceId
+        attestationId
+        attestation {
+          id
+          revoked
+          timestamp
+          transactionHash
+        }
         name
         description
         image
@@ -393,6 +416,13 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       currentMetadata {
         id
         adSpaceId
+        attestationId
+        attestation {
+          id
+          revoked
+          timestamp
+          transactionHash
+        }
         name
         description
         image
@@ -416,6 +446,13 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         items {
           id
           adSpaceId
+          attestationId
+          attestation {
+            id
+            revoked
+            timestamp
+            transactionHash
+          }
           name
           description
           image
@@ -537,6 +574,13 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       }
       transactionHash
     }
+    attestationId
+    attestation {
+      id
+      revoked
+      timestamp
+      transactionHash
+    }
     name
     description
     image
@@ -610,6 +654,13 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         }
         transactionHash
       }
+      attestationId
+      attestation {
+        id
+        revoked
+        timestamp
+        transactionHash
+      }
       name
       description
       image
@@ -620,6 +671,35 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       frameRedirectUrl
       noBillboard
       blockNumber
+      transactionHash
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}query attestation($id: String!) {
+  attestation(id: $id) {
+    id
+    revoked
+    timestamp
+    transactionHash
+  }
+}query attestations($where: AttestationFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int) {
+  attestations(
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    before: $before
+    after: $after
+    limit: $limit
+  ) {
+    items {
+      id
+      revoked
+      timestamp
       transactionHash
     }
     pageInfo {
