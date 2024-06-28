@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { baseURL, getTokenSymbol } from '@/config/constants'
+import { baseURL } from '@/config/constants'
 import { AdLand } from '@/lib/adland'
 import { getExplorerLink } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
@@ -62,8 +62,7 @@ const FarcasterDistributionPage = ({
               {adCampaign?.sfPool?.totalMembers} Distributor
             </div>
             <p className="text-xs text-muted-foreground">
-              +{formatEther(flowRate)}{' '}
-              {getTokenSymbol(adSpace?.tokenX?.underlyingToken)}
+              +{formatEther(flowRate)} {adSpace?.tokenX?.underlyingSymbol}
               /week
             </p>
             {adCampaign?.sfPool?.flowRate && (

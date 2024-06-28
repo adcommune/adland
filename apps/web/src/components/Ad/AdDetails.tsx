@@ -177,7 +177,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                       className="underline"
                       target="_blank"
                     >
-                      {getTokenSymbol(listing?.currency)}
+                      {listing.currencySymbol}
                     </Link>
                     <TokenImage
                       address={listing?.currency}

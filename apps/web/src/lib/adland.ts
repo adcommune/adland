@@ -7,6 +7,7 @@ import {
   AdGroupQuery,
   AdSpaceQuery,
   AdSpaceMetadata,
+  TokenXsQuery,
 } from '@adland/webkit/src/ponder'
 import { constants } from '@adland/common'
 import { AdCampaign } from './types'
@@ -24,6 +25,16 @@ export class AdLand {
   constructor() {
     this.ponder = getPonder(new GraphQLClient(constants.ponderUrl, { fetch }))
     this.c = publicClient
+  }
+
+  async listSuperTokens(): Promise<TokenXsQuery['tokenXs']> {
+    return this.ponder
+      .tokenXs({
+        where: {
+          superToken_not: zeroAddress,
+        },
+      })
+      .then((res) => res.tokenXs)
   }
 
   async listAdSpacesByOwner(owner: Address | string): Promise<AdSpacesQuery> {

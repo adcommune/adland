@@ -26,6 +26,8 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           listingOwner
           assetContract
           currency
+          currencyName
+          currencySymbol
           taxRate
           taxBeneficiary
           tokenType
@@ -91,7 +93,11 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         tokenX {
           id
           underlyingToken
+          underlyingName
+          underlyingSymbol
           superToken
+          superName
+          superSymbol
           isNativeToken
           blockNumber
           blockTimestamp
@@ -152,6 +158,8 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
             listingOwner
             assetContract
             currency
+            currencyName
+            currencySymbol
             taxRate
             taxBeneficiary
             tokenType
@@ -180,7 +188,11 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           tokenX {
             id
             underlyingToken
+            underlyingName
+            underlyingSymbol
             superToken
+            superName
+            superSymbol
             isNativeToken
             blockNumber
             blockTimestamp
@@ -260,6 +272,8 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       listingOwner
       assetContract
       currency
+      currencyName
+      currencySymbol
       taxRate
       taxBeneficiary
       tokenType
@@ -359,7 +373,11 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     tokenX {
       id
       underlyingToken
+      underlyingName
+      underlyingSymbol
       superToken
+      superName
+      superSymbol
       isNativeToken
       blockNumber
       blockTimestamp
@@ -392,6 +410,8 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         listingOwner
         assetContract
         currency
+        currencyName
+        currencySymbol
         taxRate
         taxBeneficiary
         tokenType
@@ -476,7 +496,11 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       tokenX {
         id
         underlyingToken
+        underlyingName
+        underlyingSymbol
         superToken
+        superName
+        superSymbol
         isNativeToken
         blockNumber
         blockTimestamp
@@ -511,6 +535,8 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         listingOwner
         assetContract
         currency
+        currencyName
+        currencySymbol
         taxRate
         taxBeneficiary
         tokenType
@@ -566,7 +592,11 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       tokenX {
         id
         underlyingToken
+        underlyingName
+        underlyingSymbol
         superToken
+        superName
+        superSymbol
         isNativeToken
         blockNumber
         blockTimestamp
@@ -621,6 +651,8 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           listingOwner
           assetContract
           currency
+          currencyName
+          currencySymbol
           taxRate
           taxBeneficiary
           tokenType
@@ -646,7 +678,11 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         tokenX {
           id
           underlyingToken
+          underlyingName
+          underlyingSymbol
           superToken
+          superName
+          superSymbol
           isNativeToken
           blockNumber
           blockTimestamp
@@ -713,7 +749,11 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
   tokenX(id: $id) {
     id
     underlyingToken
+    underlyingName
+    underlyingSymbol
     superToken
+    superName
+    superSymbol
     isNativeToken
     blockNumber
     blockTimestamp
@@ -731,7 +771,11 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     items {
       id
       underlyingToken
+      underlyingName
+      underlyingSymbol
       superToken
+      superName
+      superSymbol
       isNativeToken
       blockNumber
       blockTimestamp
@@ -757,6 +801,8 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     listingOwner
     assetContract
     currency
+    currencyName
+    currencySymbol
     taxRate
     taxBeneficiary
     tokenType
@@ -784,6 +830,8 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       listingOwner
       assetContract
       currency
+      currencyName
+      currencySymbol
       taxRate
       taxBeneficiary
       tokenType

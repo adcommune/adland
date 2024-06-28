@@ -1,15 +1,15 @@
 'use client'
 
-import { useTokenXsQuery } from '@adland/webkit/src/hooks'
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '../ui/table'
 import SuperTokenBalance from './SuperTokenDynamicBalance'
-import { zeroAddress } from 'viem'
+import { useQuery } from '@tanstack/react-query'
+import { AdLand } from '@/lib/adland'
 
 const SuperTokenTable = () => {
-  const { data } = useTokenXsQuery(
-    { first: 5, where: { superToken_not: zeroAddress } },
-    {},
-  )
+  const { data } = useQuery({
+    queryKey: ['tokenXs'],
+    queryFn: () => new AdLand().listSuperTokens(),
+  })
 
   return (
     <Table>
@@ -23,7 +23,7 @@ const SuperTokenTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data?.tokenXs.map((tokenX) => {
+        {data?.items.map((tokenX) => {
           const { id } = tokenX
           return <SuperTokenBalance key={id} tokenX={tokenX} />
         })}

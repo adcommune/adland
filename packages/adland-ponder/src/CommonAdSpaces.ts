@@ -1,5 +1,6 @@
 import { ponder } from "@/generated";
 import { Address, zeroAddress } from "viem";
+import { erc20Abi } from "../abis/ERC20";
 
 export const NATIVE_CURRENCY = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
@@ -70,26 +71,71 @@ ponder.on(
 );
 
 ponder.on("CommonAdSpaces:TokenXSet", async ({ event, context }) => {
-  const { TokenX } = context.db;
+  const { client, db } = context;
+  const { TokenX } = db;
+
+  const underlyingAddress = event.args.underlyingToken;
+  const superTokenAddress = event.args.superToken;
+
+  const { underlyingName, underlyingSymbol, superName, superSymbol } =
+    await client
+      .multicall({
+        contracts: [
+          {
+            abi: erc20Abi,
+            functionName: "symbol",
+            address: superTokenAddress,
+          },
+          {
+            abi: erc20Abi,
+            functionName: "name",
+            address: superTokenAddress,
+          },
+          {
+            abi: erc20Abi,
+            functionName: "symbol",
+            address: underlyingAddress,
+          },
+          {
+            abi: erc20Abi,
+            functionName: "name",
+            address: underlyingAddress,
+          },
+        ],
+      })
+      .then((res) => {
+        return {
+          underlyingName: res[3].result ?? "Unknown",
+          underlyingSymbol: res[2].result ?? "UKNWN",
+          superName: res[1].result ?? "Super Unknown",
+          superSymbol: res[0].result ?? "UKNWNx",
+        };
+      });
 
   await TokenX.upsert({
     id: event.args.underlyingToken,
     create: {
-      underlyingToken: event.args.underlyingToken,
-      superToken: event.args.superToken,
+      underlyingToken: underlyingAddress,
+      superToken: superTokenAddress,
       isNativeToken:
-        event.args.underlyingToken.toLowerCase() ===
-        NATIVE_CURRENCY.toLowerCase(),
+        underlyingAddress.toLowerCase() === NATIVE_CURRENCY.toLowerCase(),
+      underlyingName,
+      underlyingSymbol,
+      superName,
+      superSymbol,
       blockNumber: event.block.number,
       blockTimestamp: event.block.timestamp,
       transactionHash: event.transaction.hash,
     },
     update: {
-      underlyingToken: event.args.underlyingToken,
-      superToken: event.args.superToken,
+      underlyingToken: underlyingAddress,
+      superToken: superTokenAddress,
       isNativeToken:
-        event.args.underlyingToken.toLowerCase() ===
-        NATIVE_CURRENCY.toLowerCase(),
+        underlyingAddress.toLowerCase() === NATIVE_CURRENCY.toLowerCase(),
+      underlyingName,
+      underlyingSymbol,
+      superName,
+      superSymbol,
       blockNumber: event.block.number,
       blockTimestamp: event.block.timestamp,
       transactionHash: event.transaction.hash,

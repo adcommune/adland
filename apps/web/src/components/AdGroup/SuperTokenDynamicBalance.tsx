@@ -4,13 +4,12 @@ import {
   useReadCfAv1ForwarderGetAccountFlowrate,
   useReadSuperTokenBalanceOf,
 } from '@adland/contracts'
-import { TokenX } from '@adland/webkit/src/hooks'
+import { TokenX } from '@adland/webkit/src/ponder'
 import { TableCell, TableRow } from '../ui/table'
-import { getTokenSymbol } from '@/config/constants'
 import { Button } from '../ui/button'
 import { useContext } from 'react'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
-import { erc20Abi, formatEther, formatUnits } from 'viem'
+import { Address, erc20Abi, formatEther, formatUnits } from 'viem'
 import { useBalance, useReadContracts } from 'wagmi'
 import TokenImage from '../TokenImage'
 import { formatAmount } from '@/lib/helpers'
@@ -21,7 +20,10 @@ type SuperTokenDynamicBalance = {
 
 const SuperTokenBalance = ({ tokenX }: SuperTokenDynamicBalance) => {
   const { bicoAccountAddress } = useContext(SmartAccountContext)
-  const { superToken, underlyingToken, isNativeToken } = tokenX
+  const { superToken, underlyingToken, isNativeToken } = tokenX as TokenX & {
+    underlyingToken: Address
+    superToken: Address
+  }
   const { cfaV1 } = useAppContracts()
 
   const { data: nativeBalance } = useBalance({
@@ -81,7 +83,7 @@ const SuperTokenBalance = ({ tokenX }: SuperTokenDynamicBalance) => {
         <TableCell>
           <TokenImage address={tokenX.underlyingToken} />
         </TableCell>
-        <TableCell>{getTokenSymbol(tokenX.underlyingToken)}x</TableCell>
+        <TableCell>{tokenX.superSymbol}</TableCell>
         <TableCell>
           {isNativeToken ? nativeBalance : balanceOfUnderlying}
         </TableCell>
