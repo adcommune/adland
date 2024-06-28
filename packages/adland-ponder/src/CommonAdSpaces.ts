@@ -282,6 +282,7 @@ ponder.on("CommonAdSpaces:Transfer", async ({ event, context }) => {
       id: event.args.tokenId.toString(),
       data: {
         owner: event.args.to,
+        currentMetadataId: undefined,
       },
     });
   }
