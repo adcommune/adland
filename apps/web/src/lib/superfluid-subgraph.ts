@@ -2,6 +2,24 @@ import { constants } from '@adland/common'
 import { GraphQLClient, gql } from 'graphql-request'
 import { Address } from 'viem'
 
+type Account = {
+  id: Address
+  inflows: {
+    id: Address
+    currentFlowRate: string
+    token: {
+      id: Address
+      symbol: string
+      decimals: number
+      underlyingAddress: Address
+    }
+    userData: string
+    sender: {
+      id: Address
+    }
+  }[]
+}
+
 export class Superfluid {
   client: GraphQLClient
 
@@ -9,9 +27,37 @@ export class Superfluid {
     this.client = new GraphQLClient(constants.superfluidSubgraphUrl)
   }
 
-  // TODO: fetch all group inflows
-  // 1 - fetch ad group owners
-  // 2 - fetch all their existing flows with group owner as recipient
+  async fetchAccountInflows(accountAddress?: string) {
+    if (!accountAddress) return Promise.resolve(undefined)
+    return this.client
+      .request<{ account: Account }>(
+        gql`
+          query FetchAccountInflows($accountAddress: String!) {
+            account(id: $accountAddress) {
+              id
+              inflows {
+                id
+                currentFlowRate
+                token {
+                  id
+                  symbol
+                  decimals
+                  underlyingAddress
+                }
+                userData
+                sender {
+                  id
+                }
+              }
+            }
+          }
+        `,
+        {
+          accountAddress,
+        },
+      )
+      .then((data) => data.account)
+  }
 
   async fetchPool(poolAddress?: string): Promise<SuperfluidPool | undefined> {
     if (!poolAddress) return Promise.resolve(undefined)

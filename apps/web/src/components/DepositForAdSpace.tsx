@@ -11,7 +11,6 @@ import {
   superTokenAbi,
   useReadSuperTokenBalanceOf,
 } from '@adland/contracts'
-import { getTokenSymbol } from '@/config/constants'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
@@ -79,14 +78,14 @@ const DepositForAdSpace = ({
               className="underline"
               href={getExplorerLink(listing?.currency, 'address')}
             >
-              {getTokenSymbol(listing.currency)}x
+              {listing?.currencySymbol}x
             </Link>
           </span>
         </li>
         <li className="flex items-center justify-between">
           <span className="text-muted-foreground">Weekly Tax Due</span>
           <span>
-            {formatEther(dueWeekly)} {getTokenSymbol(listing.currency)}x
+            {formatEther(dueWeekly)} {listing?.currencySymbol}x
           </span>
         </li>
         <li className="flex items-center justify-between">

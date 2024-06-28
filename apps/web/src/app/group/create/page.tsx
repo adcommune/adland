@@ -2,20 +2,20 @@
 
 import CreateAdGroupForm from '@/components/AdGroup/AdGroupCreateForm'
 import { Container } from '@/components/Container'
-import { useTokenXsQuery } from '@adland/webkit/src/hooks'
-import { zeroAddress } from 'viem'
+import { AdLand } from '@/lib/adland'
+import { useQuery } from '@tanstack/react-query'
 
 const CreateAdminGroupPage = () => {
-  const { data } = useTokenXsQuery({
-    first: 5,
-    where: { superToken_not: zeroAddress },
+  const { data } = useQuery({
+    queryKey: ['tokenXs'],
+    queryFn: () => new AdLand().listSuperTokens(),
   })
 
   if (!data) return <></>
 
   return (
     <Container className="mt-5">
-      <CreateAdGroupForm superTokens={data.tokenXs} />
+      <CreateAdGroupForm superTokens={data} />
     </Container>
   )
 }

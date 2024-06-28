@@ -22,8 +22,6 @@ const AdGroupHeader = ({ adGroupId, children }: AdGroupHeaderProps) => {
     enabled: !!adGroupId,
   })
 
-  console.log({ adGroup, error })
-
   const { bicoAccountAddress } = useContext(SmartAccountContext)
 
   const isBeneficiary =
@@ -46,9 +44,8 @@ const AdGroupHeader = ({ adGroupId, children }: AdGroupHeaderProps) => {
         </Link>
       ),
     },
-    // { label: 'Ad Spaces: ', value: adSpaces.length },
+    { label: 'Ad Spaces: ', value: adGroup?.adSpaces?.items.length },
   ]
-
   return (
     <div className="font-body">
       <div className="overflow-hidden rounded-tl-md rounded-tr-md">

@@ -15,11 +15,7 @@ import {
   superTokenAbi,
   useReadSuperTokenBalanceOf,
 } from '@adland/contracts'
-import {
-  appContracts,
-  getTokenSymbol,
-  superfluidUpgradeLink,
-} from '@/config/constants'
+import { appContracts, superfluidUpgradeLink } from '@/config/constants'
 import Modal from '@/components/Modal'
 import { useParams } from 'next/navigation'
 import { ModalContext } from '@/context/ModalContext'
@@ -220,7 +216,7 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
               loading={takeOverLoading}
             >
               Take over lease ({formatAmount(formatEther(pricePerToken))}{' '}
-              {getTokenSymbol(listing.currency)})
+              {listing.currencySymbol})
             </Button>
           )
         }}
@@ -238,14 +234,14 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
                   className="underline"
                   href={getExplorerLink(listing?.currency, 'address')}
                 >
-                  {getTokenSymbol(listing.currency)}x
+                  {listing.currencySymbol}x
                 </Link>
               </span>
             </li>
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Weekly Tax Due</span>
               <span>
-                {formatEther(dueWeekly)} {getTokenSymbol(listing.currency)}x
+                {formatEther(dueWeekly)} {listing.currencySymbol}x
               </span>
             </li>
             <li className="flex items-center justify-between">
@@ -327,9 +323,7 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
             </li>
           </ul>
           <Separator />
-          <div className="font-semibold">
-            {getTokenSymbol(listing.currency)} Info
-          </div>
+          <div className="font-semibold">{listing.currencySymbol} Info</div>
           <ul className="grid gap-3">
             <li
               className={classNames('flex items-center justify-between', {
