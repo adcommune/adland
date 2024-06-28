@@ -212,7 +212,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 )}
               </li>
             </ul>
-            {adSpace && <AdAttestationSection adSpace={adSpace} />}
+            {/* {adSpace && <AdAttestationSection adSpace={adSpace} />} */}
             <div className="grid gap-3">
               <div className="font-semibold">Distribution</div>
               <ul className="grid grid-cols-2 gap-3">
