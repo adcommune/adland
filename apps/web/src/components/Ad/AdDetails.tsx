@@ -213,7 +213,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 {listing || !isLoading ? (
                   <span>
                     {' '}
-                    {adSpace?.user ? (
+                    {adSpace?.user?.fid ? (
                       <Link
                         href={getWarpcastLink(adSpace?.user?.username)}
                         target="_blank"
