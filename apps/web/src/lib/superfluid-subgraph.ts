@@ -1,25 +1,7 @@
 import { constants } from '@adland/common'
 import { GraphQLClient, gql } from 'graphql-request'
-import { Address, encodePacked, formatEther } from 'viem'
-import { formatAmount } from './helpers'
-
-type Account = {
-  id: Address
-  inflows: {
-    id: Address
-    currentFlowRate: string
-    token: {
-      id: Address
-      symbol: string
-      decimals: number
-      underlyingAddress: Address
-    }
-    userData: string
-    sender: {
-      id: Address
-    }
-  }[]
-}
+import { Account, Address, encodePacked, formatEther } from 'viem'
+import { FlowUpdateEvent } from './superfluid.types'
 
 export class Superfluid {
   client: GraphQLClient
@@ -32,7 +14,9 @@ export class Superfluid {
     const userData = encodePacked(['uint256'], [BigInt(spaceId)])
 
     return this.client
-      .request<{ flowUpdatedEvents: { flowRate: string }[] }>(
+      .request<{
+        flowUpdatedEvents: FlowUpdateEvent[]
+      }>(
         gql`
           query FetchLatestFlowUpdateEvent($userData: String!) {
             flowUpdatedEvents(
@@ -44,6 +28,7 @@ export class Superfluid {
               id
               timestamp
               flowRate
+              oldFlowRate
             }
           }
         `,
@@ -52,12 +37,14 @@ export class Superfluid {
         },
       )
       .then((data) => {
-        console.log(data.flowUpdatedEvents.map((event) => event.flowRate))
-        return formatAmount(
-          formatEther(
-            BigInt(data.flowUpdatedEvents[0].flowRate) *
-              BigInt(60 * 60 * 24 * 7),
-          ),
+        const oldFlow = BigInt(data.flowUpdatedEvents[0].oldFlowRate)
+        const newFlow = BigInt(data.flowUpdatedEvents[0].flowRate)
+
+        const absoluteDifference =
+          newFlow > oldFlow ? newFlow - oldFlow : oldFlow - newFlow
+
+        return formatEther(
+          BigInt(absoluteDifference) * BigInt(60 * 60 * 24 * 7),
         )
       })
       .catch((err) => undefined)

@@ -58,3 +58,39 @@ ponder.on("DirectListing:UpdatedListing", async ({ event, context }) => {
     data: event.args.listing,
   });
 });
+
+ponder.on("DirectListing:UpdateAdFLowRate", async ({ event, context }) => {
+  const { AdFlow, AdSpace } = context.db;
+
+  const flowRate = event.args.flowRate;
+  const adId = event.args.listingId.toString();
+
+  await AdFlow.upsert({
+    id: event.args.listingId.toString(),
+    create: {
+      adSpaceId: event.args.listingId.toString(),
+      flowRate,
+      weeklyFlowRate: flowRate * BigInt(60 * 60 * 24 * 7),
+      blockNumber: event.block.number,
+      blockTimestamp: event.block.timestamp,
+      transactionHash: event.transaction.hash,
+    },
+    update: {
+      adSpaceId: event.args.listingId.toString(),
+      flowRate,
+      weeklyFlowRate: flowRate * BigInt(60 * 60 * 24 * 7),
+      blockNumber: event.block.number,
+      blockTimestamp: event.block.timestamp,
+      transactionHash: event.transaction.hash,
+    },
+  });
+
+  if (await AdSpace.findUnique({ id: adId })) {
+    await AdSpace.update({
+      id: adId,
+      data: {
+        flowId: adId,
+      },
+    });
+  }
+});

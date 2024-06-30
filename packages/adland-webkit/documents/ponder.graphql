@@ -58,6 +58,16 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           blockNumber
           transactionHash
         }
+        flowId
+        flow {
+          id
+          adSpaceId
+          flowRate
+          weeklyFlowRate
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
         metadatas(
           where: $adGroup_adSpaces_adSpaces_items_items_metadatas_where
           orderBy: $adGroup_adSpaces_adSpaces_items_items_metadatas_orderBy
@@ -182,6 +192,16 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
             frameRedirectUrl
             noBillboard
             blockNumber
+            transactionHash
+          }
+          flowId
+          flow {
+            id
+            adSpaceId
+            flowRate
+            weeklyFlowRate
+            blockNumber
+            blockTimestamp
             transactionHash
           }
           tokenXId
@@ -332,6 +352,16 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       blockNumber
       transactionHash
     }
+    flowId
+    flow {
+      id
+      adSpaceId
+      flowRate
+      weeklyFlowRate
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
     metadatas(
       where: $adSpace_metadatas_where
       orderBy: $adSpace_metadatas_orderBy
@@ -455,6 +485,16 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         blockNumber
         transactionHash
       }
+      flowId
+      flow {
+        id
+        adSpaceId
+        flowRate
+        weeklyFlowRate
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       metadatas(
         where: $adSpaces_items_items_metadatas_where
         orderBy: $adSpaces_items_items_metadatas_orderBy
@@ -573,6 +613,16 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         blockTimestamp
       }
       currentMetadataId
+      flowId
+      flow {
+        id
+        adSpaceId
+        flowRate
+        weeklyFlowRate
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       metadatas(
         where: $adSpaceMetadata_adSpace_adSpace_metadatas_where
         orderBy: $adSpaceMetadata_adSpace_adSpace_metadatas_orderBy
@@ -674,6 +724,16 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
           blockTimestamp
         }
         currentMetadataId
+        flowId
+        flow {
+          id
+          adSpaceId
+          flowRate
+          weeklyFlowRate
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
         tokenXId
         tokenX {
           id
@@ -837,6 +897,280 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       tokenType
       status
       reserved
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}query adFlow($id: String!, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_where: AdSpaceFilter, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy: String, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection: String, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_before: String, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_after: String, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_limit: Int, $adFlow_adSpace_adSpace_metadatas_where: AdSpaceMetadataFilter, $adFlow_adSpace_adSpace_metadatas_orderBy: String, $adFlow_adSpace_adSpace_metadatas_orderDirection: String, $adFlow_adSpace_adSpace_metadatas_before: String, $adFlow_adSpace_adSpace_metadatas_after: String, $adFlow_adSpace_adSpace_metadatas_limit: Int) {
+  adFlow(id: $id) {
+    id
+    adSpaceId
+    adSpace {
+      id
+      owner
+      listingId
+      listing {
+        id
+        listingId
+        tokenId
+        quantity
+        pricePerToken
+        startTimestamp
+        endTimestamp
+        listingCreator
+        listingOwner
+        assetContract
+        currency
+        currencyName
+        currencySymbol
+        taxRate
+        taxBeneficiary
+        tokenType
+        status
+        reserved
+      }
+      adGroupId
+      adGroup {
+        id
+        beneficiary
+        adSpaces(
+          where: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_where
+          orderBy: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy
+          orderDirection: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection
+          before: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_before
+          after: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_after
+          limit: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_limit
+        ) {
+          pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
+        }
+        metadataId
+        metadata {
+          id
+          name
+          description
+          image
+          banner
+        }
+        blockTimestamp
+      }
+      currentMetadataId
+      currentMetadata {
+        id
+        adSpaceId
+        attestationId
+        attestation {
+          id
+          revoked
+          timestamp
+          transactionHash
+        }
+        name
+        description
+        image
+        imageGatewayUri
+        animationUrl
+        externalUrl
+        aspectRatio
+        frameRedirectUrl
+        noBillboard
+        blockNumber
+        transactionHash
+      }
+      flowId
+      metadatas(
+        where: $adFlow_adSpace_adSpace_metadatas_where
+        orderBy: $adFlow_adSpace_adSpace_metadatas_orderBy
+        orderDirection: $adFlow_adSpace_adSpace_metadatas_orderDirection
+        before: $adFlow_adSpace_adSpace_metadatas_before
+        after: $adFlow_adSpace_adSpace_metadatas_after
+        limit: $adFlow_adSpace_adSpace_metadatas_limit
+      ) {
+        items {
+          id
+          adSpaceId
+          attestationId
+          attestation {
+            id
+            revoked
+            timestamp
+            transactionHash
+          }
+          name
+          description
+          image
+          imageGatewayUri
+          animationUrl
+          externalUrl
+          aspectRatio
+          frameRedirectUrl
+          noBillboard
+          blockNumber
+          transactionHash
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+      tokenXId
+      tokenX {
+        id
+        underlyingToken
+        underlyingName
+        underlyingSymbol
+        superToken
+        superName
+        superSymbol
+        isNativeToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      transactionHash
+    }
+    flowRate
+    weeklyFlowRate
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}query adFlows($where: AdFlowFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adFlows_items_items_adSpace_adSpace_metadatas_where: AdSpaceMetadataFilter, $adFlows_items_items_adSpace_adSpace_metadatas_orderBy: String, $adFlows_items_items_adSpace_adSpace_metadatas_orderDirection: String, $adFlows_items_items_adSpace_adSpace_metadatas_before: String, $adFlows_items_items_adSpace_adSpace_metadatas_after: String, $adFlows_items_items_adSpace_adSpace_metadatas_limit: Int) {
+  adFlows(
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    before: $before
+    after: $after
+    limit: $limit
+  ) {
+    items {
+      id
+      adSpaceId
+      adSpace {
+        id
+        owner
+        listingId
+        listing {
+          id
+          listingId
+          tokenId
+          quantity
+          pricePerToken
+          startTimestamp
+          endTimestamp
+          listingCreator
+          listingOwner
+          assetContract
+          currency
+          currencyName
+          currencySymbol
+          taxRate
+          taxBeneficiary
+          tokenType
+          status
+          reserved
+        }
+        adGroupId
+        adGroup {
+          id
+          beneficiary
+          metadataId
+          metadata {
+            id
+            name
+            description
+            image
+            banner
+          }
+          blockTimestamp
+        }
+        currentMetadataId
+        currentMetadata {
+          id
+          adSpaceId
+          attestationId
+          attestation {
+            id
+            revoked
+            timestamp
+            transactionHash
+          }
+          name
+          description
+          image
+          imageGatewayUri
+          animationUrl
+          externalUrl
+          aspectRatio
+          frameRedirectUrl
+          noBillboard
+          blockNumber
+          transactionHash
+        }
+        flowId
+        metadatas(
+          where: $adFlows_items_items_adSpace_adSpace_metadatas_where
+          orderBy: $adFlows_items_items_adSpace_adSpace_metadatas_orderBy
+          orderDirection: $adFlows_items_items_adSpace_adSpace_metadatas_orderDirection
+          before: $adFlows_items_items_adSpace_adSpace_metadatas_before
+          after: $adFlows_items_items_adSpace_adSpace_metadatas_after
+          limit: $adFlows_items_items_adSpace_adSpace_metadatas_limit
+        ) {
+          items {
+            id
+            adSpaceId
+            attestationId
+            name
+            description
+            image
+            imageGatewayUri
+            animationUrl
+            externalUrl
+            aspectRatio
+            frameRedirectUrl
+            noBillboard
+            blockNumber
+            transactionHash
+          }
+          pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
+        }
+        tokenXId
+        tokenX {
+          id
+          underlyingToken
+          underlyingName
+          underlyingSymbol
+          superToken
+          superName
+          superSymbol
+          isNativeToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        transactionHash
+      }
+      flowRate
+      weeklyFlowRate
+      blockNumber
+      blockTimestamp
+      transactionHash
     }
     pageInfo {
       hasNextPage
