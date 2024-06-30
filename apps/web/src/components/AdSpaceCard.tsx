@@ -15,7 +15,7 @@ type AdSpaceCardProps = {
   owner: Address | string
   id: string
   currentMetadata?: Omit<AdSpaceMetadata, 'adSpace'> | null
-  flow: AdFlow | null
+  flow?: Omit<AdFlow, 'adSpace'> | null
 }
 
 const AdSpaceCard = ({
