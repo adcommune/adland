@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Separator } from '@/components/ui/separator'
 import { Address, formatEther } from 'viem'
 import TokenImage from '@/components/TokenImage'
-import { AdSpaceMetadata, Listing } from '@adland/webkit/src/ponder'
+import { AdFlow, AdSpaceMetadata, Listing } from '@adland/webkit/src/ponder'
 import { formatAmount } from '@/lib/helpers'
 import { getExplorerLink, truncateAddress } from '@/lib/utils'
 import { Badge } from './ui/badge'
@@ -15,6 +15,7 @@ type AdSpaceCardProps = {
   owner: Address | string
   id: string
   currentMetadata?: Omit<AdSpaceMetadata, 'adSpace'> | null
+  flow: AdFlow | null
 }
 
 const AdSpaceCard = ({
@@ -22,6 +23,7 @@ const AdSpaceCard = ({
   owner,
   listing,
   currentMetadata: metadata,
+  flow,
 }: AdSpaceCardProps) => {
   const { bicoAccountAddress } = useBiconomyAccount()
   const { pricePerToken, currency, taxRate, taxBeneficiary } = listing
@@ -30,6 +32,11 @@ const AdSpaceCard = ({
     owner?.toLowerCase() === taxBeneficiary?.toLowerCase()
   const ownedByYourself =
     owner?.toLowerCase() === bicoAccountAddress?.toLowerCase()
+  const ownedBySomeoneElseThanBeneficiart = owner !== taxBeneficiary
+
+  if (flow) {
+    console.log('flow', { flow })
+  }
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-md border border-white">
@@ -105,6 +112,23 @@ const AdSpaceCard = ({
             </Badge>
           </div>
         </div>
+        {ownedBySomeoneElseThanBeneficiart && (
+          <Badge className="flex flex-row gap-2 border">
+            <span className="relative flex h-3 w-3">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
+            </span>
+            {flow && (
+              <>
+                <div className="flex flex-row gap-1">
+                  {formatAmount(formatEther(flow.weeklyFlowRate))}
+                  <TokenImage address={currency} className="h-4 w-4" />
+                </div>
+                /week
+              </>
+            )}
+          </Badge>
+        )}
       </div>
     </div>
   )

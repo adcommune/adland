@@ -1281,6 +1281,673 @@ export const commonAdValidatorConfig = {
 } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ConstantFlowAgreementV1
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const constantFlowAgreementV1Abi = [
+  {
+    type: 'constructor',
+    inputs: [
+      { name: 'host', internalType: 'contract ISuperfluid', type: 'address' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'CFA_HOOK_GAS_LIMIT',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'DEFAULT_MINIMUM_DEPOSIT',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'MAXIMUM_DEPOSIT',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'MAXIMUM_FLOW_RATE',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'existingPermissions', internalType: 'uint8', type: 'uint8' },
+      { name: 'permissionDelta', internalType: 'uint8', type: 'uint8' },
+    ],
+    name: 'addPermissions',
+    outputs: [{ name: '', internalType: 'uint8', type: 'uint8' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'agreementType',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'authorizeFlowOperatorWithFullControl',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'castrate',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'createFlow',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'createFlowByOperator',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      {
+        name: 'subtractedFlowRateAllowance',
+        internalType: 'int96',
+        type: 'int96',
+      },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'decreaseFlowRateAllowance',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'permissionsToRemove', internalType: 'uint8', type: 'uint8' },
+      {
+        name: 'subtractedFlowRateAllowance',
+        internalType: 'int96',
+        type: 'int96',
+      },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'decreaseFlowRateAllowanceWithPermissions',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'deleteFlow',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'deleteFlowByOperator',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'getAccountFlowInfo',
+    outputs: [
+      { name: 'timestamp', internalType: 'uint256', type: 'uint256' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'deposit', internalType: 'uint256', type: 'uint256' },
+      { name: 'owedDeposit', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'getCodeAddress',
+    outputs: [
+      { name: 'codeAddress', internalType: 'address', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+    ],
+    name: 'getDepositRequiredForFlowRate',
+    outputs: [{ name: 'deposit', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+    ],
+    name: 'getFlow',
+    outputs: [
+      { name: 'timestamp', internalType: 'uint256', type: 'uint256' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'deposit', internalType: 'uint256', type: 'uint256' },
+      { name: 'owedDeposit', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowId', internalType: 'bytes32', type: 'bytes32' },
+    ],
+    name: 'getFlowByID',
+    outputs: [
+      { name: 'timestamp', internalType: 'uint256', type: 'uint256' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'deposit', internalType: 'uint256', type: 'uint256' },
+      { name: 'owedDeposit', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+    ],
+    name: 'getFlowOperatorData',
+    outputs: [
+      { name: 'flowOperatorId', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'permissions', internalType: 'uint8', type: 'uint8' },
+      { name: 'flowRateAllowance', internalType: 'int96', type: 'int96' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperatorId', internalType: 'bytes32', type: 'bytes32' },
+    ],
+    name: 'getFlowOperatorDataByID',
+    outputs: [
+      { name: 'permissions', internalType: 'uint8', type: 'uint8' },
+      { name: 'flowRateAllowance', internalType: 'int96', type: 'int96' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'deposit', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'getMaximumFlowRateFromDeposit',
+    outputs: [{ name: 'flowRate', internalType: 'int96', type: 'int96' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'getNetFlow',
+    outputs: [{ name: 'flowRate', internalType: 'int96', type: 'int96' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'addedFlowRateAllowance', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'increaseFlowRateAllowance',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'permissionsToAdd', internalType: 'uint8', type: 'uint8' },
+      { name: 'addedFlowRateAllowance', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'increaseFlowRateAllowanceWithPermissions',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'timestamp', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'isPatricianPeriod',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'isPatricianPeriodNow',
+    outputs: [
+      {
+        name: 'isCurrentlyPatricianPeriod',
+        internalType: 'bool',
+        type: 'bool',
+      },
+      { name: 'timestamp', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'proxiableUUID',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'time', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'realtimeBalanceOf',
+    outputs: [
+      { name: 'dynamicBalance', internalType: 'int256', type: 'int256' },
+      { name: 'deposit', internalType: 'uint256', type: 'uint256' },
+      { name: 'owedDeposit', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'existingPermissions', internalType: 'uint8', type: 'uint8' },
+      { name: 'permissionDelta', internalType: 'uint8', type: 'uint8' },
+    ],
+    name: 'removePermissions',
+    outputs: [{ name: '', internalType: 'uint8', type: 'uint8' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'revokeFlowOperatorWithFullControl',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newAddress', internalType: 'address', type: 'address' }],
+    name: 'updateCode',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'updateFlow',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'updateFlowByOperator',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'permissions', internalType: 'uint8', type: 'uint8' },
+      { name: 'flowRateAllowance', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'updateFlowOperatorPermissions',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'uuid',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+      {
+        name: 'codeAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'CodeUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'flowOperator',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'permissions',
+        internalType: 'uint8',
+        type: 'uint8',
+        indexed: false,
+      },
+      {
+        name: 'flowRateAllowance',
+        internalType: 'int96',
+        type: 'int96',
+        indexed: false,
+      },
+    ],
+    name: 'FlowOperatorUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'receiver',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'flowRate',
+        internalType: 'int96',
+        type: 'int96',
+        indexed: false,
+      },
+      {
+        name: 'totalSenderFlowRate',
+        internalType: 'int256',
+        type: 'int256',
+        indexed: false,
+      },
+      {
+        name: 'totalReceiverFlowRate',
+        internalType: 'int256',
+        type: 'int256',
+        indexed: false,
+      },
+      {
+        name: 'userData',
+        internalType: 'bytes',
+        type: 'bytes',
+        indexed: false,
+      },
+    ],
+    name: 'FlowUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'flowOperator',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'deposit',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'FlowUpdatedExtension',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'version', internalType: 'uint8', type: 'uint8', indexed: false },
+    ],
+    name: 'Initialized',
+  },
+  { type: 'error', inputs: [], name: 'AGREEMENT_BASE_ONLY_HOST' },
+  {
+    type: 'error',
+    inputs: [{ name: '_code', internalType: 'uint256', type: 'uint256' }],
+    name: 'APP_RULE',
+  },
+  { type: 'error', inputs: [], name: 'CFA_ACL_FLOW_RATE_ALLOWANCE_EXCEEDED' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_NO_NEGATIVE_ALLOWANCE' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_NO_SENDER_CREATE' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_NO_SENDER_FLOW_OPERATOR' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_NO_SENDER_UPDATE' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_OPERATOR_NO_CREATE_PERMISSIONS' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_OPERATOR_NO_DELETE_PERMISSIONS' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_OPERATOR_NO_UPDATE_PERMISSIONS' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_UNCLEAN_PERMISSIONS' },
+  { type: 'error', inputs: [], name: 'CFA_DEPOSIT_TOO_BIG' },
+  { type: 'error', inputs: [], name: 'CFA_FLOW_ALREADY_EXISTS' },
+  { type: 'error', inputs: [], name: 'CFA_FLOW_DOES_NOT_EXIST' },
+  { type: 'error', inputs: [], name: 'CFA_FLOW_RATE_TOO_BIG' },
+  { type: 'error', inputs: [], name: 'CFA_HOOK_OUT_OF_GAS' },
+  { type: 'error', inputs: [], name: 'CFA_INSUFFICIENT_BALANCE' },
+  { type: 'error', inputs: [], name: 'CFA_INVALID_FLOW_RATE' },
+  { type: 'error', inputs: [], name: 'CFA_NON_CRITICAL_SENDER' },
+  { type: 'error', inputs: [], name: 'CFA_NO_SELF_FLOW' },
+  { type: 'error', inputs: [], name: 'CFA_ZERO_ADDRESS_RECEIVER' },
+  { type: 'error', inputs: [], name: 'CFA_ZERO_ADDRESS_SENDER' },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // DirectListingsLogic
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1741,6 +2408,37 @@ export const directListingsLogicAbi = [
       },
     ],
     name: 'NewSale',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'listingId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'receiver',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'flowRate',
+        internalType: 'int96',
+        type: 'int96',
+        indexed: false,
+      },
+    ],
+    name: 'UpdateAdFLowRate',
   },
   {
     type: 'event',
@@ -7728,6 +8426,525 @@ export const useWatchCommonAdValidatorRevokeAdEvent =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__
+ */
+export const useReadConstantFlowAgreementV1 =
+  /*#__PURE__*/ createUseReadContract({ abi: constantFlowAgreementV1Abi })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"CFA_HOOK_GAS_LIMIT"`
+ */
+export const useReadConstantFlowAgreementV1CfaHookGasLimit =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'CFA_HOOK_GAS_LIMIT',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"DEFAULT_MINIMUM_DEPOSIT"`
+ */
+export const useReadConstantFlowAgreementV1DefaultMinimumDeposit =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'DEFAULT_MINIMUM_DEPOSIT',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"MAXIMUM_DEPOSIT"`
+ */
+export const useReadConstantFlowAgreementV1MaximumDeposit =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'MAXIMUM_DEPOSIT',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"MAXIMUM_FLOW_RATE"`
+ */
+export const useReadConstantFlowAgreementV1MaximumFlowRate =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'MAXIMUM_FLOW_RATE',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"addPermissions"`
+ */
+export const useReadConstantFlowAgreementV1AddPermissions =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'addPermissions',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"agreementType"`
+ */
+export const useReadConstantFlowAgreementV1AgreementType =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'agreementType',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getAccountFlowInfo"`
+ */
+export const useReadConstantFlowAgreementV1GetAccountFlowInfo =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getAccountFlowInfo',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getCodeAddress"`
+ */
+export const useReadConstantFlowAgreementV1GetCodeAddress =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getCodeAddress',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getDepositRequiredForFlowRate"`
+ */
+export const useReadConstantFlowAgreementV1GetDepositRequiredForFlowRate =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getDepositRequiredForFlowRate',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getFlow"`
+ */
+export const useReadConstantFlowAgreementV1GetFlow =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getFlow',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getFlowByID"`
+ */
+export const useReadConstantFlowAgreementV1GetFlowById =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getFlowByID',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getFlowOperatorData"`
+ */
+export const useReadConstantFlowAgreementV1GetFlowOperatorData =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getFlowOperatorData',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getFlowOperatorDataByID"`
+ */
+export const useReadConstantFlowAgreementV1GetFlowOperatorDataById =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getFlowOperatorDataByID',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getMaximumFlowRateFromDeposit"`
+ */
+export const useReadConstantFlowAgreementV1GetMaximumFlowRateFromDeposit =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getMaximumFlowRateFromDeposit',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getNetFlow"`
+ */
+export const useReadConstantFlowAgreementV1GetNetFlow =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getNetFlow',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"isPatricianPeriod"`
+ */
+export const useReadConstantFlowAgreementV1IsPatricianPeriod =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'isPatricianPeriod',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"isPatricianPeriodNow"`
+ */
+export const useReadConstantFlowAgreementV1IsPatricianPeriodNow =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'isPatricianPeriodNow',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"proxiableUUID"`
+ */
+export const useReadConstantFlowAgreementV1ProxiableUuid =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'proxiableUUID',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"realtimeBalanceOf"`
+ */
+export const useReadConstantFlowAgreementV1RealtimeBalanceOf =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'realtimeBalanceOf',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"removePermissions"`
+ */
+export const useReadConstantFlowAgreementV1RemovePermissions =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'removePermissions',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__
+ */
+export const useWriteConstantFlowAgreementV1 =
+  /*#__PURE__*/ createUseWriteContract({ abi: constantFlowAgreementV1Abi })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"authorizeFlowOperatorWithFullControl"`
+ */
+export const useWriteConstantFlowAgreementV1AuthorizeFlowOperatorWithFullControl =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'authorizeFlowOperatorWithFullControl',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"castrate"`
+ */
+export const useWriteConstantFlowAgreementV1Castrate =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'castrate',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"createFlow"`
+ */
+export const useWriteConstantFlowAgreementV1CreateFlow =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'createFlow',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"createFlowByOperator"`
+ */
+export const useWriteConstantFlowAgreementV1CreateFlowByOperator =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'createFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"decreaseFlowRateAllowance"`
+ */
+export const useWriteConstantFlowAgreementV1DecreaseFlowRateAllowance =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'decreaseFlowRateAllowance',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"decreaseFlowRateAllowanceWithPermissions"`
+ */
+export const useWriteConstantFlowAgreementV1DecreaseFlowRateAllowanceWithPermissions =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'decreaseFlowRateAllowanceWithPermissions',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"deleteFlow"`
+ */
+export const useWriteConstantFlowAgreementV1DeleteFlow =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'deleteFlow',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"deleteFlowByOperator"`
+ */
+export const useWriteConstantFlowAgreementV1DeleteFlowByOperator =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'deleteFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"increaseFlowRateAllowance"`
+ */
+export const useWriteConstantFlowAgreementV1IncreaseFlowRateAllowance =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'increaseFlowRateAllowance',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"increaseFlowRateAllowanceWithPermissions"`
+ */
+export const useWriteConstantFlowAgreementV1IncreaseFlowRateAllowanceWithPermissions =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'increaseFlowRateAllowanceWithPermissions',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"revokeFlowOperatorWithFullControl"`
+ */
+export const useWriteConstantFlowAgreementV1RevokeFlowOperatorWithFullControl =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'revokeFlowOperatorWithFullControl',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateCode"`
+ */
+export const useWriteConstantFlowAgreementV1UpdateCode =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateCode',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlow"`
+ */
+export const useWriteConstantFlowAgreementV1UpdateFlow =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlow',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlowByOperator"`
+ */
+export const useWriteConstantFlowAgreementV1UpdateFlowByOperator =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlowOperatorPermissions"`
+ */
+export const useWriteConstantFlowAgreementV1UpdateFlowOperatorPermissions =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlowOperatorPermissions',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__
+ */
+export const useSimulateConstantFlowAgreementV1 =
+  /*#__PURE__*/ createUseSimulateContract({ abi: constantFlowAgreementV1Abi })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"authorizeFlowOperatorWithFullControl"`
+ */
+export const useSimulateConstantFlowAgreementV1AuthorizeFlowOperatorWithFullControl =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'authorizeFlowOperatorWithFullControl',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"castrate"`
+ */
+export const useSimulateConstantFlowAgreementV1Castrate =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'castrate',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"createFlow"`
+ */
+export const useSimulateConstantFlowAgreementV1CreateFlow =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'createFlow',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"createFlowByOperator"`
+ */
+export const useSimulateConstantFlowAgreementV1CreateFlowByOperator =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'createFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"decreaseFlowRateAllowance"`
+ */
+export const useSimulateConstantFlowAgreementV1DecreaseFlowRateAllowance =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'decreaseFlowRateAllowance',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"decreaseFlowRateAllowanceWithPermissions"`
+ */
+export const useSimulateConstantFlowAgreementV1DecreaseFlowRateAllowanceWithPermissions =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'decreaseFlowRateAllowanceWithPermissions',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"deleteFlow"`
+ */
+export const useSimulateConstantFlowAgreementV1DeleteFlow =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'deleteFlow',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"deleteFlowByOperator"`
+ */
+export const useSimulateConstantFlowAgreementV1DeleteFlowByOperator =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'deleteFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"increaseFlowRateAllowance"`
+ */
+export const useSimulateConstantFlowAgreementV1IncreaseFlowRateAllowance =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'increaseFlowRateAllowance',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"increaseFlowRateAllowanceWithPermissions"`
+ */
+export const useSimulateConstantFlowAgreementV1IncreaseFlowRateAllowanceWithPermissions =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'increaseFlowRateAllowanceWithPermissions',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"revokeFlowOperatorWithFullControl"`
+ */
+export const useSimulateConstantFlowAgreementV1RevokeFlowOperatorWithFullControl =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'revokeFlowOperatorWithFullControl',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateCode"`
+ */
+export const useSimulateConstantFlowAgreementV1UpdateCode =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateCode',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlow"`
+ */
+export const useSimulateConstantFlowAgreementV1UpdateFlow =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlow',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlowByOperator"`
+ */
+export const useSimulateConstantFlowAgreementV1UpdateFlowByOperator =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlowOperatorPermissions"`
+ */
+export const useSimulateConstantFlowAgreementV1UpdateFlowOperatorPermissions =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlowOperatorPermissions',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__
+ */
+export const useWatchConstantFlowAgreementV1Event =
+  /*#__PURE__*/ createUseWatchContractEvent({ abi: constantFlowAgreementV1Abi })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `eventName` set to `"CodeUpdated"`
+ */
+export const useWatchConstantFlowAgreementV1CodeUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: constantFlowAgreementV1Abi,
+    eventName: 'CodeUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `eventName` set to `"FlowOperatorUpdated"`
+ */
+export const useWatchConstantFlowAgreementV1FlowOperatorUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: constantFlowAgreementV1Abi,
+    eventName: 'FlowOperatorUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `eventName` set to `"FlowUpdated"`
+ */
+export const useWatchConstantFlowAgreementV1FlowUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: constantFlowAgreementV1Abi,
+    eventName: 'FlowUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `eventName` set to `"FlowUpdatedExtension"`
+ */
+export const useWatchConstantFlowAgreementV1FlowUpdatedExtensionEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: constantFlowAgreementV1Abi,
+    eventName: 'FlowUpdatedExtension',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `eventName` set to `"Initialized"`
+ */
+export const useWatchConstantFlowAgreementV1InitializedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: constantFlowAgreementV1Abi,
+    eventName: 'Initialized',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link directListingsLogicAbi}__
  *
  * -
@@ -8198,6 +9415,21 @@ export const useWatchDirectListingsLogicNewSaleEvent =
     abi: directListingsLogicAbi,
     address: directListingsLogicAddress,
     eventName: 'NewSale',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link directListingsLogicAbi}__ and `eventName` set to `"UpdateAdFLowRate"`
+ *
+ * -
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x9825f700754534108BFE2239C9e66a12FDEBB33e)
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0xcCFF64eEff05Bb1F7e80Fe965A5E57ed588FBF94)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x44f808B028cD582b21C04f6de3580029d3E31Cb6)
+ */
+export const useWatchDirectListingsLogicUpdateAdFLowRateEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: directListingsLogicAbi,
+    address: directListingsLogicAddress,
+    eventName: 'UpdateAdFLowRate',
   })
 
 /**

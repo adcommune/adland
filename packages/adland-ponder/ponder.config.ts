@@ -2,7 +2,7 @@ import { createConfig } from "@ponder/core";
 import { http } from "viem";
 
 import { CommonAdSpacesAbi } from "./abis/CommonAdSpacesAbi";
-import { DirectListingAbi } from "./abis/DirectListingAbi";
+import { directListingsLogicAbi } from "./abis/DirectListingAbi";
 import { commonAdValidatorAbi } from "./abis/CommonAdValidator";
 
 const mainnet = process.env.STAGE === "mainnet";
@@ -32,7 +32,7 @@ export default createConfig({
         DirectListing: {
           network: "base",
           address: "0x9825f700754534108BFE2239C9e66a12FDEBB33e",
-          abi: DirectListingAbi,
+          abi: directListingsLogicAbi,
           startBlock: 13846869,
         },
       }
@@ -46,7 +46,7 @@ export default createConfig({
         DirectListing: {
           network: "optimism-sepolia",
           address: "0x44f808B028cD582b21C04f6de3580029d3E31Cb6",
-          abi: DirectListingAbi,
+          abi: directListingsLogicAbi,
           startBlock: 13331750,
         },
         CommonAdValidator: {

@@ -18,6 +18,91 @@ export type Scalars = {
   BigInt: { input: any; output: any; }
 };
 
+export type AdFlow = {
+  __typename?: 'AdFlow';
+  adSpace: AdSpace;
+  adSpaceId: Scalars['String']['output'];
+  blockNumber: Scalars['BigInt']['output'];
+  blockTimestamp: Scalars['BigInt']['output'];
+  flowRate: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+  transactionHash: Scalars['String']['output'];
+  weeklyFlowRate: Scalars['BigInt']['output'];
+};
+
+export type AdFlowFilter = {
+  AND?: InputMaybe<Array<InputMaybe<AdFlowFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<AdFlowFilter>>>;
+  adSpaceId?: InputMaybe<Scalars['String']['input']>;
+  adSpaceId_contains?: InputMaybe<Scalars['String']['input']>;
+  adSpaceId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  adSpaceId_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  adSpaceId_not?: InputMaybe<Scalars['String']['input']>;
+  adSpaceId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  adSpaceId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  adSpaceId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  adSpaceId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  adSpaceId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_in?: InputMaybe<Array<InputMaybe<Scalars['BigInt']['input']>>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<InputMaybe<Scalars['BigInt']['input']>>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_in?: InputMaybe<Array<InputMaybe<Scalars['BigInt']['input']>>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not_in?: InputMaybe<Array<InputMaybe<Scalars['BigInt']['input']>>>;
+  flowRate?: InputMaybe<Scalars['BigInt']['input']>;
+  flowRate_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  flowRate_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  flowRate_in?: InputMaybe<Array<InputMaybe<Scalars['BigInt']['input']>>>;
+  flowRate_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  flowRate_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  flowRate_not?: InputMaybe<Scalars['BigInt']['input']>;
+  flowRate_not_in?: InputMaybe<Array<InputMaybe<Scalars['BigInt']['input']>>>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  id_not?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  id_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id_starts_with?: InputMaybe<Scalars['String']['input']>;
+  transactionHash?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_contains?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_ends_with?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  transactionHash_not?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  transactionHash_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  transactionHash_starts_with?: InputMaybe<Scalars['String']['input']>;
+  weeklyFlowRate?: InputMaybe<Scalars['BigInt']['input']>;
+  weeklyFlowRate_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  weeklyFlowRate_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  weeklyFlowRate_in?: InputMaybe<Array<InputMaybe<Scalars['BigInt']['input']>>>;
+  weeklyFlowRate_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  weeklyFlowRate_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  weeklyFlowRate_not?: InputMaybe<Scalars['BigInt']['input']>;
+  weeklyFlowRate_not_in?: InputMaybe<Array<InputMaybe<Scalars['BigInt']['input']>>>;
+};
+
+export type AdFlowPage = {
+  __typename?: 'AdFlowPage';
+  items: Array<AdFlow>;
+  pageInfo: PageInfo;
+};
+
 export type AdGroup = {
   __typename?: 'AdGroup';
   adSpaces?: Maybe<AdSpacePage>;
@@ -163,6 +248,8 @@ export type AdSpace = {
   adGroupId: Scalars['String']['output'];
   currentMetadata?: Maybe<AdSpaceMetadata>;
   currentMetadataId?: Maybe<Scalars['String']['output']>;
+  flow?: Maybe<AdFlow>;
+  flowId?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   listing: Listing;
   listingId: Scalars['String']['output'];
@@ -206,6 +293,16 @@ export type AdSpaceFilter = {
   currentMetadataId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   currentMetadataId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   currentMetadataId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  flowId?: InputMaybe<Scalars['String']['input']>;
+  flowId_contains?: InputMaybe<Scalars['String']['input']>;
+  flowId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  flowId_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  flowId_not?: InputMaybe<Scalars['String']['input']>;
+  flowId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  flowId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  flowId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  flowId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  flowId_starts_with?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   id_contains?: InputMaybe<Scalars['String']['input']>;
   id_ends_with?: InputMaybe<Scalars['String']['input']>;
@@ -677,6 +774,8 @@ export type PageInfo = {
 
 export type Query = {
   __typename?: 'Query';
+  adFlow?: Maybe<AdFlow>;
+  adFlows: AdFlowPage;
   adGroup?: Maybe<AdGroup>;
   adGroupMetadata?: Maybe<AdGroupMetadata>;
   adGroupMetadatas: AdGroupMetadataPage;
@@ -691,6 +790,21 @@ export type Query = {
   listings: ListingPage;
   tokenX?: Maybe<TokenX>;
   tokenXs: TokenXPage;
+};
+
+
+export type QueryAdFlowArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryAdFlowsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Scalars['String']['input']>;
+  orderDirection?: InputMaybe<Scalars['String']['input']>;
+  where?: InputMaybe<AdFlowFilter>;
 };
 
 
@@ -941,7 +1055,7 @@ export type AdGroupQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null } | null };
+export type AdGroupQuery = { __typename?: 'Query', adGroup?: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, flowId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null } | null, flow?: { __typename?: 'AdFlow', id: string, adSpaceId: string, flowRate: any, weeklyFlowRate: any, blockNumber: any, blockTimestamp: any, transactionHash: string } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null } | null };
 
 export type AdGroupsQueryVariables = Exact<{
   where?: InputMaybe<AdGroupFilter>;
@@ -959,7 +1073,7 @@ export type AdGroupsQueryVariables = Exact<{
 }>;
 
 
-export type AdGroupsQuery = { __typename?: 'Query', adGroups: { __typename?: 'AdGroupPage', items: Array<{ __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+export type AdGroupsQuery = { __typename?: 'Query', adGroups: { __typename?: 'AdGroupPage', items: Array<{ __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, flowId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string } | null, flow?: { __typename?: 'AdFlow', id: string, adSpaceId: string, flowRate: any, weeklyFlowRate: any, blockNumber: any, blockTimestamp: any, transactionHash: string } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
 
 export type AdGroupMetadataQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -997,7 +1111,7 @@ export type AdSpaceQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } } | null };
+export type AdSpaceQuery = { __typename?: 'Query', adSpace?: { __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, flowId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null } | null, flow?: { __typename?: 'AdFlow', id: string, adSpaceId: string, flowRate: any, weeklyFlowRate: any, blockNumber: any, blockTimestamp: any, transactionHash: string } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } } | null };
 
 export type AdSpacesQueryVariables = Exact<{
   where?: InputMaybe<AdSpaceFilter>;
@@ -1015,7 +1129,7 @@ export type AdSpacesQueryVariables = Exact<{
 }>;
 
 
-export type AdSpacesQuery = { __typename?: 'Query', adSpaces: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+export type AdSpacesQuery = { __typename?: 'Query', adSpaces: { __typename?: 'AdSpacePage', items: Array<{ __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, flowId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null } | null, flow?: { __typename?: 'AdFlow', id: string, adSpaceId: string, flowRate: any, weeklyFlowRate: any, blockNumber: any, blockTimestamp: any, transactionHash: string } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
 
 export type AdSpaceMetadataQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -1034,7 +1148,7 @@ export type AdSpaceMetadataQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceMetadataQuery = { __typename?: 'Query', adSpaceMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, adSpace: { __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, metadatas?: { __typename?: 'AdSpaceMetadataPage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null } | null };
+export type AdSpaceMetadataQuery = { __typename?: 'Query', adSpaceMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, adSpace: { __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, flowId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, flow?: { __typename?: 'AdFlow', id: string, adSpaceId: string, flowRate: any, weeklyFlowRate: any, blockNumber: any, blockTimestamp: any, transactionHash: string } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null } | null };
 
 export type AdSpaceMetadatasQueryVariables = Exact<{
   where?: InputMaybe<AdSpaceMetadataFilter>;
@@ -1046,7 +1160,7 @@ export type AdSpaceMetadatasQueryVariables = Exact<{
 }>;
 
 
-export type AdSpaceMetadatasQuery = { __typename?: 'Query', adSpaceMetadatas: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, adSpace: { __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+export type AdSpaceMetadatasQuery = { __typename?: 'Query', adSpaceMetadatas: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, adSpace: { __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, flowId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, flow?: { __typename?: 'AdFlow', id: string, adSpaceId: string, flowRate: any, weeklyFlowRate: any, blockNumber: any, blockTimestamp: any, transactionHash: string } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } }, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
 
 export type AttestationQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -1104,6 +1218,43 @@ export type ListingsQueryVariables = Exact<{
 
 
 export type ListingsQuery = { __typename?: 'Query', listings: { __typename?: 'ListingPage', items: Array<{ __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
+
+export type AdFlowQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+  adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_where?: InputMaybe<AdSpaceFilter>;
+  adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy?: InputMaybe<Scalars['String']['input']>;
+  adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection?: InputMaybe<Scalars['String']['input']>;
+  adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_before?: InputMaybe<Scalars['String']['input']>;
+  adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_after?: InputMaybe<Scalars['String']['input']>;
+  adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_limit?: InputMaybe<Scalars['Int']['input']>;
+  adFlow_adSpace_adSpace_metadatas_where?: InputMaybe<AdSpaceMetadataFilter>;
+  adFlow_adSpace_adSpace_metadatas_orderBy?: InputMaybe<Scalars['String']['input']>;
+  adFlow_adSpace_adSpace_metadatas_orderDirection?: InputMaybe<Scalars['String']['input']>;
+  adFlow_adSpace_adSpace_metadatas_before?: InputMaybe<Scalars['String']['input']>;
+  adFlow_adSpace_adSpace_metadatas_after?: InputMaybe<Scalars['String']['input']>;
+  adFlow_adSpace_adSpace_metadatas_limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type AdFlowQuery = { __typename?: 'Query', adFlow?: { __typename?: 'AdFlow', id: string, adSpaceId: string, flowRate: any, weeklyFlowRate: any, blockNumber: any, blockTimestamp: any, transactionHash: string, adSpace: { __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, flowId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, adSpaces?: { __typename?: 'AdSpacePage', pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } } } | null };
+
+export type AdFlowsQueryVariables = Exact<{
+  where?: InputMaybe<AdFlowFilter>;
+  orderBy?: InputMaybe<Scalars['String']['input']>;
+  orderDirection?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  adFlows_items_items_adSpace_adSpace_metadatas_where?: InputMaybe<AdSpaceMetadataFilter>;
+  adFlows_items_items_adSpace_adSpace_metadatas_orderBy?: InputMaybe<Scalars['String']['input']>;
+  adFlows_items_items_adSpace_adSpace_metadatas_orderDirection?: InputMaybe<Scalars['String']['input']>;
+  adFlows_items_items_adSpace_adSpace_metadatas_before?: InputMaybe<Scalars['String']['input']>;
+  adFlows_items_items_adSpace_adSpace_metadatas_after?: InputMaybe<Scalars['String']['input']>;
+  adFlows_items_items_adSpace_adSpace_metadatas_limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type AdFlowsQuery = { __typename?: 'Query', adFlows: { __typename?: 'AdFlowPage', items: Array<{ __typename?: 'AdFlow', id: string, adSpaceId: string, flowRate: any, weeklyFlowRate: any, blockNumber: any, blockTimestamp: any, transactionHash: string, adSpace: { __typename?: 'AdSpace', id: string, owner: string, listingId: string, adGroupId: string, currentMetadataId?: string | null, flowId?: string | null, tokenXId: string, transactionHash: string, listing: { __typename?: 'Listing', id: string, listingId: any, tokenId: any, quantity: any, pricePerToken: any, startTimestamp: any, endTimestamp: any, listingCreator: string, listingOwner: string, assetContract: string, currency: string, currencyName: string, currencySymbol: string, taxRate: any, taxBeneficiary: string, tokenType: number, status: number, reserved: boolean }, adGroup: { __typename?: 'AdGroup', id: string, beneficiary: string, metadataId?: string | null, blockTimestamp: any, metadata?: { __typename?: 'AdGroupMetadata', id: string, name?: string | null, description?: string | null, image?: string | null, banner?: string | null } | null }, currentMetadata?: { __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string, attestation?: { __typename?: 'Attestation', id: string, revoked?: boolean | null, timestamp: any, transactionHash: string } | null } | null, metadatas?: { __typename?: 'AdSpaceMetadataPage', items: Array<{ __typename?: 'AdSpaceMetadata', id: string, adSpaceId: string, attestationId?: string | null, name: string, description: string, image: string, imageGatewayUri: string, animationUrl?: string | null, externalUrl?: string | null, aspectRatio: string, frameRedirectUrl?: string | null, noBillboard?: boolean | null, blockNumber: any, transactionHash: string }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null, tokenX: { __typename?: 'TokenX', id: string, underlyingToken: string, underlyingName: string, underlyingSymbol: string, superToken: string, superName: string, superSymbol: string, isNativeToken: boolean, blockNumber: any, blockTimestamp: any, transactionHash: string } } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } };
 
 
 export const AdGroupDocument = gql`
@@ -1165,6 +1316,16 @@ export const AdGroupDocument = gql`
           frameRedirectUrl
           noBillboard
           blockNumber
+          transactionHash
+        }
+        flowId
+        flow {
+          id
+          adSpaceId
+          flowRate
+          weeklyFlowRate
+          blockNumber
+          blockTimestamp
           transactionHash
         }
         metadatas(
@@ -1294,6 +1455,16 @@ export const AdGroupsDocument = gql`
             frameRedirectUrl
             noBillboard
             blockNumber
+            transactionHash
+          }
+          flowId
+          flow {
+            id
+            adSpaceId
+            flowRate
+            weeklyFlowRate
+            blockNumber
+            blockTimestamp
             transactionHash
           }
           tokenXId
@@ -1453,6 +1624,16 @@ export const AdSpaceDocument = gql`
       blockNumber
       transactionHash
     }
+    flowId
+    flow {
+      id
+      adSpaceId
+      flowRate
+      weeklyFlowRate
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
     metadatas(
       where: $adSpace_metadatas_where
       orderBy: $adSpace_metadatas_orderBy
@@ -1579,6 +1760,16 @@ export const AdSpacesDocument = gql`
         blockNumber
         transactionHash
       }
+      flowId
+      flow {
+        id
+        adSpaceId
+        flowRate
+        weeklyFlowRate
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       metadatas(
         where: $adSpaces_items_items_metadatas_where
         orderBy: $adSpaces_items_items_metadatas_orderBy
@@ -1700,6 +1891,16 @@ export const AdSpaceMetadataDocument = gql`
         blockTimestamp
       }
       currentMetadataId
+      flowId
+      flow {
+        id
+        adSpaceId
+        flowRate
+        weeklyFlowRate
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
       metadatas(
         where: $adSpaceMetadata_adSpace_adSpace_metadatas_where
         orderBy: $adSpaceMetadata_adSpace_adSpace_metadatas_orderBy
@@ -1804,6 +2005,16 @@ export const AdSpaceMetadatasDocument = gql`
           blockTimestamp
         }
         currentMetadataId
+        flowId
+        flow {
+          id
+          adSpaceId
+          flowRate
+          weeklyFlowRate
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
         tokenXId
         tokenX {
           id
@@ -1995,6 +2206,286 @@ export const ListingsDocument = gql`
   }
 }
     `;
+export const AdFlowDocument = gql`
+    query adFlow($id: String!, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_where: AdSpaceFilter, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy: String, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection: String, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_before: String, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_after: String, $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_limit: Int, $adFlow_adSpace_adSpace_metadatas_where: AdSpaceMetadataFilter, $adFlow_adSpace_adSpace_metadatas_orderBy: String, $adFlow_adSpace_adSpace_metadatas_orderDirection: String, $adFlow_adSpace_adSpace_metadatas_before: String, $adFlow_adSpace_adSpace_metadatas_after: String, $adFlow_adSpace_adSpace_metadatas_limit: Int) {
+  adFlow(id: $id) {
+    id
+    adSpaceId
+    adSpace {
+      id
+      owner
+      listingId
+      listing {
+        id
+        listingId
+        tokenId
+        quantity
+        pricePerToken
+        startTimestamp
+        endTimestamp
+        listingCreator
+        listingOwner
+        assetContract
+        currency
+        currencyName
+        currencySymbol
+        taxRate
+        taxBeneficiary
+        tokenType
+        status
+        reserved
+      }
+      adGroupId
+      adGroup {
+        id
+        beneficiary
+        adSpaces(
+          where: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_where
+          orderBy: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy
+          orderDirection: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_orderDirection
+          before: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_before
+          after: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_after
+          limit: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_limit
+        ) {
+          pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
+        }
+        metadataId
+        metadata {
+          id
+          name
+          description
+          image
+          banner
+        }
+        blockTimestamp
+      }
+      currentMetadataId
+      currentMetadata {
+        id
+        adSpaceId
+        attestationId
+        attestation {
+          id
+          revoked
+          timestamp
+          transactionHash
+        }
+        name
+        description
+        image
+        imageGatewayUri
+        animationUrl
+        externalUrl
+        aspectRatio
+        frameRedirectUrl
+        noBillboard
+        blockNumber
+        transactionHash
+      }
+      flowId
+      metadatas(
+        where: $adFlow_adSpace_adSpace_metadatas_where
+        orderBy: $adFlow_adSpace_adSpace_metadatas_orderBy
+        orderDirection: $adFlow_adSpace_adSpace_metadatas_orderDirection
+        before: $adFlow_adSpace_adSpace_metadatas_before
+        after: $adFlow_adSpace_adSpace_metadatas_after
+        limit: $adFlow_adSpace_adSpace_metadatas_limit
+      ) {
+        items {
+          id
+          adSpaceId
+          attestationId
+          attestation {
+            id
+            revoked
+            timestamp
+            transactionHash
+          }
+          name
+          description
+          image
+          imageGatewayUri
+          animationUrl
+          externalUrl
+          aspectRatio
+          frameRedirectUrl
+          noBillboard
+          blockNumber
+          transactionHash
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+      tokenXId
+      tokenX {
+        id
+        underlyingToken
+        underlyingName
+        underlyingSymbol
+        superToken
+        superName
+        superSymbol
+        isNativeToken
+        blockNumber
+        blockTimestamp
+        transactionHash
+      }
+      transactionHash
+    }
+    flowRate
+    weeklyFlowRate
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+}
+    `;
+export const AdFlowsDocument = gql`
+    query adFlows($where: AdFlowFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int, $adFlows_items_items_adSpace_adSpace_metadatas_where: AdSpaceMetadataFilter, $adFlows_items_items_adSpace_adSpace_metadatas_orderBy: String, $adFlows_items_items_adSpace_adSpace_metadatas_orderDirection: String, $adFlows_items_items_adSpace_adSpace_metadatas_before: String, $adFlows_items_items_adSpace_adSpace_metadatas_after: String, $adFlows_items_items_adSpace_adSpace_metadatas_limit: Int) {
+  adFlows(
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    before: $before
+    after: $after
+    limit: $limit
+  ) {
+    items {
+      id
+      adSpaceId
+      adSpace {
+        id
+        owner
+        listingId
+        listing {
+          id
+          listingId
+          tokenId
+          quantity
+          pricePerToken
+          startTimestamp
+          endTimestamp
+          listingCreator
+          listingOwner
+          assetContract
+          currency
+          currencyName
+          currencySymbol
+          taxRate
+          taxBeneficiary
+          tokenType
+          status
+          reserved
+        }
+        adGroupId
+        adGroup {
+          id
+          beneficiary
+          metadataId
+          metadata {
+            id
+            name
+            description
+            image
+            banner
+          }
+          blockTimestamp
+        }
+        currentMetadataId
+        currentMetadata {
+          id
+          adSpaceId
+          attestationId
+          attestation {
+            id
+            revoked
+            timestamp
+            transactionHash
+          }
+          name
+          description
+          image
+          imageGatewayUri
+          animationUrl
+          externalUrl
+          aspectRatio
+          frameRedirectUrl
+          noBillboard
+          blockNumber
+          transactionHash
+        }
+        flowId
+        metadatas(
+          where: $adFlows_items_items_adSpace_adSpace_metadatas_where
+          orderBy: $adFlows_items_items_adSpace_adSpace_metadatas_orderBy
+          orderDirection: $adFlows_items_items_adSpace_adSpace_metadatas_orderDirection
+          before: $adFlows_items_items_adSpace_adSpace_metadatas_before
+          after: $adFlows_items_items_adSpace_adSpace_metadatas_after
+          limit: $adFlows_items_items_adSpace_adSpace_metadatas_limit
+        ) {
+          items {
+            id
+            adSpaceId
+            attestationId
+            name
+            description
+            image
+            imageGatewayUri
+            animationUrl
+            externalUrl
+            aspectRatio
+            frameRedirectUrl
+            noBillboard
+            blockNumber
+            transactionHash
+          }
+          pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
+        }
+        tokenXId
+        tokenX {
+          id
+          underlyingToken
+          underlyingName
+          underlyingSymbol
+          superToken
+          superName
+          superSymbol
+          isNativeToken
+          blockNumber
+          blockTimestamp
+          transactionHash
+        }
+        transactionHash
+      }
+      flowRate
+      weeklyFlowRate
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -2044,6 +2535,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     listings(variables?: ListingsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<ListingsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<ListingsQuery>(ListingsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'listings', 'query', variables);
+    },
+    adFlow(variables: AdFlowQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdFlowQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdFlowQuery>(AdFlowDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adFlow', 'query', variables);
+    },
+    adFlows(variables?: AdFlowsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AdFlowsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AdFlowsQuery>(AdFlowsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adFlows', 'query', variables);
     }
   };
 }

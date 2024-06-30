@@ -13,9 +13,10 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
+import { getExplorerLink, truncateAddress } from '@/lib/utils'
 
 const AdGroupListItem = (group: AdGroupsQuery['adGroups']['items'][0]) => {
-  const { id, blockTimestamp, adSpaces, metadata } = group
+  const { id, blockTimestamp, adSpaces, metadata, beneficiary } = group
 
   return (
     <Link href={'/group/' + id} key={id}>
@@ -79,10 +80,19 @@ const AdGroupListItem = (group: AdGroupsQuery['adGroups']['items'][0]) => {
               )
             })}
         </CardContent>
-        <CardFooter className="flex justify-end p-4">
+        <CardFooter className="flex justify-between p-4">
+          <div className="flex flex-row items-end gap-2">
+            <Link href={getExplorerLink(beneficiary, 'address')}>
+              <p className="text-xs hover:underline">
+                Owner:{' '}
+                <span className="font-semibold">
+                  {truncateAddress(beneficiary)}
+                </span>
+              </p>
+            </Link>
+          </div>
           <div className="flex flex-wrap">
             <p className="text-xs text-gray-500">
-              created{' '}
               {formatDistance(parseInt(blockTimestamp) * 1000, Date.now())} ago
             </p>
           </div>
