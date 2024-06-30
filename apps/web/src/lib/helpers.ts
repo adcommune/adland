@@ -33,3 +33,4 @@ export const formatAmount = (amount: string) => {
   }
   return num.toFixed(2).replace(/\.00$/, '')
 }
+
