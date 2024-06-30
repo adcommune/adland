@@ -8,18 +8,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const truncateAddress = (address?: string, length?: number) => {
+export const truncateAddress = (address?: string | null, length?: number) => {
   if (!address) return ''
   return `${address.slice(0, length || 6)}...${address.slice(-4)}`
 }
-
 export const getExplorerLink = (
-  data: Address | string | undefined,
+  data: Address | string | undefined | null,
   path: 'tx' | 'address',
   chain: Chain = constants.chain,
 ) => {
   if (!data) return ''
   return `${chain?.blockExplorers?.default?.url}/${path}/${data}`
+}
+
+export const getWarpcastLink = (username: string | undefined | null) => {
+  if (!username) return ''
+  return `https://warpcast.com/${username}`
 }
 
 export const getGatewayUri = (ipfsURI: string) => {
