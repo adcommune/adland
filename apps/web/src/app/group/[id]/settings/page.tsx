@@ -96,7 +96,7 @@ const GroupSettingsForm = ({ data, id }: GroupSettingsFormProps) => {
 
   const { writeAsync } = useSmartAccountTxs({})
 
-  const { mutateAsync, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async (
       args: Pick<AdGroupMetadata, 'image' | 'name' | 'description' | 'banner'>,
     ) => {
@@ -104,40 +104,35 @@ const GroupSettingsForm = ({ data, id }: GroupSettingsFormProps) => {
       const hash = await uploadFile(metadata)
       const adIpfsURI = `ipfs://${hash}`
 
-      writeAsync(
-        {
-          transactions: [
-            {
-              to: appContracts.adCommonOwnership,
-              data: encodeFunctionData({
-                abi: commonAdSpacesAbi,
-                functionName: 'updateAdGroupMetadata',
-                args: [BigInt(id), adIpfsURI],
-              }),
-            },
-          ],
-        },
-        {
-          onSuccess: () => {
-            toast.success('Group metadata updated')
+      await writeAsync({
+        transactions: [
+          {
+            to: appContracts.adCommonOwnership,
+            data: encodeFunctionData({
+              abi: commonAdSpacesAbi,
+              functionName: 'updateAdGroupMetadata',
+              args: [BigInt(id), adIpfsURI],
+            }),
           },
-        },
-      )
+        ],
+      })
     },
   })
 
   const onSubmit = async (values: AdGroupMetadata) => {
-    mutateAsync(values).then(() => {
-      toast.success('Group metadata updated')
-      queryClient.setQueryData(
-        ['adGroup-', id],
-        (old: AdGroupQuery['adGroup']) => {
-          return {
-            ...old,
-            metadata: values,
-          }
-        },
-      )
+    mutate(values, {
+      onSuccess: () => {
+        toast.success('Group metadata updated')
+        queryClient.setQueryData(
+          ['adGroup-', id],
+          (old: AdGroupQuery['adGroup']) => {
+            return {
+              ...old,
+              metadata: values,
+            }
+          },
+        )
+      },
     })
   }
 
