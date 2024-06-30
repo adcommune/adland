@@ -42,7 +42,7 @@ ponder.on("UserBase:UserCreated", async ({ event, context }) => {
   await User.upsert({
     id: ars.smartAccount,
     create: {
-      fid: ars.fid,
+      fid: BigInt(ars.fid) || undefined,
       pfp,
       username,
       displayName,

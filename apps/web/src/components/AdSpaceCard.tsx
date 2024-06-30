@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Separator } from '@/components/ui/separator'
-import { Address, formatEther } from 'viem'
+import { formatEther } from 'viem'
 import TokenImage from '@/components/TokenImage'
 import {
   AdFlow,
@@ -101,12 +101,12 @@ const AdSpaceCard = ({
               href={getExplorerLink(owner, 'address')}
               target="_blank"
             >
-              {user ? (
+              {user?.fid ? (
                 <FarcasterUserSmallBadge user={user} />
-              ) : ownedByYourself ? (
-                'You'
               ) : (
-                <p className="font-bold">{truncateAddress(owner)}</p>
+                <p className="font-bold">
+                  {ownedByYourself ? 'You' : truncateAddress(owner)}
+                </p>
               )}
             </Link>
           </div>
