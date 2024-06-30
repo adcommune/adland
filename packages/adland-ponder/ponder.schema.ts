@@ -1,9 +1,20 @@
 import { createSchema } from "@ponder/core";
 
 export default createSchema((p) => ({
+  User: p.createTable({
+    // smartAccount address
+    id: p.string(),
+    fid: p.bigint().optional(),
+    pfp: p.string().optional(),
+    username: p.string().optional(),
+    displayName: p.string().optional(),
+    blockTimestamp: p.bigint(),
+    transactionHash: p.string(),
+  }),
   AdGroup: p.createTable({
     id: p.string(),
-    beneficiary: p.string(),
+    beneficiary: p.string().references("User.id").optional(),
+    user: p.one("beneficiary"),
     adSpaces: p.many("AdSpace.adGroupId"),
     metadataId: p.string().references("AdGroupMetadata.id").optional(),
     metadata: p.one("metadataId"),
@@ -18,7 +29,8 @@ export default createSchema((p) => ({
   }),
   AdSpace: p.createTable({
     id: p.string(),
-    owner: p.string(),
+    owner: p.string().references("User.id").optional(),
+    user: p.one("owner"),
     listingId: p.string().references("Listing.id"),
     listing: p.one("listingId"),
     adGroupId: p.string().references("AdGroup.id"),

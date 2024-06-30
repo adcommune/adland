@@ -35,6 +35,7 @@ export default defineConfig(async () => {
           "CommonAdValidator.sol/*.json",
           "IEAS.sol/*.json",
           "ConstantFlowAgreementV1.sol/*.json",
+          "UserBase.sol/*.json",
         ],
       }),
       react({}),

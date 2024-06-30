@@ -1,7 +1,51 @@
-query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adSpaces_orderBy: String, $adGroup_adSpaces_orderDirection: String, $adGroup_adSpaces_before: String, $adGroup_adSpaces_after: String, $adGroup_adSpaces_limit: Int, $adGroup_adSpaces_adSpaces_items_items_metadatas_where: AdSpaceMetadataFilter, $adGroup_adSpaces_adSpaces_items_items_metadatas_orderBy: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_orderDirection: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_before: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_after: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_limit: Int) {
+query user($id: String!) {
+  user(id: $id) {
+    id
+    fid
+    pfp
+    username
+    displayName
+    blockTimestamp
+    transactionHash
+  }
+}query users($where: UserFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int) {
+  users(
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    before: $before
+    after: $after
+    limit: $limit
+  ) {
+    items {
+      id
+      fid
+      pfp
+      username
+      displayName
+      blockTimestamp
+      transactionHash
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adSpaces_orderBy: String, $adGroup_adSpaces_orderDirection: String, $adGroup_adSpaces_before: String, $adGroup_adSpaces_after: String, $adGroup_adSpaces_limit: Int, $adGroup_adSpaces_adSpaces_items_items_metadatas_where: AdSpaceMetadataFilter, $adGroup_adSpaces_adSpaces_items_items_metadatas_orderBy: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_orderDirection: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_before: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_after: String, $adGroup_adSpaces_adSpaces_items_items_metadatas_limit: Int) {
   adGroup(id: $id) {
     id
     beneficiary
+    user {
+      id
+      fid
+      pfp
+      username
+      displayName
+      blockTimestamp
+      transactionHash
+    }
     adSpaces(
       where: $adGroup_adSpaces_where
       orderBy: $adGroup_adSpaces_orderBy
@@ -13,6 +57,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       items {
         id
         owner
+        user {
+          id
+          fid
+          pfp
+          username
+          displayName
+          blockTimestamp
+          transactionHash
+        }
         listingId
         listing {
           id
@@ -144,6 +197,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     items {
       id
       beneficiary
+      user {
+        id
+        fid
+        pfp
+        username
+        displayName
+        blockTimestamp
+        transactionHash
+      }
       adSpaces(
         where: $adGroups_items_items_adSpaces_where
         orderBy: $adGroups_items_items_adSpaces_orderBy
@@ -155,6 +217,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         items {
           id
           owner
+          user {
+            id
+            fid
+            pfp
+            username
+            displayName
+            blockTimestamp
+            transactionHash
+          }
           listingId
           listing {
             id
@@ -279,6 +350,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
   adSpace(id: $id) {
     id
     owner
+    user {
+      id
+      fid
+      pfp
+      username
+      displayName
+      blockTimestamp
+      transactionHash
+    }
     listingId
     listing {
       id
@@ -304,6 +384,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     adGroup {
       id
       beneficiary
+      user {
+        id
+        fid
+        pfp
+        username
+        displayName
+        blockTimestamp
+        transactionHash
+      }
       adSpaces(
         where: $adSpace_adGroup_adGroup_adSpaces_where
         orderBy: $adSpace_adGroup_adGroup_adSpaces_orderBy
@@ -427,6 +516,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     items {
       id
       owner
+      user {
+        id
+        fid
+        pfp
+        username
+        displayName
+        blockTimestamp
+        transactionHash
+      }
       listingId
       listing {
         id
@@ -452,6 +550,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       adGroup {
         id
         beneficiary
+        user {
+          id
+          fid
+          pfp
+          username
+          displayName
+          blockTimestamp
+          transactionHash
+        }
         metadataId
         metadata {
           id
@@ -562,6 +669,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     adSpace {
       id
       owner
+      user {
+        id
+        fid
+        pfp
+        username
+        displayName
+        blockTimestamp
+        transactionHash
+      }
       listingId
       listing {
         id
@@ -587,6 +703,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       adGroup {
         id
         beneficiary
+        user {
+          id
+          fid
+          pfp
+          username
+          displayName
+          blockTimestamp
+          transactionHash
+        }
         adSpaces(
           where: $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_where
           orderBy: $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy
@@ -688,6 +813,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       adSpace {
         id
         owner
+        user {
+          id
+          fid
+          pfp
+          username
+          displayName
+          blockTimestamp
+          transactionHash
+        }
         listingId
         listing {
           id
@@ -713,6 +847,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         adGroup {
           id
           beneficiary
+          user {
+            id
+            fid
+            pfp
+            username
+            displayName
+            blockTimestamp
+            transactionHash
+          }
           metadataId
           metadata {
             id
@@ -912,6 +1055,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
     adSpace {
       id
       owner
+      user {
+        id
+        fid
+        pfp
+        username
+        displayName
+        blockTimestamp
+        transactionHash
+      }
       listingId
       listing {
         id
@@ -937,6 +1089,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       adGroup {
         id
         beneficiary
+        user {
+          id
+          fid
+          pfp
+          username
+          displayName
+          blockTimestamp
+          transactionHash
+        }
         adSpaces(
           where: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_where
           orderBy: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_orderBy
@@ -1060,6 +1221,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
       adSpace {
         id
         owner
+        user {
+          id
+          fid
+          pfp
+          username
+          displayName
+          blockTimestamp
+          transactionHash
+        }
         listingId
         listing {
           id
@@ -1085,6 +1255,15 @@ query adGroup($id: String!, $adGroup_adSpaces_where: AdSpaceFilter, $adGroup_adS
         adGroup {
           id
           beneficiary
+          user {
+            id
+            fid
+            pfp
+            username
+            displayName
+            blockTimestamp
+            transactionHash
+          }
           metadataId
           metadata {
             id
