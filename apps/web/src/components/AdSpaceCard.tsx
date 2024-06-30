@@ -17,7 +17,7 @@ import FarcasterUserSmallBadge from './FarcasterUserSmallBadge'
 
 type AdSpaceCardProps = {
   listing: Listing
-  owner: Address | string
+  owner?: string | null
   id: string
   currentMetadata?: Omit<AdSpaceMetadata, 'adSpace'> | null
   flow?: Omit<AdFlow, 'adSpace'> | null
