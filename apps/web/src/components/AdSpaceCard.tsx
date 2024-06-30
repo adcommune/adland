@@ -3,19 +3,25 @@ import Image from 'next/image'
 import { Separator } from '@/components/ui/separator'
 import { Address, formatEther } from 'viem'
 import TokenImage from '@/components/TokenImage'
-import { AdFlow, AdSpaceMetadata, Listing } from '@adland/webkit/src/ponder'
+import {
+  AdFlow,
+  AdSpaceMetadata,
+  Listing,
+  User,
+} from '@adland/webkit/src/ponder'
 import { formatAmount } from '@/lib/helpers'
 import { getExplorerLink, truncateAddress } from '@/lib/utils'
 import { Badge } from './ui/badge'
 import { useBiconomyAccount } from '@/context/SmartAccountContext'
-import classNames from 'classnames'
+import FarcasterUserSmallBadge from './FarcasterUserSmallBadge'
 
 type AdSpaceCardProps = {
   listing: Listing
-  owner: Address | string
+  owner?: string | null
   id: string
   currentMetadata?: Omit<AdSpaceMetadata, 'adSpace'> | null
   flow?: Omit<AdFlow, 'adSpace'> | null
+  user?: User | null
 }
 
 const AdSpaceCard = ({
@@ -24,6 +30,7 @@ const AdSpaceCard = ({
   listing,
   currentMetadata: metadata,
   flow,
+  user,
 }: AdSpaceCardProps) => {
   const { bicoAccountAddress } = useBiconomyAccount()
   const { pricePerToken, currency, taxRate, taxBeneficiary } = listing
@@ -32,11 +39,7 @@ const AdSpaceCard = ({
     owner?.toLowerCase() === taxBeneficiary?.toLowerCase()
   const ownedByYourself =
     owner?.toLowerCase() === bicoAccountAddress?.toLowerCase()
-  const ownedBySomeoneElseThanBeneficiart = owner !== taxBeneficiary
-
-  if (flow) {
-    console.log('flow', { flow })
-  }
+  const ownedBySomeoneElseThanBeneficiary = owner !== taxBeneficiary
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-md border border-white">
@@ -90,29 +93,25 @@ const AdSpaceCard = ({
           )}
         </div>
       </Link>
-      <div className="white flex w-full flex-row justify-between bg-white bg-opacity-75 p-2 text-sm text-black">
+      <div className="white flex h-full w-full flex-row justify-between bg-white bg-opacity-75 p-2 text-sm text-black">
         <div className="flex flex-row items-center gap-1 text-sm">
           <div className="flex flex-row items-center gap-2 px-2">
-            <p className="text-xs">Owner</p>
-            <Badge
-              className={classNames('bg-[#1a0eed]', {
-                'bg-green-500': ownedByYourself,
-                'bg-black': ownedByBeneficiary,
-              })}
+            <Link
+              className="underline"
+              href={getExplorerLink(owner, 'address')}
+              target="_blank"
             >
-              <Link
-                className="underline"
-                href={getExplorerLink(owner, 'address')}
-                target="_blank"
-              >
-                <p className="font-bold">
-                  {ownedByYourself ? 'You' : truncateAddress(owner)}
-                </p>
-              </Link>
-            </Badge>
+              {user ? (
+                <FarcasterUserSmallBadge user={user} />
+              ) : ownedByYourself ? (
+                'You'
+              ) : (
+                <p className="font-bold">{truncateAddress(owner)}</p>
+              )}
+            </Link>
           </div>
         </div>
-        {ownedBySomeoneElseThanBeneficiart && (
+        {ownedBySomeoneElseThanBeneficiary && (
           <Badge className="flex flex-row gap-2 border">
             <span className="relative flex h-3 w-3">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>

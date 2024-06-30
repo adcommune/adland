@@ -14,9 +14,10 @@ import {
   CardTitle,
 } from '../ui/card'
 import { getExplorerLink, truncateAddress } from '@/lib/utils'
+import FarcasterUserSmallBadge from '../FarcasterUserSmallBadge'
 
 const AdGroupListItem = (group: AdGroupsQuery['adGroups']['items'][0]) => {
-  const { id, blockTimestamp, adSpaces, metadata, beneficiary } = group
+  const { id, blockTimestamp, adSpaces, metadata, beneficiary, user } = group
 
   return (
     <Link href={'/group/' + id} key={id}>
@@ -82,14 +83,18 @@ const AdGroupListItem = (group: AdGroupsQuery['adGroups']['items'][0]) => {
         </CardContent>
         <CardFooter className="flex justify-between p-4">
           <div className="flex flex-row items-end gap-2">
-            <Link href={getExplorerLink(beneficiary, 'address')}>
-              <p className="text-xs hover:underline">
-                Owner:{' '}
-                <span className="font-semibold">
-                  {truncateAddress(beneficiary)}
-                </span>
-              </p>
-            </Link>
+            {user ? (
+              <FarcasterUserSmallBadge user={user} />
+            ) : (
+              <Link href={getExplorerLink(beneficiary, 'address')}>
+                <p className="text-xs hover:underline">
+                  Owner:{' '}
+                  <span className="font-semibold">
+                    {truncateAddress(beneficiary)}
+                  </span>
+                </p>
+              </Link>
+            )}
           </div>
           <div className="flex flex-wrap">
             <p className="text-xs text-gray-500">

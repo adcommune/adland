@@ -6766,6 +6766,181 @@ export const superTokenAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// UserBase
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const userBaseAbi = [
+  {
+    type: 'function',
+    inputs: [
+      { name: 'smartAccount', internalType: 'address', type: 'address' },
+      { name: 'fid', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'addUser',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'proxiableUUID',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'newImplementation', internalType: 'address', type: 'address' },
+    ],
+    name: 'upgradeTo',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'newImplementation', internalType: 'address', type: 'address' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'upgradeToAndCall',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'newAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'AdminChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'beacon',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'BeaconUpgraded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'version', internalType: 'uint8', type: 'uint8', indexed: false },
+    ],
+    name: 'Initialized',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'OwnershipTransferred',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'implementation',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'Upgraded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'smartAccount',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'fid', internalType: 'uint256', type: 'uint256', indexed: true },
+    ],
+    name: 'UserCreated',
+  },
+] as const
+
+/**
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const userBaseAddress = {
+  11155420: '0x2Bb04c711813685187F52d2f096ff715A5C4287C',
+} as const
+
+/**
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const userBaseConfig = {
+  address: userBaseAddress,
+  abi: userBaseAbi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // React
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -13134,4 +13309,277 @@ export const useWatchSuperTokenTransferEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: superTokenAbi,
     eventName: 'Transfer',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link userBaseAbi}__
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useReadUserBase = /*#__PURE__*/ createUseReadContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"owner"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useReadUserBaseOwner = /*#__PURE__*/ createUseReadContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+  functionName: 'owner',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"proxiableUUID"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useReadUserBaseProxiableUuid = /*#__PURE__*/ createUseReadContract(
+  { abi: userBaseAbi, address: userBaseAddress, functionName: 'proxiableUUID' },
+)
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBase = /*#__PURE__*/ createUseWriteContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"addUser"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseAddUser = /*#__PURE__*/ createUseWriteContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+  functionName: 'addUser',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"initialize"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseInitialize = /*#__PURE__*/ createUseWriteContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+  functionName: 'initialize',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"renounceOwnership"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseRenounceOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"transferOwnership"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseTransferOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"upgradeTo"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseUpgradeTo = /*#__PURE__*/ createUseWriteContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+  functionName: 'upgradeTo',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"upgradeToAndCall"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseUpgradeToAndCall =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'upgradeToAndCall',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBase = /*#__PURE__*/ createUseSimulateContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"addUser"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseAddUser =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'addUser',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"initialize"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseInitialize =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'initialize',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"renounceOwnership"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseRenounceOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"transferOwnership"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseTransferOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"upgradeTo"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseUpgradeTo =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'upgradeTo',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"upgradeToAndCall"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseUpgradeToAndCall =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'upgradeToAndCall',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseEvent = /*#__PURE__*/ createUseWatchContractEvent({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+})
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"AdminChanged"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseAdminChangedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'AdminChanged',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"BeaconUpgraded"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseBeaconUpgradedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'BeaconUpgraded',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"Initialized"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseInitializedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'Initialized',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"OwnershipTransferred"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseOwnershipTransferredEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'OwnershipTransferred',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"Upgraded"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseUpgradedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'Upgraded',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"UserCreated"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseUserCreatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'UserCreated',
   })

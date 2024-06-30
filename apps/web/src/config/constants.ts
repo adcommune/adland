@@ -6,6 +6,7 @@ import { lowerCaseObjectKeys } from '@/lib/utils'
 import {
   commonAdSpacesAddress,
   directListingsLogicAddress,
+  userBaseAddress,
 } from '@adland/contracts'
 
 export const NATIVE_CURRENCY = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
@@ -142,4 +143,5 @@ export const appContracts = {
   marketplace: directListingsLogicAddress[appChain.id as AppChainIds],
   adCommonOwnership: commonAdSpacesAddress[appChain.id as AppChainIds],
   eas: '0x4200000000000000000000000000000000000021',
+  userBase: userBaseAddress[appChain.id as keyof typeof userBaseAddress],
 }

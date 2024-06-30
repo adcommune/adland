@@ -4,15 +4,83 @@ import { erc20Abi } from "../abis/ERC20";
 
 export const NATIVE_CURRENCY = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
+ponder.on("UserBase:UserCreated", async ({ event, context }) => {
+  const { User } = context.db;
+
+  const ars = event.args as {
+    smartAccount: Address;
+    fid: bigint;
+  };
+
+  let pfp = undefined;
+  let username = undefined;
+  let displayName = undefined;
+
+  if (ars.fid) {
+    const data = (await fetch(
+      "https://api.neynar.com/v2/farcaster/user/bulk?fids=" + ars.fid,
+      {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          api_key: "6FE85682-2067-4594-88CA-816AD2A8A837",
+        },
+      }
+    ).then((res) => res.json())) as {
+      users: {
+        display_name: string;
+        username: string;
+        pfp_url: string;
+      }[];
+    };
+
+    pfp = data.users[0]?.pfp_url;
+    displayName = data.users[0]?.display_name;
+    username = data.users[0]?.username;
+  }
+
+  await User.upsert({
+    id: ars.smartAccount,
+    create: {
+      fid: ars.fid,
+      pfp,
+      username,
+      displayName,
+      blockTimestamp: event.block.timestamp,
+      transactionHash: event.transaction.hash,
+    },
+    update: {
+      fid: ars.fid,
+      pfp,
+      username,
+      displayName,
+      blockTimestamp: event.block.timestamp,
+      transactionHash: event.transaction.hash,
+    },
+  });
+});
+
 ponder.on(
   "CommonAdSpaces:AdGroupCreated(uint256 indexed groupId, address indexed recipient)",
   async ({ event, context }) => {
-    const { AdGroup } = context.db;
+    const { AdGroup, User } = context.db;
+
+    const benef = event.args.recipient;
+
+    // if (!(await User.findUnique({ id: benef }))) {
+    //   await User.create({
+    //     id: benef,
+    //     data: {
+    //       blockTimestamp: event.block.timestamp,
+    //       transactionHash: event.transaction.hash,
+    //     },
+    //   });
+    // }
 
     await AdGroup.create({
       id: event.args.groupId.toString(),
       data: {
-        beneficiary: event.args.recipient,
+        beneficiary: benef,
         blockTimestamp: event.block.timestamp,
       },
     });

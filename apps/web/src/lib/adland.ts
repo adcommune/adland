@@ -11,11 +11,16 @@ import {
 } from '@adland/webkit/src/ponder'
 import { constants } from '@adland/common'
 import { AdCampaign } from './types'
-import { Address, PublicClient, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, PublicClient, zeroAddress } from 'viem'
 import { publicClient } from './viem'
-import { commonAdPoolAbi, commonAdSpacesAbi } from '@adland/contracts'
+import {
+  commonAdPoolAbi,
+  commonAdSpacesAbi,
+  userBaseAbi,
+} from '@adland/contracts'
 import { Superfluid } from './superfluid-subgraph'
 import { appContracts } from '@/config/constants'
+import { BiconomySmartAccountV2, PaymasterMode } from '@biconomy/account'
 
 export class AdLand {
   private ponder: ReturnType<typeof getPonder>
@@ -25,6 +30,55 @@ export class AdLand {
   constructor() {
     this.ponder = getPonder(new GraphQLClient(constants.ponderUrl, { fetch }))
     this.c = publicClient
+  }
+
+  async createUser(
+    acct: BiconomySmartAccountV2,
+    fid?: number | null,
+  ): Promise<void> {
+    const txRequest = await (
+      await acct.sendTransaction(
+        [
+          {
+            to: appContracts.userBase,
+            data: encodeFunctionData({
+              abi: userBaseAbi,
+              functionName: 'addUser',
+              args: [
+                await acct.getAddress(),
+                BigInt(fid ?? BigInt(0)) ?? BigInt(0),
+              ],
+            }),
+            value: BigInt(0),
+          },
+        ],
+        {
+          paymasterServiceData: {
+            mode: PaymasterMode.SPONSORED,
+            calculateGasLimits: true,
+          },
+        },
+      )
+    ).waitForTxHash()
+
+    if (txRequest) {
+      const { transactionHash } = txRequest
+
+      transactionHash &&
+        (await this.c
+          .waitForTransactionReceipt({
+            hash: transactionHash as Address,
+          })
+          .then(() => {
+            console.log('User created')
+          }))
+    }
+  }
+
+  async userExists(smartAccount: Address): Promise<boolean> {
+    return this.ponder
+      .user({ id: smartAccount })
+      .then((res) => Boolean(res.user))
   }
 
   async listSuperTokens(): Promise<TokenXsQuery['tokenXs']> {

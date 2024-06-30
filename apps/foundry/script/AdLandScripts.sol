@@ -14,8 +14,32 @@ import {UUPSProxy} from "../src/lib/UUPSProxy.sol";
 import {CommonAdSpaces} from "../src/CommonAdSpaces.sol";
 import {CommonAdValidator} from "../src/CommonAdValidator.sol";
 import {IEAS, ISchemaRegistry} from "eas/IEAS.sol";
+import {UserBase} from "../src/UserBase.sol";
 
 contract AdLandScripts is BaseSetup {
+    function updateDeployUserBase(
+        DeployementChain chain
+    ) public broadcastOn(chain) {
+        UserBase userBase = UserBase(_readDeployment("UserBase"));
+
+        UserBase newBase = new UserBase();
+
+        userBase.upgradeTo(address(newBase));
+    }
+
+    function deployUserBase(DeployementChain chain) public broadcastOn(chain) {
+        _initialize();
+
+        address userBase = address(
+            new UUPSProxy(
+                address(new UserBase()),
+                abi.encodeWithSelector(UserBase.initialize.selector)
+            )
+        );
+
+        _saveDeployment(userBase, "UserBase");
+    }
+
     function deployAdSpaceValidator(
         DeployementChain chain
     ) public broadcastOn(chain) {

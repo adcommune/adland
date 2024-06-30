@@ -28,7 +28,7 @@ import ForecloseDropdownItem from '@/components/AdSpaces/ForecloseDropdownItem'
 import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
 import AcquireLeaseModal from '@/components/AcquireLeaseModal'
 import { encodeFunctionData, formatEther } from 'viem'
-import { getExplorerLink, truncateAddress } from '@/lib/utils'
+import { getExplorerLink, getWarpcastLink, truncateAddress } from '@/lib/utils'
 import { format } from 'date-fns'
 import { Button } from '../ui/button'
 import { appContracts } from '@/config/constants'
@@ -44,6 +44,7 @@ import { queryClient } from '../AppProviders'
 import { AdSpaceQuery } from '@adland/webkit/src/ponder'
 import { toast } from 'sonner'
 import { merge } from 'lodash'
+import FarcasterUserSmallBadge from '../FarcasterUserSmallBadge'
 
 type AdDetailsSidebarProps = {
   spaceId: string
@@ -58,7 +59,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
   const { bicoAccountAddress: address } = useContext(SmartAccountContext)
   const { acquireLeaseModal, selfAssessmentModal } = useContext(ModalContext)
   const listing = adSpace?.listing
-  const isOwner = adSpace?.owner.toLowerCase() === address?.toLowerCase()
+  const isOwner = adSpace?.owner?.toLowerCase() === address?.toLowerCase()
   const isBeneficiary =
     listing?.taxBeneficiary?.toLowerCase() === address?.toLowerCase()
   const showDropdown = isOwner || isBeneficiary
@@ -212,7 +213,14 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 {listing || !isLoading ? (
                   <span>
                     {' '}
-                    {isOwner ? (
+                    {adSpace?.user ? (
+                      <Link
+                        href={getWarpcastLink(adSpace?.user?.username)}
+                        target="_blank"
+                      >
+                        <FarcasterUserSmallBadge user={adSpace?.user} />
+                      </Link>
+                    ) : isOwner ? (
                       ' you'
                     ) : (
                       <span>{truncateAddress(listing?.listingOwner)}</span>

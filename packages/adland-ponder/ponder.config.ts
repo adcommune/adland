@@ -4,6 +4,7 @@ import { http } from "viem";
 import { CommonAdSpacesAbi } from "./abis/CommonAdSpacesAbi";
 import { directListingsLogicAbi } from "./abis/DirectListingAbi";
 import { commonAdValidatorAbi } from "./abis/CommonAdValidator";
+import { userBaseAbi } from "./abis/UserBaseAbi";
 
 const mainnet = process.env.STAGE === "mainnet";
 
@@ -54,6 +55,12 @@ export default createConfig({
           address: "0x4B346185c3c26d8F99336155035226655D2ADBe1",
           abi: commonAdValidatorAbi,
           startBlock: 13756755,
+        },
+        UserBase: {
+          network: "optimism-sepolia",
+          address: "0x2Bb04c711813685187F52d2f096ff715A5C4287C",
+          abi: userBaseAbi,
+          startBlock: 13972799,
         },
       },
 });
