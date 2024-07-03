@@ -159,10 +159,6 @@ export class AdLand {
 
     let sfPool = undefined
 
-    if (sfPoolAddress && options?.withPoolDetails) {
-      sfPool = await this.sf.fetchPool(sfPoolAddress.toLowerCase())
-    }
-
     return {
       commonAdPoolAddress,
       sfPoolAddress,

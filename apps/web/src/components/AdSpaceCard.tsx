@@ -11,9 +11,9 @@ import {
 } from '@adland/webkit/src/ponder'
 import { formatAmount } from '@/lib/helpers'
 import { getExplorerLink, truncateAddress } from '@/lib/utils'
-import { Badge } from './ui/badge'
 import { useBiconomyAccount } from '@/context/SmartAccountContext'
 import FarcasterUserSmallBadge from './FarcasterUserSmallBadge'
+import FlowRateBadge from './FlowRateBadge'
 
 type AdSpaceCardProps = {
   listing: Listing
@@ -112,21 +112,7 @@ const AdSpaceCard = ({
           </div>
         </div>
         {ownedBySomeoneElseThanBeneficiary && (
-          <Badge className="flex flex-row gap-2 border">
-            <span className="relative flex h-3 w-3">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
-            </span>
-            {flow && (
-              <>
-                <div className="flex flex-row gap-1">
-                  {formatAmount(formatEther(flow.weeklyFlowRate))}
-                  <TokenImage address={currency} className="h-4 w-4" />
-                </div>
-                /week
-              </>
-            )}
-          </Badge>
+          <FlowRateBadge currency={currency} flowRate={flow?.weeklyFlowRate} />
         )}
       </div>
     </div>
