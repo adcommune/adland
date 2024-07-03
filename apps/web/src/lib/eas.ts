@@ -19,7 +19,8 @@ export const getAdValidationSchema = () => {
   const adValidationSchemaByChain: Record<AppChainIds, Address> = {
     [optimismSepolia.id]:
       '0xb3083a055999fa059123c4d1ea5d8c3ad000eff54cef71dbdd51fe5eed775bee',
-    [base.id]: '0x00',
+    [base.id]:
+      '0xb3538fe32c8a8dccf7baaccfae9b6c967e31bf2b4258f7f07fe64955ac113db2',
   }
 
   return adValidationSchemaByChain[constants.chain.id as AppChainIds]
