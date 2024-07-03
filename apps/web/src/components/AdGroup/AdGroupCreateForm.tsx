@@ -146,6 +146,7 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
                                   truncateAddress(token.underlyingToken)}
                               </p>
                               <TokenImage
+                                symbol={token.underlyingSymbol}
                                 address={token.underlyingToken}
                                 className="h-6 w-6"
                               />
