@@ -69,8 +69,9 @@ contract AdLandScripts is BaseSetup {
         address commonAdSapceAddress
     ) public broadcastOn(chain) {
         CommonAdSpaces(commonAdSapceAddress).setTokenX(
-            ISuperToken(usdcXBase).getUnderlyingToken(),
-            address(0)
+            ISuperToken(0x5f2Fab273F1F64b6bc6ab8F35314CD21501F35C5)
+                .getUnderlyingToken(),
+            0x5f2Fab273F1F64b6bc6ab8F35314CD21501F35C5
         );
     }
 

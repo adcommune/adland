@@ -10,25 +10,28 @@ const tokenSources: Record<string, string> = {
   USDC: '/tokens/usdc.webp',
   ETH: '/tokens/eth.png',
   TREE: '/tokens/tree.png',
+  HIGHER: '/tokens/higher.png',
 }
+
+type TokenImageProps = {
+  address: Address | string
+  symbol?: string
+} & React.HTMLAttributes<HTMLImageElement>
 
 const TokenImage = forwardRef(
   (
-    {
-      address,
-      className,
-    }: { address: Address | string } & React.HTMLAttributes<HTMLImageElement>,
+    { address, className, symbol }: TokenImageProps,
     ref: React.ForwardedRef<any>,
   ) => {
-    const symbol = getTokenSymbol(address) ?? 'ETH'
+    const smb = symbol ?? getTokenSymbol(address) ?? 'ETH'
     return (
       <Image
         ref={ref}
-        src={tokenSources[symbol]}
+        src={tokenSources[smb]}
         width={32}
         height={32}
         className={className}
-        alt={symbol}
+        alt={smb}
       />
     )
   },
