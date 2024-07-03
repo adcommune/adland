@@ -6,9 +6,13 @@ import { lowerCaseObjectKeys } from '@/lib/utils'
 import {
   commonAdSpacesAddress,
   directListingsLogicAddress,
+  userBaseAddress,
 } from '@adland/contracts'
 
 export const NATIVE_CURRENCY = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+
+export const emptyBytes =
+  '0x0000000000000000000000000000000000000000000000000000000000000000'
 
 export const ipfsGateway = `https://${constants.pinataPublicGateway}/ipfs`
 
@@ -138,4 +142,6 @@ export const appContracts = {
     superfluidAddresses[appChain.id as AppChainIds].gdaV1Forwarder,
   marketplace: directListingsLogicAddress[appChain.id as AppChainIds],
   adCommonOwnership: commonAdSpacesAddress[appChain.id as AppChainIds],
+  eas: '0x4200000000000000000000000000000000000021',
+  userBase: userBaseAddress[appChain.id as keyof typeof userBaseAddress],
 }

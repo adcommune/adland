@@ -4,12 +4,19 @@ import {
   BiconomySmartAccountV2,
   createSmartAccountClient,
 } from '@biconomy/account'
-import { createContext, useCallback, useEffect, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { Address } from 'viem'
-import { useWallets } from '@privy-io/react-auth'
+import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { biconomyBundlerURL, biconomyPaymasterApiKey } from '@/config/constants'
 import { constants } from '@adland/common'
 import { useBalance } from 'wagmi'
+import { AdLand } from '@/lib/adland'
 
 type SmartAccountContextState = {
   bicoAccount: BiconomySmartAccountV2 | undefined
@@ -24,6 +31,7 @@ const SmartAccountContext = createContext<SmartAccountContextState>({
 })
 
 const SmartAccountProvider = ({ children }: { children: React.ReactNode }) => {
+  const { user } = usePrivy()
   const [bicoAccount, setBicoAccount] = useState<
     BiconomySmartAccountV2 | undefined
   >(undefined)
@@ -39,7 +47,7 @@ const SmartAccountProvider = ({ children }: { children: React.ReactNode }) => {
   const buildBiconomySmartAccountClient = useCallback(async () => {
     const embeddedWallet = wallets.find((w) => w.walletClientType === 'privy')
 
-    if (!embeddedWallet) {
+    if (!embeddedWallet || !user) {
       setBicoAccount(undefined)
       setBicoAccountAddress(undefined)
       return
@@ -59,11 +67,15 @@ const SmartAccountProvider = ({ children }: { children: React.ReactNode }) => {
 
     setBicoAccount(smartAccount)
     setBicoAccountAddress(accountAddress)
-  }, [wallets])
+
+    if (!(await new AdLand().userExists(accountAddress)) && smartAccount) {
+      await new AdLand().createUser(smartAccount, user.farcaster?.fid)
+    }
+  }, [wallets, user])
 
   useEffect(() => {
     buildBiconomySmartAccountClient()
-  }, [wallets])
+  }, [wallets, user])
 
   return (
     <SmartAccountContext.Provider
@@ -76,6 +88,18 @@ const SmartAccountProvider = ({ children }: { children: React.ReactNode }) => {
       {children}
     </SmartAccountContext.Provider>
   )
+}
+
+export const useBiconomyAccount = () => {
+  const context = useContext(SmartAccountContext)
+
+  if (context === undefined) {
+    throw new Error(
+      'useBiconomyAccount must be used within a SmartAccountProvider',
+    )
+  }
+
+  return context
 }
 
 export { SmartAccountProvider, SmartAccountContext }

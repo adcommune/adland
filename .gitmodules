@@ -17,3 +17,6 @@
 [submodule "apps/foundry/lib/account-abstraction"]
 	path = apps/foundry/lib/account-abstraction
 	url = https://github.com/eth-infinitism/account-abstraction
+[submodule "apps/foundry/lib/eas-contracts"]
+	path = apps/foundry/lib/eas-contracts
+	url = https://github.com/ethereum-attestation-service/eas-contracts

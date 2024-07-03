@@ -27,15 +27,24 @@ import {
 import ForecloseDropdownItem from '@/components/AdSpaces/ForecloseDropdownItem'
 import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
 import AcquireLeaseModal from '@/components/AcquireLeaseModal'
-import { formatEther } from 'viem'
-import { getExplorerLink, truncateAddress } from '@/lib/utils'
+import { encodeFunctionData, formatEther } from 'viem'
+import { getExplorerLink, getWarpcastLink, truncateAddress } from '@/lib/utils'
 import { format } from 'date-fns'
 import { Button } from '../ui/button'
-import { getTokenSymbol } from '@/config/constants'
+import { appContracts } from '@/config/constants'
 import { usePathname } from 'next/navigation'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import TokenImage from '../TokenImage'
 import { formatAmount } from '@/lib/helpers'
+import { Alert } from '../Alert'
+import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
+import { directListingsLogicAbi } from '@adland/contracts'
+import { handleWriteErrors } from '@/lib/viem'
+import { queryClient } from '../AppProviders'
+import { AdSpaceQuery } from '@adland/webkit/src/ponder'
+import { toast } from 'sonner'
+import { merge } from 'lodash'
+import FarcasterUserSmallBadge from '../FarcasterUserSmallBadge'
 
 type AdDetailsSidebarProps = {
   spaceId: string
@@ -43,15 +52,14 @@ type AdDetailsSidebarProps = {
 }
 
 const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
-  const { data: adSpace } = useQuery({
+  const { data: adSpace, isLoading } = useQuery({
     queryFn: () => new AdLand().getAdSpace(spaceId),
     queryKey: ['adSpace-', spaceId],
   })
   const { bicoAccountAddress: address } = useContext(SmartAccountContext)
-  const { acquireLeaseModal, updateAdDataModal, selfAssessmentModal } =
-    useContext(ModalContext)
+  const { acquireLeaseModal, selfAssessmentModal } = useContext(ModalContext)
   const listing = adSpace?.listing
-  const isOwner = adSpace?.owner.toLowerCase() === address?.toLowerCase()
+  const isOwner = adSpace?.owner?.toLowerCase() === address?.toLowerCase()
   const isBeneficiary =
     listing?.taxBeneficiary?.toLowerCase() === address?.toLowerCase()
   const showDropdown = isOwner || isBeneficiary
@@ -59,6 +67,10 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
   const isWebPage = usePathname().includes('/web')
 
   const taxRatePercentage = Number(listing?.taxRate ?? 0) / 100
+
+  const { write: giveUp, loading: giveUpLoading } = useSmartAccountTxs({
+    onSuccess: () => {},
+  })
 
   return (
     <div className="relative flex min-h-[80vh] flex-col items-start gap-2 md:flex-row">
@@ -177,7 +189,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                       className="underline"
                       target="_blank"
                     >
-                      {getTokenSymbol(listing?.currency)}
+                      {listing.currencySymbol}
                     </Link>
                     <TokenImage
                       address={listing?.currency}
@@ -190,7 +202,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Tax Rate (weekly)</span>
-                {listing ? (
+                {listing || !isLoading ? (
                   <span>{taxRatePercentage} %</span>
                 ) : (
                   <Skeleton className="h-4 w-9" />
@@ -198,10 +210,17 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Owner</span>
-                {listing ? (
+                {listing || !isLoading ? (
                   <span>
                     {' '}
-                    {isOwner ? (
+                    {adSpace?.user?.fid ? (
+                      <Link
+                        href={getWarpcastLink(adSpace?.user?.username)}
+                        target="_blank"
+                      >
+                        <FarcasterUserSmallBadge user={adSpace?.user} />
+                      </Link>
+                    ) : isOwner ? (
                       ' you'
                     ) : (
                       <span>{truncateAddress(listing?.listingOwner)}</span>
@@ -212,6 +231,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 )}
               </li>
             </ul>
+            {/* {adSpace && <AdAttestationSection adSpace={adSpace} />} */}
             <div className="grid gap-3">
               <div className="font-semibold">Distribution</div>
               <ul className="grid grid-cols-2 gap-3">
@@ -265,6 +285,64 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 </Link>
               </ul>
             </div>
+            {isOwner && !isBeneficiary && (
+              <div className="grid gap-3">
+                <div className="font-semibold">Actions</div>
+                <ul className="grid gap-3">
+                  {isOwner && !isBeneficiary && (
+                    <li className="flex items-center justify-between">
+                      <p>Give up space</p>
+                      <Alert
+                        title="Give Up"
+                        description="Are you sure you want to give up this ad space?"
+                        onConfirm={() => {
+                          giveUp(
+                            {
+                              transactions: [
+                                {
+                                  to: appContracts.marketplace,
+                                  data: encodeFunctionData({
+                                    abi: directListingsLogicAbi,
+                                    functionName: 'cancelListing',
+                                    args: [listing?.listingId],
+                                  }),
+                                  value: BigInt(0),
+                                },
+                              ],
+                            },
+                            {
+                              onSuccess: () => {
+                                queryClient.setQueryData(
+                                  ['adSpace-', spaceId],
+                                  (
+                                    old: AdSpaceQuery['adSpace'],
+                                  ): AdSpaceQuery['adSpace'] => {
+                                    return merge({}, old, {
+                                      owner: listing?.taxBeneficiary,
+                                    })
+                                  },
+                                )
+                                toast.success('Ad Space given up successfully')
+                              },
+                              onError: (err) => handleWriteErrors(err),
+                            },
+                          )
+                        }}
+                      >
+                        <Button
+                          disabled={giveUpLoading}
+                          size="sm"
+                          loading={giveUpLoading}
+                          variant="destructive"
+                        >
+                          Give Up
+                        </Button>
+                      </Alert>{' '}
+                    </li>
+                  )}
+                </ul>
+              </div>
+            )}
           </div>
         </CardContent>
         <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">

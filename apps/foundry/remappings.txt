@@ -5,3 +5,4 @@ prb/test/=lib/prb-test/src/
 @superfluid-finance/=lib/superfluid-protocol-monorepo/packages
 @prb/math/=lib/prb-math/
 account-abstraction/=lib/account-abstraction/contracts
+eas/=lib/eas-contracts/contracts/

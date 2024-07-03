@@ -1,6 +1,7 @@
 import { getTokenSymbol } from '@/config/constants'
 import { Address } from 'viem'
 import Image from 'next/image'
+import { forwardRef } from 'react'
 
 const tokenSources: Record<string, string> = {
   DAI: '/tokens/dai.webp',
@@ -11,20 +12,28 @@ const tokenSources: Record<string, string> = {
   TREE: '/tokens/tree.png',
 }
 
-const TokenImage = ({
-  address,
-  className,
-}: { address: Address | string } & React.HTMLAttributes<HTMLImageElement>) => {
-  const symbol = getTokenSymbol(address) ?? 'ETH'
-  return (
-    <Image
-      src={tokenSources[symbol]}
-      width={32}
-      height={32}
-      className={className}
-      alt={symbol}
-    />
-  )
-}
+const TokenImage = forwardRef(
+  (
+    {
+      address,
+      className,
+    }: { address: Address | string } & React.HTMLAttributes<HTMLImageElement>,
+    ref: React.ForwardedRef<any>,
+  ) => {
+    const symbol = getTokenSymbol(address) ?? 'ETH'
+    return (
+      <Image
+        ref={ref}
+        src={tokenSources[symbol]}
+        width={32}
+        height={32}
+        className={className}
+        alt={symbol}
+      />
+    )
+  },
+)
+
+TokenImage.displayName = 'TokenImage'
 
 export default TokenImage

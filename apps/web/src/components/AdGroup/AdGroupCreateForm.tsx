@@ -37,10 +37,10 @@ import {
   SelectValue,
 } from '../ui/select'
 import { truncateAddress } from '@/lib/utils'
-import { getTokenSymbol } from '@/config/constants'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import TokenImage from '../TokenImage'
+import { TokenXsQuery } from '@adland/webkit/src/ponder'
 
 const createAdGroupSchema = z.object({
   currency: z.string(),
@@ -52,7 +52,7 @@ const createAdGroupSchema = z.object({
 type CreateAdGroupFormValues = z.infer<typeof createAdGroupSchema>
 
 type CreateAdGroupFormProps = {
-  superTokens: TokenX[]
+  superTokens: TokenXsQuery['tokenXs']
 }
 
 const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
@@ -62,7 +62,7 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
   const form = useForm<CreateAdGroupFormValues>({
     resolver: zodResolver(createAdGroupSchema),
     defaultValues: {
-      currency: superTokens[0].underlyingToken,
+      currency: superTokens.items[0].underlyingToken,
       initialPrice: BigInt(1e16),
       taxRate: BigInt(10),
       size: BigInt(1),
@@ -108,6 +108,8 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
     )
   }
 
+  console.log(superTokens)
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="font-body">
@@ -133,14 +135,14 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
                     </FormControl>
                     <SelectContent>
                       <SelectGroup>
-                        {superTokens.map((token) => (
+                        {superTokens.items.map((token) => (
                           <SelectItem
                             key={token.id}
                             value={token.underlyingToken}
                           >
                             <div className="flex flex-row items-center gap-2">
                               <p className="w-16">
-                                {getTokenSymbol(token.underlyingToken) ??
+                                {token.underlyingSymbol ??
                                   truncateAddress(token.underlyingToken)}
                               </p>
                               <TokenImage

@@ -24,19 +24,15 @@ export const resolveAdSpaceWithMetadata = async (
 }
 
 export const formatAmount = (amount: string) => {
-  const num = Number(amount)
-  if (num < 1000) {
-    return num
-  } else if (num < 1000000) {
-    const formattedNum = (num / 1000).toFixed(1)
-    return formattedNum.endsWith('.0')
-      ? formattedNum.slice(0, -2) + 'k'
-      : formattedNum + 'k'
-  } else {
-    const formattedNum = (num / 1000000).toFixed(1)
-    return formattedNum.endsWith('.0')
-      ? formattedNum.slice(0, -2) + 'm'
-      : formattedNum + 'M'
+  const num = parseFloat(amount)
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(2).replace(/\.00$/, '') + 'm'
   }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(2).replace(/\.00$/, '') + 'k'
+  }
+  if (num < 1) {
+    return num.toFixed(8).replace(/0+$/, '')
+  }
+  return num.toFixed(2).replace(/\.00$/, '')
 }
-

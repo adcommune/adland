@@ -1,12 +1,85 @@
 import { constants } from '@adland/common'
 import { GraphQLClient, gql } from 'graphql-request'
-import { Address } from 'viem'
+import { Account, Address, encodePacked, formatEther } from 'viem'
+import { FlowUpdateEvent } from './superfluid.types'
 
 export class Superfluid {
   client: GraphQLClient
 
   constructor() {
     this.client = new GraphQLClient(constants.superfluidSubgraphUrl)
+  }
+
+  async fetchLatestFlowUpdateEvent(spaceId: string) {
+    const userData = encodePacked(['uint256'], [BigInt(spaceId)])
+
+    return this.client
+      .request<{
+        flowUpdatedEvents: FlowUpdateEvent[]
+      }>(
+        gql`
+          query FetchLatestFlowUpdateEvent($userData: String!) {
+            flowUpdatedEvents(
+              first: 10
+              where: { userData: $userData }
+              orderDirection: desc
+              orderBy: timestamp
+            ) {
+              id
+              timestamp
+              flowRate
+              oldFlowRate
+            }
+          }
+        `,
+        {
+          userData,
+        },
+      )
+      .then((data) => {
+        const oldFlow = BigInt(data.flowUpdatedEvents[0].oldFlowRate)
+        const newFlow = BigInt(data.flowUpdatedEvents[0].flowRate)
+
+        const absoluteDifference =
+          newFlow > oldFlow ? newFlow - oldFlow : oldFlow - newFlow
+
+        return formatEther(
+          BigInt(absoluteDifference) * BigInt(60 * 60 * 24 * 7),
+        )
+      })
+      .catch((err) => undefined)
+  }
+
+  async fetchAccountInflows(accountAddress?: string) {
+    if (!accountAddress) return Promise.resolve(undefined)
+    return this.client
+      .request<{ account: Account }>(
+        gql`
+          query FetchAccountInflows($accountAddress: String!) {
+            account(id: $accountAddress) {
+              id
+              inflows {
+                id
+                currentFlowRate
+                token {
+                  id
+                  symbol
+                  decimals
+                  underlyingAddress
+                }
+                userData
+                sender {
+                  id
+                }
+              }
+            }
+          }
+        `,
+        {
+          accountAddress,
+        },
+      )
+      .then((data) => data.account)
   }
 
   async fetchPool(poolAddress?: string): Promise<SuperfluidPool | undefined> {

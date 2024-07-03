@@ -1,12 +1,13 @@
 'use client'
 
 import React, { useContext } from 'react'
-import { getExplorerLink, truncateAddress } from '@/lib/utils'
+import { getExplorerLink, getWarpcastLink, truncateAddress } from '@/lib/utils'
 import { AdLand } from '@/lib/adland'
 import { CogIcon } from 'lucide-react'
 import Link from 'next/link'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import { useQuery } from '@tanstack/react-query'
+import FarcasterUserSmallBadge from '../FarcasterUserSmallBadge'
 
 type AdGroupHeaderProps = {
   adGroupId?: string
@@ -22,8 +23,6 @@ const AdGroupHeader = ({ adGroupId, children }: AdGroupHeaderProps) => {
     enabled: !!adGroupId,
   })
 
-  console.log({ adGroup, error })
-
   const { bicoAccountAddress } = useContext(SmartAccountContext)
 
   const isBeneficiary =
@@ -38,17 +37,24 @@ const AdGroupHeader = ({ adGroupId, children }: AdGroupHeaderProps) => {
       label: 'Admin: ',
       value: (
         <Link
-          href={getExplorerLink(adGroup?.beneficiary, 'address')}
+          href={
+            adGroup?.user?.fid
+              ? getWarpcastLink(adGroup?.user?.username)
+              : getExplorerLink(adGroup?.beneficiary, 'address')
+          }
           className="underline"
           target="_blank"
         >
-          {truncateAddress(adGroup?.beneficiary)}
+          {adGroup?.user ? (
+            <FarcasterUserSmallBadge user={adGroup?.user} />
+          ) : (
+            truncateAddress(adGroup?.beneficiary)
+          )}
         </Link>
       ),
     },
-    // { label: 'Ad Spaces: ', value: adSpaces.length },
+    { label: 'Ad Spaces: ', value: adGroup?.adSpaces?.items.length },
   ]
-
   return (
     <div className="font-body">
       <div className="overflow-hidden rounded-tl-md rounded-tr-md">
@@ -99,7 +105,7 @@ const AdGroupHeader = ({ adGroupId, children }: AdGroupHeaderProps) => {
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="grow px-6 py-5 text-center text-sm font-medium"
+                className="flex grow flex-row justify-center gap-2 px-6 py-5 text-center text-sm font-medium"
               >
                 <span className="text-gray-600">{stat.label}</span>
                 <span className="text-gray-900">{stat.value}</span>{' '}

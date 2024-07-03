@@ -441,6 +441,17 @@ export const commonAdSpacesAbi = [
   {
     type: 'function',
     inputs: [
+      { name: 'adIds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'tag', internalType: 'string', type: 'string' },
+      { name: 'enabled', internalType: 'bool', type: 'bool' },
+    ],
+    name: 'batchAdTagUpdate',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
       { name: 'recipient', internalType: 'address', type: 'address' },
       {
         name: 'initialAdSpaceConfig',
@@ -860,6 +871,21 @@ export const commonAdSpacesAbi = [
     type: 'event',
     anonymous: false,
     inputs: [
+      {
+        name: 'adIds',
+        internalType: 'uint256[]',
+        type: 'uint256[]',
+        indexed: true,
+      },
+      { name: 'tag', internalType: 'string', type: 'string', indexed: false },
+      { name: 'enabled', internalType: 'bool', type: 'bool', indexed: false },
+    ],
+    name: 'AdSpaceTagUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
       { name: 'adId', internalType: 'uint256', type: 'uint256', indexed: true },
       { name: 'uri', internalType: 'string', type: 'string', indexed: false },
     ],
@@ -1035,6 +1061,921 @@ export const commonAdSpacesConfig = {
   address: commonAdSpacesAddress,
   abi: commonAdSpacesAbi,
 } as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CommonAdValidator
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const commonAdValidatorAbi = [
+  {
+    type: 'constructor',
+    inputs: [{ name: '_eas', internalType: 'contract IEAS', type: 'address' }],
+    stateMutability: 'nonpayable',
+  },
+  { type: 'receive', stateMutability: 'payable' },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'attestation',
+        internalType: 'struct Attestation',
+        type: 'tuple',
+        components: [
+          { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'time', internalType: 'uint64', type: 'uint64' },
+          { name: 'expirationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'revocationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'recipient', internalType: 'address', type: 'address' },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'revocable', internalType: 'bool', type: 'bool' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    name: 'attest',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'commonAdSpaces',
+    outputs: [
+      { name: '', internalType: 'contract CommonAdSpaces', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'isPayable',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'attestations',
+        internalType: 'struct Attestation[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'time', internalType: 'uint64', type: 'uint64' },
+          { name: 'expirationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'revocationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'recipient', internalType: 'address', type: 'address' },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'revocable', internalType: 'bool', type: 'bool' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
+    ],
+    name: 'multiAttest',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'attestations',
+        internalType: 'struct Attestation[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'time', internalType: 'uint64', type: 'uint64' },
+          { name: 'expirationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'revocationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'recipient', internalType: 'address', type: 'address' },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'revocable', internalType: 'bool', type: 'bool' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
+    ],
+    name: 'multiRevoke',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'attestation',
+        internalType: 'struct Attestation',
+        type: 'tuple',
+        components: [
+          { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'time', internalType: 'uint64', type: 'uint64' },
+          { name: 'expirationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'revocationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'recipient', internalType: 'address', type: 'address' },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'revocable', internalType: 'bool', type: 'bool' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    name: 'revoke',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: '_commonAdSpaces',
+        internalType: 'contract CommonAdSpaces',
+        type: 'address',
+      },
+    ],
+    name: 'setCommonAdSpaces',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'version',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'uid', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'adSpaceId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      { name: 'cid', internalType: 'string', type: 'string', indexed: false },
+    ],
+    name: 'AttestAd',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'OwnershipTransferred',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'uid', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'adSpaceId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      { name: 'cid', internalType: 'string', type: 'string', indexed: false },
+    ],
+    name: 'RevokeAd',
+  },
+  { type: 'error', inputs: [], name: 'AccessDenied' },
+  { type: 'error', inputs: [], name: 'InsufficientValue' },
+  { type: 'error', inputs: [], name: 'InvalidEAS' },
+  { type: 'error', inputs: [], name: 'InvalidLength' },
+  { type: 'error', inputs: [], name: 'NotPayable' },
+] as const
+
+/**
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const commonAdValidatorAddress = {
+  8453: '0x1e871e8a8960076B0F17112a696E81963201b45C',
+  11155420: '0x4B346185c3c26d8F99336155035226655D2ADBe1',
+} as const
+
+/**
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const commonAdValidatorConfig = {
+  address: commonAdValidatorAddress,
+  abi: commonAdValidatorAbi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ConstantFlowAgreementV1
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const constantFlowAgreementV1Abi = [
+  {
+    type: 'constructor',
+    inputs: [
+      { name: 'host', internalType: 'contract ISuperfluid', type: 'address' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'CFA_HOOK_GAS_LIMIT',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'DEFAULT_MINIMUM_DEPOSIT',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'MAXIMUM_DEPOSIT',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'MAXIMUM_FLOW_RATE',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'existingPermissions', internalType: 'uint8', type: 'uint8' },
+      { name: 'permissionDelta', internalType: 'uint8', type: 'uint8' },
+    ],
+    name: 'addPermissions',
+    outputs: [{ name: '', internalType: 'uint8', type: 'uint8' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'agreementType',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'authorizeFlowOperatorWithFullControl',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'castrate',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'createFlow',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'createFlowByOperator',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      {
+        name: 'subtractedFlowRateAllowance',
+        internalType: 'int96',
+        type: 'int96',
+      },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'decreaseFlowRateAllowance',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'permissionsToRemove', internalType: 'uint8', type: 'uint8' },
+      {
+        name: 'subtractedFlowRateAllowance',
+        internalType: 'int96',
+        type: 'int96',
+      },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'decreaseFlowRateAllowanceWithPermissions',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'deleteFlow',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'deleteFlowByOperator',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'getAccountFlowInfo',
+    outputs: [
+      { name: 'timestamp', internalType: 'uint256', type: 'uint256' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'deposit', internalType: 'uint256', type: 'uint256' },
+      { name: 'owedDeposit', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'getCodeAddress',
+    outputs: [
+      { name: 'codeAddress', internalType: 'address', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+    ],
+    name: 'getDepositRequiredForFlowRate',
+    outputs: [{ name: 'deposit', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+    ],
+    name: 'getFlow',
+    outputs: [
+      { name: 'timestamp', internalType: 'uint256', type: 'uint256' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'deposit', internalType: 'uint256', type: 'uint256' },
+      { name: 'owedDeposit', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowId', internalType: 'bytes32', type: 'bytes32' },
+    ],
+    name: 'getFlowByID',
+    outputs: [
+      { name: 'timestamp', internalType: 'uint256', type: 'uint256' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'deposit', internalType: 'uint256', type: 'uint256' },
+      { name: 'owedDeposit', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+    ],
+    name: 'getFlowOperatorData',
+    outputs: [
+      { name: 'flowOperatorId', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'permissions', internalType: 'uint8', type: 'uint8' },
+      { name: 'flowRateAllowance', internalType: 'int96', type: 'int96' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperatorId', internalType: 'bytes32', type: 'bytes32' },
+    ],
+    name: 'getFlowOperatorDataByID',
+    outputs: [
+      { name: 'permissions', internalType: 'uint8', type: 'uint8' },
+      { name: 'flowRateAllowance', internalType: 'int96', type: 'int96' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'deposit', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'getMaximumFlowRateFromDeposit',
+    outputs: [{ name: 'flowRate', internalType: 'int96', type: 'int96' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'getNetFlow',
+    outputs: [{ name: 'flowRate', internalType: 'int96', type: 'int96' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'addedFlowRateAllowance', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'increaseFlowRateAllowance',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'permissionsToAdd', internalType: 'uint8', type: 'uint8' },
+      { name: 'addedFlowRateAllowance', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'increaseFlowRateAllowanceWithPermissions',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'timestamp', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'isPatricianPeriod',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'account', internalType: 'address', type: 'address' },
+    ],
+    name: 'isPatricianPeriodNow',
+    outputs: [
+      {
+        name: 'isCurrentlyPatricianPeriod',
+        internalType: 'bool',
+        type: 'bool',
+      },
+      { name: 'timestamp', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'proxiableUUID',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'time', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'realtimeBalanceOf',
+    outputs: [
+      { name: 'dynamicBalance', internalType: 'int256', type: 'int256' },
+      { name: 'deposit', internalType: 'uint256', type: 'uint256' },
+      { name: 'owedDeposit', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'existingPermissions', internalType: 'uint8', type: 'uint8' },
+      { name: 'permissionDelta', internalType: 'uint8', type: 'uint8' },
+    ],
+    name: 'removePermissions',
+    outputs: [{ name: '', internalType: 'uint8', type: 'uint8' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'revokeFlowOperatorWithFullControl',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newAddress', internalType: 'address', type: 'address' }],
+    name: 'updateCode',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'updateFlow',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'receiver', internalType: 'address', type: 'address' },
+      { name: 'flowRate', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'updateFlowByOperator',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+      },
+      { name: 'flowOperator', internalType: 'address', type: 'address' },
+      { name: 'permissions', internalType: 'uint8', type: 'uint8' },
+      { name: 'flowRateAllowance', internalType: 'int96', type: 'int96' },
+      { name: 'ctx', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'updateFlowOperatorPermissions',
+    outputs: [{ name: 'newCtx', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'uuid',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+      {
+        name: 'codeAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'CodeUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'flowOperator',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'permissions',
+        internalType: 'uint8',
+        type: 'uint8',
+        indexed: false,
+      },
+      {
+        name: 'flowRateAllowance',
+        internalType: 'int96',
+        type: 'int96',
+        indexed: false,
+      },
+    ],
+    name: 'FlowOperatorUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'contract ISuperfluidToken',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'receiver',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'flowRate',
+        internalType: 'int96',
+        type: 'int96',
+        indexed: false,
+      },
+      {
+        name: 'totalSenderFlowRate',
+        internalType: 'int256',
+        type: 'int256',
+        indexed: false,
+      },
+      {
+        name: 'totalReceiverFlowRate',
+        internalType: 'int256',
+        type: 'int256',
+        indexed: false,
+      },
+      {
+        name: 'userData',
+        internalType: 'bytes',
+        type: 'bytes',
+        indexed: false,
+      },
+    ],
+    name: 'FlowUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'flowOperator',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'deposit',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'FlowUpdatedExtension',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'version', internalType: 'uint8', type: 'uint8', indexed: false },
+    ],
+    name: 'Initialized',
+  },
+  { type: 'error', inputs: [], name: 'AGREEMENT_BASE_ONLY_HOST' },
+  {
+    type: 'error',
+    inputs: [{ name: '_code', internalType: 'uint256', type: 'uint256' }],
+    name: 'APP_RULE',
+  },
+  { type: 'error', inputs: [], name: 'CFA_ACL_FLOW_RATE_ALLOWANCE_EXCEEDED' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_NO_NEGATIVE_ALLOWANCE' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_NO_SENDER_CREATE' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_NO_SENDER_FLOW_OPERATOR' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_NO_SENDER_UPDATE' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_OPERATOR_NO_CREATE_PERMISSIONS' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_OPERATOR_NO_DELETE_PERMISSIONS' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_OPERATOR_NO_UPDATE_PERMISSIONS' },
+  { type: 'error', inputs: [], name: 'CFA_ACL_UNCLEAN_PERMISSIONS' },
+  { type: 'error', inputs: [], name: 'CFA_DEPOSIT_TOO_BIG' },
+  { type: 'error', inputs: [], name: 'CFA_FLOW_ALREADY_EXISTS' },
+  { type: 'error', inputs: [], name: 'CFA_FLOW_DOES_NOT_EXIST' },
+  { type: 'error', inputs: [], name: 'CFA_FLOW_RATE_TOO_BIG' },
+  { type: 'error', inputs: [], name: 'CFA_HOOK_OUT_OF_GAS' },
+  { type: 'error', inputs: [], name: 'CFA_INSUFFICIENT_BALANCE' },
+  { type: 'error', inputs: [], name: 'CFA_INVALID_FLOW_RATE' },
+  { type: 'error', inputs: [], name: 'CFA_NON_CRITICAL_SENDER' },
+  { type: 'error', inputs: [], name: 'CFA_NO_SELF_FLOW' },
+  { type: 'error', inputs: [], name: 'CFA_ZERO_ADDRESS_RECEIVER' },
+  { type: 'error', inputs: [], name: 'CFA_ZERO_ADDRESS_SENDER' },
+] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // DirectListingsLogic
@@ -1497,6 +2438,37 @@ export const directListingsLogicAbi = [
       },
     ],
     name: 'NewSale',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'listingId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'sender',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'receiver',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'flowRate',
+        internalType: 'int96',
+        type: 'int96',
+        indexed: false,
+      },
+    ],
+    name: 'UpdateAdFLowRate',
   },
   {
     type: 'event',
@@ -2888,6 +3860,472 @@ export const generalDistributionAgreementV1Abi = [
   { type: 'error', inputs: [], name: 'GDA_NO_ZERO_ADDRESS_ADMIN' },
   { type: 'error', inputs: [], name: 'GDA_ONLY_SUPER_TOKEN_POOL' },
   { type: 'error', inputs: [], name: 'OUT_OF_GAS' },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// IEAS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const ieasAbi = [
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'request',
+        internalType: 'struct AttestationRequest',
+        type: 'tuple',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct AttestationRequestData',
+            type: 'tuple',
+            components: [
+              { name: 'recipient', internalType: 'address', type: 'address' },
+              {
+                name: 'expirationTime',
+                internalType: 'uint64',
+                type: 'uint64',
+              },
+              { name: 'revocable', internalType: 'bool', type: 'bool' },
+              { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'data', internalType: 'bytes', type: 'bytes' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+        ],
+      },
+    ],
+    name: 'attest',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'delegatedRequest',
+        internalType: 'struct DelegatedAttestationRequest',
+        type: 'tuple',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct AttestationRequestData',
+            type: 'tuple',
+            components: [
+              { name: 'recipient', internalType: 'address', type: 'address' },
+              {
+                name: 'expirationTime',
+                internalType: 'uint64',
+                type: 'uint64',
+              },
+              { name: 'revocable', internalType: 'bool', type: 'bool' },
+              { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'data', internalType: 'bytes', type: 'bytes' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+          {
+            name: 'signature',
+            internalType: 'struct Signature',
+            type: 'tuple',
+            components: [
+              { name: 'v', internalType: 'uint8', type: 'uint8' },
+              { name: 'r', internalType: 'bytes32', type: 'bytes32' },
+              { name: 's', internalType: 'bytes32', type: 'bytes32' },
+            ],
+          },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'deadline', internalType: 'uint64', type: 'uint64' },
+        ],
+      },
+    ],
+    name: 'attestByDelegation',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'uid', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'getAttestation',
+    outputs: [
+      {
+        name: '',
+        internalType: 'struct Attestation',
+        type: 'tuple',
+        components: [
+          { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'time', internalType: 'uint64', type: 'uint64' },
+          { name: 'expirationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'revocationTime', internalType: 'uint64', type: 'uint64' },
+          { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'recipient', internalType: 'address', type: 'address' },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'revocable', internalType: 'bool', type: 'bool' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'revoker', internalType: 'address', type: 'address' },
+      { name: 'data', internalType: 'bytes32', type: 'bytes32' },
+    ],
+    name: 'getRevokeOffchain',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'getSchemaRegistry',
+    outputs: [
+      { name: '', internalType: 'contract ISchemaRegistry', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'getTimestamp',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'uid', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'isAttestationValid',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'multiRequests',
+        internalType: 'struct MultiAttestationRequest[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct AttestationRequestData[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'recipient', internalType: 'address', type: 'address' },
+              {
+                name: 'expirationTime',
+                internalType: 'uint64',
+                type: 'uint64',
+              },
+              { name: 'revocable', internalType: 'bool', type: 'bool' },
+              { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'data', internalType: 'bytes', type: 'bytes' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+        ],
+      },
+    ],
+    name: 'multiAttest',
+    outputs: [{ name: '', internalType: 'bytes32[]', type: 'bytes32[]' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'multiDelegatedRequests',
+        internalType: 'struct MultiDelegatedAttestationRequest[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct AttestationRequestData[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'recipient', internalType: 'address', type: 'address' },
+              {
+                name: 'expirationTime',
+                internalType: 'uint64',
+                type: 'uint64',
+              },
+              { name: 'revocable', internalType: 'bool', type: 'bool' },
+              { name: 'refUID', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'data', internalType: 'bytes', type: 'bytes' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+          {
+            name: 'signatures',
+            internalType: 'struct Signature[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'v', internalType: 'uint8', type: 'uint8' },
+              { name: 'r', internalType: 'bytes32', type: 'bytes32' },
+              { name: 's', internalType: 'bytes32', type: 'bytes32' },
+            ],
+          },
+          { name: 'attester', internalType: 'address', type: 'address' },
+          { name: 'deadline', internalType: 'uint64', type: 'uint64' },
+        ],
+      },
+    ],
+    name: 'multiAttestByDelegation',
+    outputs: [{ name: '', internalType: 'bytes32[]', type: 'bytes32[]' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'multiRequests',
+        internalType: 'struct MultiRevocationRequest[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct RevocationRequestData[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+        ],
+      },
+    ],
+    name: 'multiRevoke',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'multiDelegatedRequests',
+        internalType: 'struct MultiDelegatedRevocationRequest[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct RevocationRequestData[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+          {
+            name: 'signatures',
+            internalType: 'struct Signature[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'v', internalType: 'uint8', type: 'uint8' },
+              { name: 'r', internalType: 'bytes32', type: 'bytes32' },
+              { name: 's', internalType: 'bytes32', type: 'bytes32' },
+            ],
+          },
+          { name: 'revoker', internalType: 'address', type: 'address' },
+          { name: 'deadline', internalType: 'uint64', type: 'uint64' },
+        ],
+      },
+    ],
+    name: 'multiRevokeByDelegation',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes32[]', type: 'bytes32[]' }],
+    name: 'multiRevokeOffchain',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes32[]', type: 'bytes32[]' }],
+    name: 'multiTimestamp',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'request',
+        internalType: 'struct RevocationRequest',
+        type: 'tuple',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct RevocationRequestData',
+            type: 'tuple',
+            components: [
+              { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+        ],
+      },
+    ],
+    name: 'revoke',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'delegatedRequest',
+        internalType: 'struct DelegatedRevocationRequest',
+        type: 'tuple',
+        components: [
+          { name: 'schema', internalType: 'bytes32', type: 'bytes32' },
+          {
+            name: 'data',
+            internalType: 'struct RevocationRequestData',
+            type: 'tuple',
+            components: [
+              { name: 'uid', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+            ],
+          },
+          {
+            name: 'signature',
+            internalType: 'struct Signature',
+            type: 'tuple',
+            components: [
+              { name: 'v', internalType: 'uint8', type: 'uint8' },
+              { name: 'r', internalType: 'bytes32', type: 'bytes32' },
+              { name: 's', internalType: 'bytes32', type: 'bytes32' },
+            ],
+          },
+          { name: 'revoker', internalType: 'address', type: 'address' },
+          { name: 'deadline', internalType: 'uint64', type: 'uint64' },
+        ],
+      },
+    ],
+    name: 'revokeByDelegation',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'revokeOffchain',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'timestamp',
+    outputs: [{ name: '', internalType: 'uint64', type: 'uint64' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'version',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'recipient',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'attester',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'uid', internalType: 'bytes32', type: 'bytes32', indexed: false },
+      {
+        name: 'schemaUID',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+    ],
+    name: 'Attested',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'recipient',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'attester',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'uid', internalType: 'bytes32', type: 'bytes32', indexed: false },
+      {
+        name: 'schemaUID',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+    ],
+    name: 'Revoked',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'revoker',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'data', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'timestamp',
+        internalType: 'uint64',
+        type: 'uint64',
+        indexed: true,
+      },
+    ],
+    name: 'RevokedOffchain',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'data', internalType: 'bytes32', type: 'bytes32', indexed: true },
+      {
+        name: 'timestamp',
+        internalType: 'uint64',
+        type: 'uint64',
+        indexed: true,
+      },
+    ],
+    name: 'Timestamped',
+  },
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -5358,6 +6796,181 @@ export const superTokenAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// UserBase
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const userBaseAbi = [
+  {
+    type: 'function',
+    inputs: [
+      { name: 'smartAccount', internalType: 'address', type: 'address' },
+      { name: 'fid', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'addUser',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'proxiableUUID',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'newImplementation', internalType: 'address', type: 'address' },
+    ],
+    name: 'upgradeTo',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'newImplementation', internalType: 'address', type: 'address' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'upgradeToAndCall',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'newAdmin',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'AdminChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'beacon',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'BeaconUpgraded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'version', internalType: 'uint8', type: 'uint8', indexed: false },
+    ],
+    name: 'Initialized',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'OwnershipTransferred',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'implementation',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'Upgraded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'smartAccount',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      { name: 'fid', internalType: 'uint256', type: 'uint256', indexed: true },
+    ],
+    name: 'UserCreated',
+  },
+] as const
+
+/**
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const userBaseAddress = {
+  11155420: '0x2Bb04c711813685187F52d2f096ff715A5C4287C',
+} as const
+
+/**
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const userBaseConfig = {
+  address: userBaseAddress,
+  abi: userBaseAbi,
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // React
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -6076,6 +7689,19 @@ export const useWriteCommonAdSpacesApprove =
   })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"batchAdTagUpdate"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x56324569b301CdA15AFb3F9E9A853b6a5cD1ca57)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xB30D0dcF2A4A702dB746375FCac01C4F0e5d0Bd1)
+ */
+export const useWriteCommonAdSpacesBatchAdTagUpdate =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdSpacesAbi,
+    address: commonAdSpacesAddress,
+    functionName: 'batchAdTagUpdate',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"createAdGroup"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x56324569b301CdA15AFb3F9E9A853b6a5cD1ca57)
@@ -6306,6 +7932,19 @@ export const useSimulateCommonAdSpacesApprove =
     abi: commonAdSpacesAbi,
     address: commonAdSpacesAddress,
     functionName: 'approve',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `functionName` set to `"batchAdTagUpdate"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x56324569b301CdA15AFb3F9E9A853b6a5cD1ca57)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xB30D0dcF2A4A702dB746375FCac01C4F0e5d0Bd1)
+ */
+export const useSimulateCommonAdSpacesBatchAdTagUpdate =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdSpacesAbi,
+    address: commonAdSpacesAddress,
+    functionName: 'batchAdTagUpdate',
   })
 
 /**
@@ -6594,6 +8233,19 @@ export const useWatchCommonAdSpacesAdSpaceStrategyUpdatedEvent =
   })
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"AdSpaceTagUpdated"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x56324569b301CdA15AFb3F9E9A853b6a5cD1ca57)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xB30D0dcF2A4A702dB746375FCac01C4F0e5d0Bd1)
+ */
+export const useWatchCommonAdSpacesAdSpaceTagUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: commonAdSpacesAbi,
+    address: commonAdSpacesAddress,
+    eventName: 'AdSpaceTagUpdated',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdSpacesAbi}__ and `eventName` set to `"AdSpaceURIUpdated"`
  *
  * - [__View Contract on Base Basescan__](https://basescan.org/address/0x56324569b301CdA15AFb3F9E9A853b6a5cD1ca57)
@@ -6721,6 +8373,844 @@ export const useWatchCommonAdSpacesUpgradedEvent =
     abi: commonAdSpacesAbi,
     address: commonAdSpacesAddress,
     eventName: 'Upgraded',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdValidatorAbi}__
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useReadCommonAdValidator = /*#__PURE__*/ createUseReadContract({
+  abi: commonAdValidatorAbi,
+  address: commonAdValidatorAddress,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"commonAdSpaces"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useReadCommonAdValidatorCommonAdSpaces =
+  /*#__PURE__*/ createUseReadContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'commonAdSpaces',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"isPayable"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useReadCommonAdValidatorIsPayable =
+  /*#__PURE__*/ createUseReadContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'isPayable',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"owner"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useReadCommonAdValidatorOwner =
+  /*#__PURE__*/ createUseReadContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'owner',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"version"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useReadCommonAdValidatorVersion =
+  /*#__PURE__*/ createUseReadContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'version',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidator = /*#__PURE__*/ createUseWriteContract({
+  abi: commonAdValidatorAbi,
+  address: commonAdValidatorAddress,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"attest"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorAttest =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'attest',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"multiAttest"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorMultiAttest =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'multiAttest',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"multiRevoke"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorMultiRevoke =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'multiRevoke',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"renounceOwnership"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorRenounceOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"revoke"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorRevoke =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'revoke',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"setCommonAdSpaces"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorSetCommonAdSpaces =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'setCommonAdSpaces',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"transferOwnership"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWriteCommonAdValidatorTransferOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidator =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"attest"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorAttest =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'attest',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"multiAttest"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorMultiAttest =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'multiAttest',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"multiRevoke"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorMultiRevoke =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'multiRevoke',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"renounceOwnership"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorRenounceOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"revoke"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorRevoke =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'revoke',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"setCommonAdSpaces"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorSetCommonAdSpaces =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'setCommonAdSpaces',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `functionName` set to `"transferOwnership"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useSimulateCommonAdValidatorTransferOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdValidatorAbi}__
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWatchCommonAdValidatorEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `eventName` set to `"AttestAd"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWatchCommonAdValidatorAttestAdEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    eventName: 'AttestAd',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `eventName` set to `"OwnershipTransferred"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWatchCommonAdValidatorOwnershipTransferredEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    eventName: 'OwnershipTransferred',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link commonAdValidatorAbi}__ and `eventName` set to `"RevokeAd"`
+ *
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x1e871e8a8960076B0F17112a696E81963201b45C)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x4B346185c3c26d8F99336155035226655D2ADBe1)
+ */
+export const useWatchCommonAdValidatorRevokeAdEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: commonAdValidatorAbi,
+    address: commonAdValidatorAddress,
+    eventName: 'RevokeAd',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__
+ */
+export const useReadConstantFlowAgreementV1 =
+  /*#__PURE__*/ createUseReadContract({ abi: constantFlowAgreementV1Abi })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"CFA_HOOK_GAS_LIMIT"`
+ */
+export const useReadConstantFlowAgreementV1CfaHookGasLimit =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'CFA_HOOK_GAS_LIMIT',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"DEFAULT_MINIMUM_DEPOSIT"`
+ */
+export const useReadConstantFlowAgreementV1DefaultMinimumDeposit =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'DEFAULT_MINIMUM_DEPOSIT',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"MAXIMUM_DEPOSIT"`
+ */
+export const useReadConstantFlowAgreementV1MaximumDeposit =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'MAXIMUM_DEPOSIT',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"MAXIMUM_FLOW_RATE"`
+ */
+export const useReadConstantFlowAgreementV1MaximumFlowRate =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'MAXIMUM_FLOW_RATE',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"addPermissions"`
+ */
+export const useReadConstantFlowAgreementV1AddPermissions =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'addPermissions',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"agreementType"`
+ */
+export const useReadConstantFlowAgreementV1AgreementType =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'agreementType',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getAccountFlowInfo"`
+ */
+export const useReadConstantFlowAgreementV1GetAccountFlowInfo =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getAccountFlowInfo',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getCodeAddress"`
+ */
+export const useReadConstantFlowAgreementV1GetCodeAddress =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getCodeAddress',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getDepositRequiredForFlowRate"`
+ */
+export const useReadConstantFlowAgreementV1GetDepositRequiredForFlowRate =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getDepositRequiredForFlowRate',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getFlow"`
+ */
+export const useReadConstantFlowAgreementV1GetFlow =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getFlow',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getFlowByID"`
+ */
+export const useReadConstantFlowAgreementV1GetFlowById =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getFlowByID',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getFlowOperatorData"`
+ */
+export const useReadConstantFlowAgreementV1GetFlowOperatorData =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getFlowOperatorData',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getFlowOperatorDataByID"`
+ */
+export const useReadConstantFlowAgreementV1GetFlowOperatorDataById =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getFlowOperatorDataByID',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getMaximumFlowRateFromDeposit"`
+ */
+export const useReadConstantFlowAgreementV1GetMaximumFlowRateFromDeposit =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getMaximumFlowRateFromDeposit',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"getNetFlow"`
+ */
+export const useReadConstantFlowAgreementV1GetNetFlow =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'getNetFlow',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"isPatricianPeriod"`
+ */
+export const useReadConstantFlowAgreementV1IsPatricianPeriod =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'isPatricianPeriod',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"isPatricianPeriodNow"`
+ */
+export const useReadConstantFlowAgreementV1IsPatricianPeriodNow =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'isPatricianPeriodNow',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"proxiableUUID"`
+ */
+export const useReadConstantFlowAgreementV1ProxiableUuid =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'proxiableUUID',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"realtimeBalanceOf"`
+ */
+export const useReadConstantFlowAgreementV1RealtimeBalanceOf =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'realtimeBalanceOf',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"removePermissions"`
+ */
+export const useReadConstantFlowAgreementV1RemovePermissions =
+  /*#__PURE__*/ createUseReadContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'removePermissions',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__
+ */
+export const useWriteConstantFlowAgreementV1 =
+  /*#__PURE__*/ createUseWriteContract({ abi: constantFlowAgreementV1Abi })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"authorizeFlowOperatorWithFullControl"`
+ */
+export const useWriteConstantFlowAgreementV1AuthorizeFlowOperatorWithFullControl =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'authorizeFlowOperatorWithFullControl',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"castrate"`
+ */
+export const useWriteConstantFlowAgreementV1Castrate =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'castrate',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"createFlow"`
+ */
+export const useWriteConstantFlowAgreementV1CreateFlow =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'createFlow',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"createFlowByOperator"`
+ */
+export const useWriteConstantFlowAgreementV1CreateFlowByOperator =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'createFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"decreaseFlowRateAllowance"`
+ */
+export const useWriteConstantFlowAgreementV1DecreaseFlowRateAllowance =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'decreaseFlowRateAllowance',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"decreaseFlowRateAllowanceWithPermissions"`
+ */
+export const useWriteConstantFlowAgreementV1DecreaseFlowRateAllowanceWithPermissions =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'decreaseFlowRateAllowanceWithPermissions',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"deleteFlow"`
+ */
+export const useWriteConstantFlowAgreementV1DeleteFlow =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'deleteFlow',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"deleteFlowByOperator"`
+ */
+export const useWriteConstantFlowAgreementV1DeleteFlowByOperator =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'deleteFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"increaseFlowRateAllowance"`
+ */
+export const useWriteConstantFlowAgreementV1IncreaseFlowRateAllowance =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'increaseFlowRateAllowance',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"increaseFlowRateAllowanceWithPermissions"`
+ */
+export const useWriteConstantFlowAgreementV1IncreaseFlowRateAllowanceWithPermissions =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'increaseFlowRateAllowanceWithPermissions',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"revokeFlowOperatorWithFullControl"`
+ */
+export const useWriteConstantFlowAgreementV1RevokeFlowOperatorWithFullControl =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'revokeFlowOperatorWithFullControl',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateCode"`
+ */
+export const useWriteConstantFlowAgreementV1UpdateCode =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateCode',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlow"`
+ */
+export const useWriteConstantFlowAgreementV1UpdateFlow =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlow',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlowByOperator"`
+ */
+export const useWriteConstantFlowAgreementV1UpdateFlowByOperator =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlowOperatorPermissions"`
+ */
+export const useWriteConstantFlowAgreementV1UpdateFlowOperatorPermissions =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlowOperatorPermissions',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__
+ */
+export const useSimulateConstantFlowAgreementV1 =
+  /*#__PURE__*/ createUseSimulateContract({ abi: constantFlowAgreementV1Abi })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"authorizeFlowOperatorWithFullControl"`
+ */
+export const useSimulateConstantFlowAgreementV1AuthorizeFlowOperatorWithFullControl =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'authorizeFlowOperatorWithFullControl',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"castrate"`
+ */
+export const useSimulateConstantFlowAgreementV1Castrate =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'castrate',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"createFlow"`
+ */
+export const useSimulateConstantFlowAgreementV1CreateFlow =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'createFlow',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"createFlowByOperator"`
+ */
+export const useSimulateConstantFlowAgreementV1CreateFlowByOperator =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'createFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"decreaseFlowRateAllowance"`
+ */
+export const useSimulateConstantFlowAgreementV1DecreaseFlowRateAllowance =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'decreaseFlowRateAllowance',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"decreaseFlowRateAllowanceWithPermissions"`
+ */
+export const useSimulateConstantFlowAgreementV1DecreaseFlowRateAllowanceWithPermissions =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'decreaseFlowRateAllowanceWithPermissions',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"deleteFlow"`
+ */
+export const useSimulateConstantFlowAgreementV1DeleteFlow =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'deleteFlow',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"deleteFlowByOperator"`
+ */
+export const useSimulateConstantFlowAgreementV1DeleteFlowByOperator =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'deleteFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"increaseFlowRateAllowance"`
+ */
+export const useSimulateConstantFlowAgreementV1IncreaseFlowRateAllowance =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'increaseFlowRateAllowance',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"increaseFlowRateAllowanceWithPermissions"`
+ */
+export const useSimulateConstantFlowAgreementV1IncreaseFlowRateAllowanceWithPermissions =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'increaseFlowRateAllowanceWithPermissions',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"revokeFlowOperatorWithFullControl"`
+ */
+export const useSimulateConstantFlowAgreementV1RevokeFlowOperatorWithFullControl =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'revokeFlowOperatorWithFullControl',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateCode"`
+ */
+export const useSimulateConstantFlowAgreementV1UpdateCode =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateCode',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlow"`
+ */
+export const useSimulateConstantFlowAgreementV1UpdateFlow =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlow',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlowByOperator"`
+ */
+export const useSimulateConstantFlowAgreementV1UpdateFlowByOperator =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlowByOperator',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `functionName` set to `"updateFlowOperatorPermissions"`
+ */
+export const useSimulateConstantFlowAgreementV1UpdateFlowOperatorPermissions =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: constantFlowAgreementV1Abi,
+    functionName: 'updateFlowOperatorPermissions',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__
+ */
+export const useWatchConstantFlowAgreementV1Event =
+  /*#__PURE__*/ createUseWatchContractEvent({ abi: constantFlowAgreementV1Abi })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `eventName` set to `"CodeUpdated"`
+ */
+export const useWatchConstantFlowAgreementV1CodeUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: constantFlowAgreementV1Abi,
+    eventName: 'CodeUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `eventName` set to `"FlowOperatorUpdated"`
+ */
+export const useWatchConstantFlowAgreementV1FlowOperatorUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: constantFlowAgreementV1Abi,
+    eventName: 'FlowOperatorUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `eventName` set to `"FlowUpdated"`
+ */
+export const useWatchConstantFlowAgreementV1FlowUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: constantFlowAgreementV1Abi,
+    eventName: 'FlowUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `eventName` set to `"FlowUpdatedExtension"`
+ */
+export const useWatchConstantFlowAgreementV1FlowUpdatedExtensionEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: constantFlowAgreementV1Abi,
+    eventName: 'FlowUpdatedExtension',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link constantFlowAgreementV1Abi}__ and `eventName` set to `"Initialized"`
+ */
+export const useWatchConstantFlowAgreementV1InitializedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: constantFlowAgreementV1Abi,
+    eventName: 'Initialized',
   })
 
 /**
@@ -7194,6 +9684,21 @@ export const useWatchDirectListingsLogicNewSaleEvent =
     abi: directListingsLogicAbi,
     address: directListingsLogicAddress,
     eventName: 'NewSale',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link directListingsLogicAbi}__ and `eventName` set to `"UpdateAdFLowRate"`
+ *
+ * -
+ * - [__View Contract on Base Basescan__](https://basescan.org/address/0x9825f700754534108BFE2239C9e66a12FDEBB33e)
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0xcCFF64eEff05Bb1F7e80Fe965A5E57ed588FBF94)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x44f808B028cD582b21C04f6de3580029d3E31Cb6)
+ */
+export const useWatchDirectListingsLogicUpdateAdFLowRateEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: directListingsLogicAbi,
+    address: directListingsLogicAddress,
+    eventName: 'UpdateAdFLowRate',
   })
 
 /**
@@ -8237,6 +10742,320 @@ export const useWatchGeneralDistributionAgreementV1PoolCreatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: generalDistributionAgreementV1Abi,
     eventName: 'PoolCreated',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__
+ */
+export const useReadIeas = /*#__PURE__*/ createUseReadContract({ abi: ieasAbi })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"getAttestation"`
+ */
+export const useReadIeasGetAttestation = /*#__PURE__*/ createUseReadContract({
+  abi: ieasAbi,
+  functionName: 'getAttestation',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"getRevokeOffchain"`
+ */
+export const useReadIeasGetRevokeOffchain = /*#__PURE__*/ createUseReadContract(
+  { abi: ieasAbi, functionName: 'getRevokeOffchain' },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"getSchemaRegistry"`
+ */
+export const useReadIeasGetSchemaRegistry = /*#__PURE__*/ createUseReadContract(
+  { abi: ieasAbi, functionName: 'getSchemaRegistry' },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"getTimestamp"`
+ */
+export const useReadIeasGetTimestamp = /*#__PURE__*/ createUseReadContract({
+  abi: ieasAbi,
+  functionName: 'getTimestamp',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"isAttestationValid"`
+ */
+export const useReadIeasIsAttestationValid =
+  /*#__PURE__*/ createUseReadContract({
+    abi: ieasAbi,
+    functionName: 'isAttestationValid',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"version"`
+ */
+export const useReadIeasVersion = /*#__PURE__*/ createUseReadContract({
+  abi: ieasAbi,
+  functionName: 'version',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__
+ */
+export const useWriteIeas = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"attest"`
+ */
+export const useWriteIeasAttest = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'attest',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"attestByDelegation"`
+ */
+export const useWriteIeasAttestByDelegation =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ieasAbi,
+    functionName: 'attestByDelegation',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiAttest"`
+ */
+export const useWriteIeasMultiAttest = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'multiAttest',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiAttestByDelegation"`
+ */
+export const useWriteIeasMultiAttestByDelegation =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ieasAbi,
+    functionName: 'multiAttestByDelegation',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevoke"`
+ */
+export const useWriteIeasMultiRevoke = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'multiRevoke',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevokeByDelegation"`
+ */
+export const useWriteIeasMultiRevokeByDelegation =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ieasAbi,
+    functionName: 'multiRevokeByDelegation',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevokeOffchain"`
+ */
+export const useWriteIeasMultiRevokeOffchain =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ieasAbi,
+    functionName: 'multiRevokeOffchain',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiTimestamp"`
+ */
+export const useWriteIeasMultiTimestamp = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'multiTimestamp',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revoke"`
+ */
+export const useWriteIeasRevoke = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'revoke',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revokeByDelegation"`
+ */
+export const useWriteIeasRevokeByDelegation =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: ieasAbi,
+    functionName: 'revokeByDelegation',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revokeOffchain"`
+ */
+export const useWriteIeasRevokeOffchain = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'revokeOffchain',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"timestamp"`
+ */
+export const useWriteIeasTimestamp = /*#__PURE__*/ createUseWriteContract({
+  abi: ieasAbi,
+  functionName: 'timestamp',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__
+ */
+export const useSimulateIeas = /*#__PURE__*/ createUseSimulateContract({
+  abi: ieasAbi,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"attest"`
+ */
+export const useSimulateIeasAttest = /*#__PURE__*/ createUseSimulateContract({
+  abi: ieasAbi,
+  functionName: 'attest',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"attestByDelegation"`
+ */
+export const useSimulateIeasAttestByDelegation =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'attestByDelegation',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiAttest"`
+ */
+export const useSimulateIeasMultiAttest =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiAttest',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiAttestByDelegation"`
+ */
+export const useSimulateIeasMultiAttestByDelegation =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiAttestByDelegation',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevoke"`
+ */
+export const useSimulateIeasMultiRevoke =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiRevoke',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevokeByDelegation"`
+ */
+export const useSimulateIeasMultiRevokeByDelegation =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiRevokeByDelegation',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiRevokeOffchain"`
+ */
+export const useSimulateIeasMultiRevokeOffchain =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiRevokeOffchain',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"multiTimestamp"`
+ */
+export const useSimulateIeasMultiTimestamp =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'multiTimestamp',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revoke"`
+ */
+export const useSimulateIeasRevoke = /*#__PURE__*/ createUseSimulateContract({
+  abi: ieasAbi,
+  functionName: 'revoke',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revokeByDelegation"`
+ */
+export const useSimulateIeasRevokeByDelegation =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'revokeByDelegation',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"revokeOffchain"`
+ */
+export const useSimulateIeasRevokeOffchain =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: ieasAbi,
+    functionName: 'revokeOffchain',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link ieasAbi}__ and `functionName` set to `"timestamp"`
+ */
+export const useSimulateIeasTimestamp = /*#__PURE__*/ createUseSimulateContract(
+  { abi: ieasAbi, functionName: 'timestamp' },
+)
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ieasAbi}__
+ */
+export const useWatchIeasEvent = /*#__PURE__*/ createUseWatchContractEvent({
+  abi: ieasAbi,
+})
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ieasAbi}__ and `eventName` set to `"Attested"`
+ */
+export const useWatchIeasAttestedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ieasAbi,
+    eventName: 'Attested',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ieasAbi}__ and `eventName` set to `"Revoked"`
+ */
+export const useWatchIeasRevokedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ieasAbi,
+    eventName: 'Revoked',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ieasAbi}__ and `eventName` set to `"RevokedOffchain"`
+ */
+export const useWatchIeasRevokedOffchainEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ieasAbi,
+    eventName: 'RevokedOffchain',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link ieasAbi}__ and `eventName` set to `"Timestamped"`
+ */
+export const useWatchIeasTimestampedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: ieasAbi,
+    eventName: 'Timestamped',
   })
 
 /**
@@ -10584,4 +13403,277 @@ export const useWatchSuperTokenTransferEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: superTokenAbi,
     eventName: 'Transfer',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link userBaseAbi}__
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useReadUserBase = /*#__PURE__*/ createUseReadContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"owner"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useReadUserBaseOwner = /*#__PURE__*/ createUseReadContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+  functionName: 'owner',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"proxiableUUID"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useReadUserBaseProxiableUuid = /*#__PURE__*/ createUseReadContract(
+  { abi: userBaseAbi, address: userBaseAddress, functionName: 'proxiableUUID' },
+)
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBase = /*#__PURE__*/ createUseWriteContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"addUser"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseAddUser = /*#__PURE__*/ createUseWriteContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+  functionName: 'addUser',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"initialize"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseInitialize = /*#__PURE__*/ createUseWriteContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+  functionName: 'initialize',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"renounceOwnership"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseRenounceOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"transferOwnership"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseTransferOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"upgradeTo"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseUpgradeTo = /*#__PURE__*/ createUseWriteContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+  functionName: 'upgradeTo',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"upgradeToAndCall"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWriteUserBaseUpgradeToAndCall =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'upgradeToAndCall',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBase = /*#__PURE__*/ createUseSimulateContract({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"addUser"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseAddUser =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'addUser',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"initialize"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseInitialize =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'initialize',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"renounceOwnership"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseRenounceOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"transferOwnership"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseTransferOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"upgradeTo"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseUpgradeTo =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'upgradeTo',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link userBaseAbi}__ and `functionName` set to `"upgradeToAndCall"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useSimulateUserBaseUpgradeToAndCall =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    functionName: 'upgradeToAndCall',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseEvent = /*#__PURE__*/ createUseWatchContractEvent({
+  abi: userBaseAbi,
+  address: userBaseAddress,
+})
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"AdminChanged"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseAdminChangedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'AdminChanged',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"BeaconUpgraded"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseBeaconUpgradedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'BeaconUpgraded',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"Initialized"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseInitializedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'Initialized',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"OwnershipTransferred"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseOwnershipTransferredEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'OwnershipTransferred',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"Upgraded"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseUpgradedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'Upgraded',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link userBaseAbi}__ and `eventName` set to `"UserCreated"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x2Bb04c711813685187F52d2f096ff715A5C4287C)
+ */
+export const useWatchUserBaseUserCreatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: userBaseAbi,
+    address: userBaseAddress,
+    eventName: 'UserCreated',
   })

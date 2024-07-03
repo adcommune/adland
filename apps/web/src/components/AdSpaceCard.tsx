@@ -3,33 +3,66 @@ import Image from 'next/image'
 import { Separator } from '@/components/ui/separator'
 import { formatEther } from 'viem'
 import TokenImage from '@/components/TokenImage'
-import { AdSpaceMetadata, Listing } from '@adland/webkit/src/ponder'
+import {
+  AdFlow,
+  AdSpaceMetadata,
+  Listing,
+  User,
+} from '@adland/webkit/src/ponder'
 import { formatAmount } from '@/lib/helpers'
+import { getExplorerLink, truncateAddress } from '@/lib/utils'
+import { useBiconomyAccount } from '@/context/SmartAccountContext'
+import FarcasterUserSmallBadge from './FarcasterUserSmallBadge'
+import FlowRateBadge from './FlowRateBadge'
+
+type AdSpaceCardProps = {
+  listing: Listing
+  owner?: string | null
+  id: string
+  currentMetadata?: Omit<AdSpaceMetadata, 'adSpace'> | null
+  flow?: Omit<AdFlow, 'adSpace'> | null
+  user?: User | null
+}
 
 const AdSpaceCard = ({
   id,
+  owner,
   listing,
   currentMetadata: metadata,
-}: {
-  listing: Listing
-  id: string
-  currentMetadata?: Omit<AdSpaceMetadata, 'adSpace'> | null
-}) => {
-  const { pricePerToken, currency } = listing
+  flow,
+  user,
+}: AdSpaceCardProps) => {
+  const { bicoAccountAddress } = useBiconomyAccount()
+  const { pricePerToken, currency, taxRate, taxBeneficiary } = listing
+
+  const ownedByBeneficiary =
+    owner?.toLowerCase() === taxBeneficiary?.toLowerCase()
+  const ownedByYourself =
+    owner?.toLowerCase() === bicoAccountAddress?.toLowerCase()
+  const ownedBySomeoneElseThanBeneficiary = owner !== taxBeneficiary
 
   return (
-    <Link href={'/ad/' + id}>
-      <div className="relative flex flex-col overflow-hidden rounded-md border border-white">
-        <div className="absolute left-0 top-0 z-10 flex w-full flex-row justify-between p-2">
-          <div className="rounded-md border border-black bg-white px-2">
-            <p className="text-black">#{id}</p>
-          </div>
-          <div className="flex flex-row items-center gap-2 rounded-md border border-black bg-white px-2">
-            {formatAmount(formatEther(BigInt(pricePerToken)))}
+    <div className="relative flex h-full flex-col overflow-hidden rounded-md border border-white">
+      <div className="white flex w-full flex-row justify-between bg-white p-2 text-sm text-black">
+        <div className="px-2">
+          <p className="font-bold">#{id}</p>
+        </div>
+        <div className="flex flex-row items-center gap-1 text-sm">
+          <div className="flex flex-row items-center gap-2 px-2">
+            <p className="text-xs">Price</p>
+            <p className="font-bold">
+              {formatAmount(formatEther(BigInt(pricePerToken)))}
+            </p>
             <TokenImage address={currency} className="h-4 w-4" />
           </div>
+          <div className="flex flex-row items-center gap-2 px-2">
+            <p className="text-xs">Tax Rate</p>
+            <p className="font-bold">{Number(taxRate ?? 0) / 100}% weekly</p>
+          </div>
         </div>
-        <div className="relative flex h-[350px] w-full flex-grow flex-col gap-2 bg-white bg-opacity-50 p-4 hover:bg-opacity-60">
+      </div>
+      <Link href={'/ad/' + id}>
+        <div className="relative flex h-[350px] w-full flex-grow flex-col gap-2 bg-white bg-opacity-50 p-2 hover:bg-opacity-60">
           {!metadata && (
             <div className="flex h-full w-full flex-col items-center justify-center">
               <p className="font-display text-2xl">No Ad</p>
@@ -59,8 +92,30 @@ const AdSpaceCard = ({
             </p>
           )}
         </div>
+      </Link>
+      <div className="white flex h-full w-full flex-row justify-between bg-white bg-opacity-75 p-2 text-sm text-black">
+        <div className="flex flex-row items-center gap-1 text-sm">
+          <div className="flex flex-row items-center gap-2 px-2">
+            <Link
+              className="underline"
+              href={getExplorerLink(owner, 'address')}
+              target="_blank"
+            >
+              {user?.fid ? (
+                <FarcasterUserSmallBadge user={user} />
+              ) : (
+                <p className="font-bold">
+                  {ownedByYourself ? 'You' : truncateAddress(owner)}
+                </p>
+              )}
+            </Link>
+          </div>
+        </div>
+        {flow && ownedBySomeoneElseThanBeneficiary && (
+          <FlowRateBadge currency={currency} flowRate={flow.weeklyFlowRate} />
+        )}
       </div>
-    </Link>
+    </div>
   )
 }
 
