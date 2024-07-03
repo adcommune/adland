@@ -34,4 +34,6 @@ const TokenImage = forwardRef(
   },
 )
 
+TokenImage.displayName = 'TokenImage'
+
 export default TokenImage

@@ -13,12 +13,14 @@ import { Address, erc20Abi, formatEther, formatUnits } from 'viem'
 import { useBalance, useReadContracts } from 'wagmi'
 import TokenImage from '../TokenImage'
 import { formatAmount } from '@/lib/helpers'
+import { useProfile } from '@/app/profile/context'
 
 type SuperTokenDynamicBalance = {
   tokenX: TokenX
 }
 
 const SuperTokenBalance = ({ tokenX }: SuperTokenDynamicBalance) => {
+  const { tokenxWithdraw } = useProfile()
   const { bicoAccountAddress } = useContext(SmartAccountContext)
   const { superToken, underlyingToken, isNativeToken } = tokenX as TokenX & {
     underlyingToken: Address
@@ -96,9 +98,8 @@ const SuperTokenBalance = ({ tokenX }: SuperTokenDynamicBalance) => {
         </TableCell>
         <TableCell className="text-right">
           <Button
-            disabled
             onClick={() => {
-              //
+              tokenxWithdraw.set(tokenX)
             }}
           >
             Withdraw
