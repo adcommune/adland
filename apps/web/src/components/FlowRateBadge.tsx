@@ -3,13 +3,12 @@ import { Badge } from './ui/badge'
 import TokenImage from './TokenImage'
 import { formatEther } from 'viem'
 
-const FlowRateBadge = ({
-  flowRate,
-  currency,
-}: {
+type FlowRateBadgeProps = {
   flowRate: bigint
   currency: string
-}) => {
+}
+
+const FlowRateBadge = ({ flowRate, currency }: FlowRateBadgeProps) => {
   return (
     <Badge className="flex flex-row gap-2 border">
       <span className="relative flex h-3 w-3">

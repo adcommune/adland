@@ -111,8 +111,8 @@ const AdSpaceCard = ({
             </Link>
           </div>
         </div>
-        {ownedBySomeoneElseThanBeneficiary && (
-          <FlowRateBadge currency={currency} flowRate={flow?.weeklyFlowRate} />
+        {flow && ownedBySomeoneElseThanBeneficiary && (
+          <FlowRateBadge currency={currency} flowRate={flow.weeklyFlowRate} />
         )}
       </div>
     </div>
