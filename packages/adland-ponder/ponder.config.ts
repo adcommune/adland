@@ -36,6 +36,18 @@ export default createConfig({
           abi: directListingsLogicAbi,
           startBlock: 13846869,
         },
+        CommonAdValidator: {
+          network: "base",
+          address: "0x1e871e8a8960076B0F17112a696E81963201b45C",
+          abi: commonAdValidatorAbi,
+          startBlock: 16613294,
+        },
+        UserBase: {
+          network: "base",
+          address: "0x4cf9236A6bdc9D0b5cf5c3cD801983148A20d09D",
+          abi: userBaseAbi,
+          startBlock: 16623043,
+        },
       }
     : {
         CommonAdSpaces: {
