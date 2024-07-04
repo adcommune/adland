@@ -94,3 +94,20 @@ ponder.on("DirectListing:UpdateAdFLowRate", async ({ event, context }) => {
     });
   }
 });
+
+ponder.on("DirectListing:NewSale", async ({ event, context }) => {
+  const { User } = context.db;
+
+  const account = event.args.buyer;
+
+  await User.upsert({
+    id: account,
+    create: {
+      score: 100,
+      createdAt: event.block.timestamp,
+    },
+    update: (user) => ({
+      score: user.current.score + 100,
+    }),
+  });
+});
