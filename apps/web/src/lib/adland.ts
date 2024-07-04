@@ -8,6 +8,7 @@ import {
   AdSpaceQuery,
   AdSpaceMetadata,
   TokenXsQuery,
+  UsersQuery,
 } from '@adland/webkit/src/ponder'
 import { constants } from '@adland/common'
 import { AdCampaign } from './types'
@@ -30,6 +31,10 @@ export class AdLand {
   constructor() {
     this.ponder = getPonder(new GraphQLClient(constants.ponderUrl, { fetch }))
     this.c = publicClient
+  }
+
+  async listUsers(): Promise<UsersQuery> {
+    return this.ponder.users({ orderBy: 'score', orderDirection: 'desc' })
   }
 
   async createUser(

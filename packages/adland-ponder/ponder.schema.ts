@@ -3,13 +3,15 @@ import { createSchema } from "@ponder/core";
 export default createSchema((p) => ({
   User: p.createTable({
     // smartAccount address
+    // REQUIRED
     id: p.string(),
+    score: p.int(),
+    createdAt: p.bigint(),
+    // OPTIONAL
     fid: p.bigint().optional(),
     pfp: p.string().optional(),
     username: p.string().optional(),
     displayName: p.string().optional(),
-    blockTimestamp: p.bigint(),
-    transactionHash: p.string(),
   }),
   AdGroup: p.createTable({
     id: p.string(),
