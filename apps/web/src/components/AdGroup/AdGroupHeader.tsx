@@ -45,11 +45,7 @@ const AdGroupHeader = ({ adGroupId, children }: AdGroupHeaderProps) => {
           className="underline"
           target="_blank"
         >
-          {adGroup?.user ? (
-            <FarcasterUserSmallBadge user={adGroup?.user} />
-          ) : (
-            truncateAddress(adGroup?.beneficiary)
-          )}
+          <FarcasterUserSmallBadge user={adGroup?.user} />
         </Link>
       ),
     },
