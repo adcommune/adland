@@ -22,12 +22,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Slider } from '@/components/ui/slider'
-import { Address, encodeFunctionData, formatEther, parseEther } from 'viem'
-import useAppContracts from '@/hooks/useAppContracts'
-import { commonAdSpacesAbi } from '@adland/contracts'
+import { formatEther, parseEther } from 'viem'
 import { useContext } from 'react'
-import { handleWriteErrors } from '@/lib/viem'
-import { TokenX } from '@adland/webkit/src/hooks'
 import {
   Select,
   SelectContent,
@@ -37,7 +33,6 @@ import {
   SelectValue,
 } from '../ui/select'
 import { truncateAddress } from '@/lib/utils'
-import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import TokenImage from '../TokenImage'
 import { TokenXsQuery } from '@adland/webkit/src/ponder'
@@ -49,17 +44,18 @@ const createAdGroupSchema = z.object({
   size: z.bigint(),
 })
 
-type CreateAdGroupFormValues = z.infer<typeof createAdGroupSchema>
+type AdGroupFormValues = z.infer<typeof createAdGroupSchema>
 
-type CreateAdGroupFormProps = {
+type AdGroupFormProps = {
   superTokens: TokenXsQuery['tokenXs']
+  submit: (values: AdGroupFormValues) => void
+  loading: boolean
 }
 
-const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
-  const { adCommonOwnership } = useAppContracts()
+const AdGroupForm = ({ superTokens, submit, loading }: AdGroupFormProps) => {
   const { bicoAccountAddress } = useContext(SmartAccountContext)
 
-  const form = useForm<CreateAdGroupFormValues>({
+  const form = useForm<AdGroupFormValues>({
     resolver: zodResolver(createAdGroupSchema),
     defaultValues: {
       currency: superTokens.items[0].underlyingToken,
@@ -69,46 +65,11 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
     },
   })
 
-  const { write, loading } = useSmartAccountTxs({})
-
-  const onSubmit = async ({
-    currency,
-    initialPrice,
-    taxRate,
-    size,
-  }: CreateAdGroupFormValues) => {
+  const onSubmit = async (v: AdGroupFormValues) => {
     if (!bicoAccountAddress) return
 
-    write(
-      {
-        transactions: [
-          {
-            to: adCommonOwnership,
-            data: encodeFunctionData({
-              abi: commonAdSpacesAbi,
-              functionName: 'createAdGroup',
-              args: [
-                bicoAccountAddress,
-                {
-                  currency: currency as Address,
-                  initialPrice,
-                  taxRate,
-                },
-                size,
-                '',
-              ],
-            }),
-            value: BigInt(0),
-          },
-        ],
-      },
-      {
-        onError: (error) => handleWriteErrors(error),
-      },
-    )
+    submit(v)
   }
-
-  console.log(superTokens)
 
   return (
     <Form {...form}>
@@ -258,4 +219,4 @@ const CreateAdGroupForm = ({ superTokens }: CreateAdGroupFormProps) => {
   )
 }
 
-export default CreateAdGroupForm
+export default AdGroupForm

@@ -3,7 +3,7 @@
 import React, { useContext } from 'react'
 import { getExplorerLink, getWarpcastLink, truncateAddress } from '@/lib/utils'
 import { AdLand } from '@/lib/adland'
-import { CogIcon } from 'lucide-react'
+import { CogIcon, PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import { useQuery } from '@tanstack/react-query'
@@ -91,12 +91,20 @@ const AdGroupHeader = ({ adGroupId, children }: AdGroupHeaderProps) => {
               </div>
               <div className="mt-5 flex justify-center sm:mt-0">
                 {isBeneficiary && (
-                  <Link
-                    href={`/group/${adGroupId}/settings`}
-                    className="flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  >
-                    <CogIcon className="h-5 w-5 " />
-                  </Link>
+                  <div className="flex flex-row gap-2">
+                    <Link
+                      href={`/group/${adGroupId}/settings`}
+                      className="flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    >
+                      <CogIcon className="h-5 w-5 " />
+                    </Link>
+                    <Link
+                      href={`/group/${adGroupId}/open-ads`}
+                      className="flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    >
+                      <PlusIcon className="h-5 w-5 " />
+                    </Link>
+                  </div>
                 )}
               </div>
             </div>

@@ -3,7 +3,10 @@ import { Address } from 'viem'
 import Image from 'next/image'
 import { forwardRef } from 'react'
 
+// TODO: Move these to vercel db
 const tokenSources: Record<string, string> = {
+  UKNWN: '/tokens/eth.png',
+  fDAI: '/tokens/dai.webp',
   DAI: '/tokens/dai.webp',
   DEGEN: '/tokens/degen.webp',
   BLEU: '/tokens/bleu.webp',
