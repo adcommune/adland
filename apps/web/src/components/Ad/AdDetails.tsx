@@ -21,7 +21,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import ForecloseDropdownItem from '@/components/AdSpaces/ForecloseDropdownItem'
@@ -150,8 +149,6 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                           <Link href={`/ad/${spaceId}/upgrade`}>
                             <DropdownMenuItem>Deposit</DropdownMenuItem>
                           </Link>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem disabled>Give up</DropdownMenuItem>
                         </>
                       )}
                       {isBeneficiary && !isOwner && listing && (

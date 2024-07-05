@@ -1,36 +1,83 @@
 import { useBiconomyAccount } from '@/context/SmartAccountContext'
 import { AdLand } from '@/lib/adland'
 import { useQuery } from '@tanstack/react-query'
-import AdSpaceCard from './AdSpaceCard'
 import { zeroAddress } from 'viem'
+import AdSpaceRow from './AdSpaceRow'
+import { useState } from 'react'
+import QueryPagination from './QueryPagination'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './ui/table'
+import { adSpacePageLimit } from '@/config/constants'
 
 const AdSpaceList = () => {
   const { bicoAccountAddress } = useBiconomyAccount()
+  const [currentCursor, setCurrentCursor] = useState<string | null | undefined>(
+    null,
+  )
 
   const { data, isLoading } = useQuery({
     queryFn: () =>
       bicoAccountAddress &&
-      new AdLand().listAdSpacesByOwner(bicoAccountAddress),
-    queryKey: ['listAdSpaces-' + bicoAccountAddress],
+      new AdLand().listAdSpacesByOwner(bicoAccountAddress, currentCursor),
+    queryKey: ['listAdSpaces-' + bicoAccountAddress + '-' + currentCursor],
   })
 
-  return (
-    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-      {isLoading ? (
-        <div className="col-span-1 flex h-[50vh] w-full flex-col items-center justify-center sm:col-span-3 md:col-span-4">
-          <p className="text-lg text-white">Loading...</p>
-        </div>
-      ) : (
-        data?.adSpaces.items
-          .filter((space) => {
-            return space.tokenX.superToken !== zeroAddress
-          })
-          .map((adSpace) => {
-            const { transactionHash, id } = adSpace
+  const pagination = (
+    <QueryPagination
+      pageInfo={data?.adSpaces.pageInfo}
+      currentCursor={currentCursor}
+      onChangeCursor={(cursor) => setCurrentCursor(cursor)}
+    />
+  )
 
-            return <AdSpaceCard key={transactionHash + '-' + id} {...adSpace} />
-          })
-      )}
+  return (
+    <div className="overflow-hidden rounded-md bg-white">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-slate-100">
+            <TableHead>ID</TableHead>
+            <TableHead>Beneficiary</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Tax Rate</TableHead>
+            <TableHead>Ad</TableHead>
+            <TableHead className="text-right">Current Flow</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {isLoading
+            ? Array(adSpacePageLimit)
+                .fill({})
+                .map((_, i) => (
+                  <TableRow key={i}>
+                    <TableCell colSpan={6}>
+                      <p className="opacity-0">Hello</p>
+                    </TableCell>
+                  </TableRow>
+                ))
+            : data?.adSpaces.items
+                .filter((space) => {
+                  return space.tokenX.superToken !== zeroAddress
+                })
+                .map((adSpace) => {
+                  const { transactionHash, id } = adSpace
+                  return (
+                    <AdSpaceRow key={transactionHash + '-' + id} {...adSpace} />
+                  )
+                })}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={6}>{pagination}</TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
     </div>
   )
 }
