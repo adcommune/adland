@@ -13,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
-import { getExplorerLink, truncateAddress } from '@/lib/utils'
 import FarcasterUserSmallBadge from '../FarcasterUserSmallBadge'
 
 const AdGroupListItem = (group: AdGroupsQuery['adGroups']['items'][0]) => {

@@ -43,11 +43,11 @@ export const ConnectButton = () => {
 
   return (
     <DropdownMenu>
+      <div className="hidden cursor-pointer md:flex">
+        <Link href="/profile">{menuButtonContent}</Link>
+      </div>
       <DropdownMenuTrigger asChild>
         <div>
-          <div className="hidden cursor-pointer md:flex">
-            <Link href="/profile">{menuButtonContent}</Link>
-          </div>
           <div className="flex cursor-pointer md:hidden">
             {menuButtonContent}
           </div>

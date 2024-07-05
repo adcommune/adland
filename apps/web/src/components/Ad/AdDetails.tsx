@@ -16,16 +16,15 @@ import classNames from 'classnames'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Skeleton } from '@/components/ui/skeleton'
-import { ImageIcon, MoreVertical, ShoppingCart } from 'lucide-react'
+import { ImageIcon, InfoIcon, MoreVertical, ShoppingCart } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import ForecloseDropdownItem from '@/components/AdSpaces/ForecloseDropdownItem'
-import SelfPriceAssementModal from '@/components/SelfPriceAssementModal'
+import SelfAssessementInput from '@/components/SelfAssessementInput'
 import AcquireLeaseModal from '@/components/AcquireLeaseModal'
 import { encodeFunctionData, formatEther } from 'viem'
 import { getExplorerLink, getWarpcastLink, truncateAddress } from '@/lib/utils'
@@ -45,6 +44,7 @@ import { AdSpaceQuery } from '@adland/webkit/src/ponder'
 import { toast } from 'sonner'
 import { merge } from 'lodash'
 import FarcasterUserSmallBadge from '../FarcasterUserSmallBadge'
+import HoverCardInfo from '../InfoHoverCard'
 
 type AdDetailsSidebarProps = {
   spaceId: string
@@ -140,18 +140,9 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                     <DropdownMenuContent align="end">
                       {isOwner && (
                         <>
-                          <DropdownMenuItem
-                            onClick={() => {
-                              selfAssessmentModal.set(true)
-                            }}
-                          >
-                            Self Assess
-                          </DropdownMenuItem>
                           <Link href={`/ad/${spaceId}/upgrade`}>
                             <DropdownMenuItem>Deposit</DropdownMenuItem>
                           </Link>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem disabled>Give up</DropdownMenuItem>
                         </>
                       )}
                       {isBeneficiary && !isOwner && listing && (
@@ -159,9 +150,6 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                       )}
                     </DropdownMenuContent>
                   </DropdownMenu>
-                  {adSpace && (
-                    <SelfPriceAssementModal listing={adSpace.listing} />
-                  )}
                 </>
               )}
               {adSpace && (
@@ -179,7 +167,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
             <ul className="grid gap-3">
               <li className="flex items-center justify-between">
                 <span className="text-muted-foreground">Price</span>
-                {listing?.pricePerToken ? (
+                {adSpace && listing?.pricePerToken ? (
                   <span className="flex flex-row items-center gap-2">
                     {formatAmount(
                       formatEther(listing?.pricePerToken ?? BigInt(0)),
@@ -289,9 +277,25 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
               <div className="grid gap-3">
                 <div className="font-semibold">Actions</div>
                 <ul className="grid gap-3">
+                  {isOwner && adSpace && (
+                    <li className="flex flex-row items-center justify-between gap-8">
+                      <div className="flex flex-row">
+                        <p>Reassess</p>
+                        <HoverCardInfo text="Update your ad space price. Note that the tax you're paying weekly will increase of decrease proportionally with the space price.">
+                          <InfoIcon className="ml-1 h-3 w-3 stroke-slate-500" />
+                        </HoverCardInfo>
+                      </div>
+                      <SelfAssessementInput listing={adSpace?.listing} />
+                    </li>
+                  )}
                   {isOwner && !isBeneficiary && (
                     <li className="flex items-center justify-between">
-                      <p>Give up space</p>
+                      <div className="flex flex-row">
+                        <p>Give up space</p>
+                        <HoverCardInfo text="Give up your ad space ownership. You'll stop paying tax immediately to the ad space beneficiary.">
+                          <InfoIcon className="ml-1 h-3 w-3 stroke-slate-500" />
+                        </HoverCardInfo>
+                      </div>
                       <Alert
                         title="Give Up"
                         description="Are you sure you want to give up this ad space?"
