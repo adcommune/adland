@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import { formatEther } from 'viem'
 import TokenImage from '@/components/TokenImage'
@@ -10,10 +9,17 @@ import {
   User,
 } from '@adland/webkit/src/ponder'
 import { formatAmount } from '@/lib/helpers'
-import { getExplorerLink } from '@/lib/utils'
 import FarcasterUserSmallBadge from './FarcasterUserSmallBadge'
 import FlowRateBadge from './FlowRateBadge'
-import { TableCell, TableRow } from './ui/table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './ui/table'
 import { useRouter } from 'next/navigation'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from './ui/hover-card'
 import { Separator } from './ui/separator'
@@ -26,6 +32,38 @@ type AdSpaceRowProps = {
   flow?: Omit<AdFlow, 'adSpace'> | null
   user?: User | null
   adGroup?: AdGroup
+}
+
+type AdSpaceTableProps = {
+  children: React.ReactNode
+  pagination?: React.ReactNode
+}
+
+export const AdSpaceTable = ({ children, pagination }: AdSpaceTableProps) => {
+  return (
+    <div className="overflow-hidden rounded-md bg-white">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-slate-100">
+            <TableHead>ID</TableHead>
+            <TableHead>Beneficiary</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Tax Rate</TableHead>
+            <TableHead className="text-center">Ad</TableHead>
+            <TableHead className="text-right">Current Flow</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>{children}</TableBody>
+        {pagination && (
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={6}>{pagination}</TableCell>
+            </TableRow>
+          </TableFooter>
+        )}
+      </Table>
+    </div>
+  )
 }
 
 const AdSpaceRow = ({
@@ -50,13 +88,7 @@ const AdSpaceRow = ({
     >
       <TableCell>#{id}</TableCell>
       <TableCell>
-        <Link
-          className="underline"
-          href={getExplorerLink(beneficiaryUser?.id, 'address')}
-          target="_blank"
-        >
-          <FarcasterUserSmallBadge user={beneficiaryUser} />
-        </Link>
+        <FarcasterUserSmallBadge user={beneficiaryUser} />
       </TableCell>
       <TableCell className="flex flex-row items-center gap-2">
         <p className="font-bold">

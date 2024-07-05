@@ -3,7 +3,7 @@
 import { Container } from '@/components/Container'
 import { AdLand } from '@/lib/adland'
 import { useQuery } from '@tanstack/react-query'
-import AdSpaceCard from '@/components/AdSpaceCard'
+import AdSpaceRow, { AdSpaceTable } from '@/components/AdSpaceRow'
 
 type GroupPageProps = { params: { id: string } }
 
@@ -34,12 +34,12 @@ const GroupPage = ({ params: { id } }: GroupPageProps) => {
   const { adSpaces } = adGroup
 
   return (
-    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
+    <AdSpaceTable>
       {adSpaces?.items?.map((adSpace) => {
         const { transactionHash, id } = adSpace
-        return <AdSpaceCard key={transactionHash + '-' + id} {...adSpace} />
+        return <AdSpaceRow key={transactionHash + '-' + id} {...adSpace} />
       })}
-    </div>
+    </AdSpaceTable>
   )
 }
 

@@ -2,18 +2,17 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Address, encodeFunctionData, formatEther, parseEther } from 'viem'
 import { useContext, useState } from 'react'
-import { AdSpace } from '@/lib/types'
 import { directListingsLogicAbi } from '@adland/contracts'
 import { ModalContext } from '@/context/ModalContext'
-import Modal from './Modal'
 import { queryClient } from './AppProviders'
 import { useSmartAccountTxs } from '@/hooks/useSmartAccount'
 import { appContracts } from '@/config/constants'
 import { AdSpaceQuery, Listing } from '@adland/webkit/src/ponder'
+import TokenImage from './TokenImage'
 
 type AdSpaceCardProps = { listing: Listing }
 
-const SelfPriceAssementModal = ({ listing }: AdSpaceCardProps) => {
+const SelfAssessementInput = ({ listing }: AdSpaceCardProps) => {
   const { selfAssessmentModal } = useContext(ModalContext)
   const {
     assetContract,
@@ -84,37 +83,34 @@ const SelfPriceAssementModal = ({ listing }: AdSpaceCardProps) => {
   }
 
   return (
-    <Modal
-      title="Self Assessment"
-      description="Update the price per token for this listing."
-      isOpen={selfAssessmentModal.show}
-      closeModal={() => {
-        selfAssessmentModal.set(false)
-      }}
-      renderConfirm={() => {
-        return (
-          <Button
-            disabled={loading}
-            onClick={() => {
-              selfAssess()
-            }}
-            loading={loading}
-          >
-            Reassess
-          </Button>
-        )
-      }}
-    >
-      <div>
+    <div className="flex flex-row items-center gap-2">
+      <div className="relative flex flex-row items-center">
         <Input
           type="number"
           value={newPricePerToken}
           defaultValue={parseFloat(formatEther(pricePerToken))}
           onChange={(e) => setNewPricePerToken(Number(e.target.value))}
         />
+        <div className="absolute right-2">
+          <TokenImage
+            address={listing.currency}
+            symbol={listing.currencySymbol}
+            className="h-6 w-6"
+          />
+        </div>
       </div>
-    </Modal>
+      <Button
+        size="sm"
+        disabled={loading}
+        onClick={() => {
+          selfAssess()
+        }}
+        loading={loading}
+      >
+        Reassess
+      </Button>
+    </div>
   )
 }
 
-export default SelfPriceAssementModal
+export default SelfAssessementInput
