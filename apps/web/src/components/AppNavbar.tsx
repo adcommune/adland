@@ -12,11 +12,11 @@ const AppNavbar = () => {
   return (
     <Navbar>
       <div className="flex flex-row gap-2">
-        <Link className="hidden sm:flex" href={'/leaderboard'}>
+        {/* <Link className="hidden sm:flex" href={'/leaderboard'}>
           <Button className="flex h-full w-full flex-row font-body ">
             <span className="mr-2">👑</span> Leaderboard
           </Button>
-        </Link>
+        </Link> */}
         <Link
           className="hidden sm:flex"
           href={bicoAccountAddress ? '/group/create' : ''}
