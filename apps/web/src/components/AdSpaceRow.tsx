@@ -109,9 +109,11 @@ const AdSpaceRow = ({
               {metadata?.description && <p>{metadata.description}</p>}
               {metadata?.externalUrl && <Separator />}
               {metadata?.externalUrl && (
-                <p className="truncate overflow-ellipsis text-wrap break-words">
-                  {metadata?.externalUrl}
-                </p>
+                <div className="max-w-64">
+                  <p className="truncate overflow-ellipsis text-wrap break-words">
+                    {metadata?.externalUrl}
+                  </p>
+                </div>
               )}
               {metadata?.imageGatewayUri && <Separator />}
               {metadata?.imageGatewayUri && (

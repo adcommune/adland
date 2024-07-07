@@ -122,7 +122,11 @@ const UpdateAdData = ({
     )
   }, [])
 
-  const { write, loading } = useSmartAccountTxs({})
+  const { write, loading } = useSmartAccountTxs({
+    onSuccess: () => {
+      toast.success('Ad data updated successfully')
+    },
+  })
 
   const submitAdData = async () => {
     if (!image) return
@@ -172,7 +176,7 @@ const UpdateAdData = ({
 
     const jsonData = JSON.stringify(data)
 
-    const metadata: File = new File([JSON.stringify(data)], 'metadata.json')
+    const metadata: File = new File([jsonData], 'metadata.json')
     const hash = await uploadFile(metadata)
     const adIpfsURI = `ipfs://${hash}`
 
