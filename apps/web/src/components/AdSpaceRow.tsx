@@ -102,13 +102,17 @@ const AdSpaceRow = ({
           <HoverCard openDelay={50} closeDelay={100}>
             <HoverCardTrigger>
               <div className="rounded-md border text-center hover:bg-slate-100">
-                Ad Data
+                See Ad Data
               </div>
             </HoverCardTrigger>
-            <HoverCardContent className="flex flex-col items-center gap-2">
+            <HoverCardContent className="flex w-auto flex-col items-center gap-2">
               {metadata?.description && <p>{metadata.description}</p>}
               {metadata?.externalUrl && <Separator />}
-              {metadata?.externalUrl && <p>{metadata?.externalUrl}</p>}
+              {metadata?.externalUrl && (
+                <p className="truncate overflow-ellipsis text-wrap break-words">
+                  {metadata?.externalUrl}
+                </p>
+              )}
               {metadata?.imageGatewayUri && <Separator />}
               {metadata?.imageGatewayUri && (
                 <Image
@@ -116,7 +120,7 @@ const AdSpaceRow = ({
                   width={300}
                   height={300}
                   layout="responsive"
-                  className="rounded-md"
+                  className="max-w-64 rounded-md"
                   alt=""
                 />
               )}
