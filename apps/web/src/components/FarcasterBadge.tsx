@@ -23,7 +23,7 @@ const FarcasterBadge = ({
           className="aspect-square h-full rounded-md object-cover"
         />
       )}
-      <p className="mx-4 font-body text-sm font-bold">
+      <p className="mx-4 hidden font-body text-sm font-bold md:flex">
         {farcaster.displayName}
       </p>
     </Card>

@@ -1,12 +1,12 @@
 query user($id: String!) {
   user(id: $id) {
     id
+    score
+    createdAt
     fid
     pfp
     username
     displayName
-    blockTimestamp
-    transactionHash
   }
 }query users($where: UserFilter, $orderBy: String, $orderDirection: String, $before: String, $after: String, $limit: Int) {
   users(
@@ -19,12 +19,12 @@ query user($id: String!) {
   ) {
     items {
       id
+      score
+      createdAt
       fid
       pfp
       username
       displayName
-      blockTimestamp
-      transactionHash
     }
     pageInfo {
       hasNextPage
@@ -39,12 +39,12 @@ query user($id: String!) {
     beneficiary
     user {
       id
+      score
+      createdAt
       fid
       pfp
       username
       displayName
-      blockTimestamp
-      transactionHash
     }
     adSpaces(
       where: $adGroup_adSpaces_where
@@ -59,12 +59,12 @@ query user($id: String!) {
         owner
         user {
           id
+          score
+          createdAt
           fid
           pfp
           username
           displayName
-          blockTimestamp
-          transactionHash
         }
         listingId
         listing {
@@ -199,12 +199,12 @@ query user($id: String!) {
       beneficiary
       user {
         id
+        score
+        createdAt
         fid
         pfp
         username
         displayName
-        blockTimestamp
-        transactionHash
       }
       adSpaces(
         where: $adGroups_items_items_adSpaces_where
@@ -219,12 +219,12 @@ query user($id: String!) {
           owner
           user {
             id
+            score
+            createdAt
             fid
             pfp
             username
             displayName
-            blockTimestamp
-            transactionHash
           }
           listingId
           listing {
@@ -352,12 +352,12 @@ query user($id: String!) {
     owner
     user {
       id
+      score
+      createdAt
       fid
       pfp
       username
       displayName
-      blockTimestamp
-      transactionHash
     }
     listingId
     listing {
@@ -386,12 +386,12 @@ query user($id: String!) {
       beneficiary
       user {
         id
+        score
+        createdAt
         fid
         pfp
         username
         displayName
-        blockTimestamp
-        transactionHash
       }
       adSpaces(
         where: $adSpace_adGroup_adGroup_adSpaces_where
@@ -518,12 +518,12 @@ query user($id: String!) {
       owner
       user {
         id
+        score
+        createdAt
         fid
         pfp
         username
         displayName
-        blockTimestamp
-        transactionHash
       }
       listingId
       listing {
@@ -552,12 +552,12 @@ query user($id: String!) {
         beneficiary
         user {
           id
+          score
+          createdAt
           fid
           pfp
           username
           displayName
-          blockTimestamp
-          transactionHash
         }
         metadataId
         metadata {
@@ -671,12 +671,12 @@ query user($id: String!) {
       owner
       user {
         id
+        score
+        createdAt
         fid
         pfp
         username
         displayName
-        blockTimestamp
-        transactionHash
       }
       listingId
       listing {
@@ -705,12 +705,12 @@ query user($id: String!) {
         beneficiary
         user {
           id
+          score
+          createdAt
           fid
           pfp
           username
           displayName
-          blockTimestamp
-          transactionHash
         }
         adSpaces(
           where: $adSpaceMetadata_adSpace_adSpace_adGroup_adGroup_adSpaces_where
@@ -815,12 +815,12 @@ query user($id: String!) {
         owner
         user {
           id
+          score
+          createdAt
           fid
           pfp
           username
           displayName
-          blockTimestamp
-          transactionHash
         }
         listingId
         listing {
@@ -849,12 +849,12 @@ query user($id: String!) {
           beneficiary
           user {
             id
+            score
+            createdAt
             fid
             pfp
             username
             displayName
-            blockTimestamp
-            transactionHash
           }
           metadataId
           metadata {
@@ -1057,12 +1057,12 @@ query user($id: String!) {
       owner
       user {
         id
+        score
+        createdAt
         fid
         pfp
         username
         displayName
-        blockTimestamp
-        transactionHash
       }
       listingId
       listing {
@@ -1091,12 +1091,12 @@ query user($id: String!) {
         beneficiary
         user {
           id
+          score
+          createdAt
           fid
           pfp
           username
           displayName
-          blockTimestamp
-          transactionHash
         }
         adSpaces(
           where: $adFlow_adSpace_adSpace_adGroup_adGroup_adSpaces_where
@@ -1223,12 +1223,12 @@ query user($id: String!) {
         owner
         user {
           id
+          score
+          createdAt
           fid
           pfp
           username
           displayName
-          blockTimestamp
-          transactionHash
         }
         listingId
         listing {
@@ -1257,12 +1257,12 @@ query user($id: String!) {
           beneficiary
           user {
             id
+            score
+            createdAt
             fid
             pfp
             username
             displayName
-            blockTimestamp
-            transactionHash
           }
           metadataId
           metadata {

@@ -8,6 +8,7 @@ import {
   AdSpaceQuery,
   AdSpaceMetadata,
   TokenXsQuery,
+  UsersQuery,
 } from '@adland/webkit/src/ponder'
 import { constants } from '@adland/common'
 import { AdCampaign } from './types'
@@ -19,7 +20,7 @@ import {
   userBaseAbi,
 } from '@adland/contracts'
 import { Superfluid } from './superfluid-subgraph'
-import { appContracts } from '@/config/constants'
+import { adSpacePageLimit, appContracts } from '@/config/constants'
 import { BiconomySmartAccountV2, PaymasterMode } from '@biconomy/account'
 
 export class AdLand {
@@ -30,6 +31,10 @@ export class AdLand {
   constructor() {
     this.ponder = getPonder(new GraphQLClient(constants.ponderUrl, { fetch }))
     this.c = publicClient
+  }
+
+  async listUsers(): Promise<UsersQuery> {
+    return this.ponder.users({ orderBy: 'score', orderDirection: 'desc' })
   }
 
   async createUser(
@@ -91,11 +96,16 @@ export class AdLand {
       .then((res) => res.tokenXs)
   }
 
-  async listAdSpacesByOwner(owner: Address | string): Promise<AdSpacesQuery> {
+  async listAdSpacesByOwner(
+    owner: Address | string,
+    after?: string | null,
+  ): Promise<AdSpacesQuery> {
     return this.ponder.adSpaces({
       where: {
         owner,
       },
+      after,
+      limit: adSpacePageLimit,
     })
   }
 

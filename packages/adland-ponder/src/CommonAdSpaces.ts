@@ -39,23 +39,23 @@ ponder.on("UserBase:UserCreated", async ({ event, context }) => {
     username = data.users[0]?.username;
   }
 
+  // Taking into accounts that have interacted before this new
+  // event and have already been created
   await User.upsert({
     id: ars.smartAccount,
     create: {
+      score: 0,
+      createdAt: event.block.timestamp,
       fid: BigInt(ars.fid) || undefined,
       pfp,
       username,
       displayName,
-      blockTimestamp: event.block.timestamp,
-      transactionHash: event.transaction.hash,
     },
     update: {
-      fid: ars.fid,
+      fid: BigInt(ars.fid) || undefined,
       pfp,
       username,
       displayName,
-      blockTimestamp: event.block.timestamp,
-      transactionHash: event.transaction.hash,
     },
   });
 });
@@ -66,6 +66,16 @@ ponder.on(
     const { AdGroup, User } = context.db;
 
     const benef = event.args.recipient;
+
+    if (!(await User.findUnique({ id: benef }))) {
+      await User.create({
+        id: benef,
+        data: {
+          score: 0,
+          createdAt: event.block.timestamp,
+        },
+      });
+    }
 
     // if (!(await User.findUnique({ id: benef }))) {
     //   await User.create({
@@ -90,7 +100,17 @@ ponder.on(
 ponder.on(
   "CommonAdSpaces:AdGroupCreated(uint256 indexed groupId, address indexed recipient, string indexed metadataURI)",
   async ({ event, context }) => {
-    const { AdGroup, AdGroupMetadata } = context.db;
+    const { AdGroup, AdGroupMetadata, User } = context.db;
+
+    if (!(await User.findUnique({ id: event.args.recipient }))) {
+      await User.create({
+        id: event.args.recipient,
+        data: {
+          score: 0,
+          createdAt: event.block.timestamp,
+        },
+      });
+    }
 
     const metadataURI = event.args.metadataURI;
 

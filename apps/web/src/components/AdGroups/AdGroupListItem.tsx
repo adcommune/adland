@@ -13,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
-import { getExplorerLink, truncateAddress } from '@/lib/utils'
 import FarcasterUserSmallBadge from '../FarcasterUserSmallBadge'
 
 const AdGroupListItem = (group: AdGroupsQuery['adGroups']['items'][0]) => {
@@ -83,18 +82,7 @@ const AdGroupListItem = (group: AdGroupsQuery['adGroups']['items'][0]) => {
         </CardContent>
         <CardFooter className="flex justify-between p-4">
           <div className="flex flex-row items-end gap-2">
-            {user?.fid ? (
-              <FarcasterUserSmallBadge user={user} />
-            ) : (
-              <Link href={getExplorerLink(beneficiary, 'address')}>
-                <p className="text-xs hover:underline">
-                  Owner:{' '}
-                  <span className="font-semibold">
-                    {truncateAddress(beneficiary)}
-                  </span>
-                </p>
-              </Link>
-            )}
+            <FarcasterUserSmallBadge user={user} />
           </div>
           <div className="flex flex-wrap">
             <p className="text-xs text-gray-500">

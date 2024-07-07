@@ -145,3 +145,5 @@ export const appContracts = {
   eas: '0x4200000000000000000000000000000000000021',
   userBase: userBaseAddress[appChain.id as keyof typeof userBaseAddress],
 }
+
+export const adSpacePageLimit = 10

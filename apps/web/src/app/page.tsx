@@ -3,28 +3,17 @@
 import AdGroupList from '@/components/AdGroups/AdGroupList'
 import AdSpaceList from '@/components/AdSpaceList'
 import { Container } from '@/components/Container'
-import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { SmartAccountContext } from '@/context/SmartAccountContext'
 import classNames from 'classnames'
-import { PlusIcon } from 'lucide-react'
-import Link from 'next/link'
 import { useContext } from 'react'
 
 const AppPage = () => {
   const { bicoAccountAddress } = useContext(SmartAccountContext)
 
   return (
-    <div className="flex min-h-[79vh] flex-col p-2">
+    <div className="flex min-h-[79vh] flex-col">
       <Container className="flex w-full flex-col gap-2 p-4">
-        {bicoAccountAddress && (
-          <Link href={'/group/create'} className="flex sm:hidden">
-            <Button className="w-full gap-2">
-              <PlusIcon size={16} />
-              Create Ad Group
-            </Button>
-          </Link>
-        )}
         <Tabs
           defaultValue={bicoAccountAddress ? 'my-ad-spaces' : 'all-ad-groups'}
           className="w-full font-body"
