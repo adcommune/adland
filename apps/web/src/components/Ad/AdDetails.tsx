@@ -197,7 +197,7 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                 )}
               </li>
               <li className="flex items-center justify-between">
-                <span className="text-muted-foreground">Owner</span>
+                <span className="text-muted-foreground">Current Owner</span>
                 {listing || !isLoading ? (
                   <span>
                     {' '}
@@ -214,6 +214,14 @@ const AdDetailsSidebar = ({ spaceId, children }: AdDetailsSidebarProps) => {
                       <span>{truncateAddress(listing?.listingOwner)}</span>
                     )}
                   </span>
+                ) : (
+                  <Skeleton className="h-4 w-9" />
+                )}
+              </li>
+              <li className="flex items-center justify-between">
+                <span className="text-muted-foreground">Beneficiary</span>
+                {adSpace?.adGroup.user || !isLoading ? (
+                  <FarcasterUserSmallBadge user={adSpace?.adGroup.user} />
                 ) : (
                   <Skeleton className="h-4 w-9" />
                 )}
