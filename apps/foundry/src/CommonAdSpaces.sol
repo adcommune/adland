@@ -6,7 +6,6 @@ import {CurrencyTransferLib} from "contracts/lib/CurrencyTransferLib.sol";
 import {ERC721RoyaltyUpgradeable, ERC721Upgradeable} from "@openzeppelin-upgradeable/contracts/token/ERC721/extensions/ERC721RoyaltyUpgradeable.sol";
 import {UUPSUpgradeable} from "@openzeppelin-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {OwnableUpgradeable} from "@openzeppelin-upgradeable/contracts/access/OwnableUpgradeable.sol";
-// Local imports
 import {ICommonAdSpaces} from "./interfaces/ICommonAdSpaces.sol";
 import {IAdStrategy} from "./interfaces/IAdStrategy.sol";
 import {AdGroup, AdSpace, AdSpaceConfig} from "./lib/Structs.sol";
@@ -183,6 +182,10 @@ contract CommonAdSpaces is
         uint256 adGroupId
     ) external view returns (AdGroup memory) {
         return adGroups[adGroupId];
+    }
+
+    function getGroupByAd(uint256 adId) external view returns (AdGroup memory) {
+        return adGroups[ads[adId].adGroupId];
     }
 
     function getTokenX(address underlying) external view returns (address) {
