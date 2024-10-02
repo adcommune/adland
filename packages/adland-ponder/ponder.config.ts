@@ -6,20 +6,30 @@ import { directListingsLogicAbi } from "./abis/DirectListingAbi";
 import { commonAdValidatorAbi } from "./abis/CommonAdValidator";
 import { userBaseAbi } from "./abis/UserBaseAbi";
 
+const stage = process.env.STAGE;
 const mainnet = process.env.STAGE === "mainnet";
+const baseRPCUrl = process.env.PONDER_RPC_URL_8453;
+const optSepoliaRPCUrl = process.env.PONDER_RPC_URL_11155420;
+
+console.log({
+  stage,
+  mainnet,
+  baseRPCUrl,
+  optSepoliaRPCUrl,
+});
 
 export default createConfig({
   networks: mainnet
     ? {
         base: {
           chainId: 8453,
-          transport: http(process.env.PONDER_RPC_URL_8453),
+          transport: http(baseRPCUrl),
         },
       }
     : {
         "optimism-sepolia": {
           chainId: 11155420,
-          transport: http(process.env.PONDER_RPC_URL_11155420),
+          transport: http(optSepoliaRPCUrl),
         },
       },
   contracts: mainnet
