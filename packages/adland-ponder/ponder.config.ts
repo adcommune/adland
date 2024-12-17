@@ -24,12 +24,14 @@ export default createConfig({
         base: {
           chainId: 8453,
           transport: http(baseRPCUrl),
+          pollingInterval: 2000,
         },
       }
     : {
         "optimism-sepolia": {
           chainId: 11155420,
           transport: http(optSepoliaRPCUrl),
+          pollingInterval: 2000,
         },
       },
   contracts: mainnet
