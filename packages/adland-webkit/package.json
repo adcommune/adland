@@ -4,8 +4,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
-    "build": "node helpers/ops.cjs",
-    "codegen": "pnpm run build && graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "devDependencies": {
     "@adland/common": "workspace:*",

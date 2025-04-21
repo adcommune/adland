@@ -4,7 +4,6 @@ import Navbar from "@/components/Navbar";
 import { nav_links } from "@/config/links";
 import MobileNavigation from "@/components/Navigation/MovileNavigation";
 import Link from "next/link";
-import { BatteryWarningIcon, FileWarningIcon } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
