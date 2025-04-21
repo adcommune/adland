@@ -1,21 +1,14 @@
 import { Container } from "@/components/Container";
 import { Footer } from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { Button } from "@/components/ui/button";
 import { nav_links } from "@/config/links";
-import { AdLand } from "@/lib/adland";
-import { constants } from "@adland/common";
-import classNames from "classnames";
-import { ShoppingCartIcon } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
 import MobileNavigation from "@/components/Navigation/MovileNavigation";
+import Link from "next/link";
+import { BatteryWarningIcon, FileWarningIcon } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const adGroup = await new AdLand().getGroup(constants.landingPageAdGroup);
-
   return (
     <>
       <Navbar>
@@ -48,66 +41,9 @@ export default async function Home() {
           Radical, decentralized, transparent revenue generation through
           collective advertising ownership.
         </p>
-        <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-5">
-          {adGroup
-            ? adGroup?.adSpaces?.map(({ metadata, adSpace_subgraph }) => {
-                const clickable = Boolean(metadata?.external_url);
-                const link = metadata?.external_url ?? "";
-
-                return (
-                  <div
-                    key={adSpace_subgraph.id}
-                    className="flex aspect-square flex-col justify-center bg-white bg-opacity-10"
-                  >
-                    {metadata?.imageGatewayURI ? (
-                      <Link
-                        href={link}
-                        target="_blank"
-                        className={classNames({
-                          "cursor-pointer": clickable,
-                          "cursor-not-allowed": !clickable,
-                        })}
-                      >
-                        <Image
-                          src={metadata?.imageGatewayURI}
-                          alt="hello"
-                          className="w-full object-contain"
-                          width={800}
-                          height={800}
-                        />
-                      </Link>
-                    ) : (
-                      <div className="flex h-full flex-col justify-center">
-                        <p className="font-display text-white">NO AD</p>
-                      </div>
-                    )}
-                  </div>
-                );
-              })
-            : Array(5)
-                .fill(null)
-                .map((_, i) => (
-                  <div
-                    key={i}
-                    className="flex aspect-square h-full flex-col justify-center bg-white bg-opacity-10"
-                  ></div>
-                ))}
-        </div>
-        <div className="flex w-full flex-row justify-end">
-          <Link
-            target="_blank"
-            href={`${constants.appUrl}/group/${constants.landingPageAdGroup}`}
-            className="w-full sm:w-auto"
-          >
-            <Button
-              size="sm"
-              className="p x-8 w-full bg-transparent font-body text-white sm:w-auto"
-              variant="outline"
-            >
-              YOUR AD HERE
-              <ShoppingCartIcon className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
+        <div className="mx-auto max-w-2xl font-body text-lg text-gray-200 border rounded-lg bg-black/30 mt-10 p-4 font-bold">
+          <p className="">AdLand has been discontinued.</p>
+          <p>But stay tuned for something new soon enough... !</p>
         </div>
       </Container>
       <Footer />
