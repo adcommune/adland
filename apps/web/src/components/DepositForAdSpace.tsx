@@ -54,7 +54,7 @@ const DepositForAdSpace = ({
   })
 
   const numberOfWeeksAvailable = dueWeekly
-    ? Number(superBalance / dueWeekly ?? 0)
+    ? Number(superBalance / dueWeekly)
     : 0
 
   const { write: upgradeCall, loading: depositLoading } = useSmartAccountTxs({

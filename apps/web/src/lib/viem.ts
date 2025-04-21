@@ -30,5 +30,6 @@ export const handleWriteErrors = (
 
 export const publicClient = createPublicClient({
   transport: http(alchemyUrlByChain[constants.chain.id]),
+  // @ts-ignore
   chain: constants.chain,
 })

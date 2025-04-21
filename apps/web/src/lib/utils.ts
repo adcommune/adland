@@ -15,6 +15,7 @@ export const truncateAddress = (address?: string | null, length?: number) => {
 export const getExplorerLink = (
   data: Address | string | undefined | null,
   path: 'tx' | 'address',
+  // @ts-ignore
   chain: Chain = constants.chain,
 ) => {
   if (!data) return ''

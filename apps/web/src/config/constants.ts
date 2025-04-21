@@ -1,6 +1,6 @@
 import { base, optimismSepolia, sepolia } from 'wagmi/chains'
 import { alchemyKey, pimlicoKey } from './variables'
-import { Address, keccak256, zeroAddress } from 'viem'
+import { Address, keccak256, zeroAddress, stringToBytes } from 'viem'
 import { constants } from '@adland/common'
 import { lowerCaseObjectKeys } from '@/lib/utils'
 import {
@@ -129,7 +129,7 @@ export const getTokenSymbol = (tokenAddress?: string) => {
 }
 
 export const MEMBER_UNITS_ADMIN_ROLE = keccak256(
-  Buffer.from('MEMBER_ADMIN_ROLE', 'utf8'),
+  stringToBytes('MEMBER_ADMIN_ROLE'),
 )
 
 export type AppChainIds = keyof typeof commonAdSpacesAddress

@@ -68,7 +68,7 @@ const AcquireLeaseModal = ({ listing, tokenX }: AcquireLeaseModalProps) => {
   })
 
   const numberOfWeeksAvailable = dueWeekly
-    ? Number(superBalance / dueWeekly ?? 0)
+    ? Number(superBalance / dueWeekly)
     : 0
 
   const { data: ethBalance } = useBalance({

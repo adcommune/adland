@@ -14,6 +14,7 @@ import { SmartAccountProvider } from '@/context/SmartAccountContext'
 export const queryClient = new QueryClient()
 
 export const config = createConfig({
+  // @ts-ignore
   chains: [constants.chain],
   ssr: true,
   transports: {

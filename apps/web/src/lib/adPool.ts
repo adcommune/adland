@@ -24,6 +24,7 @@ export class CommonPoolAdmin {
 
     return createSmartAccountClient({
       signer: createWalletClient({
+        // @ts-ignore
         chain: constants.chain,
         transport: http(alchemyUrlByChain[constants.chain.id]),
         account: privateKeyToAccount(process.env.FRAME_PK as Address),

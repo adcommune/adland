@@ -35,7 +35,7 @@ type RootLayoutProps = {
   children: React.ReactNode
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({}: RootLayoutProps) {
   return (
     <html
       lang="en"
@@ -48,7 +48,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className="relative z-[2]">
         <div className="">
           <UserTypeProvider>
-            <AppProviders>{children}</AppProviders>
+            <AppProviders>
+              <div className="mx-auto mt-10 max-w-2xl rounded-lg border bg-black/30 p-4 font-body text-lg font-bold text-gray-200">
+                <p className="">AdLand has been discontinued.</p>
+                <p>But stay tuned for something new soon enough... !</p>
+              </div>
+            </AppProviders>
           </UserTypeProvider>
           <Analytics />
           <Toaster

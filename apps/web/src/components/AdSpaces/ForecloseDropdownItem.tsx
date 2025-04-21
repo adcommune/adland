@@ -13,7 +13,10 @@ const ForecloseDropdownItem = ({ listingId }: { listingId: bigint }) => {
     <DropdownMenuItem
       disabled={!Boolean(data?.request)}
       onClick={() => {
-        writeContract(data!.request)
+        if (data?.request) {
+          // @ts-ignore
+          writeContract(data.request)
+        }
       }}
       className="bg-red-500 text-white"
     >
